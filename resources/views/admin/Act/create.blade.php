@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="{{Route('act')}}"><button class="btn btn-success">Back</button></a>
+                        <a href="{{ Route('act') }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -33,7 +33,8 @@
                                     <select class="select form-control text-capitalize" name="category">
                                         <option selected>Select Category</option>
                                         @foreach ($category as $value)
-                                            <option value="{{ $value->id }}" class="text-capitalize">{{ $value->category }}</option>
+                                            <option value="{{ $value->id }}" class="text-capitalize">
+                                                {{ $value->category }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -41,8 +42,7 @@
                             <div class="col-md-12">
                                 <div class="form-group form-default">
                                     <label class="float-label"> Act <span class="text-danger">*</span></label>
-                                    <textarea type="text" name="act" class="form-control"
-                                        placeholder="Enter Act">
+                                    <textarea type="text" id="act" name="act" class="form-control" placeholder="Enter Act">
                                     </textarea>
                                 </div>
                             </div>
@@ -68,4 +68,10 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('act');
+    </script>
 @endsection

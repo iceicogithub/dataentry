@@ -41,7 +41,7 @@
                             <div class="col-md-12">
                                 <div class="form-group form-default">
                                     <label class="float-label"> Add Chapter<span class="text-danger">*</span></label>
-                                    <textarea type="text" name="chapter" class="form-control">
+                                    <textarea type="text" id="chapter" name="chapter" class="form-control">
                                     </textarea>
                                 </div>
                             </div>
@@ -67,4 +67,10 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('chapter');
+    </script>
 @endsection

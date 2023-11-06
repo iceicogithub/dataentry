@@ -41,7 +41,7 @@
                             <div class="col-md-12">
                                 <div class="form-group form-default">
                                     <label class="float-label"> Add Section <span class="text-danger">*</span></label>
-                                    <textarea type="text" name="section" class="form-control"
+                                    <textarea type="text" id="section" name="section" class="form-control"
                                         placeholder="Enter Section">
                                     </textarea>
                                 </div>
@@ -68,4 +68,10 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('section');
+    </script>
 @endsection
