@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Status;
 use Illuminate\Http\Request;
 
-class ActController extends Controller
+class ChapterController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $category = Category::all();
         $status = Status::all();
-        return view('admin.act.index', compact('category','status'));
+        return view('admin.chapter.index', compact('status'));
     }
 
     /**
@@ -23,9 +21,8 @@ class ActController extends Controller
      */
     public function create()
     {
-        $category = Category::all();
         $status = Status::all();
-        return view('admin.act.create', compact('category','status'));
+        return view('admin.chapter.create', compact('status'));
     }
 
     /**
