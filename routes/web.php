@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// Route::get('/rename_column', function () {
+//         if (Schema::hasTable('acts') && Schema::hasColumn('acts', 'category')) {
+//             DB::statement('ALTER TABLE acts CHANGE category category_id VARCHAR(255)');
+//             return 'Column renamed successfully.';
+//         } else {
+//             return 'Table or old column does not exist.';
+//         }
+//     });
 
 Route::get('/', function () {
     return view('admin.dashboard');
@@ -22,3 +30,4 @@ Route::get('/', function () {
 Route::get('/category', [CategoryController::class, 'index'])->name('category');
 Route::get('/act', [ActController::class, 'index'])->name('act');
 Route::get('/add-act', [ActController::class, 'create'])->name('add-act');
+Route::post('/store_act', [ActController::class, 'store']);

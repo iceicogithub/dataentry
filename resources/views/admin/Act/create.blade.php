@@ -22,22 +22,44 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card p-5">
-                    <form id="form" action="" method="post" enctype="multipart/form-data"
+                    <form id="form" action="/store_act" method="post" enctype="multipart/form-data"
                         class="form form-horizontal">
                         @csrf
+                        @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                         <div class="row">
-                            <div class="col-md-12">
+                           
+                        
+                       
+                        
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="role" class=" form-control-label">Select Category<span
                                             class="text-danger">*</span></label>
-                                    <select class="select form-control text-capitalize" name="category">
-                                        <option selected>Select Category</option>
+                                    <select class="select form-control text-capitalize category" name="category_id">
+                                        <option selected disabled>Select Category</option>
                                         @foreach ($category as $value)
                                             <option value="{{ $value->id }}" class="text-capitalize">{{ $value->category }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
+                           
+                            <div class="col-md-6 state" style="display: none;">
+                                <div class="form-group">
+                                    <label for="state" class=" form-control-label">Select state<span
+                                            class="text-danger">*</span></label>
+                                    <select class="select form-control text-capitalize" name="state">
+                                        <option selected>Select State</option>
+                                            <option value="" class="text-capitalize"></option>
+                                    </select>
+                                </div>
+                            </div>
+                           
+                            
                             <div class="col-md-12">
                                 <div class="form-group form-default">
                                     <label class="float-label"> Act <span class="text-danger">*</span></label>
@@ -68,4 +90,17 @@
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
+<script>
+    $(document).ready(function() {
+        $('.category').change(function() {
+            if ($(this).val() === '2') {
+                $('.state').show(); 
+            } else {
+                $('.state').hide(); 
+            }
+        });
+    });
+</script>
 @endsection

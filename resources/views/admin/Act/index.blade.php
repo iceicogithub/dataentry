@@ -18,8 +18,14 @@
             </div>
         </div>
     </div>
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
     <div class="content mt-3">
         <div class="row">
+           
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
