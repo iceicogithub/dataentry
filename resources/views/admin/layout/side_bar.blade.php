@@ -23,9 +23,9 @@
                         aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Acts</a>
                     <ul class="sub-menu children dropdown-menu">
                         <li><i class="fa fa-angle-double-right"></i><a href="{{route('act')}}">Add Act</a></li>
-                        <li><i class="fa fa-angle-double-right"></i><a href="">Add Section</a></li>
-                        <li><i class="fa fa-angle-double-right"></i><a href="">Add Sub Section</a></li>
-                        <li><i class="fa fa-angle-double-right"></i><a href="">Add Chapter</a></li>
+                        <li><i class="fa fa-angle-double-right"></i><a href="{{route('section')}}">Add Section</a></li>
+                        <li><i class="fa fa-angle-double-right"></i><a href="{{route('sub-section')}}">Add Sub Section</a></li>
+                        <li><i class="fa fa-angle-double-right"></i><a href="{{route('chapter')}}">Add Chapter</a></li>
                     </ul>
                 </li>
                 <li class="menu-item-has-children dropdown">
