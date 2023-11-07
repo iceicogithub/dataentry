@@ -39,7 +39,7 @@
                                 </div>
                             </div>
                             <div class="section-set-container col-md-12 px-0">
-                                <div class="section-container col-md-12 px-0 mb-2">
+                                <div class="section-set col-md-12 px-0 mb-2">
                                     <div class="col-md-12 px-0 pb-1">
                                         <div class="float-right">
                                             <button type="button" class="btn btn-sm social facebook p-0 add-section">
@@ -50,7 +50,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="border col-md-12 p-3 section">
+                                    <div class="section-container border col-md-12 p-3">
                                         <div class="form-group form-default">
                                             <label class="float-label">Section Title<span
                                                     class="text-danger">*</span></label>
@@ -95,17 +95,15 @@
     </script>
     <script>
         $(document).ready(function() {
-            // Add section button click event
-            $(".add-section").click(function() {
-                var newSectionSet = $(".section-set-container .section-container").first().clone();
+            $(".section-set-container").on("click", ".add-section", function() {
+                var newSectionSet = $(".section-set").first().clone();
                 $(".section-set-container").append(newSectionSet);
             });
 
-            // Remove section button click event
-            $(".remove-section").click(function() {
-                var sectionSets = $(".section-set-container .section-container");
+            $(".section-set-container").on("click", ".remove-section", function() {
+                var sectionSets = $(".section-set");
                 if (sectionSets.length > 1) {
-                    sectionSets.last().remove();
+                    $(this).closest(".section-set").remove();
                 }
             });
         });
