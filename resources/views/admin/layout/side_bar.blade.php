@@ -18,7 +18,10 @@
                 <li>
                     <a href="{{route('category')}}"> <i class="menu-icon fa fa-dashboard"></i>Category</a>
                 </li>
-                <li class="menu-item-has-children dropdown">
+                <li>
+                    <a href="{{route('act')}}"> <i class="menu-icon fa fa-dashboard"></i>Acts</a>
+                </li>
+                {{-- <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Acts</a>
                     <ul class="sub-menu children dropdown-menu">
@@ -67,7 +70,7 @@
                         <li><i class="fa fa-angle-double-right"></i><a href="">Buttons</a></li>
                         <li><i class="fa fa-angle-double-right"></i><a href="">Badges</a></li>
                     </ul>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </nav>

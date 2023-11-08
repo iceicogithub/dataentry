@@ -38,6 +38,9 @@
                                     <th scope="col">Sr .No</th>
                                     <th scope="col">Category</th>
                                     <th scope="col">Act</th>
+                                    <th scope="col">Chapter</th>
+                                    <th scope="col">Section</th>
+                                    <th scope="col">Sub Section</th>
                                     <th scope="col">Status</th>
                                 </tr>
                             </thead>

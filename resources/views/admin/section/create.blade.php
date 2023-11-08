@@ -58,7 +58,8 @@
                                         </div>
                                         <div class="form-group form-default">
                                             <label class="float-label">Add Section<span class="text-danger">*</span></label>
-                                            <textarea type="text" name="section" class="form-control" placeholder="Enter Section"></textarea>
+                                            <textarea type="text" id="section" name="section" class="form-control section-textarea"
+                                                placeholder="Enter Section"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -88,15 +89,20 @@
 @endsection
 @section('script')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('section');
+        CKEDITOR.replace($('.section-textarea')[0]);
     </script>
     <script>
         $(document).ready(function() {
             $(".section-set-container").on("click", ".add-section", function() {
                 var newSectionSet = $(".section-set").first().clone();
+
+                // Generate a unique class name for the new section
+                var newClassNumber = $(".section-set")
+                .length; // This gets the current number of section-sets
+                newSectionSet.find('.section-textarea').addClass('section-' + newClassNumber);
+
                 $(".section-set-container").append(newSectionSet);
             });
 
