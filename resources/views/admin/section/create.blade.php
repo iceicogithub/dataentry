@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="{{Route('section')}}"><button class="btn btn-success">Back</button></a>
+                        <a href="{{ Route('section') }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                         class="form form-horizontal">
                         @csrf
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12 px-0">
                                 <div class="form-group">
                                     <label for="role" class=" form-control-label">Select Act<span
                                             class="text-danger">*</span></label>
@@ -38,15 +38,33 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group form-default">
-                                    <label class="float-label"> Add Section <span class="text-danger">*</span></label>
-                                    <textarea type="text" id="section" name="section" class="form-control"
-                                        placeholder="Enter Section">
-                                    </textarea>
+                            <div class="section-set-container col-md-12 px-0">
+                                <div class="section-set col-md-12 px-0 mb-2">
+                                    <div class="col-md-12 px-0 pb-1">
+                                        <div class="float-right">
+                                            <button type="button" class="btn btn-sm social facebook p-0 add-section">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm social youtube p-0 remove-section">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="section-container border col-md-12 p-3">
+                                        <div class="form-group form-default">
+                                            <label class="float-label">Section Title<span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" placeholder="Enter Section Title">
+                                        </div>
+                                        <div class="form-group form-default">
+                                            <label class="float-label">Add Section<span class="text-danger">*</span></label>
+                                            <textarea type="text" id="section" name="section" class="form-control section-textarea"
+                                                placeholder="Enter Section"></textarea>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4 px-0 pt-3">
                                 <div class="form-group">
                                     <label for="role" class=" form-control-label">Select Status<span
                                             class="text-danger">*</span></label>
@@ -70,8 +88,30 @@
     </div>
 @endsection
 @section('script')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('section');
+        CKEDITOR.replace($('.section-textarea')[0]);
+    </script>
+    <script>
+        $(document).ready(function() {
+            $(".section-set-container").on("click", ".add-section", function() {
+                var newSectionSet = $(".section-set").first().clone();
+
+                // Generate a unique class name for the new section
+                var newClassNumber = $(".section-set")
+                .length; // This gets the current number of section-sets
+                newSectionSet.find('.section-textarea').addClass('section-' + newClassNumber);
+
+                $(".section-set-container").append(newSectionSet);
+            });
+
+            $(".section-set-container").on("click", ".remove-section", function() {
+                var sectionSets = $(".section-set");
+                if (sectionSets.length > 1) {
+                    $(this).closest(".section-set").remove();
+                }
+            });
+        });
     </script>
 @endsection

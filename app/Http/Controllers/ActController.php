@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Act;
 use App\Models\Status;
+use App\Models\State;
 use Illuminate\Http\Request;
 
 class ActController extends Controller
@@ -26,7 +27,8 @@ class ActController extends Controller
     {
         $category = Category::all();
         $status = Status::all();
-        return view('admin.act.create', compact('category','status'));
+        $states = State::all();
+        return view('admin.act.create', compact('category','status','states'));
     }
 
     /**
