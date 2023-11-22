@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('admin.dashboard');
-});
+})->name('dashboard');
 
 Route::get('/category', [CategoryController::class, 'index'])->name('category');
 Route::get('/act', [ActController::class, 'index'])->name('act');
