@@ -38,7 +38,6 @@
                                     <th scope="col">Sr .No</th>
                                     <th scope="col">Category</th>
                                     <th scope="col">Act</th>
-                                    <th scope="col">Chapter</th>
                                     <th scope="col">Section</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -48,21 +47,15 @@
                                 {{-- @foreach ($category as $item) --}}
                                 <tr>
                                     <td scope="row">@php echo $a++; @endphp</td>
-                                    <td class="text-capitalize"></td>
-                                    <td class="text-capitalize"></td>
-                                    <td class="text-capitalize">
-                                        <span></span>
-                                        <span class="float-right"><a href="#" title="Edit" class="px-1"><i class="fa fa-edit"></i></a></span>
-                                    
-                                    </td>
+                                    <td class="text-capitalize">Central</td>
+                                    <td class="text-capitalize">The Coastal Aquaculture Authority (Amendment) Act, 2023</td>
                                     <td class="text-capitalize ">
-                                        <span></span>
-                                        <span class="float-right"><a href="#" class="px-1"><i class="fa fa-edit"></i></a></span>
+                                        <span><a href="{{Route('section-list')}}" title="Edit Section" class="px-1"><i class="fa fa-edit"></i></a></span>
                                     </td>
                                     <td class="text-capitalize">
-                                        <a href="#" class="px-1"><i class="fa fa-edit"></i></a>
-                                        <a href="#" class="px-1"><i class="fa fa-eye"></i></a>
-                                        <a href="#" class="px-1"><i class="fa fa-trash"></i></a>
+                                        <a href="{{Route('edit-act')}}" title="Edit" class="px-1"><i class="fa fa-edit"></i></a>
+                                        <a href="#" title="View" class="px-1"><i class="fa fa-eye"></i></a>
+                                        <a href="#" title="Delete" class="px-1"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 {{-- @endforeach --}}

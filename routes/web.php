@@ -4,6 +4,7 @@ use App\Http\Controllers\ActController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\SectionController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,13 +26,30 @@ use Illuminate\Support\Facades\Route;
 //         }
 //     });
 
+Route::get('/clear-cache', function () {
+    $exitCode = Artisan::call('config:clear');
+    $exitCode = Artisan::call('cache:clear');
+    $exitCode = Artisan::call('config:cache');
+    $exitCode = Artisan::call('optimize');
+    return 'DONE';
+});
+
 Route::get('/', function () {
     return view('admin.dashboard');
 })->name('dashboard');
 
+Route::get('section-list', function () {
+    return view('admin.section.index');
+})->name('section-list');
+
+Route::get('edit-section', function () {
+    return view('admin.section.edit');
+})->name('edit-section');
+
 Route::get('/category', [CategoryController::class, 'index'])->name('category');
 Route::get('/act', [ActController::class, 'index'])->name('act');
 Route::get('/add-act', [ActController::class, 'create'])->name('add-act');
+Route::get('/edit-act', [ActController::class, 'edit'])->name('edit-act');
 Route::post('/store_act', [ActController::class, 'store']);
 Route::get('/section', [SectionController::class, 'index'])->name('section');
 Route::get('/add-section', [SectionController::class, 'create'])->name('add-section');

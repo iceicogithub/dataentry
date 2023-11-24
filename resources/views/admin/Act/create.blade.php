@@ -58,11 +58,9 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="form-group form-default border p-3">
+                                <div class="form-group form-default w-50">
                                     <label class="float-label"> Act <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control mb-3" placeholder="Enter Act Title">
-                                    <textarea type="text" id="act" name="act" class="form-control ckeditor-replace act">
-                                    </textarea>
                                 </div>
                             </div>
                             <div class="section-set-container col-md-12">
@@ -73,9 +71,9 @@
                                                     class="text-danger">*</span></label>
                                             <select class="select form-control text-capitalize type typeSelector"
                                                 name="type" id="typeSelector">
-                                                <option selected disabled>Select Type</option>
+                                                <option disabled>Select Type</option>
                                                 <option value="preliminary" class="text-capitalize">Preliminary</option>
-                                                <option value="chapter" class="text-capitalize">Chapter</option>
+                                                <option value="chapter" selected class="text-capitalize">Chapter</option>
                                                 <option value="part" class="text-capitalize">Parts</option>
                                                 <option value="schedules" class="text-capitalize">Schedules</option>
                                                 <option value="appendices" class="text-capitalize">Appendices</option>
@@ -103,14 +101,13 @@
                                     </div>
                                     <div class="section-container border col-md-12 p-3">
                                         <div class="col-md-12 px-0">
-                                            <div class="form-group form-default">
+                                            <div class="form-group form-default w-50">
                                                 {{-- for chapter --}}
                                                 <div id="chapterSection" class="chapterSection">
                                                     <label class="float-label"> Chapter <span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control mb-3"
                                                         placeholder="Enter Chapter Title" id="chapterTitle">
-                                                    <textarea type="text" id="chapter" name="chapter" class="form-control ckeditor-replace chapter"></textarea>
                                                 </div>
 
                                                 {{-- for parts --}}
@@ -119,7 +116,6 @@
                                                             class="text-danger">*</span></label>
                                                     <input type="text" class="form-control mb-3"
                                                         placeholder="Enter Part Title" id="partTitle">
-                                                    <textarea type="text" id="part" name="part" class="form-control ckeditor-replace part"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -145,56 +141,64 @@
                                                     </div>
                                                     <div class="form-group form-default col-md-12 px-0" id="sectionDiv"
                                                         style="display:none">
-                                                        <div class="form-group form-default" style="display: block">
+                                                        <div class="form-group form-default sectionTitleMain"
+                                                            style="display: block">
                                                             <label class="float-label">Section Title<span
                                                                     class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control"
-                                                                placeholder="Enter Section Title">
+                                                            <div class="d-flex sectionTitle my-1">
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="Enter Section Title">
+                                                                <button type="button"
+                                                                    class="add-sectionTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-sectionTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
                                                         </div>
-                                                        <div class="form-group form-default" style="display: block">
-                                                            <label class="float-label">Add Section<span
-                                                                    class="text-danger">*</span></label>
-                                                            <textarea type="text" id="section" name="section"
-                                                                class="form-control section-textarea ckeditor-replace section" placeholder="Enter Section"></textarea>
-                                                        </div>
-                                                        <div class="multi-addition-container col-md-12 px-0">
+                                                        {{-- <div class="multi-addition-container col-md-12 px-0">
                                                             <div class="multi-addition">
                                                                 <div class="border col-md-12 p-3">
-                                                                <div
-                                                                    class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                                                                    <label class="float-label">
-                                                                        Add Sub-Section
-                                                                        <span class="pl-2">
-                                                                            <button type="button"
-                                                                                class="btn btn-sm social facebook p-0 add-sub_section">
-                                                                                <i class="fa fa-plus"></i>
-                                                                            </button>
-                                                                        </span>
-                                                                    </label>
-                                                                    <div class="show-sub_section" style="display:none">
-                                                                        <input type="text" class="form-control mb-3"
-                                                                            placeholder="Enter Sub-Section Title">
-                                                                        <textarea type="text" name="sub_section" class="form-control ckeditor-replace sub_section"></textarea>
+                                                                    <div
+                                                                        class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
+                                                                        <label class="float-label">
+                                                                            Add Sub-Section
+                                                                            <span class="pl-2">
+                                                                                <button type="button"
+                                                                                    class="btn btn-sm social facebook p-0 add-sub_section">
+                                                                                    <i class="fa fa-plus"></i>
+                                                                                </button>
+                                                                            </span>
+                                                                        </label>
+                                                                        <div class="show-sub_section"
+                                                                            style="display:none">
+                                                                            <input type="text"
+                                                                                class="form-control mb-3"
+                                                                                placeholder="Enter Sub-Section Title">
+                                                                            <textarea type="text" name="sub_section" class="form-control ckeditor-replace sub_section"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div
+                                                                        class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
+                                                                        <label class="float-label">
+                                                                            Add Footnote
+                                                                            <span class="pl-2">
+                                                                                <button type="button"
+                                                                                    class="btn btn-sm social facebook p-0 add-footnote">
+                                                                                    <i class="fa fa-plus"></i>
+                                                                                </button>
+                                                                            </span>
+                                                                        </label>
+                                                                        <div class="show-footnote" style="display:none">
+                                                                            <input type="text"
+                                                                                class="form-control mb-3"
+                                                                                placeholder="Enter Footnote Title">
+                                                                            <textarea type="text" name="footnote" class="form-control ckeditor-replace footnote"></textarea>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                                <div
-                                                                    class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                                                                    <label class="float-label">
-                                                                        Add Footnote
-                                                                        <span class="pl-2">
-                                                                            <button type="button"
-                                                                                class="btn btn-sm social facebook p-0 add-footnote">
-                                                                                <i class="fa fa-plus"></i>
-                                                                            </button>
-                                                                        </span>
-                                                                    </label>
-                                                                    <div class="show-footnote" style="display:none">
-                                                                        <input type="text" class="form-control mb-3"
-                                                                            placeholder="Enter Footnote Title">
-                                                                        <textarea type="text" name="footnote" class="form-control ckeditor-replace footnote"></textarea>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                                 <div class="col-md-12 px-0 py-3">
                                                                     <div class="float-right">
                                                                         <span style="font-size: small;"
@@ -212,52 +216,26 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
                                                     </div>
 
-                                                    <div class="form-group form-default" id="articleDiv"
+                                                    <div class="form-group form-default w-50" id="articleDiv"
                                                         style="display: none">
+                                                        <label class="float-label">Article Title<span
+                                                                class="text-danger">*</span></label>
                                                         <input type="text" class="form-control mb-3"
                                                             placeholder="Enter Article Title">
-                                                        <textarea type="text" id="article" name="article" class="form-control ckeditor-replace article"></textarea>
                                                     </div>
 
-                                                    <div class="form-group form-default" id="orderDiv"
+                                                    <div class="form-group form-default w-50" id="orderDiv"
                                                         style="display: none">
+                                                        <label class="float-label">Order & Rules Title<span
+                                                                class="text-danger">*</span></label>
                                                         <input type="text" class="form-control mb-3"
                                                             placeholder="Enter Order & Rules Title">
-                                                        <textarea type="text" id="order" name="order" class="form-control ckeditor-replace order"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12 px-0 py-3">
-                                                <div class="float-right">
-                                                    <span style="font-size: small;" class="px-2 text-uppercase">
-                                                        ( for add and remove section )
-                                                    </span>
-                                                    <button type="button"
-                                                        class="btn btn-sm social facebook p-0 add-additional-section">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                    <button type="button"
-                                                        class="btn btn-sm social youtube p-0 remove-additional-section">
-                                                        <i class="fa fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 px-0 py-3">
-                                        <div class="float-right">
-                                            <span style="font-size: small;" class="px-2 text-uppercase">
-                                                ( for add and remove chapter )
-                                            </span>
-                                            <button type="button" class="btn btn-sm social facebook p-0 add-section">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm social youtube p-0 remove-section">
-                                                <i class="fa fa-minus"></i>
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -289,210 +267,55 @@
     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function initializeCKEditorForTextarea(textareaId) {
-            CKEDITOR.replace(textareaId);
-        }
-
-        initializeCKEditorForTextarea('act');
-        initializeCKEditorForTextarea('footnote');
-        initializeCKEditorForTextarea('sub_section');
-        initializeCKEditorForTextarea('section');
-        initializeCKEditorForTextarea('chapter');
-        initializeCKEditorForTextarea('order');
-        initializeCKEditorForTextarea('article');
-        initializeCKEditorForTextarea('part');
-
-        function toggleTextareaVisibility(container, textareaClass) {
-            var showTextarea = container.find('.show-' + textareaClass);
-            showTextarea.toggleClass('d-none');
-
-            if (!showTextarea.hasClass('d-none')) {
-                var textarea = showTextarea.find('.' + textareaClass);
-                initializeCKEditorForTextarea(textarea[0].id);
-                container.find('.add-' + textareaClass + ' i').toggleClass("fa-plus fa-minus");
-            } else {
-                var textarea = showTextarea.find('.' + textareaClass);
-                CKEDITOR.instances[textarea[0].id].destroy();
-                container.find('.add-' + textareaClass + ' i').toggleClass("fa-minus fa-plus");
-            }
-        }
-
-        function initializeCKEditorForNewSectionSet(newSectionSet) {
-            toggleTextareaVisibility(newSectionSet, 'act');
-            toggleTextareaVisibility(newSectionSet, 'footnote');
-            toggleTextareaVisibility(newSectionSet, 'sub_section');
-            toggleTextareaVisibility(newSectionSet, 'section');
-            toggleTextareaVisibility(newSectionSet, 'chapter');
-            toggleTextareaVisibility(newSectionSet, 'order');
-            toggleTextareaVisibility(newSectionSet, 'article');
-            toggleTextareaVisibility(newSectionSet, 'part');
-        }
-
-        $(document).on('change', '.category', function() {
-            if ($(this).val() === '2') {
-                $('.state').show();
-            } else {
-                $('.state').hide();
-            }
-        });
-
-        $(document).on('change', '.type', function() {
-            if ($(this).val() === 'part') {
-                $(this).closest('.section-set').find('.parts').show();
-            } else {
-                $(this).closest('.section-set').find('.parts').hide();
-            }
-        });
-
-        $(".section-set-container").on("click", ".add-section, .add-additional-section", function() {
-            var container = $(this).closest('.section-container');
-
-            toggleTextareaVisibility(container, 'act');
-            toggleTextareaVisibility(container, 'footnote');
-            toggleTextareaVisibility(container, 'sub_section');
-            toggleTextareaVisibility(container, 'section');
-            toggleTextareaVisibility(container, 'chapter');
-            toggleTextareaVisibility(container, 'order');
-            toggleTextareaVisibility(container, 'article');
-            toggleTextareaVisibility(container, 'part');
-        });
-
-        function toggleSubSectionVisibility(container) {
-            var showSubSection = container.find(".show-sub_section");
-            showSubSection.toggle();
-
-            container.find(".add-sub_section i").toggleClass("fa-plus fa-minus");
-
-            if (!showSubSection.hasClass('d-none')) {
-                var subSectionTextarea = showSubSection.find('.sub_section');
-                if (!subSectionTextarea.data('ckeditor-initialized')) {
-                    initializeCKEditorForTextarea(subSectionTextarea[0].id);
-                    subSectionTextarea.data('ckeditor-initialized', true);
+        $(document).ready(function() {
+            $(document).on('change', '.category', function() {
+                if ($(this).val() === '2') {
+                    $('.state').show();
+                } else {
+                    $('.state').hide();
                 }
-            } else {
-                var subSectionTextarea = showSubSection.find('.sub_section');
-                CKEDITOR.instances[subSectionTextarea[0].id].destroy();
-                subSectionTextarea.data('ckeditor-initialized', false);
-            }
-        }
+            });
 
-        function toggleFootnoteVisibility(container) {
-            var showFootnote = container.find(".show-footnote");
-            showFootnote.toggle();
-
-            container.find(".add-footnote i").toggleClass("fa-plus fa-minus");
-
-            if (!showFootnote.hasClass('d-none')) {
-                var footnoteTextarea = showFootnote.find('.footnote');
-                if (!footnoteTextarea.data('ckeditor-initialized')) {
-                    initializeCKEditorForTextarea(footnoteTextarea[0].id);
-                    footnoteTextarea.data('ckeditor-initialized', true);
+            $(document).on('change', '.type', function() {
+                if ($(this).val() === 'part') {
+                    $(this).closest('.section-set').find('.parts').show();
+                } else {
+                    $(this).closest('.section-set').find('.parts').hide();
                 }
-            } else {
-                var footnoteTextarea = showFootnote.find('.footnote');
-                CKEDITOR.instances[footnoteTextarea[0].id].destroy();
-                footnoteTextarea.data('ckeditor-initialized', false);
-            }
-        }
-
-        $(document).on("click", ".add-sub_section", function() {
-            var container = $(this).closest(".form-group");
-            toggleSubSectionVisibility(container);
-        });
-
-        $(document).on("click", ".add-additional-section", function() {
-            var newSection = $(this).closest(".section-container").find(".additional-section").last();
-            toggleSubSectionVisibility(newSection);
-        });
-
-        $(document).on("click", ".add-footnote", function() {
-            var container = $(this).closest(".form-group");
-            toggleFootnoteVisibility(container);
-        });
-
-        $(document).on("change", ".sub_textarea", function() {
-            var selectedOption = $(this).val();
-            var sectionDiv = $(this).closest('.additional-section').find('#' + selectedOption + 'Div');
-            sectionDiv.siblings('.form-group.form-default').hide();
-            sectionDiv.show();
-        });
-
-        function updateCKEditorIds() {
-            $(".ckeditor-replace").each(function(index) {
-                var textareaId = 'ckeditor-' + (index + 1);
-                $(this).attr('id', textareaId);
-                initializeCKEditorForTextarea(textareaId);
             });
-        }
 
-        $(document).on("click", ".add-section", function() {
-            var newSectionSet = $(".section-set").first().clone();
-            $(".section-set-container").append(newSectionSet);
+            $(document).on("change", ".sub_textarea", function() {
+                var selectedOption = $(this).val();
+                var sectionDiv = $(this).closest('.additional-section').find('#' + selectedOption + 'Div');
+                sectionDiv.siblings('.form-group.form-default').hide();
+                sectionDiv.show();
+            });
 
-            updateCKEditorIds();
-        });
+            $(document).on('click', '.add-sectionTitle', function() {
+                var clonedSection = $(this).closest('.sectionTitleMain').find('.sectionTitle').first()
+                    .clone();
+                clonedSection.find('input').val('');
+                $(this).closest('.sectionTitleMain').append(
+                clonedSection);
+            });
 
-        $(document).on("click", ".remove-section", function() {
-            var sectionSets = $(".section-set");
-            if (sectionSets.length > 1) {
-                $(this).closest(".section-set").remove();
-                updateCKEditorIds();
-            }
-        });
+            $(document).on('click', '.remove-sectionTitle', function() {
+                var sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
+                if (sectionTitles.length > 1) {
+                    $(this).closest('.sectionTitle').remove();
+                }
+            });
+            $("#typeSelector").change(function() {
+                var selectedValue = $(this).val();
 
-        $(document).on("click", ".add-additional-section", function() {
-            var newAdditionalSection = $(this).closest('.section-container').find(".additional-section").first()
-                .clone();
-            $(this).closest('.section-container').append(newAdditionalSection);
+                $("#chapterSection, #partSection").hide();
 
-            newAdditionalSection.find('input, textarea').val('');
-            newAdditionalSection.find('.ckeditor-replace').each(function() {
-                var textareaId = 'additional-ckeditor-' + (new Date()).getTime();
-                $(this).attr('id', textareaId);
-                initializeCKEditorForTextarea(textareaId);
+                if (selectedValue === "chapter") {
+                    $("#chapterSection").show();
+                } else if (selectedValue === "part") {
+                    $("#partSection").show();
+                }
             });
         });
-
-        $(document).on("click", ".remove-additional-section", function() {
-            var additionalSections = $(".additional-section");
-            if (additionalSections.length > 1) {
-                $(this).closest(".additional-section").remove();
-                updateCKEditorIds();
-            }
-        });
-
-        $(document).on("click", ".add-multi-addition", function() {
-            var newMultiAddition = $(this).closest('.multi-addition-container').find(".multi-addition").first()
-                .clone();
-            $(this).closest('.multi-addition-container').append(newMultiAddition);
-
-            newMultiAddition.find('input, textarea').val('');
-            newMultiAddition.find('.ckeditor-replace').each(function() {
-                var textareaId = 'multi-addition-ckeditor-' + (new Date()).getTime();
-                $(this).attr('id', textareaId);
-                initializeCKEditorForTextarea(textareaId);
-            });
-        });
-
-        $(document).on("click", ".remove-multi-addition", function() {
-            var multiAdditions = $(".multi-addition");
-            if (multiAdditions.length > 1) {
-                $(this).closest(".multi-addition").remove();
-                updateCKEditorIds();
-            }
-        });
-
-        $("#typeSelector").change(function() {
-            var selectedValue = $(this).val();
-
-            $("#chapterSection, #partSection").hide();
-            
-            if (selectedValue === "chapter") {
-                $("#chapterSection").show();
-            } else if (selectedValue === "part") {
-                $("#partSection").show();
-            }
-        });
-
     </script>
 @endsection
