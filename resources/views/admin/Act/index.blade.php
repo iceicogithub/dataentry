@@ -12,20 +12,20 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="{{Route('add-act')}}"><button class="btn btn-success">Add Act</button></a>
+                        <a href="{{ Route('add-act') }}"><button class="btn btn-success">Add Act</button></a>
                     </ol>
                 </div>
             </div>
         </div>
     </div>
-    @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="content mt-3">
         <div class="row">
-           
+
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
@@ -40,17 +40,31 @@
                                     <th scope="col">Act</th>
                                     <th scope="col">Chapter</th>
                                     <th scope="col">Section</th>
-                                    <th scope="col">Sub Section</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php $a=1; @endphp
                                 {{-- @foreach ($category as $item) --}}
-                                    <tr>
-                                        <td scope="row">@php echo $a++; @endphp</td>
-                                        {{-- <td class="text-capitalize">{{ $item->category }}</td> --}}
-                                    </tr>
+                                <tr>
+                                    <td scope="row">@php echo $a++; @endphp</td>
+                                    <td class="text-capitalize"></td>
+                                    <td class="text-capitalize"></td>
+                                    <td class="text-capitalize">
+                                        <span></span>
+                                        <span class="float-right"><a href="#" title="Edit" class="px-1"><i class="fa fa-edit"></i></a></span>
+                                    
+                                    </td>
+                                    <td class="text-capitalize ">
+                                        <span></span>
+                                        <span class="float-right"><a href="#" class="px-1"><i class="fa fa-edit"></i></a></span>
+                                    </td>
+                                    <td class="text-capitalize">
+                                        <a href="#" class="px-1"><i class="fa fa-edit"></i></a>
+                                        <a href="#" class="px-1"><i class="fa fa-eye"></i></a>
+                                        <a href="#" class="px-1"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
                                 {{-- @endforeach --}}
                             </tbody>
                         </table>
