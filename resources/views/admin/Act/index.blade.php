@@ -50,12 +50,12 @@
                                     <td class="text-capitalize">Central</td>
                                     <td class="text-capitalize">The Coastal Aquaculture Authority (Amendment) Act, 2023</td>
                                     <td class="text-capitalize ">
-                                        <span><a href="{{Route('section-list')}}" title="Edit Section" class="px-1"><i class="fa fa-edit"></i></a></span>
+                                        <span><a href="{{Route('section-list')}}" title="View Section" class="btn btn-primary rounded px-3 btn-sm">View</a></span>
                                     </td>
                                     <td class="text-capitalize">
-                                        <a href="{{Route('edit-act')}}" title="Edit" class="px-1"><i class="fa fa-edit"></i></a>
-                                        <a href="#" title="View" class="px-1"><i class="fa fa-eye"></i></a>
-                                        <a href="#" title="Delete" class="px-1"><i class="fa fa-trash"></i></a>
+                                        <a href="{{Route('edit-act')}}" title="Edit" class="px-1"><i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
+                                        <a href="#" title="View" class="px-1"><i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
+                                        <a href="#" title="Delete" class="px-1"><i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
                                     </td>
                                 </tr>
                                 {{-- @endforeach --}}

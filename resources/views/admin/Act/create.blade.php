@@ -179,7 +179,7 @@
                                     </div>
                                     <div class="col-md-12 px-0 py-3">
                                         <div class="float-right">
-                                            <span style="font-size: small;" class="px-2 text-uppercase">
+                                            <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
                                                 ( for add and remove Chapter )
                                             </span>
                                             <button type="button" class="btn btn-sm social facebook p-0 add-chapter">
@@ -190,17 +190,6 @@
                                             </button>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="role" class=" form-control-label">Select Status<span
-                                            class="text-danger">*</span></label>
-                                    <select class="select2 form-control " name="general_status_id">
-                                        @foreach ($status as $value)
-                                            <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                        @endforeach
-                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-12">

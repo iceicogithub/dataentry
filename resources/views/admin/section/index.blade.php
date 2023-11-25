@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href=""><button class="btn btn-success">Add Section</button></a>
+                        <a href="{{Route('act')}}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -49,9 +49,9 @@
                                     <td class="text-capitalize">Chapter Title</td>
                                     <td class="text-capitalize">Short title, extent and commencement.</td>
                                     <td class="text-capitalize">
-                                        <a href="{{Route('edit-section')}}" title="Edit" class="px-1"><i class="fa fa-edit"></i></a>
-                                        <a href="#" title="View" class="px-1"><i class="fa fa-eye"></i></a>
-                                        <a href="#" title="Delete" class="px-1"><i class="fa fa-trash"></i></a>
+                                        <a href="{{Route('edit-section')}}" title="Edit" class="px-1"><i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
+                                        <a href="#" title="View" class="px-1"><i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
+                                        <a href="#" title="Delete" class="px-1"><i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -59,9 +59,9 @@
                                     <td class="text-capitalize">Chapter Title</td>
                                     <td class="text-capitalize">Definitions.</td>
                                     <td class="text-capitalize">
-                                        <a href="{{Route('edit-section')}}" title="Edit" class="px-1"><i class="fa fa-edit"></i></a>
-                                        <a href="#" title="View" class="px-1"><i class="fa fa-eye"></i></a>
-                                        <a href="#" title="Delete" class="px-1"><i class="fa fa-trash"></i></a>
+                                        <a href="{{Route('edit-section')}}" title="Edit" class="px-1"><i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
+                                        <a href="#" title="View" class="px-1"><i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
+                                        <a href="#" title="Delete" class="px-1"><i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
                                     </td>
                                 </tr>
                                 {{-- @endforeach --}}

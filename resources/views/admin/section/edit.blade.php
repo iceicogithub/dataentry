@@ -76,7 +76,7 @@
                                             </div>
                                             <div class="col-md-12 px-0 py-3">
                                                 <div class="float-right">
-                                                    <span style="font-size: small;" class="px-2 text-uppercase">
+                                                    <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
                                                         ( for add and remove Sub-Section and Footnote )
                                                     </span>
                                                     <button type="button"
@@ -170,7 +170,7 @@
                 </div>
                 <div class="col-md-12 px-0 py-3">
                   <div class="float-right">
-                    <span style="font-size: small;" class="px-2 text-uppercase">
+                    <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
                       ( for add and remove Sub-Section and Footnote )
                     </span>
                     <button type="button" class="btn btn-sm social facebook p-0 add-multi-addition">
