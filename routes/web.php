@@ -47,10 +47,12 @@ Route::get('edit-section', function () {
 })->name('edit-section');
 
 Route::get('/category', [CategoryController::class, 'index'])->name('category');
+
 Route::get('/act', [ActController::class, 'index'])->name('act');
 Route::get('/add-act', [ActController::class, 'create'])->name('add-act');
 Route::get('/edit-act', [ActController::class, 'edit'])->name('edit-act');
 Route::post('/store_act', [ActController::class, 'store']);
+
 Route::get('/section', [SectionController::class, 'index'])->name('section');
 Route::get('/add-section', [SectionController::class, 'create'])->name('add-section');
 Route::get('/sub-section', [SectionController::class, 'SubSection_Index'])->name('sub-section');
