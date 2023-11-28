@@ -25,11 +25,19 @@
                     <form id="form" action="/store_act" method="post" enctype="multipart/form-data"
                         class="form form-horizontal">
                         @csrf
-                        @if (session('error'))
+                        <!-- Your Blade View -->
+                        @if ($errors->has('error'))
                             <div class="alert alert-danger">
+                                {{ $errors->first('error') }}
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="alert alert-success">
                                 {{ session('error') }}
                             </div>
                         @endif
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -38,7 +46,7 @@
                                     <select class="select form-control text-capitalize category" name="category_id">
                                         <option selected disabled>Select Category</option>
                                         @foreach ($category as $value)
-                                            <option value="{{ $value->id }}" class="text-capitalize">
+                                            <option value="{{ $value->category_id }}" class="text-capitalize">
                                                 {{ $value->category }}</option>
                                         @endforeach
                                     </select>
@@ -48,107 +56,144 @@
                                 <div class="form-group">
                                     <label for="state" class=" form-control-label">Select state<span
                                             class="text-danger">*</span></label>
-                                    <select class="select form-control text-capitalize" name="state">
-                                        <option selected>Select State</option>
+                                    <select class="select form-control text-capitalize" name="state_id">
+                                        <option selected disabled>Select State</option>
                                         @foreach ($states as $item)
-                                            <option value="{{ $item->id }}" class="text-capitalize">
+                                            <option value="{{ $item->state_id }}" class="text-capitalize">
                                                 {{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <div class="form-group form-default">
+                                <div class="form-group form-default w-50">
                                     <label class="float-label"> Act <span class="text-danger">*</span></label>
-                                    <textarea type="text" id="act" name="act" class="form-control ckeditor-replace act">
-                                    </textarea>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group form-default">
-                                    <label class="float-label"> Chapter <span class="text-danger">*</span></label>
-                                    <textarea type="text" id="chapter" name="chapter" class="form-control ckeditor-replace chapter">
-                                    </textarea>
+                                    <input type="text" name="act_title" class="form-control mb-3"
+                                        placeholder="Enter Act Title">
                                 </div>
                             </div>
                             <div class="section-set-container col-md-12">
                                 <div class="section-set col-md-12 px-0 mb-2">
-                                    <div class="col-md-12 px-0 pb-1">
+                                    <div class="px-0 col-md-6">
+                                        <div class="form-group">
+                                            <label for="type" class=" form-control-label">Select Type<span
+                                                    class="text-danger">*</span></label>
+                                            <select class="select form-control text-capitalize type typeSelector"
+                                                name="maintype_id[]" id="typeSelector">
+                                                @foreach ($mtype as $item)
+                                                    <option value="{{ $item->maintype_id }}" class="text-capitalize">
+                                                        {{ $item->type }}</option>
+                                                @endforeach
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group parts" style="display: none">
+                                            <label for="parts" class=" form-control-label">Select Part<span
+                                                    class="text-danger">*</span></label>
+                                            <select class="select form-control text-capitalize" name="partstype_id[]">
+                                                <option selected disabled>Select Part</option>
+                                                @foreach ($parts as $item)
+                                                    <option value="{{ $item->partstype_id }}" class="text-capitalize">
+                                                        {{ $item->parts }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="section-container border col-md-12 p-3">
+                                        <div class="col-md-12 px-0">
+                                            <div class="form-group form-default w-50">
+                                                {{-- for chapter --}}
+                                                <div id="chapterSection" class="chapterSection">
+                                                    <label class="float-label"> Chapter <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" name="chapter_title[1]" class="form-control mb-3"
+                                                        placeholder="Enter Chapter Title" id="chapterTitle">
+                                                </div>
+
+                                                {{-- for parts --}}
+                                                <div id="partSection" class="partSection" style="display: none">
+                                                    <label class="float-label"> Part <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" name="parts_title[1]" class="form-control mb-3"
+                                                        placeholder="Enter Part Title" id="partTitle">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="additional-section">
+                                            <div class="border col-md-12 p-3">
+                                                <div>
+                                                    <div class="col-md-6 px-0">
+                                                        <div class="form-group">
+                                                            <label for="select" class="form-control-label">Select<span
+                                                                    class="text-danger">*</span></label>
+                                                            <select
+                                                                class="select form-control text-capitalize sub_textarea"
+                                                                name="subtypes_id[1]" id="select">
+                                                                <option selected disabled>Select</option>
+                                                                @foreach ($stype as $item)
+                                                                    <option value="{{ $item->subtypes_id }}"
+                                                                        class="text-capitalize">
+                                                                        {{ $item->type }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group form-default col-md-12 px-0" id="1Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default sectionTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Section Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex sectionTitle my-1">
+                                                                <input type="text" name="section_title[1][1]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Section Title">
+                                                                <button type="button"
+                                                                    class="add-sectionTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-sectionTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group form-default w-50" id="2Div"
+                                                        style="display: none">
+                                                        <label class="float-label">Article Title<span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="text" name="article_title[]"
+                                                            class="form-control mb-3" placeholder="Enter Article Title">
+                                                    </div>
+
+                                                    <div class="form-group form-default w-50" id="3Div"
+                                                        style="display: none">
+                                                        <label class="float-label">Order & Rules Title<span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="text" name="order&rules_title[]"
+                                                            class="form-control mb-3"
+                                                            placeholder="Enter Order & Rules Title">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 px-0 py-3">
                                         <div class="float-right">
-                                            <button type="button" class="btn btn-sm social facebook p-0 add-section">
+                                            <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
+                                                ( for add and remove Chapter )
+                                            </span>
+                                            <button type="button" class="btn btn-sm social facebook p-0 add-chapter">
                                                 <i class="fa fa-plus"></i>
                                             </button>
-                                            <button type="button" class="btn btn-sm social youtube p-0 remove-section">
+                                            <button type="button" class="btn btn-sm social youtube p-0 remove-chapter">
                                                 <i class="fa fa-minus"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="section-container border col-md-12 p-3">
-                                        <div class="form-group form-default">
-                                            <label class="float-label">Section Title<span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" placeholder="Enter Section Title">
-                                        </div>
-                                        <div class="form-group form-default">
-                                            <label class="float-label">Add Section<span class="text-danger">*</span></label>
-                                            <textarea type="text" id="section" name="section" class="form-control section-textarea ckeditor-replace section-1"
-                                                placeholder="Enter Section"></textarea>
-                                        </div>
-                                        <div class="form-group form-default fa fa-arrow-circle-o-right px-0 col-md-12">
-                                            <label class="float-label">Add Sub-Section
-                                                <span class="pl-2">
-                                                    <button type="button"
-                                                        class="btn btn-sm social facebook p-0 add-sub-section">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </span>
-                                            </label>
-                                            <div class="show-sub-section d-none">
-                                                <input type="text" class="form-control mb-3" placeholder="Enter Title">
-                                                <textarea type="text" name="sub_section" class="form-control sub-section-textarea"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group form-default fa fa-arrow-circle-o-right px-0 col-md-12">
-                                            <label class="float-label">Add Footnote
-                                                <span class="pl-2">
-                                                    <button type="button"
-                                                        class="btn btn-sm social facebook p-0 add-footnote">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </span>
-                                            </label>
-                                            <div class="show-footnote d-none">
-                                                <input type="text" class="form-control mb-3" placeholder="Enter Title">
-                                                <textarea type="text" name="footnote" class="form-control footnote"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group form-default fa fa-arrow-circle-o-right px-0 col-md-12">
-                                            <label class="float-label">Add Order
-                                                <span class="pl-2">
-                                                    <button type="button"
-                                                        class="btn btn-sm social facebook p-0 add-order">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </span>
-                                            </label>
-                                            <div class="show-order d-none">
-                                                <input type="text" class="form-control mb-3"
-                                                    placeholder="Enter Title">
-                                                <textarea type="text" name="order" class="form-control order"></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="role" class=" form-control-label">Select Status<span
-                                            class="text-danger">*</span></label>
-                                    <select class="select2 form-control " name="general_status_id">
-                                        @foreach ($status as $value)
-                                            <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                        @endforeach
-                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -168,96 +213,123 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.ckeditor-replace').each(function() {
-                CKEDITOR.replace(this);
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('.category').change(function() {
+
+            // for category type
+            $(document).on('change', '.category', function() {
                 if ($(this).val() === '2') {
                     $('.state').show();
                 } else {
                     $('.state').hide();
                 }
             });
+
+            // for part list dropdown
+            $(document).on('change', '.type', function() {
+                if ($(this).val() == 2) {
+                    $(this).closest('.section-set').find('.parts').show();
+                } else {
+                    $(this).closest('.section-set').find('.parts').hide();
+                }
+            });
+
+            //Select Dropdown for section / articles / orders and rules
+            $(document).on("change", ".sub_textarea", function() {
+                var selectedOption = $(this).val();
+                var sectionDiv = $(this).closest('.additional-section').find('#' + selectedOption + 'Div');
+                sectionDiv.siblings('.form-group.form-default').hide();
+                sectionDiv.show();
+            });
+
+            // Add -Remove Section
+            // $(document).on('click', '.add-sectionTitle', function() {
+            //     var clonedSection = $(this).closest('.sectionTitleMain').find('.sectionTitle').first()
+            //         .clone();
+            //     clonedSection.find('input').val('');
+            //     $(this).closest('.sectionTitleMain').append(
+            //         clonedSection);
+            // });
+
+            // $(document).on('click', '.remove-sectionTitle', function() {
+            //     var sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
+            //     if (sectionTitles.length > 1) {
+            //         $(this).closest('.sectionTitle').remove();
+            //     }
+            // });
+
+            // Add -Remove Chapter
+            $(document).ready(function() {
+          let chapterCount = 1;
+
+    $(document).on('click', '.add-chapter', function() {
+        let clonedSection = $(this).closest('.section-set').clone(true);
+        clonedSection.find('input, textarea').val('');
+        clonedSection.find('.sectionTitle:not(:first)').remove();
+        clonedSection.insertAfter($(this).closest('.section-set'));
+
+        // Increment chapter count
+        chapterCount++;
+
+        // Update chapter title input name attribute
+        clonedSection.find('input[name^="chapter_title"]').attr('name', 'chapter_title[' + chapterCount + ']');
+        clonedSection.find('input[name^="parts_title"]').attr('name', 'parts_title[' + chapterCount + ']');
+
+        // Update section select input name attribute
+        clonedSection.find('select[name^="subtypes_id"]').attr('name', 'subtypes_id[' + chapterCount + '][]');
+
+        // Update section title input name attribute
+        clonedSection.find('input[name^="section_title"]').each(function(index) {
+            $(this).attr('name', 'section_title[' + chapterCount + '][' + (index + 1) + ']');
         });
-    </script>
-    <script>
-        $(document).ready(function() {
-            // sub section
-            CKEDITOR.replace('sub-section-1');
 
-            $(".section-set-container").on("click", ".add-sub-section", function() {
-                var $showSubSection = $(this).closest('.form-group').find('.show-sub-section');
-                $showSubSection.toggleClass('d-none');
+        clonedSection.find('.add-chapter, .remove-chapter').show();
+    });
 
-                if (!$showSubSection.hasClass('d-none')) {
-                    var $subSectionTextarea = $showSubSection.find('.sub-section-textarea');
-                    CKEDITOR.replace($subSectionTextarea[0]);
-                    $(this).find("i").removeClass("fa-plus").addClass("fa-minus");
-                } else {
-                    var $subSectionTextarea = $showSubSection.find('.sub-section-textarea');
-                    CKEDITOR.instances[$subSectionTextarea[0].name].destroy();
-                    $(this).find("i").removeClass("fa-minus").addClass("fa-plus");
-                }
-            });
+    $(document).on('click', '.remove-chapter', function() {
+        if ($('.section-set').length > 1) {
+            $(this).closest('.section-set').remove();
+        }
+    });
 
-            // footnote
-            CKEDITOR.replace('footnote-1');
+    $(document).on('click', '.add-sectionTitle', function() {
+    let sectionTitleMain = $(this).closest('.sectionTitleMain');
+    let clonedSectionTitle = sectionTitleMain.find('.sectionTitle:first').clone(true);
+    clonedSectionTitle.find('input').val('');
 
-            $(".section-set-container").on("click", ".add-footnote", function() {
-                var $showFootnote = $(this).closest('.form-group').find('.show-footnote');
-                $showFootnote.toggleClass('d-none');
+    // Get the existing chapter index from the first section title input name
+    let existingChapterIndex = parseInt(clonedSectionTitle.find('input').attr('name').match(/\[(\d+)\]/)[1]) || 1;
 
-                if (!$showFootnote.hasClass('d-none')) {
-                    var $footnoteTextarea = $showFootnote.find('.footnote');
-                    CKEDITOR.replace($footnoteTextarea[0]);
-                    $(this).find("i").removeClass("fa-plus").addClass("fa-minus");
-                } else {
-                    var $footnoteTextarea = $showFootnote.find('.footnote');
-                    CKEDITOR.instances[$footnoteTextarea[0].name].destroy();
-                    $(this).find("i").removeClass("fa-minus").addClass("fa-plus");
-                }
-            });
+    // Increment the section index for the new section title
+    let lastIndex = sectionTitleMain.find('.sectionTitle').length + 1;
 
-            // order
-            CKEDITOR.replace('order-1');
-            $(".section-set-container").on("click", ".add-order", function() {
-                var $showOrder = $(this).closest('.form-group').find('.show-order');
-                $showOrder.toggleClass('d-none');
+    // Update the input name attribute with the new chapter and section indexes
+    clonedSectionTitle.find('input').attr('name', `section_title[${existingChapterIndex}][${lastIndex}]`);
 
-                if (!$showOrder.hasClass('d-none')) {
-                    var $orderTextarea = $showOrder.find('.order');
-                    CKEDITOR.replace($orderTextarea[0]);
-                    $(this).find("i").removeClass("fa-plus").addClass("fa-minus");
-                } else {
-                    var $orderTextarea = $showOrder.find('.order');
-                    CKEDITOR.instances[$orderTextarea[0].name].destroy();
-                    $(this).find("i").removeClass("fa-minus").addClass("fa-plus");
-                }
-            });
+    sectionTitleMain.append(clonedSectionTitle);
+});
 
-            var sectionNumber = 1;
+$(document).on('click', '.remove-sectionTitle', function() {
+    let sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
+    if (sectionTitles.length > 1) {
+        $(this).closest('.sectionTitle').remove();
+    }
+});
+    // Rest of your existing code...
+});
 
-            $(".section-set-container").on("click", ".add-section", function() {
-                var newSectionSet = $(".section-set").first().clone();
+            //select type from dropdown list
+            $(document).on('change', '.typeSelector', function() {
+                var selectedValue = $(this).val();
+                var sectionContainer = $(this).closest('.section-set');
+                var chapterSection = sectionContainer.find('.chapterSection');
+                var partSection = sectionContainer.find('.partSection');
 
-                sectionNumber++;
-                var newSectionTextareaId = 'section-' + sectionNumber;
-                newSectionSet.find('.section-textarea').attr('id', newSectionTextareaId).addClass(
-                    newSectionTextareaId);
+                chapterSection.hide();
+                partSection.hide();
 
-                CKEDITOR.replace(newSectionTextareaId);
-                $(".section-set-container").append(newSectionSet);
-            });
-
-            // Remove Section
-            $(".section-set-container").on("click", ".remove-section", function() {
-                var sectionSets = $(".section-set");
-                if (sectionSets.length > 1) {
-                    $(this).closest(".section-set").remove();
+                if (selectedValue == 1) {
+                    chapterSection.show();
+                } else if (selectedValue == 2) {
+                    partSection.show();
                 }
             });
         });

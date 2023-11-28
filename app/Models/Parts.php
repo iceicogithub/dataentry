@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Act extends Model
+class Parts extends Model
 {
     use HasFactory;
-    protected $table = 'acts';
-    protected $fillable = ['category_id', 'state_id', 'act_title', 'act_content'];
+    protected $table = 'parts';
+    protected $fillable = ['maintype_id','partstype_id','parts_title'];
 }
