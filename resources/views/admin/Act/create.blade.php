@@ -108,7 +108,7 @@
                                                 <div id="chapterSection" class="chapterSection">
                                                     <label class="float-label"> Chapter <span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" name="chapter_title[1]" class="form-control mb-3"
+                                                    <input type="text" name="chapter_title[]" class="form-control mb-3"
                                                         placeholder="Enter Chapter Title" id="chapterTitle">
                                                 </div>
 
@@ -116,7 +116,7 @@
                                                 <div id="partSection" class="partSection" style="display: none">
                                                     <label class="float-label"> Part <span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" name="parts_title[1]" class="form-control mb-3"
+                                                    <input type="text" name="parts_title[]" class="form-control mb-3"
                                                         placeholder="Enter Part Title" id="partTitle">
                                                 </div>
                                             </div>
@@ -130,7 +130,7 @@
                                                                     class="text-danger">*</span></label>
                                                             <select
                                                                 class="select form-control text-capitalize sub_textarea"
-                                                                name="subtypes_id[1]" id="select">
+                                                                name="subtypes_id[]" id="select">
                                                                 <option selected disabled>Select</option>
                                                                 @foreach ($stype as $item)
                                                                     <option value="{{ $item->subtypes_id }}"
@@ -147,7 +147,7 @@
                                                             <label class="float-label">Section Title<span
                                                                     class="text-danger">*</span></label>
                                                             <div class="d-flex sectionTitle my-1">
-                                                                <input type="text" name="section_title[1][1]"
+                                                                <input type="text" name="section_title[][]"
                                                                     class="form-control"
                                                                     placeholder="Enter Section Title">
                                                                 <button type="button"
@@ -258,27 +258,27 @@
 
             // Add -Remove Chapter
             $(document).ready(function() {
-          let chapterCount = 1;
-
     $(document).on('click', '.add-chapter', function() {
         let clonedSection = $(this).closest('.section-set').clone(true);
         clonedSection.find('input, textarea').val('');
         clonedSection.find('.sectionTitle:not(:first)').remove();
         clonedSection.insertAfter($(this).closest('.section-set'));
 
-        // Increment chapter count
+        // Increment chapter count for the cloned section
+        let chapterCount = parseInt(clonedSection.data('chapter-count')) || 0;
         chapterCount++;
+        clonedSection.data('chapter-count', chapterCount);
 
         // Update chapter title input name attribute
         clonedSection.find('input[name^="chapter_title"]').attr('name', 'chapter_title[' + chapterCount + ']');
         clonedSection.find('input[name^="parts_title"]').attr('name', 'parts_title[' + chapterCount + ']');
 
         // Update section select input name attribute
-        clonedSection.find('select[name^="subtypes_id"]').attr('name', 'subtypes_id[' + chapterCount + '][]');
+        clonedSection.find('select[name^="subtypes_id"]').attr('name', 'subtypes_id[' + chapterCount + ']');
 
         // Update section title input name attribute
         clonedSection.find('input[name^="section_title"]').each(function(index) {
-            $(this).attr('name', 'section_title[' + chapterCount + '][' + (index + 1) + ']');
+            $(this).attr('name', 'section_title[' + chapterCount + '][' + index + ']');
         });
 
         clonedSection.find('.add-chapter, .remove-chapter').show();
@@ -291,30 +291,35 @@
     });
 
     $(document).on('click', '.add-sectionTitle', function() {
-    let sectionTitleMain = $(this).closest('.sectionTitleMain');
-    let clonedSectionTitle = sectionTitleMain.find('.sectionTitle:first').clone(true);
-    clonedSectionTitle.find('input').val('');
+        let sectionTitleMain = $(this).closest('.section-set').find('.sectionTitleMain');
+        let clonedSectionTitle = sectionTitleMain.find('.sectionTitle:first').clone(true);
+        clonedSectionTitle.find('input').val('');
 
-    // Get the existing chapter index from the first section title input name
-    let existingChapterIndex = parseInt(clonedSectionTitle.find('input').attr('name').match(/\[(\d+)\]/)[1]) || 1;
+        // Get the chapter count from the data attribute of the closest .section-set
+        let chapterCount = parseInt($(this).closest('.section-set').data('chapter-count')) || 0;
 
-    // Increment the section index for the new section title
-    let lastIndex = sectionTitleMain.find('.sectionTitle').length + 1;
+        // Increment the section index for the new section title
+        let lastIndex = sectionTitleMain.find('.sectionTitle').length;
 
-    // Update the input name attribute with the new chapter and section indexes
-    clonedSectionTitle.find('input').attr('name', `section_title[${existingChapterIndex}][${lastIndex}]`);
+        // Update the input name attribute with the new chapter and section indexes
+        clonedSectionTitle.find('input[name^="section_title"]').each(function(index) {
+            $(this).attr('name', 'section_title[' + chapterCount + '][' + (lastIndex + index) + ']');
+        });
 
-    sectionTitleMain.append(clonedSectionTitle);
-});
+        sectionTitleMain.append(clonedSectionTitle);
+    });
 
-$(document).on('click', '.remove-sectionTitle', function() {
-    let sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
-    if (sectionTitles.length > 1) {
-        $(this).closest('.sectionTitle').remove();
-    }
-});
+    $(document).on('click', '.remove-sectionTitle', function() {
+        let sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
+        if (sectionTitles.length > 1) {
+            $(this).closest('.sectionTitle').remove();
+        }
+    });
+
     // Rest of your existing code...
 });
+
+
 
             //select type from dropdown list
             $(document).on('change', '.typeSelector', function() {
