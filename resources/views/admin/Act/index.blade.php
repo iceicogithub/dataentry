@@ -44,12 +44,13 @@
                                 </tr>
                             </thead>
                             <tbody>
+
                                 @php $a=1; @endphp
-                                {{-- @foreach ($category as $item) --}}
+                                @foreach ($act as $item)
                                 <tr>
                                     <td scope="row">@php echo $a++; @endphp</td>
-                                    <td class="text-capitalize">Central</td>
-                                    <td class="text-capitalize">The Coastal Aquaculture Authority (Amendment) Act, 2023</td>
+                                    <td class="text-capitalize">{{$cat->category}}</td>
+                                    <td class="text-capitalize">{{$item->act_title}}</td>
                                     <td class="text-capitalize ">
                                         <span><a href="{{Route('section-list')}}" title="View Section" class="btn btn-primary rounded px-3 btn-sm">View</a></span>
                                     </td>
@@ -59,7 +60,7 @@
                                         <a href="#" title="Delete" class="px-1"><i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
                                     </td>
                                 </tr>
-                                {{-- @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
