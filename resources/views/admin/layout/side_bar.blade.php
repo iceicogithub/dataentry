@@ -26,9 +26,12 @@
                         aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Acts</a>
                     <ul class="sub-menu children dropdown-menu">
                         <li><i class="fa fa-angle-double-right"></i><a href="{{route('act')}}">Add Act</a></li>
+                        <li><i class="fa fa-angle-double-right"></i><a href="{{route('chapter')}}">Add Chapter</a></li>
                         <li><i class="fa fa-angle-double-right"></i><a href="{{route('section')}}">Add Section</a></li>
                         <li><i class="fa fa-angle-double-right"></i><a href="{{route('sub-section')}}">Add Sub Section</a></li>
-                        <li><i class="fa fa-angle-double-right"></i><a href="{{route('chapter')}}">Add Chapter</a></li>
+                        <li><i class="fa fa-angle-double-right"></i><a href="#">Order</a></li>
+                        <li><i class="fa fa-angle-double-right"></i><a href="#">Article</a></li>
+                      
                     </ul>
                 </li>
                 <li class="menu-item-has-children dropdown">
@@ -70,6 +73,41 @@
                         <li><i class="fa fa-angle-double-right"></i><a href="">Buttons</a></li>
                         <li><i class="fa fa-angle-double-right"></i><a href="">Badges</a></li>
                     </ul>
+                </li>
+
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Notification</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><i class="fa fa-angle-double-right"></i><a href="">Ministry</a>
+                            <ul class="sub-menu children dropdown-menu">
+                                <li><i class="fa fa-angle-double-right"></i><a href="">Departments</a></li>
+        
+                            </ul>
+                        </li>
+                             
+
+                        <li><i class="fa fa-angle-double-right"></i><a href="">Badges</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Circular</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><i class="fa fa-angle-double-right"></i><a href="">Buttons</a></li>
+                        <li><i class="fa fa-angle-double-right"></i><a href="">Badges</a></li>
+                    </ul>
+                </li>
+
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Law Comission Report</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><i class="fa fa-angle-double-right"></i><a href="">Buttons</a></li>
+                        <li><i class="fa fa-angle-double-right"></i><a href="">Badges</a></li>
+                    </ul>
+                </li>
                 </li> --}}
             </ul>
         </div>

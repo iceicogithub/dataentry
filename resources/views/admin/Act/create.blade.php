@@ -25,11 +25,19 @@
                     <form id="form" action="/store_act" method="post" enctype="multipart/form-data"
                         class="form form-horizontal">
                         @csrf
-                        @if (session('error'))
+                        <!-- Your Blade View -->
+                        @if ($errors->has('error'))
                             <div class="alert alert-danger">
+                                {{ $errors->first('error') }}
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="alert alert-success">
                                 {{ session('error') }}
                             </div>
                         @endif
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -38,7 +46,7 @@
                                     <select class="select form-control text-capitalize category" name="category_id">
                                         <option selected disabled>Select Category</option>
                                         @foreach ($category as $value)
-                                            <option value="{{ $value->id }}" class="text-capitalize">
+                                            <option value="{{ $value->category_id }}" class="text-capitalize">
                                                 {{ $value->category }}</option>
                                         @endforeach
                                     </select>
@@ -48,10 +56,10 @@
                                 <div class="form-group">
                                     <label for="state" class=" form-control-label">Select state<span
                                             class="text-danger">*</span></label>
-                                    <select class="select form-control text-capitalize" name="state">
+                                    <select class="select form-control text-capitalize" name="state_id">
                                         <option selected disabled>Select State</option>
                                         @foreach ($states as $item)
-                                            <option value="{{ $item->id }}" class="text-capitalize">
+                                            <option value="{{ $item->state_id }}" class="text-capitalize">
                                                 {{ $item->name }}</option>
                                         @endforeach
                                     </select>
@@ -60,7 +68,8 @@
                             <div class="col-md-12">
                                 <div class="form-group form-default w-50">
                                     <label class="float-label"> Act <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control mb-3" placeholder="Enter Act Title">
+                                    <input type="text" name="act_title" class="form-control mb-3"
+                                        placeholder="Enter Act Title">
                                 </div>
                             </div>
                             <div class="section-set-container col-md-12">
@@ -70,12 +79,12 @@
                                             <label for="type" class=" form-control-label">Select Type<span
                                                     class="text-danger">*</span></label>
                                             <select class="select form-control text-capitalize type typeSelector"
-                                                name="type" id="typeSelector">
-                                                <option value="chapter" selected class="text-capitalize">Chapter</option>
-                                                <option value="part" class="text-capitalize">Parts</option>
-                                                <option value="preliminary" class="text-capitalize">Preliminary</option>
-                                                <option value="schedules" class="text-capitalize">Schedules</option>
-                                                <option value="appendices" class="text-capitalize">Appendices</option>
+                                                name="maintype_id[]" id="typeSelector">
+                                                @foreach ($mtype as $item)
+                                                    <option value="{{ $item->maintype_id }}" class="text-capitalize">
+                                                        {{ $item->type }}</option>
+                                                @endforeach
+
                                             </select>
                                         </div>
                                     </div>
@@ -83,18 +92,12 @@
                                         <div class="form-group parts" style="display: none">
                                             <label for="parts" class=" form-control-label">Select Part<span
                                                     class="text-danger">*</span></label>
-                                            <select class="select form-control text-capitalize" name="part">
+                                            <select class="select form-control text-capitalize" name="partstype_id[]">
                                                 <option selected disabled>Select Part</option>
-                                                <option value="part-I" class="text-capitalize">Part-I</option>
-                                                <option value="part-II" class="text-capitalize">Part-II</option>
-                                                <option value="part-III" class="text-capitalize">Part-III</option>
-                                                <option value="part-IIV" class="text-capitalize">Part-IIV</option>
-                                                <option value="part-V" class="text-capitalize">Part-V</option>
-                                                <option value="part-VI" class="text-capitalize">Part-VI</option>
-                                                <option value="part-VII" class="text-capitalize">Part-VII</option>
-                                                <option value="part-VIII" class="text-capitalize">Part-VIII</option>
-                                                <option value="part-IX" class="text-capitalize">Part-IX</option>
-                                                <option value="part-X" class="text-capitalize">Part-X</option>
+                                                @foreach ($parts as $item)
+                                                    <option value="{{ $item->partstype_id }}" class="text-capitalize">
+                                                        {{ $item->parts }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -105,7 +108,7 @@
                                                 <div id="chapterSection" class="chapterSection">
                                                     <label class="float-label"> Chapter <span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control mb-3"
+                                                    <input type="text" name="chapter_title[]" class="form-control mb-3"
                                                         placeholder="Enter Chapter Title" id="chapterTitle">
                                                 </div>
 
@@ -113,7 +116,7 @@
                                                 <div id="partSection" class="partSection" style="display: none">
                                                     <label class="float-label"> Part <span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control mb-3"
+                                                    <input type="text" name="parts_title[]" class="form-control mb-3"
                                                         placeholder="Enter Part Title" id="partTitle">
                                                 </div>
                                             </div>
@@ -127,25 +130,25 @@
                                                                     class="text-danger">*</span></label>
                                                             <select
                                                                 class="select form-control text-capitalize sub_textarea"
-                                                                name="select" id="select">
+                                                                name="subtypes_id[]" id="select">
                                                                 <option selected disabled>Select</option>
-                                                                <option value="section" class="text-capitalize">
-                                                                    Section</option>
-                                                                <option value="article" class="text-capitalize">Article
-                                                                </option>
-                                                                <option value="order" class="text-capitalize">Order &
-                                                                    Rules</option>
+                                                                @foreach ($stype as $item)
+                                                                    <option value="{{ $item->subtypes_id }}"
+                                                                        class="text-capitalize">
+                                                                        {{ $item->type }}</option>
+                                                                @endforeach
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group form-default col-md-12 px-0" id="sectionDiv"
+                                                    <div class="form-group form-default col-md-12 px-0" id="1Div"
                                                         style="display:none">
                                                         <div class="form-group form-default sectionTitleMain"
                                                             style="display: block">
                                                             <label class="float-label">Section Title<span
                                                                     class="text-danger">*</span></label>
                                                             <div class="d-flex sectionTitle my-1">
-                                                                <input type="text" class="form-control"
+                                                                <input type="text" name="section_title[][]"
+                                                                    class="form-control"
                                                                     placeholder="Enter Section Title">
                                                                 <button type="button"
                                                                     class="add-sectionTitle btn btn-sm facebook mx-2 p-0 social">
@@ -158,19 +161,20 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group form-default w-50" id="articleDiv"
+                                                    <div class="form-group form-default w-50" id="2Div"
                                                         style="display: none">
                                                         <label class="float-label">Article Title<span
                                                                 class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control mb-3"
-                                                            placeholder="Enter Article Title">
+                                                        <input type="text" name="article_title[]"
+                                                            class="form-control mb-3" placeholder="Enter Article Title">
                                                     </div>
 
-                                                    <div class="form-group form-default w-50" id="orderDiv"
+                                                    <div class="form-group form-default w-50" id="3Div"
                                                         style="display: none">
                                                         <label class="float-label">Order & Rules Title<span
                                                                 class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control mb-3"
+                                                        <input type="text" name="order&rules_title[]"
+                                                            class="form-control mb-3"
                                                             placeholder="Enter Order & Rules Title">
                                                     </div>
                                                 </div>
@@ -221,7 +225,7 @@
 
             // for part list dropdown
             $(document).on('change', '.type', function() {
-                if ($(this).val() === 'part') {
+                if ($(this).val() == 2) {
                     $(this).closest('.section-set').find('.parts').show();
                 } else {
                     $(this).closest('.section-set').find('.parts').hide();
@@ -237,36 +241,85 @@
             });
 
             // Add -Remove Section
-            $(document).on('click', '.add-sectionTitle', function() {
-                var clonedSection = $(this).closest('.sectionTitleMain').find('.sectionTitle').first()
-                    .clone();
-                clonedSection.find('input').val('');
-                $(this).closest('.sectionTitleMain').append(
-                    clonedSection);
-            });
+            // $(document).on('click', '.add-sectionTitle', function() {
+            //     var clonedSection = $(this).closest('.sectionTitleMain').find('.sectionTitle').first()
+            //         .clone();
+            //     clonedSection.find('input').val('');
+            //     $(this).closest('.sectionTitleMain').append(
+            //         clonedSection);
+            // });
 
-            $(document).on('click', '.remove-sectionTitle', function() {
-                var sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
-                if (sectionTitles.length > 1) {
-                    $(this).closest('.sectionTitle').remove();
-                }
-            });
+            // $(document).on('click', '.remove-sectionTitle', function() {
+            //     var sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
+            //     if (sectionTitles.length > 1) {
+            //         $(this).closest('.sectionTitle').remove();
+            //     }
+            // });
 
             // Add -Remove Chapter
-            $(document).on('click', '.add-chapter', function() {
-                var clonedSection = $(this).closest('.section-set').clone(true);
-                clonedSection.find('input, textarea').val('');
-                clonedSection.find('.sectionTitle:not(:first)').remove();
-                clonedSection.insertAfter($(this).closest('.section-set'));
-                clonedSection.find('.add-chapter, .remove-chapter').show();
-            });
+            $(document).ready(function() {
+    $(document).on('click', '.add-chapter', function() {
+        let clonedSection = $(this).closest('.section-set').clone(true);
+        clonedSection.find('input, textarea').val('');
+        clonedSection.find('.sectionTitle:not(:first)').remove();
+        clonedSection.insertAfter($(this).closest('.section-set'));
 
-            $(document).on('click', '.remove-chapter', function() {
-                var sectionContainer = $(this).closest('.section-set-container');
-                if (sectionContainer.find('.section-set').length > 1) {
-                    $(this).closest('.section-set').remove();
-                }
-            });
+        // Increment chapter count for the cloned section
+        let chapterCount = parseInt(clonedSection.data('chapter-count')) || 0;
+        chapterCount++;
+        clonedSection.data('chapter-count', chapterCount);
+
+        // Update chapter title input name attribute
+        clonedSection.find('input[name^="chapter_title"]').attr('name', 'chapter_title[' + chapterCount + ']');
+        clonedSection.find('input[name^="parts_title"]').attr('name', 'parts_title[' + chapterCount + ']');
+
+        // Update section select input name attribute
+        clonedSection.find('select[name^="subtypes_id"]').attr('name', 'subtypes_id[' + chapterCount + ']');
+
+        // Update section title input name attribute
+        clonedSection.find('input[name^="section_title"]').each(function(index) {
+            $(this).attr('name', 'section_title[' + chapterCount + '][' + index + ']');
+        });
+
+        clonedSection.find('.add-chapter, .remove-chapter').show();
+    });
+
+    $(document).on('click', '.remove-chapter', function() {
+        if ($('.section-set').length > 1) {
+            $(this).closest('.section-set').remove();
+        }
+    });
+
+    $(document).on('click', '.add-sectionTitle', function() {
+        let sectionTitleMain = $(this).closest('.section-set').find('.sectionTitleMain');
+        let clonedSectionTitle = sectionTitleMain.find('.sectionTitle:first').clone(true);
+        clonedSectionTitle.find('input').val('');
+
+        // Get the chapter count from the data attribute of the closest .section-set
+        let chapterCount = parseInt($(this).closest('.section-set').data('chapter-count')) || 0;
+
+        // Increment the section index for the new section title
+        let lastIndex = sectionTitleMain.find('.sectionTitle').length;
+
+        // Update the input name attribute with the new chapter and section indexes
+        clonedSectionTitle.find('input[name^="section_title"]').each(function(index) {
+            $(this).attr('name', 'section_title[' + chapterCount + '][' + (lastIndex + index) + ']');
+        });
+
+        sectionTitleMain.append(clonedSectionTitle);
+    });
+
+    $(document).on('click', '.remove-sectionTitle', function() {
+        let sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
+        if (sectionTitles.length > 1) {
+            $(this).closest('.sectionTitle').remove();
+        }
+    });
+
+    // Rest of your existing code...
+});
+
+
 
             //select type from dropdown list
             $(document).on('change', '.typeSelector', function() {
@@ -278,9 +331,9 @@
                 chapterSection.hide();
                 partSection.hide();
 
-                if (selectedValue === "chapter") {
+                if (selectedValue == 1) {
                     chapterSection.show();
-                } else if (selectedValue === "part") {
+                } else if (selectedValue == 2) {
                     partSection.show();
                 }
             });

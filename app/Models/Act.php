@@ -10,4 +10,8 @@ class Act extends Model
     use HasFactory;
     protected $table = 'acts';
     protected $fillable = ['category_id', 'state_id', 'act_title', 'act_content'];
+
+    public function CategoryModel(){
+        return $this->belongsTo(Category::class, 'category_id','category_id');
+    }
 }
