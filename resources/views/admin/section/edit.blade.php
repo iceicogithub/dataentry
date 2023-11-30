@@ -36,6 +36,22 @@
                                         <textarea type="text" id="section" name="section" class="form-control section-textarea ckeditor-replace section"
                                             placeholder="Enter Section"></textarea>
                                     </div>
+                                    <div class="form-group form-default" style="display: block">
+                                        <label for="state" class=" form-control-label">Select state<span
+                                                class="text-danger">*</span></label>
+                                        <select class="select form-control text-capitalize" name="state">
+                                            <option selected disabled>Select State</option>
+                                            {{-- @foreach ($states as $item)
+                                                <option value="{{ $item->id }}" class="text-capitalize">
+                                                    {{ $item->name }}</option>
+                                            @endforeach --}}
+                                        </select>
+                                    </div>
+                                    <div class="form-group form-default" style="display: block">
+                                        <label class="float-label">State Amendment<span class="text-danger">*</span></label>
+                                        <textarea type="text" id="state_amendment" name="state_amendment"
+                                            class="form-control section-textarea ckeditor-replace state_amendment"></textarea>
+                                    </div>
                                     <div class="multi-addition-container col-md-12 px-0">
                                         <div class="multi-addition">
                                             <div class="border col-md-12 p-3">
@@ -76,7 +92,8 @@
                                             </div>
                                             <div class="col-md-12 px-0 py-3">
                                                 <div class="float-right">
-                                                    <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
+                                                    <span style="font-size: small;"
+                                                        class="px-2 text-uppercase font-weight-bold">
                                                         ( for add and remove Sub-Section and Footnote )
                                                     </span>
                                                     <button type="button"
@@ -99,7 +116,8 @@
                                 </div>
 
                                 <div class="form-group form-default" id="orderDiv" style="display: none">
-                                    <input type="text" class="form-control mb-3" placeholder="Enter Order & Rules Title">
+                                    <input type="text" class="form-control mb-3"
+                                        placeholder="Enter Order & Rules Title">
                                     <textarea type="text" id="order" name="order" class="form-control ckeditor-replace order"></textarea>
                                 </div>
                                 <button class="btn btn-success">Submit</button>
@@ -118,6 +136,7 @@
     <script>
         $(document).ready(function() {
             CKEDITOR.replace('section');
+            CKEDITOR.replace('state_amendment');
             CKEDITOR.replace('sub_section[]');
             CKEDITOR.replace('footnote[]');
 
