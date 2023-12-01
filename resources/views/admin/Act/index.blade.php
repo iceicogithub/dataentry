@@ -23,7 +23,7 @@
             {{ session('success') }}
         </div>
     @endif
-    
+
     <div class="content mt-3">
         <div class="row">
 
@@ -47,19 +47,25 @@
 
                                 @php $a=1; @endphp
                                 @foreach ($act as $item)
-                                <tr>
-                                    <td scope="row">@php echo $a++; @endphp</td>
-                                    <td class="text-capitalize">{{$cat->category}}</td>
-                                    <td class="text-capitalize">{{$item->act_title}}</td>
-                                    <td class="text-capitalize ">
-                                        <span><a href="{{Route('section-list')}}" title="View Section" class="btn btn-primary rounded px-3 btn-sm">View</a></span>
-                                    </td>
-                                    <td class="text-capitalize">
-                                        <a href="{{Route('edit-act')}}" title="Edit" class="px-1"><i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
-                                        <a href="#" title="View" class="px-1"><i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
-                                        <a href="#" title="Delete" class="px-1"><i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td scope="row">@php echo $a++; @endphp</td>
+                                        <td class="text-capitalize">{{ $item->CategoryModel->category }}</td>
+                                        <td class="text-capitalize">{{ $item->act_title }}</td>
+                                        <td class="text-capitalize">
+                                            <span>
+                                                <a href="/get_act_section/{{ $item->act_id }}" title="View Section" class="btn btn-primary rounded px-3 btn-sm">View</a>
+                                            </span>
+                                        </td>
+                                        
+                                        <td class="text-capitalize">
+                                            <a href="{{ Route('edit-act') }}" title="Edit" class="px-1"><i
+                                                    class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
+                                            <a href="#" title="View" class="px-1"><i
+                                                    class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
+                                            <a href="#" title="Delete" class="px-1"><i
+                                                    class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>

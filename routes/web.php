@@ -38,13 +38,6 @@ Route::get('/', function () {
     return view('admin.dashboard');
 })->name('dashboard');
 
-Route::get('section-list', function () {
-    return view('admin.section.index');
-})->name('section-list');
-
-Route::get('edit-section', function () {
-    return view('admin.section.edit');
-})->name('edit-section');
 
 Route::get('/category', [CategoryController::class, 'index'])->name('category');
 
@@ -52,10 +45,14 @@ Route::get('/act', [ActController::class, 'index'])->name('act');
 Route::get('/add-act', [ActController::class, 'create'])->name('add-act');
 Route::get('/edit-act', [ActController::class, 'edit'])->name('edit-act');
 Route::post('/store_act', [ActController::class, 'store']);
+Route::get('/get_act_section/{id}', [ActController::class, 'get_act_section'])->name('get_act_section');
 
 Route::get('/section', [SectionController::class, 'index'])->name('section');
 Route::get('/add-section', [SectionController::class, 'create'])->name('add-section');
 Route::get('/sub-section', [SectionController::class, 'SubSection_Index'])->name('sub-section');
 Route::get('/add-sub-section', [SectionController::class, 'SubSection_Create'])->name('add-sub-section');
+Route::get('/edit-section/{id}', [SectionController::class, 'edit_section']);
+Route::post('/update_all_section/{id}', [SectionController::class, 'update']);
+
 Route::get('/chapter', [ChapterController::class, 'index'])->name('chapter');
 Route::get('/add-chapter', [ChapterController::class, 'create'])->name('add-chapter');

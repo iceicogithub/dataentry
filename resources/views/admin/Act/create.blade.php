@@ -258,66 +258,74 @@
 
             // Add -Remove Chapter
             $(document).ready(function() {
-    $(document).on('click', '.add-chapter', function() {
-        let clonedSection = $(this).closest('.section-set').clone(true);
-        clonedSection.find('input, textarea').val('');
-        clonedSection.find('.sectionTitle:not(:first)').remove();
-        clonedSection.insertAfter($(this).closest('.section-set'));
+                $(document).on('click', '.add-chapter', function() {
+                    let clonedSection = $(this).closest('.section-set').clone(true);
+                    clonedSection.find('input, textarea').val('');
+                    clonedSection.find('.sectionTitle:not(:first)').remove();
+                    clonedSection.insertAfter($(this).closest('.section-set'));
 
-        // Increment chapter count for the cloned section
-        let chapterCount = parseInt(clonedSection.data('chapter-count')) || 0;
-        chapterCount++;
-        clonedSection.data('chapter-count', chapterCount);
+                    // Increment chapter count for the cloned section
+                    let chapterCount = parseInt(clonedSection.data('chapter-count')) || 0;
+                    chapterCount++;
+                    clonedSection.data('chapter-count', chapterCount);
 
-        // Update chapter title input name attribute
-        clonedSection.find('input[name^="chapter_title"]').attr('name', 'chapter_title[' + chapterCount + ']');
-        clonedSection.find('input[name^="parts_title"]').attr('name', 'parts_title[' + chapterCount + ']');
+                    // Update chapter title input name attribute
+                    clonedSection.find('input[name^="chapter_title"]').attr('name',
+                        'chapter_title[' + chapterCount + ']');
+                    clonedSection.find('input[name^="parts_title"]').attr('name', 'parts_title[' +
+                        chapterCount + ']');
 
-        // Update section select input name attribute
-        clonedSection.find('select[name^="subtypes_id"]').attr('name', 'subtypes_id[' + chapterCount + ']');
+                    // Update section select input name attribute
+                    clonedSection.find('select[name^="subtypes_id"]').attr('name', 'subtypes_id[' +
+                        chapterCount + ']');
 
-        // Update section title input name attribute
-        clonedSection.find('input[name^="section_title"]').each(function(index) {
-            $(this).attr('name', 'section_title[' + chapterCount + '][' + index + ']');
-        });
+                    // Update section title input name attribute
+                    clonedSection.find('input[name^="section_title"]').each(function(index) {
+                        $(this).attr('name', 'section_title[' + chapterCount + '][' +
+                            index + ']');
+                    });
 
-        clonedSection.find('.add-chapter, .remove-chapter').show();
-    });
+                    clonedSection.find('.add-chapter, .remove-chapter').show();
+                });
 
-    $(document).on('click', '.remove-chapter', function() {
-        if ($('.section-set').length > 1) {
-            $(this).closest('.section-set').remove();
-        }
-    });
+                $(document).on('click', '.remove-chapter', function() {
+                    if ($('.section-set').length > 1) {
+                        $(this).closest('.section-set').remove();
+                    }
+                });
 
-    $(document).on('click', '.add-sectionTitle', function() {
-        let sectionTitleMain = $(this).closest('.section-set').find('.sectionTitleMain');
-        let clonedSectionTitle = sectionTitleMain.find('.sectionTitle:first').clone(true);
-        clonedSectionTitle.find('input').val('');
+                $(document).on('click', '.add-sectionTitle', function() {
+                    let sectionTitleMain = $(this).closest('.section-set').find(
+                    '.sectionTitleMain');
+                    let clonedSectionTitle = sectionTitleMain.find('.sectionTitle:first').clone(
+                        true);
+                    clonedSectionTitle.find('input').val('');
 
-        // Get the chapter count from the data attribute of the closest .section-set
-        let chapterCount = parseInt($(this).closest('.section-set').data('chapter-count')) || 0;
+                    // Get the chapter count from the data attribute of the closest .section-set
+                    let chapterCount = parseInt($(this).closest('.section-set').data(
+                        'chapter-count')) || 0;
 
-        // Increment the section index for the new section title
-        let lastIndex = sectionTitleMain.find('.sectionTitle').length;
+                    // Increment the section index for the new section title
+                    let lastIndex = sectionTitleMain.find('.sectionTitle').length;
 
-        // Update the input name attribute with the new chapter and section indexes
-        clonedSectionTitle.find('input[name^="section_title"]').each(function(index) {
-            $(this).attr('name', 'section_title[' + chapterCount + '][' + (lastIndex + index) + ']');
-        });
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedSectionTitle.find('input[name^="section_title"]').each(function(index) {
+                        $(this).attr('name', 'section_title[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
 
-        sectionTitleMain.append(clonedSectionTitle);
-    });
+                    sectionTitleMain.append(clonedSectionTitle);
+                });
 
-    $(document).on('click', '.remove-sectionTitle', function() {
-        let sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
-        if (sectionTitles.length > 1) {
-            $(this).closest('.sectionTitle').remove();
-        }
-    });
+                $(document).on('click', '.remove-sectionTitle', function() {
+                    let sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
+                    if (sectionTitles.length > 1) {
+                        $(this).closest('.sectionTitle').remove();
+                    }
+                });
 
-    // Rest of your existing code...
-});
+                // Rest of your existing code...
+            });
 
 
 

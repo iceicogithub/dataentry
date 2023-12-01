@@ -11,13 +11,13 @@
     <link rel="apple-touch-icon" href="apple-icon.png">
     <link rel="shortcut icon" href="favicon.ico">
 
-    <link rel="stylesheet" href="admin/vendors/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="admin/vendors/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="admin/vendors/themify-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="admin/vendors/flag-icon-css/css/flag-icon.min.css">
-    <link rel="stylesheet" href="admin/vendors/selectFX/css/cs-skin-elastic.css">
-    <link rel="stylesheet" href="admin/vendors/jqvmap/dist/jqvmap.min.css">
-    <link rel="stylesheet" href="admin/assets/css/style.css">
+    <link rel="stylesheet" href="{{asset('admin/vendors/bootstrap/dist/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin/vendors/font-awesome/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin/vendors/themify-icons/css/themify-icons.css')}}">
+    <link rel="stylesheet" href="{{asset('admin/vendors/flag-icon-css/css/flag-icon.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin/vendors/selectFX/css/cs-skin-elastic.css')}}">
+    <link rel="stylesheet" href="{{asset('admin/vendors/jqvmap/dist/jqvmap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admin/assets/css/style.css')}}">
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
     @yield('style')
@@ -42,18 +42,18 @@
     @yield('script')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
    
-    <script src="admin/vendors/jquery/dist/jquery.min.js"></script>
-    <script src="admin/vendors/popper.js/dist/umd/popper.min.js"></script>
-    <script src="admin/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="admin/assets/js/main.js"></script>
+    <script src="{{asset('admin/vendors/jquery/dist/jquery.min.js')}}"></script>
+    <script src="{{asset('admin/vendors/popper.js/dist/umd/popper.min.js')}}"></script>
+    <script src="{{asset('admin/vendors/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('admin/assets/js/main.js')}}"></script>
 
 
-    <script src="admin/vendors/chart.js/dist/Chart.bundle.min.js"></script>
-    <script src="admin/assets/js/dashboard.js"></script>
-    <script src="admin/assets/js/widgets.js"></script>
-    <script src="admin/vendors/jqvmap/dist/jquery.vmap.min.js"></script>
-    <script src="admin/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-    <script src="admin/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="{{asset('admin/vendors/chart.js/dist/Chart.bundle.min.js')}}"></script>
+    <script src="{{asset('admin/assets/js/dashboard.js')}}"></script>
+    <script src="{{asset('admin/assets/js/widgets.js')}}"></script>
+    <script src="{{asset('admin/vendors/jqvmap/dist/jquery.vmap.min.js')}}"></script>
+    <script src="{{asset('admin/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js')}}"></script>
+    <script src="{{asset('admin/vendors/jqvmap/dist/maps/jquery.vmap.world.js')}}"></script>
     <script>
         (function($) {
             "use strict";

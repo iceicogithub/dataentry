@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\MainType;
 use App\Models\Parts;
 use App\Models\PartsType;
+use App\Models\Chapter;
 use App\Models\Section;
 use App\Models\State;
 use App\Models\Status;
@@ -18,11 +19,17 @@ class ActController extends Controller
 
     public function index()
     {
-        $act = Act::get();
-        foreach($act as $item){}
-        $cat = Category::where('category_id',$item->category_id)->get();
+        $act = Act::with('CategoryModel')->get();
         
-        return view('admin.act.index', compact('act','cat'));
+        return view('admin.act.index', compact('act'));
+    }
+
+    public function get_act_section(Request $request, $id)
+    {
+        // $act_parts = Parts::where('act_id',$id)->get();
+        $act_section = Section::with('Partmodel')->get();
+        
+        return view('admin.section.index', compact('act_section'));
     }
 
     /**
@@ -71,7 +78,7 @@ class ActController extends Controller
                     foreach ($request->section_title[$key] as $sectiontitle) {
                         $section = Section::create([
                             'act_id' => $act->id,
-                            'partstype_id' => $parts->id,
+                            'parts_id' => $parts->id,
                             'subtypes_id' => $subtypes_id,
                             'section_title' => $sectiontitle,
                         ]);

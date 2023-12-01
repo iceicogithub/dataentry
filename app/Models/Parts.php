@@ -10,4 +10,6 @@ class Parts extends Model
     use HasFactory;
     protected $table = 'parts';
     protected $fillable = ['maintype_id','partstype_id','parts_title'];
+
+    
 }
