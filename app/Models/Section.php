@@ -18,6 +18,11 @@ class Section extends Model
         return $this->belongsTo(Parts::class, 'parts_id', 'parts_id');
     }
 
+    public function ChapterModel()
+    {
+        return $this->belongsTo(Chapter::class, 'chapter_id', 'chapter_id');
+    }
+
     public function subsectionModel()
     {
         return $this->hasMany(SubSection::class, 'section_id', 'section_id');

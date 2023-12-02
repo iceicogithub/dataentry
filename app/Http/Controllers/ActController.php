@@ -26,10 +26,12 @@ class ActController extends Controller
 
     public function get_act_section(Request $request, $id)
     {
-        // $act_parts = Parts::where('act_id',$id)->get();
-        $act_section = Section::with('Partmodel')->get();
+        $sec = Section::where('act_id',$id)->with('Partmodel','ChapterModel')->first();
+        dd($sec);
+        die();
+        $act_section = Section::with('Partmodel','ChapterModel')->get();
         
-        return view('admin.section.index', compact('act_section'));
+        return view('admin.section.index', compact('act_section','sec'));
     }
 
     /**
@@ -91,14 +93,12 @@ class ActController extends Controller
                     $chapt->maintype_id = $maintypeId; 
                     $chapt->chapter_title = $request->chapter_title[$key] ?? null;
                     $chapt->save();
-                    dd($chapt->chapter_id);
-                    die();
-                try{
+                    
+               
                     $subtypes_id = $request->subtypes_id[$key] ?? null;
 
                     foreach ($request->section_title[$key] as $sectiontitle) {
-                        // dd($sectiontitle);
-                        // die();
+                        
                         $section = Section::create([
                             'act_id' => $act->id,
                             'chapter_id' => $chapt->chapter_id,
@@ -106,10 +106,6 @@ class ActController extends Controller
                             'section_title' => $sectiontitle,
                         ]);
                     }
-                } catch (\Exception $e) {
-                    dd($e);
-                    die("Error saving chapter");
-                }
 
                 }else {
                     dd("something went wrong");

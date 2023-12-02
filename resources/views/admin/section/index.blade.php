@@ -44,10 +44,17 @@
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered text-center">
-                            <thead class="thead-light">
+                            <thead class="thead-light"> 
                                 <tr>
                                     <th scope="col">Sr .No</th>
-                                    <th scope="col">Parts</th>
+                                    <th scope="col">
+                                      @if($sec->ChapterModel->maintype_id == "1") Chapter 
+                                      @elseif($sec->Partmodel->maintype_id == "2") Parts
+                                      {{-- @elseif($act_section->maintype_id == 3) Priliminary
+                                      @elseif($act_section->maintype_id == 4) Schedules
+                                      @else Appendices --}}
+                                      @endif
+                                    </th>
                                     <th scope="col">Section</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -57,7 +64,15 @@
                                 @foreach ($act_section as $item)
                                     <tr>
                                         <td scope="row">@php echo $a++; @endphp</td>
-                                        <td class="text-capitalize">{{$item->Partmodel->parts_title}}</td>
+                                        <td class="text-capitalize">
+                                            @if($item->maintype_id == 1)  {{$item->ChapterModel->parts_title}} 
+                                            @elseif($item->maintype_id == 2)  {{$item->Partmodel->parts_title}}
+                                            @elseif($item->maintype_id == 3) Priliminary
+                                            @elseif($item->maintype_id == 4) Schedules
+                                            @else Appendices
+                                            @endif
+                                           
+                                        </td>
                                         <td class="text-capitalize">{{$item->section_title}}</td>
                                         <td class="text-capitalize d-flex">
                                             <a href="/edit-section/{{$item->section_id}}" title="Edit" class="px-1"><i

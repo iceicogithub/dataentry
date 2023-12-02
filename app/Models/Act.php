@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Act extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'act_id';
     protected $table = 'acts';
     protected $fillable = ['category_id', 'state_id', 'act_title', 'act_content'];
 
