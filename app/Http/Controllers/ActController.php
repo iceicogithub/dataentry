@@ -55,6 +55,7 @@ class ActController extends Controller
 
         // dd($request);
         // die();
+
         try {
 
             $act = new Act();
@@ -83,7 +84,34 @@ class ActController extends Controller
                             'section_title' => $sectiontitle,
                         ]);
                     }
-                } else {
+                } elseif($maintypeId == "1") {
+                    
+                    $chapt = new Chapter();
+                    $chapt->act_id = $act->id ?? null;
+                    $chapt->maintype_id = $maintypeId; 
+                    $chapt->chapter_title = $request->chapter_title[$key] ?? null;
+                    $chapt->save();
+                    dd($chapt->chapter_id);
+                    die();
+                try{
+                    $subtypes_id = $request->subtypes_id[$key] ?? null;
+
+                    foreach ($request->section_title[$key] as $sectiontitle) {
+                        // dd($sectiontitle);
+                        // die();
+                        $section = Section::create([
+                            'act_id' => $act->id,
+                            'chapter_id' => $chapt->chapter_id,
+                            'subtypes_id' => $subtypes_id,
+                            'section_title' => $sectiontitle,
+                        ]);
+                    }
+                } catch (\Exception $e) {
+                    dd($e);
+                    die("Error saving chapter");
+                }
+
+                }else {
                     dd("something went wrong");
                 }
             }

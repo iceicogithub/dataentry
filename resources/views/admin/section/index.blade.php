@@ -59,7 +59,7 @@
                                         <td scope="row">@php echo $a++; @endphp</td>
                                         <td class="text-capitalize">{{$item->Partmodel->parts_title}}</td>
                                         <td class="text-capitalize">{{$item->section_title}}</td>
-                                        <td class="text-capitalize">
+                                        <td class="text-capitalize d-flex">
                                             <a href="/edit-section/{{$item->section_id}}" title="Edit" class="px-1"><i
                                                     class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
                                             <a href="#" title="View" class="px-1"><i
