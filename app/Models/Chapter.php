@@ -11,4 +11,9 @@ class Chapter extends Model
     protected $primaryKey = 'chapter_id';
     protected $table = 'chapter';
     protected $fillable = ['act_id','maintype_id', 'chapter_title'];
+
+    public function ChapterType()
+    {
+        return $this->belongsTo(MainType::class, 'maintype_id', 'maintype_id');
+    }
 }

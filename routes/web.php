@@ -42,9 +42,12 @@ Route::get('/', function () {
 Route::get('/category', [CategoryController::class, 'index'])->name('category');
 
 Route::get('/act', [ActController::class, 'index'])->name('act');
-Route::get('/add-act', [ActController::class, 'create'])->name('add-act');
+Route::get('/new_act', [ActController::class, 'new_act'])->name('new_act');
+Route::post('/store_new_act', [ActController::class, 'store_new_act']);
+Route::get('/edit-main-act/{id}', [ActController::class, 'edit_main_act'])->name('edit-main-act');
+Route::get('/add-act/{id}', [ActController::class, 'create'])->name('add-act');
 Route::get('/edit-act', [ActController::class, 'edit'])->name('edit-act');
-Route::post('/store_act', [ActController::class, 'store']);
+Route::post('/store_act/{id}', [ActController::class, 'store']);
 Route::get('/get_act_section/{id}', [ActController::class, 'get_act_section'])->name('get_act_section');
 
 Route::get('/section', [SectionController::class, 'index'])->name('section');
@@ -56,3 +59,4 @@ Route::post('/update_all_section/{id}', [SectionController::class, 'update']);
 
 Route::get('/chapter', [ChapterController::class, 'index'])->name('chapter');
 Route::get('/add-chapter', [ChapterController::class, 'create'])->name('add-chapter');
+ 

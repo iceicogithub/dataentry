@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="{{ Route('add-act') }}"><button class="btn btn-success">Add Act</button></a>
+                        <a href="{{ Route('new_act') }}"><button class="btn btn-success">Add Act</button></a>
                     </ol>
                 </div>
             </div>
@@ -37,9 +37,10 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">Sr .No</th>
-                                    <th scope="col">Category</th>
                                     <th scope="col">Act</th>
-                                    <th scope="col">Section</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">State</th>
+                                    <th scope="col">Last Date Of Edited</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -49,16 +50,18 @@
                                 @foreach ($act as $item)
                                     <tr>
                                         <td scope="row">@php echo $a++; @endphp</td>
-                                        <td class="text-capitalize">{{ $item->CategoryModel->category }}</td>
                                         <td class="text-capitalize">{{ $item->act_title }}</td>
-                                        <td class="text-capitalize">
+                                        <td class="text-capitalize">{{ $item->CategoryModel->category }}</td>
+                                        <td class="text-capitalize">All</td>
+                                        <td class="text-capitalize">{{ $item->updated_at }}</td>
+                                        {{-- <td class="text-capitalize">
                                             <span>
                                                 <a href="/get_act_section/{{ $item->act_id }}" title="View Section" class="btn btn-primary rounded px-3 btn-sm">View</a>
                                             </span>
                                         </td>
-                                        
+                                         --}}
                                         <td class="text-capitalize">
-                                            <a href="{{ Route('edit-act') }}" title="Edit" class="px-1"><i
+                                            <a href="/edit-main-act/{{$item->act_id}}" title="Edit" class="px-1"><i
                                                     class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
                                             <a href="#" title="View" class="px-1"><i
                                                     class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
