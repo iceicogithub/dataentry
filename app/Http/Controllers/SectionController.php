@@ -16,7 +16,14 @@ class SectionController extends Controller
     public function index()
     {
         $status = Status::all();
+        
         return view('admin.section.index', compact('status'));
+    }
+
+    public function add_below_new_section(Request $request, $id)
+    {
+        
+        
     }
 
     /**

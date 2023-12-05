@@ -4,7 +4,7 @@
         <div class="col-sm-4">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1>Dashboard</h1>
+                    <h1>Main Act : {{ $act->act_title }}</h1>
                 </div>
             </div>
         </div>
@@ -15,32 +15,83 @@
                         <a href="/add-act/{{ $act_id }}"><button class="btn btn-success">Add Index</button></a>
                     </ol>
                 </div>
+
+
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if ($errors->has('error'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('error') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-success">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            <div class="card p-5">
+                <form id="form" action="/update_main_act/{{ $act->act_id }}" method="post"
+                    enctype="multipart/form-data" class="form form-horizontal">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group form-default">
+                                <label class="float-label"> Act<span class="text-danger">*</span></label>
+                                <input type="text" name="act_title" value="{{ $act->act_title }}"
+                                    class="form-control mb-3" placeholder="Enter Act Title">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group form-default">
+                                <label class="float-label"> Act NO.<span class="text-danger">*</span></label>
+                                <input type="text" name="act_no" value="{{ $act->act_no }}" class="form-control mb-3"
+                                    placeholder="Enter Act No.">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group form-default">
+                                <label class="float-label">Act Date<span class="text-danger">*</span></label>
+                                <input type="text" name="act_date" value="{{ $act->act_date }}" class="form-control mb-3"
+                                    placeholder="Enter Act Date">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group form-default">
+                                <label class="float-label"> Act Description<span class="text-danger">*</span></label>
+
+                                <textarea name="act_description" class="form-control mb-3" placeholder="Enter Act Description" id=""
+                                    cols="30" rows="3">{{ $act->act_description }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 text-right">
+                            <div class="form-group">
+                                <button type="submit" class="btn  btn-success">Update Data</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if ($errors->has('error'))
-        <div class="alert alert-danger">
-            {{ $errors->first('error') }}
-        </div>
-    @endif
 
-    @if (session('error'))
-        <div class="alert alert-success">
-            {{ session('error') }}
-        </div>
-    @endif
     <div class="content mt-3">
         <div class="row">
 
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-title">Section List</strong>
+                        <strong class="card-title">Arrangement of Sections</strong>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered text-center">
@@ -82,7 +133,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $a=1; $b=1; @endphp
+                                @php
+                                    $a = 1;
+                                    $b = 1;
+                                @endphp
                                 @foreach ($act_section as $item)
                                     <tr>
                                         <td scope="row">@php echo $a++; @endphp</td>
@@ -104,12 +158,18 @@
                                         <td class="text-capitalize">{{ $item->section_title }}</td>
                                         <td class="text-capitalize">{{ $item->updated_at }}</td>
                                         <td class="text-capitalize d-flex justify-content-center">
-                                            <a href="/edit-section/{{ $item->section_id }}" title="Edit" class="px-1"><i
-                                                    class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
-                                            <a href="#" title="View" class="px-1"><i
-                                                    class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
-                                            <a href="#" title="Delete" class="px-1"><i
-                                                    class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
+                                            <a href="/edit-section/{{ $item->section_id }}" title="Edit" class="px-1">
+                                                <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                            </a>
+                                            <a href="#" title="View" class="px-1">
+                                                <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                            </a>
+                                            <a href="#" title="Delete" class="px-1">
+                                                <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                            </a>
+                                            <a href="/add_below_new_section/{{ $item->act_id }}" title="Add Next Section" class="px-1">
+                                                <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

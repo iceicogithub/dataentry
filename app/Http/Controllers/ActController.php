@@ -28,11 +28,31 @@ class ActController extends Controller
     public function get_act_section(Request $request, $id)
     {
         $act_id = $id;
+        $act = Act::where('act_id', $act_id)->first();
         $act_section = Section::where('act_id', $id)->with('MainTypeModel','Partmodel', 'ChapterModel')->get();
         
-        return view('admin.section.index', compact('act_section','act_id'));
+        return view('admin.section.index', compact('act_section','act_id','act'));
     }
 
+    public function update_main_act(Request $request, $id)
+    {
+        try {
+
+            $act = Act::find($id);
+            $act->act_title = $request->act_title;
+            $act->act_no = $request->act_no ?? null;
+            $act->act_date = $request->act_date ?? null;
+            $act->act_description = $request->act_description ?? null;
+            $act->update();
+
+
+            return redirect()->back()->with('success', 'Main Act Updated Successfully');
+        } catch (\Exception $e) {
+            \Log::error('Error creating Act: ' . $e->getMessage());
+
+            return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -74,6 +94,7 @@ class ActController extends Controller
             return redirect()->route('act')->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
         }
     }
+   
 
     public function edit_main_act(Request $request, $id)
     {
