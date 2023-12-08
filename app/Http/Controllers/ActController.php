@@ -29,10 +29,10 @@ class ActController extends Controller
     {
         $act_id = $id;
         $act = Act::where('act_id', $act_id)->first();
-        $act_section = Section::where('act_id', $id)->with('MainTypeModel','Partmodel', 'ChapterModel')
-        ->orderBy('section_no', 'asc')->get();
-        
-        return view('admin.section.index', compact('act_section','act_id','act'));
+        $act_section = Section::where('act_id', $id)->with('MainTypeModel', 'Partmodel', 'ChapterModel')
+            ->orderBy('section_no', 'asc')->get();
+
+        return view('admin.section.index', compact('act_section', 'act_id', 'act'));
     }
 
     public function update_main_act(Request $request, $id)
@@ -66,10 +66,10 @@ class ActController extends Controller
         $stype = SubType::all();
         $parts = PartsType::all();
 
-        $act = Act::where('act_id',$id)->first();
-       
+        $act = Act::where('act_id', $id)->first();
 
-        return view('admin.act.create', compact('category', 'status', 'states', 'mtype', 'parts', 'stype','act'));
+
+        return view('admin.act.create', compact('category', 'status', 'states', 'mtype', 'parts', 'stype', 'act'));
     }
     public function new_act()
     {
@@ -95,13 +95,13 @@ class ActController extends Controller
             return redirect()->route('act')->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
         }
     }
-   
+
 
     public function edit_main_act(Request $request, $id)
     {
         $act_id = $id;
         $mainact = ActSummary::all();
-        return view('admin.act.main_act',compact('act_id','mainact'));
+        return view('admin.act.main_act', compact('act_id', 'mainact'));
     }
 
     public function store(Request $request, $id)
