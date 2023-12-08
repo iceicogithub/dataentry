@@ -55,9 +55,10 @@ Route::get('/get_act_section/{id}', [ActController::class, 'get_act_section'])->
 Route::get('/add-section', [SectionController::class, 'create'])->name('add-section');
 Route::get('/sub-section', [SectionController::class, 'SubSection_Index'])->name('sub-section');
 Route::get('/add-sub-section', [SectionController::class, 'SubSection_Create'])->name('add-sub-section');
-Route::get('/edit-section/{id}', [SectionController::class, 'edit_section']);
+Route::get('/edit-section/{id}', [SectionController::class, 'edit_section'])->name('edit-section');
 Route::post('/update_all_section/{id}', [SectionController::class, 'update']);
-Route::post('/add_below_new_section/{id}', [SectionController::class, 'add_below_new_section']);
+Route::get('/add_below_new_section/{id}/{section_no}', [SectionController::class, 'add_below_new_section'])->name('add_below_new_section');
+Route::post('/add_new_section', [SectionController::class, 'add_new_section']);
 
 Route::get('/chapter', [ChapterController::class, 'index'])->name('chapter');
 Route::get('/add-chapter', [ChapterController::class, 'create'])->name('add-chapter');

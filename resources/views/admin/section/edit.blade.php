@@ -54,87 +54,9 @@
                                             <textarea type="text" id="section" name="section_content"
                                                 class="form-control section-textarea ckeditor-replace section" placeholder="Enter Section">{{ $sections->section_content }}</textarea>
                                         </div>
-                                        {{-- <div class="form-group form-default" style="display: block">
-                                            <label for="state" class=" form-control-label">Select state<span
-                                                    class="text-danger">*</span></label>
-                                            <select class="select form-control text-capitalize" name="amendment_state">
-                                                <option selected disabled>Select State</option> --}}
-                                        {{-- @foreach ($states as $item)
-                                                <option value="{{ $item->id }}" class="text-capitalize">
-                                                    {{ $item->name }}</option>
-                                            @endforeach --}}
-                                        {{-- </select>
-                                        </div>
-                                        <div class="form-group form-default" style="display: block">
-                                            <label class="float-label">State Amendment<span
-                                                    class="text-danger">*</span></label>
-                                            <textarea type="text" id="state_amendment" name="amendment_list"
-                                                class="form-control section-textarea ckeditor-replace state_amendment"></textarea>
-                                        </div> --}}
-                                        {{-- @foreach ($sec as $key => $item)
-                                            <div class="multi-addition-container col-md-12 px-0">
-                                                <div class="multi-addition">
-                                                    <div class="border col-md-12 p-3">
-                                                        <div
-                                                            class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                                                            <label class="float-label">
-                                                                Add Sub-Section
-                                                                <span class="pl-2">
-                                                                    <button type="button"
-                                                                        class="btn btn-sm social facebook p-0 add-sub_section">
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </button>
-                                                                </span>
-                                                            </label>
-                                                            <div class="show-sub_section" style="display: none">
-                                                                <input type="text" name="sub_section_title[]"
-                                                                    class="form-control mb-3" value="{{$item->subsectionModel->sub_section_title}}"
-                                                                    placeholder="Enter Sub-Section Title">
-                                                                <textarea type="text" name="sub_section[]" class="form-control ckeditor-replace sub_section">{{$item->subsectionModel->sub_section_content}}</textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                                                            <label class="float-label">
-                                                                Add Footnote
-                                                                <span class="pl-2">
-                                                                    <button type="button"
-                                                                        class="btn btn-sm social facebook p-0 add-footnote">
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </button>
-                                                                </span>
-                                                            </label>
-                                                            <div class="show-footnote" style="display: none">
-                                                                <input type="text" name="footnote_title[]"
-                                                                    class="form-control mb-3" value="{{$item->footnoteModel->footnote_title}}"
-                                                                    placeholder="Enter Footnote Title">
-                                                                <textarea type="text" name="footnote[]" class="form-control ckeditor-replace footnote">{{$item->footnoteModel->footnote_content}}</textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12 px-0 py-3">
-                                                        <div class="float-right">
-                                                            <span style="font-size: small;"
-                                                                class="px-2 text-uppercase font-weight-bold">
-                                                                (for add and remove Sub-Section and Footnote)
-                                                            </span>
-                                                            <button type="button"
-                                                                class="btn btn-sm social facebook p-0 add-multi-addition">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                                <i class="fa fa-minus"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div> --}}
+                                       
 
-
-                                        @if (!empty($subsec))
+                                        @if (!empty($subsec)) 
                                             @foreach ($subsec as $key => $item)
                                                 <div class="multi-addition-container col-md-12 px-0">
                                                     <div class="multi-addition">

@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{asset('admin/vendors/selectFX/css/cs-skin-elastic.css')}}">
     <link rel="stylesheet" href="{{asset('admin/vendors/jqvmap/dist/jqvmap.min.css')}}">
     <link rel="stylesheet" href="{{asset('admin/assets/css/style.css')}}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
     @yield('style')
@@ -41,6 +42,7 @@
     <!-- Right Panel -->
     @yield('script')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
    
     <script src="{{asset('admin/vendors/jquery/dist/jquery.min.js')}}"></script>
     <script src="{{asset('admin/vendors/popper.js/dist/umd/popper.min.js')}}"></script>
@@ -55,6 +57,7 @@
     <script src="{{asset('admin/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js')}}"></script>
     <script src="{{asset('admin/vendors/jqvmap/dist/maps/jquery.vmap.world.js')}}"></script>
     <script>
+        
         (function($) {
             "use strict";
 
@@ -71,6 +74,9 @@
                 normalizeFunction: 'polynomial'
             });
         })(jQuery);
+    </script>
+    <script>
+        let table = new DataTable('#myTable');
     </script>
 
 </body>

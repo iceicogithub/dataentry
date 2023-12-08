@@ -29,7 +29,8 @@ class ActController extends Controller
     {
         $act_id = $id;
         $act = Act::where('act_id', $act_id)->first();
-        $act_section = Section::where('act_id', $id)->with('MainTypeModel','Partmodel', 'ChapterModel')->get();
+        $act_section = Section::where('act_id', $id)->with('MainTypeModel','Partmodel', 'ChapterModel')
+        ->orderBy('section_no', 'asc')->get();
         
         return view('admin.section.index', compact('act_section','act_id','act'));
     }
@@ -165,7 +166,7 @@ class ActController extends Controller
                 }
             }
 
-            return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Index created successfully');
+            return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Section added successfully');
         } catch (\Exception $e) {
             \Log::error('Error creating Act: ' . $e->getMessage());
 

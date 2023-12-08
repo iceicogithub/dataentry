@@ -33,7 +33,7 @@
                         <strong class="card-title">Act Table</strong>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered text-center">
+                        <table class="table table-bordered text-center" id="myTable">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">Sr .No</th>

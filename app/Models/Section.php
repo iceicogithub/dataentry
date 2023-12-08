@@ -11,7 +11,7 @@ class Section extends Model
     
     protected $primaryKey = 'section_id';
     protected $table = 'section';
-    protected $fillable = ['act_id','maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'section_title', 'section_content'];
+    protected $fillable = ['section_no','act_id','maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'section_title', 'section_content'];
 
     public function MainTypeModel()
     {

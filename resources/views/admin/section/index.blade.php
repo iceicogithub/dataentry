@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/add-act/{{ $act_id }}"><button class="btn btn-success">Add Index</button></a>
+                        <a href="/edit-main-act/{{ $act_id }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
 
@@ -69,7 +69,7 @@
                             <div class="form-group form-default">
                                 <label class="float-label"> Act Description<span class="text-danger">*</span></label>
 
-                                <textarea name="act_description" class="form-control mb-3" placeholder="Enter Act Description" id=""
+                                <textarea name="act_description" class="form-control mb-3" placeholder="Enter Act Description" id="act_description"
                                     cols="30" rows="3">{{ $act->act_description }}</textarea>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                         <strong class="card-title">Arrangement of Sections</strong>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered text-center">
+                        <table class="table table-bordered text-center" id="myTable">
                             <thead class="thead-light">
                                 @php
                                     use App\Models\Chapter;
@@ -135,7 +135,6 @@
                             <tbody>
                                 @php
                                     $a = 1;
-                                    $b = 1;
                                 @endphp
                                 @foreach ($act_section as $item)
                                     <tr>
@@ -152,9 +151,8 @@
                                             @else
                                                 Appendices
                                             @endif
-
                                         </td>
-                                        <td class="text-capitalize">@php echo $b++; @endphp</td>
+                                        <td class="text-capitalize">{{ $item->section_no }}</td>
                                         <td class="text-capitalize">{{ $item->section_title }}</td>
                                         <td class="text-capitalize">{{ $item->updated_at }}</td>
                                         <td class="text-capitalize d-flex justify-content-center">
@@ -167,7 +165,7 @@
                                             <a href="#" title="Delete" class="px-1">
                                                 <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                             </a>
-                                            <a href="/add_below_new_section/{{ $item->act_id }}" title="Add Next Section" class="px-1">
+                                            <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_no' => $item->section_no]) }}" title="Add Next Section" class="px-1">
                                                 <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                             </a>
                                         </td>
@@ -180,4 +178,12 @@
             </div>
         </div>
     </div>
+
+    
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        CKEDITOR.replace('act_description');
+
+    </script>
 @endsection
