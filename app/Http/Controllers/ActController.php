@@ -44,6 +44,8 @@ class ActController extends Controller
             $act->act_no = $request->act_no ?? null;
             $act->act_date = $request->act_date ?? null;
             $act->act_description = $request->act_description ?? null;
+            $act->act_footnote_title = $request->act_footnote_title ?? null;
+            $act->act_footnote_description = $request->act_footnote_description ?? null;
             $act->update();
 
 

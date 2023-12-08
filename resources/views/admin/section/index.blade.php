@@ -73,6 +73,21 @@
                                     cols="30" rows="3">{{ $act->act_description }}</textarea>
                             </div>
                         </div>
+                        <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
+                            <label class="float-label">
+                                Add Footnote
+                                <span class="pl-2">
+                                    <button type="button" class="btn btn-sm social facebook p-0 add-footnote">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </span>
+                            </label>
+                            <div class="show-footnote" style="display: none">
+                                <input type="text" value="{{ $act->act_footnote_title }}" name="act_footnote_title" class="form-control mb-3"
+                                    placeholder="Enter Footnote Title">
+                                <textarea type="text" name="act_footnote_description" id="act_footnote" class="form-control ckeditor-replace footnote">{{ $act->act_footnote_description }}</textarea>
+                            </div>
+                        </div>
 
                         <div class="col-md-12 text-right">
                             <div class="form-group">
@@ -156,7 +171,8 @@
                                         <td class="text-capitalize">{{ $item->section_title }}</td>
                                         <td class="text-capitalize">{{ $item->updated_at }}</td>
                                         <td class="text-capitalize d-flex justify-content-center">
-                                            <a href="/edit-section/{{ $item->section_id }}" title="Edit" class="px-1">
+                                            <a href="/edit-section/{{ $item->section_id }}" title="Edit"
+                                                class="px-1">
                                                 <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                             </a>
                                             <a href="#" title="View" class="px-1">
@@ -165,7 +181,8 @@
                                             <a href="#" title="Delete" class="px-1">
                                                 <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                             </a>
-                                            <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_no' => $item->section_no]) }}" title="Add Next Section" class="px-1">
+                                            <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_no' => $item->section_no]) }}"
+                                                title="Add Next Section" class="px-1">
                                                 <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                             </a>
                                         </td>
@@ -179,11 +196,22 @@
         </div>
     </div>
 
-    
+
     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         CKEDITOR.replace('act_description');
+        CKEDITOR.replace('act_footnote');
 
+        $(document).on('click', '.add-footnote', function() {
+                var icon = $(this).find('i');
+                var section = $(this).closest('.form-default').find('.show-footnote');
+                section.slideToggle();
+                icon.toggleClass('fa-plus fa-minus');
+
+                // Initialize CKEditor for the new textarea
+                CKEDITOR.replace(section.find('.ckeditor-replace.footnote')[0]);
+            });
     </script>
+    
 @endsection

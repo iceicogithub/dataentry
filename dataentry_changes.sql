@@ -7,3 +7,5 @@ ALTER TABLE `footnote` ADD `section_no` INT(11) NULL AFTER `section_id`;(done)
 ALTER TABLE `sub_section` ADD `section_no` INT(11) NULL AFTER `section_id`;(done)
 ALTER TABLE `footnote` ADD `parts_id` INT(11) NULL AFTER `chapter_id`;(done)
 ALTER TABLE `sub_section` ADD `parts_id` INT(11) NULL AFTER `chapter_id`;(done)
+
+ALTER TABLE `acts` ADD `act_footnote_title` VARCHAR(255) NULL AFTER `act_description`, ADD `act_footnote_description` VARCHAR(2555) NULL AFTER `act_footnote_title`;(done)

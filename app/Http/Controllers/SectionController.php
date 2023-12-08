@@ -136,76 +136,7 @@ class SectionController extends Controller
         return view('admin.section.edit', compact('sections', 'subsec'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    // public function update(Request $request, $id)
-    // {
-
-    //     // dd($request);
-    //     // die();
-
-    //     try {
-    //         $sections = Section::find($request->section_id);
-
-    //         // dd($sections);
-    //         // die();
-    //         $sections->section_content = $request->section_content ?? null;
-    //         $sections->section_title = $request->section_title ?? null;
-    //         $sections->update();
-
-    //         // Store Sub-Sections
-    //         foreach ($request->sub_section_title as $key => $item) {
-    //             // dd($item);
-    //             //   die();
-    //             $sub_section = SubSection::find($request->sub_section_id[$key]);
-    //             //  dd($sub_section);
-    //             //  die();
-    //             if ($sub_section) {
-    //                 $sub_section->sub_section_title = $request->sub_section_title[$key] ?? null;
-    //                 $sub_section->sub_section_content = $request->sub_section[$key] ?? null;
-    //                 $sub_section->update();
-    //             } else {
-    //                 $subsec = new SubSection();
-    //                 $subsec->section_id = $id ?? null;
-    //                 $subsec->section_no = $sections->section_no ?? null;
-    //                 $subsec->act_id = $sections->act_id ?? null;
-    //                 $subsec->chapter_id = $sections->chapter_id ?? null;
-    //                 $subsec->parts_id = $sections->parts_id ?? null;
-    //                 $subsec->sub_section_title = $request->sub_section_title[$key] ?? null;
-    //                 $subsec->sub_section_content = $request->sub_section[$key] ?? null;
-    //                 $subsec->save();
-    //             }
-    //         }
-
-    //         // Store Footnotes
-    //         foreach ($request->footnote_title as $key => $item) {
-    //             $foot = Footnote::find($request->footnote_id[$key]);
-    //             // dd($foot);
-    //             // die();
-    //             if ($foot) {
-    //                 $foot->footnote_title = $request->footnote_title[$key] ?? null;
-    //                 $foot->footnote_content = $request->footnote[$key] ?? null;
-    //                 $foot->update();
-    //             } else {
-    //                 $footnote = new Footnote();
-    //                 $footnote->section_id = $id ?? null;
-    //                 $footnote->section_no = $sections->section_no ?? null;
-    //                 $footnote->act_id = $sections->act_id ?? null;
-    //                 $footnote->chapter_id = $sections->chapter_id ?? null;
-    //                 $footnote->parts_id = $sections->parts_id ?? null;
-    //                 $footnote->footnote_title = $request->footnote_title[$key] ?? null;
-    //                 $footnote->footnote_content = $request->footnote[$key] ?? null;
-    //                 $footnote->save();
-    //             }
-    //         }
-
-    //         return redirect()->route('get_act_section', ['id' => $sections->act_id])->with('success', 'Section updated successfully');
-    //     } catch (\Exception $e) {
-    //         \Log::error('Error updating Act: ' . $e->getMessage());
-    //         return redirect()->route('edit-section', ['id' => $id])->withErrors(['error' => 'Failed to update Section. Please try again.' . $e->getMessage()]);
-    //     }
-    // }
+   
 
     public function update(Request $request, $id)
     {
@@ -237,17 +168,19 @@ class SectionController extends Controller
                             $sub_section->sub_section_title = $request->sub_section_title[$key] ?? null;
                             $sub_section->sub_section_content = $request->sub_section[$key] ?? null;
                             $sub_section->update();
-                        } else {
-                            $subsec = new SubSection();
-                            $subsec->section_id = $id ?? null;
-                            $subsec->section_no = $sections->section_no ?? null;
-                            $subsec->act_id = $sections->act_id ?? null;
-                            $subsec->chapter_id = $sections->chapter_id ?? null;
-                            $subsec->parts_id = $sections->parts_id ?? null;
-                            $subsec->sub_section_title = $request->sub_section_title[$key] ?? null;
-                            $subsec->sub_section_content = $request->sub_section[$key] ?? null;
-                            $subsec->save();
-                        }
+                           
+                        } 
+                    }else {
+                        $subsec = new SubSection();
+                        $subsec->section_id = $id ?? null;
+                        $subsec->section_no = $sections->section_no ?? null;
+                        $subsec->act_id = $sections->act_id ?? null;
+                        $subsec->chapter_id = $sections->chapter_id ?? null;
+                        $subsec->parts_id = $sections->parts_id ?? null;
+                        $subsec->sub_section_title = $request->sub_section_title[$key] ?? null;
+                        $subsec->sub_section_content = $request->sub_section[$key] ?? null;
+                        $subsec->save();
+                      
                     }
                 }
             }
@@ -263,17 +196,17 @@ class SectionController extends Controller
                             $foot->footnote_title = $request->footnote_title[$key] ?? null;
                             $foot->footnote_content = $request->footnote[$key] ?? null;
                             $foot->update();
-                        } else {
-                            $footnote = new Footnote();
-                            $footnote->section_id = $id ?? null;
-                            $footnote->section_no = $sections->section_no ?? null;
-                            $footnote->act_id = $sections->act_id ?? null;
-                            $footnote->chapter_id = $sections->chapter_id ?? null;
-                            $footnote->parts_id = $sections->parts_id ?? null;
-                            $footnote->footnote_title = $request->footnote_title[$key] ?? null;
-                            $footnote->footnote_content = $request->footnote[$key] ?? null;
-                            $footnote->save();
-                        }
+                        } 
+                    }else {
+                        $footnote = new Footnote();
+                        $footnote->section_id = $id ?? null;
+                        $footnote->section_no = $sections->section_no ?? null;
+                        $footnote->act_id = $sections->act_id ?? null;
+                        $footnote->chapter_id = $sections->chapter_id ?? null;
+                        $footnote->parts_id = $sections->parts_id ?? null;
+                        $footnote->footnote_title = $request->footnote_title[$key] ?? null;
+                        $footnote->footnote_content = $request->footnote[$key] ?? null;
+                        $footnote->save();
                     }
                 }
             }
