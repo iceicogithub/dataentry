@@ -129,14 +129,14 @@ class SectionController extends Controller
 
     public function edit_section($id)
     {
-        $sections = Section::where('section_id', $id)->first();
+        $sections = Section::with('ChapterModel', 'Partmodel')->where('section_id', $id)->first();
         $subsec = Section::where('section_id', $id)->with('subsectionModel', 'footnoteModel')->get();
         // dd($subsec);
         // die();
         return view('admin.section.edit', compact('sections', 'subsec'));
     }
 
-   
+
 
     public function update(Request $request, $id)
     {
@@ -152,10 +152,40 @@ class SectionController extends Controller
             if (!$sections) {
                 return redirect()->route('edit-section', ['id' => $id])->withErrors(['error' => 'Section not found']);
             }
+            if ($sections->section_no == $request->section_no) {
+                $sections->section_content = $request->section_content ?? null;
+                $sections->section_title = $request->section_title ?? null;
+                $sections->section_no = $request->section_no ?? null;
+                $sections->update();
+            } else {
+                $currentSectionNo = (int)$request->section_no;
 
-            $sections->section_content = $request->section_content ?? null;
-            $sections->section_title = $request->section_title ?? null;
-            $sections->update();
+                // Update Section records
+                Section::where('section_no', '>=', $currentSectionNo)
+                    ->get()
+                    ->each(function ($section) {
+                        $section->increment('section_no');
+                    });
+
+                // Update SubSection records
+                SubSection::where('section_no', '>=', $currentSectionNo)
+                    ->get()
+                    ->each(function ($subSection) {
+                        $subSection->increment('section_no');
+                    });
+
+                // Update Footnote records
+                Footnote::where('section_no', '>=', $currentSectionNo)
+                    ->get()
+                    ->each(function ($footnote) {
+                        $footnote->increment('section_no');
+                    });
+
+                $sections->section_content = $request->section_content ?? null;
+                $sections->section_title = $request->section_title ?? null;
+                $sections->section_no = $request->section_no ?? null;
+                $sections->update();
+            }
 
             // Store Sub-Sections
             if ($request->has('sub_section_title')) {
@@ -163,16 +193,38 @@ class SectionController extends Controller
                     // Check if the key exists before using it
                     if ($request->filled('sub_section_id.' . $key)) {
                         $sub_section = SubSection::find($request->sub_section_id[$key]);
-
                         if ($sub_section) {
-                            $sub_section->sub_section_title = $request->sub_section_title[$key] ?? null;
-                            $sub_section->sub_section_content = $request->sub_section[$key] ?? null;
-                            $sub_section->update();
-                           
-                        } 
-                    }else {
+
+                            if ($sub_section->sub_section_no == $request->sub_section_no) {
+
+                                $sub_section->sub_section_title = $request->sub_section_title[$key] ?? null;
+                                $sub_section->sub_section_no = $request->sub_section_no[$key];
+                                $sub_section->sub_section_content = $request->sub_section[$key] ?? null;
+                                $sub_section->update();
+                            } else {
+                                $new_sub_section_no = $request->sub_section_no[$key];
+
+                                // Update existing SubSections with sub_section_no >= $new_sub_section_no
+                                SubSection::where('sub_section_no', '>=', $new_sub_section_no)->get()
+                                    ->each(function ($subSection) {
+                                        $subSection->increment('sub_section_no');
+                                    });
+                        
+                                // Update the current SubSection
+                                $sub_section->sub_section_title = $request->sub_section_title[$key] ?? null;
+                                $sub_section->sub_section_no = $new_sub_section_no;
+                                $sub_section->sub_section_content = $request->sub_section[$key] ?? null;
+                                $sub_section->update();
+                            }
+                        }
+                    } else {
+                        SubSection::where('sub_section_no', '>=', $request->sub_section_no[$key])->get()
+                            ->each(function ($subSection) {
+                                $subSection->increment('sub_section_no');
+                            });
                         $subsec = new SubSection();
                         $subsec->section_id = $id ?? null;
+                        $subsec->sub_section_no = $sections->sub_section_no[$key];
                         $subsec->section_no = $sections->section_no ?? null;
                         $subsec->act_id = $sections->act_id ?? null;
                         $subsec->chapter_id = $sections->chapter_id ?? null;
@@ -180,7 +232,6 @@ class SectionController extends Controller
                         $subsec->sub_section_title = $request->sub_section_title[$key] ?? null;
                         $subsec->sub_section_content = $request->sub_section[$key] ?? null;
                         $subsec->save();
-                      
                     }
                 }
             }
@@ -196,8 +247,8 @@ class SectionController extends Controller
                             $foot->footnote_title = $request->footnote_title[$key] ?? null;
                             $foot->footnote_content = $request->footnote[$key] ?? null;
                             $foot->update();
-                        } 
-                    }else {
+                        }
+                    } else {
                         $footnote = new Footnote();
                         $footnote->section_id = $id ?? null;
                         $footnote->section_no = $sections->section_no ?? null;

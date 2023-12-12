@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="{{ Route('act') }}"><button class="btn btn-success">Back</button></a>
+                        <a href="/get_act_section/{{ $act->act_id }}"><button class="btn btn-danger">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -22,8 +22,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card p-5">
-                    <form id="form" action="/store_act/{{$act->act_id}}" method="post" enctype="multipart/form-data"
-                        class="form form-horizontal">
+                    <form id="form" action="/store_act/{{ $act->act_id }}" method="post"
+                        enctype="multipart/form-data" class="form form-horizontal">
                         @csrf
                         <!-- Your Blade View -->
                         @if ($errors->has('error'))
@@ -46,7 +46,8 @@
                                     <select class="select form-control text-capitalize category" name="category_id">
                                         <option selected disabled>Select Category</option>
                                         @foreach ($category as $value)
-                                            <option value="{{ $value->category_id }}" class="text-capitalize" {{$act->category_id == $value->category_id ? 'selected':''}}>
+                                            <option value="{{ $value->category_id }}" class="text-capitalize"
+                                                {{ $act->category_id == $value->category_id ? 'selected' : '' }}>
                                                 {{ $value->category }}</option>
                                         @endforeach
                                     </select>
@@ -59,7 +60,8 @@
                                     <select class="select form-control text-capitalize" name="state_id">
                                         <option selected disabled>Select State</option>
                                         @foreach ($states as $item)
-                                            <option value="{{ $item->state_id }}" class="text-capitalize" {{$act->state_id == $item->state_id ? 'selected':''}}>
+                                            <option value="{{ $item->state_id }}" class="text-capitalize"
+                                                {{ $act->state_id == $item->state_id ? 'selected' : '' }}>
                                                 {{ $item->name }}</option>
                                         @endforeach
                                     </select>
@@ -69,7 +71,7 @@
                                 <div class="form-group form-default">
                                     <label class="float-label"> Act <span class="text-danger">*</span></label>
                                     <input type="text" name="act_title" class="form-control mb-3"
-                                        placeholder="Enter Act Title" value="{{$act->act_title}}">
+                                        placeholder="Enter Act Title" value="{{ $act->act_title }}">
                                 </div>
                             </div>
                             <div class="section-set-container col-md-12">
@@ -147,6 +149,9 @@
                                                             <label class="float-label">Section Title<span
                                                                     class="text-danger">*</span></label>
                                                             <div class="d-flex sectionTitle my-1">
+                                                                <input type="number" name="section_no[][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Section NO.">
                                                                 <input type="text" name="section_title[][]"
                                                                     class="form-control"
                                                                     placeholder="Enter Section Title">
@@ -225,10 +230,27 @@
 
             // for part list dropdown
             $(document).on('change', '.type', function() {
-                if ($(this).val() == 2) {
+                if ($(this).val() == '2') {
                     $(this).closest('.section-set').find('.parts').show();
                 } else {
                     $(this).closest('.section-set').find('.parts').hide();
+                }
+            });
+            
+            //select type from dropdown list
+            $(document).on('change', '.typeSelector', function() {
+                var selectedValue = $(this).val();
+                var sectionContainer = $(this).closest('.section-set');
+                var chapterSection = sectionContainer.find('.chapterSection');
+                var partSection = sectionContainer.find('.partSection');
+
+                chapterSection.hide();
+                partSection.hide();
+
+                if (selectedValue == '1') {
+                    chapterSection.show();
+                } else if (selectedValue == '2') {
+                    partSection.show();
                 }
             });
 
@@ -279,6 +301,12 @@
                     clonedSection.find('select[name^="subtypes_id"]').attr('name', 'subtypes_id[' +
                         chapterCount + ']');
 
+                    // Update section no input name attribute
+                    clonedSection.find('input[name^="section_no"]').each(function(index) {
+                        $(this).attr('name', 'section_no[' + chapterCount + '][' +
+                            index + ']');
+                    });
+
                     // Update section title input name attribute
                     clonedSection.find('input[name^="section_title"]').each(function(index) {
                         $(this).attr('name', 'section_title[' + chapterCount + '][' +
@@ -309,6 +337,12 @@
                     let lastIndex = sectionTitleMain.find('.sectionTitle').length;
 
                     // Update the input name attribute with the new chapter and section indexes
+                    clonedSectionTitle.find('input[name^="section_no"]').each(function(index) {
+                        $(this).attr('name', 'section_no[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    // Update the input name attribute with the new chapter and section indexes
                     clonedSectionTitle.find('input[name^="section_title"]').each(function(index) {
                         $(this).attr('name', 'section_title[' + chapterCount + '][' + (
                             lastIndex + index) + ']');
@@ -324,27 +358,9 @@
                     }
                 });
 
-                // Rest of your existing code...
             });
 
-
-
-            //select type from dropdown list
-            $(document).on('change', '.typeSelector', function() {
-                var selectedValue = $(this).val();
-                var sectionContainer = $(this).closest('.section-set');
-                var chapterSection = sectionContainer.find('.chapterSection');
-                var partSection = sectionContainer.find('.partSection');
-
-                chapterSection.hide();
-                partSection.hide();
-
-                if (selectedValue == 1) {
-                    chapterSection.show();
-                } else if (selectedValue == 2) {
-                    partSection.show();
-                }
-            });
+ḥ
         });
     </script>
 @endsection

@@ -12,8 +12,10 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/edit-main-act/{{ $act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="/add-act/{{ $act_id }}" class="mr-2"><button class="btn btn-success">Add Index</button></a>
+                        <a href="/edit-main-act/{{ $act_id }}"><button class="btn btn-danger">Back</button></a>
                     </ol>
+                    
                 </div>
 
 
@@ -75,7 +77,7 @@
                         </div>
                         <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                             <label class="float-label">
-                                Add Footnote
+                                 Footnote
                                 <span class="pl-2">
                                     <button type="button" class="btn btn-sm social facebook p-0 add-footnote">
                                         <i class="fa fa-plus"></i>

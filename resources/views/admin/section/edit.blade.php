@@ -4,7 +4,25 @@
         <div class="col-sm-4">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1>Dashboard</h1>
+                    <h1>
+                        @if ($sections->maintype_id == 1)
+                            Chapter
+                        @elseif($sections->maintype_id == 2)
+                            Parts
+                        @else
+                            Appendices
+                        @endif
+
+                        <span> :
+                            @if ($sections->maintype_id == 1)
+                                {{ $sections->ChapterModel->chapter_title }}
+                            @elseif($sections->maintype_id == 2)
+                                {{ $sections->Partmodel->parts_title }}
+                            @else
+                                No data
+                            @endif
+                        </span>
+                    </h1>
                 </div>
             </div>
         </div>
@@ -43,9 +61,14 @@
                                 <div>
                                     <div class="form-group form-default col-md-12 px-0" id="sectionDiv">
                                         <div class="form-group form-default" style="display: block">
-                                            <label class="float-label font-weight-bold">Section Title :</label>
-                                            <span> <input type="text" name="section_title"
-                                                    value="{{ $sections->section_title }}" class="form-control mb-3"></span>
+                                            <label class="float-label font-weight-bold">Section :</label>
+                                            <span class="d-flex">
+                                                <input type="number" name="section_no" class="form-control"
+                                                    style="width: 20%;" placeholder="Enter Section NO."
+                                                    value="{{ $sections->section_no }}">
+                                                <input type="text" name="section_title"
+                                                    value="{{ $sections->section_title }}" class="form-control mb-3">
+                                            </span>
 
                                         </div>
                                         <div class="form-group form-default" style="display: block">
@@ -54,14 +77,16 @@
                                             <textarea type="text" id="section" name="section_content"
                                                 class="form-control section-textarea ckeditor-replace section" placeholder="Enter Section">{{ $sections->section_content }}</textarea>
                                         </div>
-                                       
 
-                                        @if (!empty($subsec)) 
+
+                                        @if (!empty($subsec))
                                             @foreach ($subsec as $key => $item)
                                                 <div class="multi-addition-container col-md-12 px-0">
                                                     <div class="multi-addition">
                                                         @foreach ($item->subsectionModel as $k => $subSectionItem)
-                                                        <input type="hidden" name="sub_section_id[{{$k}}]" value="{{$subSectionItem->sub_section_id}}">
+                                                            <input type="hidden"
+                                                                name="sub_section_id[{{ $k }}]"
+                                                                value="{{ $subSectionItem->sub_section_id }}">
                                                             <div class="border col-md-12 p-3">
                                                                 <div
                                                                     class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
@@ -70,23 +95,34 @@
                                                                         <span class="pl-2">
                                                                             <button type="button"
                                                                                 class="btn btn-sm social facebook p-0 add-sub_section">
-                                                                                <i class="fa {{ !empty($subSectionItem->sub_section_title) ? 'fa-minus' : 'fa-plus' }}"></i>
+                                                                                <i
+                                                                                    class="fa {{ !empty($subSectionItem->sub_section_title) ? 'fa-minus' : 'fa-plus' }}"></i>
                                                                             </button>
                                                                         </span>
                                                                     </label>
                                                                     <div class="show-sub_section">
-                                                                        <input type="text" name="sub_section_title[{{$k}}]"
-                                                                            class="form-control mb-3"
-                                                                            value="{{ $subSectionItem->sub_section_title ?? '' }}"
-                                                                            placeholder="Enter Sub-Section Title">
-                                                                        <textarea type="text" name="sub_section[{{$k}}]" class="form-control ckeditor-replace sub_section">{{ $subSectionItem->sub_section_content ?? '' }}</textarea>
+                                                                        <span class="d-flex">
+                                                                            <input type="number"
+                                                                                name="sub_section_no[{{ $k }}]"
+                                                                                class="form-control mb-3"
+                                                                                value="{{ $subSectionItem->sub_section_no ?? '' }}"
+                                                                                placeholder="Enter Sub-Section No."
+                                                                                style="width: 20%;">
+                                                                            <input type="text"
+                                                                                name="sub_section_title[{{ $k }}]"
+                                                                                class="form-control mb-3"
+                                                                                value="{{ $subSectionItem->sub_section_title ?? '' }}"
+                                                                                placeholder="Enter Sub-Section Title">
+                                                                        </span>
+                                                                        <textarea type="text" name="sub_section[{{ $k }}]" class="form-control ckeditor-replace sub_section">{{ $subSectionItem->sub_section_content ?? '' }}</textarea>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         @endforeach
 
                                                         @foreach ($item->footnoteModel as $a => $footnoteItem)
-                                                        <input type="hidden" name="footnote_id[{{$a}}]" value="{{$footnoteItem->footnote_id}}">
+                                                            <input type="hidden" name="footnote_id[{{ $a }}]"
+                                                                value="{{ $footnoteItem->footnote_id }}">
                                                             <div class="border col-md-12 p-3">
                                                                 <div
                                                                     class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
@@ -95,16 +131,18 @@
                                                                         <span class="pl-2">
                                                                             <button type="button"
                                                                                 class="btn btn-sm social facebook p-0 add-footnote">
-                                                                                <i class="fa {{ !empty ($footnoteItem->footnote_title) ? 'fa-minus' : 'fa-plus' }}"></i>
+                                                                                <i
+                                                                                    class="fa {{ !empty($footnoteItem->footnote_title) ? 'fa-minus' : 'fa-plus' }}"></i>
                                                                             </button>
                                                                         </span>
                                                                     </label>
                                                                     <div class="show-footnote">
-                                                                        <input type="text" name="footnote_title[{{$a}}]"
+                                                                        <input type="text"
+                                                                            name="footnote_title[{{ $a }}]"
                                                                             class="form-control mb-3"
                                                                             value="{{ $footnoteItem->footnote_title ?? '' }}"
                                                                             placeholder="Enter Footnote Title">
-                                                                        <textarea type="text" name="footnote[{{$a}}]" class="form-control ckeditor-replace footnote">{{ $footnoteItem->footnote_content ?? '' }}</textarea>
+                                                                        <textarea type="text" name="footnote[{{ $a }}]" class="form-control ckeditor-replace footnote">{{ $footnoteItem->footnote_content ?? '' }}</textarea>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -146,9 +184,15 @@
                                                                 </span>
                                                             </label>
                                                             <div class="show-sub_section" style="display: none">
+                                                                <span class="d-flex">
+                                                                <input type="number" name="sub_section_no[]"
+                                                                    class="form-control mb-3"
+                                                                    placeholder="Enter Sub-Section No."
+                                                                    style="width: 20%;">
                                                                 <input type="text" name="sub_section_title[]"
                                                                     class="form-control mb-3"
                                                                     placeholder="Enter Sub-Section Title">
+                                                            </span>
                                                                 <textarea type="text" name="sub_section[]" class="form-control ckeditor-replace sub_section"></textarea>
                                                             </div>
                                                         </div>
@@ -270,7 +314,11 @@
                                         </span>
                                         </label>
                                         <div class="show-sub_section" style="display: none">
+                                        <span class="d-flex">
+                                        <input type="number" name="sub_section_no[${sectionCounter}]" class="form-control mb-3" placeholder="Enter Sub-Section No."
+                                        style="width: 20%;">
                                         <input type="text" name="sub_section_title[${sectionCounter}]" class="form-control mb-3" placeholder="Enter Sub-Section Title">
+                                    </span>
                                         <textarea type="text" name="sub_section[${sectionCounter}]" class="form-control ckeditor-replace sub_section"></textarea>
                                         </div>
                                     </div>
