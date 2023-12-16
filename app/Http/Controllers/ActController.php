@@ -11,6 +11,7 @@ use App\Models\PartsType;
 use App\Models\SubSection;
 use App\Models\Footnote;
 use App\Models\Chapter;
+use App\Models\Regulation;
 use App\Models\Section;
 use App\Models\State;
 use App\Models\Status;
@@ -37,7 +38,7 @@ class ActController extends Controller
         return view('admin.section.index', compact('act_section', 'act_id', 'act'));
     }
 
-    
+
     public function store(Request $request, $id)
     {
 
@@ -63,40 +64,62 @@ class ActController extends Controller
                     $chapt->chapter_title = $request->chapter_title[$key] ?? null;
                     $chapt->save();
 
+                    if ($request->subtypes_id[$key] == 1) {
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->section_title[$key] as $index => $sectiontitle) {
+                            $currentSectionNo = (int)$request->section_no[$key][$index];
+                            // Update Section records
+                            Section::where('section_no', '>=', $currentSectionNo)
+                                ->get()
+                                ->each(function ($section) {
+                                    $section->increment('section_no');
+                                });
 
-                    $subtypes_id = $request->subtypes_id[$key] ?? null;
+                            // Update SubSection records
+                            SubSection::where('section_no', '>=', $currentSectionNo)
+                                ->get()
+                                ->each(function ($subSection) {
+                                    $subSection->increment('section_no');
+                                });
 
-                    foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                        $currentSectionNo = (int)$request->section_no[$index][$key];
-                        // Update Section records
-                        Section::where('section_no', '>=', $currentSectionNo)
-                            ->get()
-                            ->each(function ($section) {
-                                $section->increment('section_no');
-                            });
+                            // Update Footnote records
+                            Footnote::where('section_no', '>=', $currentSectionNo)
+                                ->get()
+                                ->each(function ($footnote) {
+                                    $footnote->increment('section_no');
+                                });
 
-                        // Update SubSection records
-                        SubSection::where('section_no', '>=', $currentSectionNo)
-                            ->get()
-                            ->each(function ($subSection) {
-                                $subSection->increment('section_no');
-                            });
+                            $section = Section::create([
+                                'section_no' => $currentSectionNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'chapter_id' => $chapt->chapter_id,
+                                'subtypes_id' => $subtypes_id,
+                                'section_title' => $sectiontitle,
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 4) {
+                        //  dd($request);
+                        //  die();
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
+                            $currentRegulationNo = (int)$request->regulation_no[$key][$index];
+                            // Update Section records
+                            Regulation::where('regulation_no', '>=', $currentRegulationNo)
+                                ->get()
+                                ->each(function ($regulation) {
+                                    $regulation->increment('regulation_no');
+                                });
 
-                        // Update Footnote records
-                        Footnote::where('section_no', '>=', $currentSectionNo)
-                            ->get()
-                            ->each(function ($footnote) {
-                                $footnote->increment('section_no');
-                            });
-
-                        $section = Section::create([
-                            'section_no' => $request->section_no,
-                            'act_id' => $act->act_id,
-                            'maintype_id' => $maintypeId,
-                            'chapter_id' => $chapt->chapter_id,
-                            'subtypes_id' => $subtypes_id,
-                            'section_title' => $sectiontitle,
-                        ]);
+                            $regulation = Regulation::create([
+                                'regulation_no' => $currentRegulationNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'chapter_id' => $chapt->chapter_id,
+                                'subtypes_id' => $subtypes_id,
+                                'regulation_title' => $regulationtitle,
+                            ]);
+                        }
                     }
                 } elseif ($maintypeId == "2") {
                     $parts = new Parts();
@@ -109,9 +132,9 @@ class ActController extends Controller
                     $subtypes_id = $request->subtypes_id[$key] ?? null;
 
                     foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                       $currentSectionNo = (int)$request->section_no[$index][$key];
-                    //    dd($currentSectionNo);
-                    //    die();
+                        $currentSectionNo = (int)$request->section_no[$index][$key];
+                        //    dd($currentSectionNo);
+                        //    die();
                         // Update Section records
                         Section::where('section_no', '>=', $currentSectionNo)
                             ->get()
@@ -146,9 +169,13 @@ class ActController extends Controller
                 } else {
                     dd("something went wrong");
                 }
-            }
 
-            return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Section added successfully');
+                if ($request->subtypes_id[$key] == 1) {
+                    return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Section added successfully');
+                } elseif ($request->subtypes_id[$key] == 4) {
+                    return redirect()->route('get_act_regulation', ['id' => $id])->with('success', 'Regulation added successfully');
+                }
+            }
         } catch (\Exception $e) {
             \Log::error('Error creating Act: ' . $e->getMessage());
 

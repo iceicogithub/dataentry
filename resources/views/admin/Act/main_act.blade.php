@@ -48,6 +48,11 @@
                                         <td scope="row">@php echo $a++; @endphp</td>
                                         <td class="text-capitalize text-justify"><a 
                                             @if($item->id == 1) href="/get_act_section/{{$act_id}}" 
+                                            @elseif($item->id == 2) href="/add/{{$act_id}}"
+                                            @elseif($item->id == 3) href="/add/{{$act_id}}"
+                                            @elseif($item->id == 4) href="/add/{{$act_id}}"
+                                            @elseif($item->id == 5) href="/get_act_rule/{{$act_id}}"
+                                            @elseif($item->id == 6) href="/get_act_regulation/{{$act_id}}"
                                             @else href="/add/{{$act_id}}"
                                             @endif
                                             >{{ $item->title }}</a></td>

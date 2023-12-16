@@ -4,6 +4,7 @@ use App\Http\Controllers\ActController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\RegulationController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -62,4 +63,8 @@ Route::post('/add_new_section', [SectionController::class, 'add_new_section']);
 
 Route::get('/chapter', [ChapterController::class, 'index'])->name('chapter');
 Route::get('/add-chapter', [ChapterController::class, 'create'])->name('add-chapter');
+
+Route::get('/get_act_regulation/{id}', [RegulationController::class, 'index'])->name('get_act_regulation');
+Route::get('/edit-regulation/{id}', [RegulationController::class, 'edit_regulation'])->name('edit-regulation');
+Route::post('/update_all_regulation/{id}', [RegulationController::class, 'update']);
  

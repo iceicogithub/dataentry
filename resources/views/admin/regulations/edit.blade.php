@@ -5,19 +5,21 @@
             <div class="page-header float-left">
                 <div class="page-title">
                     <h1>
-                        @if ($sections->maintype_id == 1)
+                        @if ($regulations->maintype_id == 1)
                             Chapter
-                        @elseif($sections->maintype_id == 2)
+                        @elseif($regulations->maintype_id == 2)
                             Parts
+                        @elseif($regulations->maintype_id == 4)
+                            Regulations
                         @else
                             Appendices
                         @endif
 
                         <span> :
-                            @if ($sections->maintype_id == 1)
-                                {{ $sections->ChapterModel->chapter_title }}
-                            @elseif($sections->maintype_id == 2)
-                                {{ $sections->Partmodel->parts_title }}
+                            @if ($regulations->maintype_id == 1)
+                                {{ $regulations->ChapterModel->chapter_title }}
+                            @elseif($regulations->maintype_id == 2)
+                                {{ $regulations->Partmodel->parts_title }}
                             @else
                                 No data
                             @endif
@@ -30,7 +32,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{ $sections->act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="/get_act_regulation/{{ $regulations->act_id }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -39,7 +41,7 @@
     <div class="content mt-3">
         <div class="row">
             <div class="col-lg-12">
-                <form id="form" action="/update_all_section/{{ $sections->section_id }}" method="post"
+                <form id="form" action="/update_all_regulation/{{ $regulations->regulation_id }}" method="post"
                     enctype="multipart/form-data" class="form form-horizontal">
                     @csrf
                     <!-- Your Blade View -->
@@ -54,36 +56,36 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <input type="hidden" name="section_id" value="{{ $sections->section_id }}">
+                    <input type="hidden" name="regulation_id" value="{{ $regulations->regulation_id }}">
                     <div class="card p-5">
                         <div class="additional-section">
                             <div class="border col-md-12 p-3">
                                 <div>
                                     <div class="form-group form-default col-md-12 px-0" id="sectionDiv">
                                         <div class="form-group form-default" style="display: block">
-                                            <label class="float-label font-weight-bold">Section :</label>
+                                            <label class="float-label font-weight-bold">Regulation :</label>
                                             <span class="d-flex">
-                                                <input type="number" name="section_no" class="form-control"
-                                                    style="width: 20%;" placeholder="Enter Section NO."
-                                                    value="{{ $sections->section_no }}">
-                                                <input type="text" name="section_title"
-                                                    value="{{ $sections->section_title }}" class="form-control mb-3">
+                                                <input type="number" name="regulation_no" class="form-control"
+                                                    style="width: 20%;" placeholder="Enter Regulation NO."
+                                                    value="{{ $regulations->regulation_no }}">
+                                                <input type="text" name="regulation_title"
+                                                    value="{{ $regulations->regulation_title }}" class="form-control mb-3">
                                             </span>
 
                                         </div>
                                         <div class="form-group form-default" style="display: block">
-                                            <label class="float-label">Section Description<span
+                                            <label class="float-label">Regulations Description<span
                                                     class="text-danger">*</span></label>
-                                            <textarea type="text" id="section" name="section_content"
-                                                class="form-control section-textarea ckeditor-replace section" placeholder="Enter Section">{{ $sections->section_content }}</textarea>
+                                            <textarea type="text" id="section" name="regulation_content"
+                                                class="form-control section-textarea ckeditor-replace section" placeholder="Enter Section">{{ $regulations->regulation_content }}</textarea>
                                         </div>
 
 
-                                        @if (!empty($subsec))
-                                            @foreach ($subsec as $key => $item)
+                                        @if (!empty($reg))
+                                            @foreach ($reg as $key => $item)
                                                 <div class="multi-addition-container col-md-12 px-0">
                                                     <div class="multi-addition">
-                                                        @foreach ($item->subsectionModel as $k => $subSectionItem)
+                                                        {{-- @foreach ($item->subsectionModel as $k => $subSectionItem)
                                                             <input type="hidden"
                                                                 name="sub_section_id[{{ $k }}]"
                                                                 value="{{ $subSectionItem->sub_section_id }}">
@@ -102,7 +104,7 @@
                                                                     </label>
                                                                     <div class="show-sub_section">
                                                                         <span class="d-flex">
-                                                                            <input type="text"
+                                                                            <input type="number"
                                                                                 name="sub_section_no[{{ $k }}]"
                                                                                 class="form-control mb-3"
                                                                                 value="{{ $subSectionItem->sub_section_no ?? '' }}"
@@ -118,7 +120,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        @endforeach
+                                                        @endforeach --}}
 
                                                         @foreach ($item->footnoteModel as $a => $footnoteItem)
                                                             <input type="hidden" name="footnote_id[{{ $a }}]"
@@ -152,7 +154,7 @@
                                                             <div class="float-right">
                                                                 <span style="font-size: small;"
                                                                     class="px-2 text-uppercase font-weight-bold">
-                                                                    (for add and remove Sub-Section and Footnote)
+                                                                    (for add Footnote)
                                                                 </span>
                                                                 <button type="button"
                                                                     class="btn btn-sm social facebook p-0 add-multi-addition">
@@ -172,7 +174,7 @@
                                             <div class="multi-addition-container col-md-12 px-0">
                                                 <div class="multi-addition">
                                                     <div class="border col-md-12 p-3">
-                                                        <div
+                                                        {{-- <div
                                                             class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                                             <label class="float-label">
                                                                 Add Sub-Section
@@ -185,7 +187,7 @@
                                                             </label>
                                                             <div class="show-sub_section" style="display: none">
                                                                 <span class="d-flex">
-                                                                <input type="text" name="sub_section_no[]"
+                                                                <input type="number" name="sub_section_no[]"
                                                                     class="form-control mb-3"
                                                                     placeholder="Enter Sub-Section No."
                                                                     style="width: 20%;">
@@ -195,7 +197,7 @@
                                                             </span>
                                                                 <textarea type="text" name="sub_section[]" class="form-control ckeditor-replace sub_section"></textarea>
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
                                                         <div
                                                             class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                                             <label class="float-label">
@@ -219,7 +221,7 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (for add and remove Sub-Section and Footnote)
+                                                                (for add and remove Footnote)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-addition">
@@ -304,24 +306,7 @@
                 var newSection = `
                                 <div class="multi-addition">
                                     <div class="border col-md-12 p-3">
-                                    <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                                        <label class="float-label">
-                                        Add Sub-Section
-                                        <span class="pl-2">
-                                            <button type="button" class="btn btn-sm social facebook p-0 add-sub_section">
-                                            <i class="fa fa-plus"></i>
-                                            </button>
-                                        </span>
-                                        </label>
-                                        <div class="show-sub_section" style="display: none">
-                                        <span class="d-flex">
-                                        <input type="text" name="sub_section_no[${sectionCounter}]" class="form-control mb-3" placeholder="Enter Sub-Section No."
-                                        style="width: 20%;">
-                                        <input type="text" name="sub_section_title[${sectionCounter}]" class="form-control mb-3" placeholder="Enter Sub-Section Title">
-                                    </span>
-                                        <textarea type="text" name="sub_section[${sectionCounter}]" class="form-control ckeditor-replace sub_section"></textarea>
-                                        </div>
-                                    </div>
+                                   
                                     <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                         <label class="float-label">
                                         Add Footnote

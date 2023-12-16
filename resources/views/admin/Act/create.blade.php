@@ -182,6 +182,31 @@
                                                             class="form-control mb-3"
                                                             placeholder="Enter Order & Rules Title">
                                                     </div>
+                                                    <div class="form-group form-default col-md-12 px-0" id="4Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default RegulationTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Regulation Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex RegulationTitle my-1">
+                                                                <input type="text" name="regulation_no[][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Regulation NO.">
+                                                                <input type="text" name="regulation_title[][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Regulation Title">
+                                                                <button type="button"
+                                                                    class="add-RegulationTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-RegulationTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -254,7 +279,7 @@
                 }
             });
 
-            //Select Dropdown for section / articles / orders and rules
+            //Select Dropdown for section / articles / orders and rules / regulation
             $(document).on("change", ".sub_textarea", function() {
                 var selectedOption = $(this).val();
                 var sectionDiv = $(this).closest('.additional-section').find('#' + selectedOption + 'Div');
@@ -322,6 +347,7 @@
                     }
                 });
 
+                // for sections 
                 $(document).on('click', '.add-sectionTitle', function() {
                     let sectionTitleMain = $(this).closest('.section-set').find(
                     '.sectionTitleMain');
@@ -355,6 +381,43 @@
                     let sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
                     if (sectionTitles.length > 1) {
                         $(this).closest('.sectionTitle').remove();
+                    }
+                });
+        
+                // for regulations 
+                $(document).on('click', '.add-RegulationTitle', function() {
+                    let RegulationTitleMain = $(this).closest('.section-set').find(
+                    '.RegulationTitleMain');
+                    let clonedRegulationTitle = RegulationTitleMain.find('.RegulationTitle:first').clone(
+                        true);
+                    clonedRegulationTitle.find('input').val('');
+
+                    // Get the chapter count from the data attribute of the closest .section-set
+                    let chapterCount = parseInt($(this).closest('.section-set').data(
+                        'chapter-count')) || 0;
+
+                    // Increment the section index for the new section title
+                    let lastIndex = RegulationTitleMain.find('.RegulationTitle').length;
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedRegulationTitle.find('input[name^="regulation_no"]').each(function(index) {
+                        $(this).attr('name', 'regulation_no[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    }); 
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedRegulationTitle.find('input[name^="regulation_title"]').each(function(index) {
+                        $(this).attr('name', 'regulation_title[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    RegulationTitleMain.append(clonedRegulationTitle);
+                });
+
+                $(document).on('click', '.remove-RegulationTitle', function() {
+                    let RegulationTitles = $(this).closest('.RegulationTitleMain').find('.RegulationTitle');
+                    if (RegulationTitles.length > 1) {
+                        $(this).closest('.RegulationTitle').remove();
                     }
                 });
 
