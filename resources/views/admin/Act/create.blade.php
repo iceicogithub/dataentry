@@ -149,7 +149,7 @@
                                                             <label class="float-label">Section Title<span
                                                                     class="text-danger">*</span></label>
                                                             <div class="d-flex sectionTitle my-1">
-                                                                <input type="number" name="section_no[][]"
+                                                                <input type="text" name="section_no[][]"
                                                                     class="form-control" style="width: 20%;"
                                                                     placeholder="Enter Section NO.">
                                                                 <input type="text" name="section_title[][]"
@@ -226,6 +226,17 @@
                                     </div>
                                 </div>
                             </div>
+
+                            @if (isset($regulationId))
+                                <div class="col-md-12 px-3">
+                                    <div class="form-group form-default">
+                                        <label class="float-label"> Form Title <span class="text-danger">*</span></label>
+                                        <input type="text" name="form_title" class="form-control mb-3"
+                                            placeholder="Enter Form Title" value="{{ $act->form_title }}">
+                                    </div>
+                                </div>
+                            @endif
+
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <button type="submit" class="btn  btn-success">Save</button>
@@ -261,7 +272,7 @@
                     $(this).closest('.section-set').find('.parts').hide();
                 }
             });
-            
+
             //select type from dropdown list
             $(document).on('change', '.typeSelector', function() {
                 var selectedValue = $(this).val();
@@ -348,6 +359,9 @@
                 });
 
                 // for sections 
+                // ...
+
+                // Add -Remove Section
                 $(document).on('click', '.add-sectionTitle', function() {
                     let sectionTitleMain = $(this).closest('.section-set').find(
                     '.sectionTitleMain');
@@ -383,13 +397,16 @@
                         $(this).closest('.sectionTitle').remove();
                     }
                 });
-        
+
+                // ...
+
                 // for regulations 
                 $(document).on('click', '.add-RegulationTitle', function() {
                     let RegulationTitleMain = $(this).closest('.section-set').find(
-                    '.RegulationTitleMain');
-                    let clonedRegulationTitle = RegulationTitleMain.find('.RegulationTitle:first').clone(
-                        true);
+                        '.RegulationTitleMain');
+                    let clonedRegulationTitle = RegulationTitleMain.find('.RegulationTitle:first')
+                        .clone(
+                            true);
                     clonedRegulationTitle.find('input').val('');
 
                     // Get the chapter count from the data attribute of the closest .section-set
@@ -400,13 +417,15 @@
                     let lastIndex = RegulationTitleMain.find('.RegulationTitle').length;
 
                     // Update the input name attribute with the new chapter and section indexes
-                    clonedRegulationTitle.find('input[name^="regulation_no"]').each(function(index) {
+                    clonedRegulationTitle.find('input[name^="regulation_no"]').each(function(
+                        index) {
                         $(this).attr('name', 'regulation_no[' + chapterCount + '][' + (
                             lastIndex + index) + ']');
-                    }); 
+                    });
 
                     // Update the input name attribute with the new chapter and section indexes
-                    clonedRegulationTitle.find('input[name^="regulation_title"]').each(function(index) {
+                    clonedRegulationTitle.find('input[name^="regulation_title"]').each(function(
+                        index) {
                         $(this).attr('name', 'regulation_title[' + chapterCount + '][' + (
                             lastIndex + index) + ']');
                     });
@@ -415,7 +434,8 @@
                 });
 
                 $(document).on('click', '.remove-RegulationTitle', function() {
-                    let RegulationTitles = $(this).closest('.RegulationTitleMain').find('.RegulationTitle');
+                    let RegulationTitles = $(this).closest('.RegulationTitleMain').find(
+                        '.RegulationTitle');
                     if (RegulationTitles.length > 1) {
                         $(this).closest('.RegulationTitle').remove();
                     }
@@ -423,7 +443,7 @@
 
             });
 
-ḥ
+            ḥ
         });
     </script>
 @endsection

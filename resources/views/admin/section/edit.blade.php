@@ -63,7 +63,7 @@
                                         <div class="form-group form-default" style="display: block">
                                             <label class="float-label font-weight-bold">Section :</label>
                                             <span class="d-flex">
-                                                <input type="number" name="section_no" class="form-control"
+                                                <input type="text" name="section_no" class="form-control"
                                                     style="width: 20%;" placeholder="Enter Section NO."
                                                     value="{{ $sections->section_no }}">
                                                 <input type="text" name="section_title"

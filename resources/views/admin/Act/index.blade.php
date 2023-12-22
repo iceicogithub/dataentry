@@ -63,7 +63,7 @@
                                         <td class="text-capitalize">
                                             <a href="/edit-main-act/{{$item->act_id}}" title="Edit" class="px-1"><i
                                                     class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
-                                            <a href="#" title="View" class="px-1"><i
+                                            <a href="/view-main-act/{{$item->act_id}}" title="View" class="px-1"><i
                                                     class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
                                             <a href="#" title="Delete" class="px-1"><i
                                                     class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>

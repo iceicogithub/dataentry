@@ -41,25 +41,47 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-                                @php $a=1; @endphp
+                                @php $a = 1; @endphp
                                 @foreach ($mainact as $item)
                                     <tr>
                                         <td scope="row">@php echo $a++; @endphp</td>
-                                        <td class="text-capitalize text-justify"><a 
-                                            @if($item->id == 1) href="/get_act_section/{{$act_id}}" 
-                                            @elseif($item->id == 2) href="/add/{{$act_id}}"
-                                            @elseif($item->id == 3) href="/add/{{$act_id}}"
-                                            @elseif($item->id == 4) href="/add/{{$act_id}}"
-                                            @elseif($item->id == 5) href="/get_act_rule/{{$act_id}}"
-                                            @elseif($item->id == 6) href="/get_act_regulation/{{$act_id}}"
-                                            @else href="/add/{{$act_id}}"
+                                        <td class="text-capitalize text-justify">
+                                            @php
+                                                $actSummaryArray = json_decode($act->act_summary, true);
+                                            @endphp
+
+                                            @if ($actSummaryArray && in_array($item->id, $actSummaryArray))
+                                                @if ($item->id === 1)
+                                                    <a href="/get_act_section/{{ $act_id }}">{{ $item->title }}</a>
+                                                @elseif ($item->id === 2)
+                                                    <a href="/get_state_amendments/{{ $act_id }}">{{ $item->title }}</a>
+                                                @elseif ($item->id === 3)
+                                                    <a href="/get_amendment_act/{{ $act_id }}">{{ $item->title }}</a>
+                                                @elseif ($item->id === 4)
+                                                    <a href="/get_timeline/{{ $act_id }}">{{ $item->title }}</a>
+                                                @elseif ($item->id === 5)
+                                                    <a href="/get_act_rule/{{ $act_id }}">{{ $item->title }}</a>
+                                                @elseif ($item->id === 6)
+                                                    <a href="/get_act_regulation/{{ $act_id }}">{{ $item->title }}</a>
+                                                @elseif ($item->id === 7)
+                                                    <a href="/get_orders/{{ $act_id }}">{{ $item->title }}</a>
+                                                @elseif ($item->id === 8)
+                                                    <a href="/get_schemes_guidelines/{{ $act_id }}">{{ $item->title }}</a>
+                                                @elseif ($item->id === 9)
+                                                    <a href="/get_other_main_acts/{{ $act_id }}">{{ $item->title }}</a>
+                                                @else
+                                                    <a href="/desired_path_for_existing_id/{{ $act_id }}">{{ $item->title }}</a>
+                                                @endif
+                                            @else
+                                                <a href="/desired_path_for_existing_id/{{ $act_id }}">{{ $item->title }}</a>
                                             @endif
-                                            >{{ $item->title }}</a></td>
-                                        
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
+
+
+
                         </table>
                     </div>
                 </div>

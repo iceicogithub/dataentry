@@ -72,7 +72,18 @@
                                         placeholder="Enter Act Title">
                                 </div>
                             </div>
-
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-control-label">Select Products<span
+                                            class="text-danger">*</span></label>
+                                    <select name="act_summary[]" class="form-control" multiple="multiple">
+                                        <option disabled>-Select-</option>
+                                        @foreach ($actSummary as $item)
+                                            <option value="{{ $item->id }}">{{ $item->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <button type="submit" class="btn  btn-success">Save</button>
@@ -90,7 +101,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-
             // for category type
             $(document).on('change', '.category', function() {
                 if ($(this).val() === '2') {

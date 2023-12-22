@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
+use App\Http\Controllers\PdfExportController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\RegulationController;
 use Illuminate\Support\Facades\Artisan;
@@ -47,6 +48,7 @@ Route::get('/new_act', [ActController::class, 'new_act'])->name('new_act');
 Route::post('/store_new_act', [ActController::class, 'store_new_act']);
 Route::post('/update_main_act/{id}', [ActController::class, 'update_main_act']);
 Route::get('/edit-main-act/{id}', [ActController::class, 'edit_main_act'])->name('edit-main-act');
+Route::get('/view-main-act/{id}', [ActController::class, 'view'])->name('view-main-act');
 Route::get('/add-act/{id}', [ActController::class, 'create'])->name('add-act');
 Route::get('/edit-act', [ActController::class, 'edit'])->name('edit-act');
 Route::post('/store_act/{id}', [ActController::class, 'store']);
@@ -68,3 +70,5 @@ Route::get('/get_act_regulation/{id}', [RegulationController::class, 'index'])->
 Route::get('/edit-regulation/{id}', [RegulationController::class, 'edit_regulation'])->name('edit-regulation');
 Route::post('/update_all_regulation/{id}', [RegulationController::class, 'update']);
  
+
+Route::get('/export-pdf/{id}', [PdfExportController::class, 'exportToPdf'])->name('export-pdf');

@@ -11,6 +11,7 @@ use App\Models\PartsType;
 use App\Models\SubSection;
 use App\Models\Footnote;
 use App\Models\Chapter;
+use App\Models\Form;
 use App\Models\Regulation;
 use App\Models\Section;
 use App\Models\State;
@@ -33,7 +34,7 @@ class ActController extends Controller
         $act_id = $id;
         $act = Act::where('act_id', $act_id)->first();
         $act_section = Section::where('act_id', $id)->with('MainTypeModel', 'Partmodel', 'ChapterModel')
-            ->orderBy('section_no', 'asc')->get();
+            ->orderBy('created_at', 'desc')->get();
 
         return view('admin.section.index', compact('act_section', 'act_id', 'act'));
     }
@@ -67,13 +68,22 @@ class ActController extends Controller
                     if ($request->subtypes_id[$key] == 1) {
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
                         foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                            $currentSectionNo = (int)$request->section_no[$key][$index];
+                            $currentSectionNo = $request->section_no[$key][$index];
                             // Update Section records
-                            Section::where('section_no', '>=', $currentSectionNo)
-                                ->get()
-                                ->each(function ($section) {
-                                    $section->increment('section_no');
-                                });
+                            // dd($currentSectionNo);
+                            // die();
+                            if (is_numeric($currentSectionNo)) {
+                                Section::where('section_no', '>=', $currentSectionNo)
+                                    ->get()
+                                    ->each(function ($section) use ($currentSectionNo) {
+                                        $section->increment('section_no');
+                                    });
+                            } else {
+                                // Handle the case where $currentSectionNo is not numeric
+                                // This could include logging an error, skipping the increment, etc.
+                                // Example: Log an error
+                                \Log::error('Invalid section number encountered: ' . $currentSectionNo);
+                            }
 
                             // Update SubSection records
                             SubSection::where('section_no', '>=', $currentSectionNo)
@@ -118,6 +128,13 @@ class ActController extends Controller
                                 'chapter_id' => $chapt->chapter_id,
                                 'subtypes_id' => $subtypes_id,
                                 'regulation_title' => $regulationtitle,
+                            ]);
+                            $regulationId = $regulation->id;
+
+                            $form = Form::create([
+                                'regulation_id' => $regulationId,
+                                'act_id' => $act->act_id,
+                                'form_title' => $request->form_title,
                             ]);
                         }
                     }
@@ -183,6 +200,11 @@ class ActController extends Controller
         }
     }
 
+    public function view(Request $request, $id)
+    {
+        $export = Act::where('act_id', $id)->get();
+        return view('admin.act.view',compact('export'));
+    }
     public function update_main_act(Request $request, $id)
     {
         try {
@@ -225,18 +247,21 @@ class ActController extends Controller
     {
         $category = Category::all();
         $states = State::all();
-        return view('admin.act.new_act', compact('category', 'states'));
+        $actSummary = ActSummary::all();
+        return view('admin.act.new_act', compact('category', 'states', 'actSummary'));
     }
+
     public function store_new_act(Request $request)
     {
+        // dd($request);
+        // die();
         try {
-
             $act = new Act();
             $act->category_id = $request->category_id;
             $act->state_id = $request->state_id ?? null;
             $act->act_title = $request->act_title;
+            $act->act_summary = json_encode($request->act_summary);
             $act->save();
-
 
             return redirect()->route('act')->with('success', 'Act created successfully');
         } catch (\Exception $e) {
@@ -251,8 +276,11 @@ class ActController extends Controller
     {
         $act_id = $id;
         $mainact = ActSummary::all();
-        return view('admin.act.main_act', compact('act_id', 'mainact'));
+        $act = Act::find($act_id);
+
+        return view('admin.act.main_act', compact('act_id', 'mainact', 'act'));
     }
+
 
 
     /**

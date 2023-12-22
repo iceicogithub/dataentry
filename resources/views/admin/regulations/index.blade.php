@@ -15,10 +15,7 @@
                         <a href="/add-act/{{ $act_id }}" class="mr-2"><button class="btn btn-success">Add Index</button></a>
                         <a href="/edit-main-act/{{ $act_id }}"><button class="btn btn-danger">Back</button></a>
                     </ol>
-                    
                 </div>
-
-
             </div>
         </div>
 
