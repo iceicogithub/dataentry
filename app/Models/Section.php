@@ -37,4 +37,5 @@ class Section extends Model
     {
         return $this->hasMany(Footnote::class, 'section_id', 'section_id');
     }
+    
 }

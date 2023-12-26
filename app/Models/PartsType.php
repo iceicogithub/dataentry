@@ -11,4 +11,9 @@ class PartsType extends Model
     protected $primaryKey = 'partstype_id';
     protected $table = 'partstype';
     protected $fillable = ['parts'];
+
+    public function parts()
+    {
+        return $this->hasMany(Parts::class, 'partstype_id', 'partstype_id');
+    }
 }

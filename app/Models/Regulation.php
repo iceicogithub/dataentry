@@ -10,7 +10,7 @@ class Regulation extends Model
     use HasFactory;
     protected $primaryKey = 'regulation_id';
     protected $table = 'regulations';
-    protected $fillable = ['regulation_no','act_id','maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'regulation_title', 'regulation_content'];
+    protected $fillable = ['regulation_no', 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'regulation_title', 'regulation_content'];
 
     public function MainTypeModel()
     {
@@ -28,6 +28,10 @@ class Regulation extends Model
     }
     public function footnoteModel()
     {
-        return $this->hasMany(Footnote::class, 'regulation_id','regulation_no');
+        return $this->hasMany(Footnote::class, 'regulation_id', 'regulation_no');
+    }
+    public function subtype()
+    {
+        return $this->belongsTo(SubType::class, 'subtype_id');
     }
 }

@@ -227,15 +227,17 @@
                                 </div>
                             </div>
 
-                            @if (isset($regulationId))
-                                <div class="col-md-12 px-3">
-                                    <div class="form-group form-default">
-                                        <label class="float-label"> Form Title <span class="text-danger">*</span></label>
-                                        <input type="text" name="form_title" class="form-control mb-3"
-                                            placeholder="Enter Form Title" value="{{ $act->form_title }}">
-                                    </div>
+                            @php
+                                $displayStyle = $showFormTitle ? 'block' : 'none';
+                            @endphp
+                            <div class="col-md-12 px-3" style="display: {{ $displayStyle }}">
+                                <div class="form-group form-default">
+                                    <label class="float-label"> Form Title <span class="text-danger">*</span></label>
+                                    <input type="text" name="form_title" class="form-control mb-3"
+                                        placeholder="Enter Form Title" value="{{ $act->form_title }}">
                                 </div>
-                            @endif
+                            </div>
+
 
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -359,12 +361,9 @@
                 });
 
                 // for sections 
-                // ...
-
-                // Add -Remove Section
                 $(document).on('click', '.add-sectionTitle', function() {
                     let sectionTitleMain = $(this).closest('.section-set').find(
-                    '.sectionTitleMain');
+                        '.sectionTitleMain');
                     let clonedSectionTitle = sectionTitleMain.find('.sectionTitle:first').clone(
                         true);
                     clonedSectionTitle.find('input').val('');
@@ -397,8 +396,6 @@
                         $(this).closest('.sectionTitle').remove();
                     }
                 });
-
-                // ...
 
                 // for regulations 
                 $(document).on('click', '.add-RegulationTitle', function() {
@@ -443,7 +440,6 @@
 
             });
 
-            ḥ
         });
     </script>
 @endsection

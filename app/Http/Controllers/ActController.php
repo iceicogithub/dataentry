@@ -34,7 +34,7 @@ class ActController extends Controller
         $act_id = $id;
         $act = Act::where('act_id', $act_id)->first();
         $act_section = Section::where('act_id', $id)->with('MainTypeModel', 'Partmodel', 'ChapterModel')
-            ->orderBy('created_at', 'desc')->get();
+            ->orderBy('section_no', 'asc')->get();
 
         return view('admin.section.index', compact('act_section', 'act_id', 'act'));
     }
@@ -68,22 +68,13 @@ class ActController extends Controller
                     if ($request->subtypes_id[$key] == 1) {
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
                         foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                            $currentSectionNo = $request->section_no[$key][$index];
+                            $currentSectionNo = (int)$request->section_no[$key][$index];
                             // Update Section records
-                            // dd($currentSectionNo);
-                            // die();
-                            if (is_numeric($currentSectionNo)) {
-                                Section::where('section_no', '>=', $currentSectionNo)
-                                    ->get()
-                                    ->each(function ($section) use ($currentSectionNo) {
-                                        $section->increment('section_no');
-                                    });
-                            } else {
-                                // Handle the case where $currentSectionNo is not numeric
-                                // This could include logging an error, skipping the increment, etc.
-                                // Example: Log an error
-                                \Log::error('Invalid section number encountered: ' . $currentSectionNo);
-                            }
+                            Section::where('section_no', '>=', $currentSectionNo)
+                                ->get()
+                                ->each(function ($section) {
+                                    $section->increment('section_no');
+                                });
 
                             // Update SubSection records
                             SubSection::where('section_no', '>=', $currentSectionNo)
@@ -129,7 +120,8 @@ class ActController extends Controller
                                 'subtypes_id' => $subtypes_id,
                                 'regulation_title' => $regulationtitle,
                             ]);
-                            $regulationId = $regulation->id;
+
+                            $regulationId = $regulation->regulation_id;
 
                             $form = Form::create([
                                 'regulation_id' => $regulationId,
@@ -149,7 +141,7 @@ class ActController extends Controller
                     $subtypes_id = $request->subtypes_id[$key] ?? null;
 
                     foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                        $currentSectionNo = (int)$request->section_no[$index][$key];
+                        $currentSectionNo = (int)$request->section_no[$key][$index];
                         //    dd($currentSectionNo);
                         //    die();
                         // Update Section records
@@ -186,12 +178,11 @@ class ActController extends Controller
                 } else {
                     dd("something went wrong");
                 }
-
-                if ($request->subtypes_id[$key] == 1) {
-                    return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Section added successfully');
-                } elseif ($request->subtypes_id[$key] == 4) {
-                    return redirect()->route('get_act_regulation', ['id' => $id])->with('success', 'Regulation added successfully');
-                }
+            }
+            if ($request->subtypes_id[$key] == 1) {
+                return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Section added successfully');
+            } elseif ($request->subtypes_id[$key] == 4) {
+                return redirect()->route('get_act_regulation', ['id' => $id])->with('success', 'Regulation added successfully');
             }
         } catch (\Exception $e) {
             \Log::error('Error creating Act: ' . $e->getMessage());
@@ -203,7 +194,7 @@ class ActController extends Controller
     public function view(Request $request, $id)
     {
         $export = Act::where('act_id', $id)->get();
-        return view('admin.act.view',compact('export'));
+        return view('admin.act.view', compact('export'));
     }
     public function update_main_act(Request $request, $id)
     {
@@ -239,9 +230,11 @@ class ActController extends Controller
         $parts = PartsType::all();
 
         $act = Act::where('act_id', $id)->first();
-
-
-        return view('admin.act.create', compact('category', 'status', 'states', 'mtype', 'parts', 'stype', 'act'));
+        $showFormTitle = ($act->act_summary && in_array('6', json_decode($act->act_summary, true)));
+        // dd($showFormTitle);
+        // die();
+        
+        return view('admin.act.create', compact('category', 'status', 'states', 'mtype', 'parts', 'stype', 'act', 'showFormTitle'));
     }
     public function new_act()
     {
