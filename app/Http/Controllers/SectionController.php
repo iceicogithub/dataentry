@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Act;
+use App\Models\Chapter;
 use App\Models\Category;
 use App\Models\Section;
 use App\Models\SubSection;
 use App\Models\Footnote;
 use App\Models\MainType;
+use App\Models\Parts;
 use App\Models\PartsType;
 use App\Models\State;
 use App\Models\Status;
@@ -39,7 +41,13 @@ class SectionController extends Controller
 
     public function add_new_section(Request $request)
     {
+        // dd($request);
+        // die();
         try {
+            $chapter = Chapter::find($request->chapter_id);
+            $chapter->chapter_title = $request->chapter_title;
+            $chapter->update();
+
             $id = $request->act_id;
             $sec_no = $request->section_no;
             $maintypeId = $request->maintype_id;
@@ -48,8 +56,8 @@ class SectionController extends Controller
             $nextSectionNo = $sec_no + 1;
 
             // Update the existing sections' section_no in the Section table
-            Section::where('section_no', '>=', $nextSectionNo)
-                ->increment('section_no');
+            // Section::where('section_no', '>=', $nextSectionNo)
+            //     ->increment('section_no');
 
             // Create the new section with the incremented section_no
             $section = Section::create([
@@ -66,8 +74,8 @@ class SectionController extends Controller
             if ($maintypeId == "1" || $maintypeId == "2") {
                 foreach ($request->sub_section_title as $key => $subSectionTitle) {
                     // Update the existing sections' section_no in the SubSection table
-                    SubSection::where('section_no', '>=', $nextSectionNo)
-                        ->increment('section_no');
+                    // SubSection::where('section_no', '>=', $nextSectionNo)
+                    //     ->increment('section_no');
 
                     $sub_section = SubSection::create([
                         'section_id' => $section->section_id,
@@ -80,8 +88,8 @@ class SectionController extends Controller
                     ]);
 
                     // Update the existing sections' section_no in the Footnote table
-                    Footnote::where('section_no', '>=', $nextSectionNo)
-                        ->increment('section_no');
+                    // Footnote::where('section_no', '>=', $nextSectionNo)
+                    //     ->increment('section_no');
 
                     $footnote = Footnote::create([
                         'section_id' => $section->section_id,
@@ -131,16 +139,32 @@ class SectionController extends Controller
     {
         $sections = Section::with('ChapterModel', 'Partmodel')->where('section_id', $id)->first();
         $subsec = Section::where('section_id', $id)->with('subsectionModel', 'footnoteModel')->get();
-        // dd($subsec);
+        // dd($sections);
         // die();
         return view('admin.section.edit', compact('sections', 'subsec'));
     }
 
-
-
     public function update(Request $request, $id)
     {
+        // dd($request);
+        // die();
         try {
+            if ($request->has('chapter_id')) {
+                $chapter = Chapter::find($request->chapter_id);
+
+                if ($chapter) {
+                    $chapter->chapter_title = $request->chapter_title;
+                    $chapter->update();
+                }
+            } elseif ($request->has('parts_id')) {
+                $part = Parts::find($request->parts_id);
+
+                if ($part) {
+                    $part->parts_title = $request->parts_title;
+                    $part->update();
+                }
+            }
+
             // Check if section_id exists in the request
             if (!$request->has('section_id')) {
                 return redirect()->route('edit-section', ['id' => $id])->withErrors(['error' => 'Section ID is missing']);
@@ -152,35 +176,7 @@ class SectionController extends Controller
             if (!$sections) {
                 return redirect()->route('edit-section', ['id' => $id])->withErrors(['error' => 'Section not found']);
             }
-            if ($sections->section_no == $request->section_no) {
-                $sections->section_content = $request->section_content ?? null;
-                $sections->section_title = $request->section_title ?? null;
-                $sections->section_no = $request->section_no ?? null;
-                $sections->update();
-            } else {
-                $currentSectionNo = (int)$request->section_no;
-
-                // Update Section records
-                Section::where('section_no', '>=', $currentSectionNo)
-                    ->get()
-                    ->each(function ($section) {
-                        $section->increment('section_no');
-                    });
-
-                // Update SubSection records
-                SubSection::where('section_no', '>=', $currentSectionNo)
-                    ->get()
-                    ->each(function ($subSection) {
-                        $subSection->increment('section_no');
-                    });
-
-                // Update Footnote records
-                Footnote::where('section_no', '>=', $currentSectionNo)
-                    ->get()
-                    ->each(function ($footnote) {
-                        $footnote->increment('section_no');
-                    });
-
+            if ($sections) {
                 $sections->section_content = $request->section_content ?? null;
                 $sections->section_title = $request->section_title ?? null;
                 $sections->section_no = $request->section_no ?? null;
@@ -193,45 +189,24 @@ class SectionController extends Controller
                     // Check if the key exists before using it
                     if ($request->filled('sub_section_id.' . $key)) {
                         $sub_section = SubSection::find($request->sub_section_id[$key]);
-                        if ($sub_section) {
 
-                            if ($sub_section->sub_section_no == $request->sub_section_no) {
-
-                                $sub_section->sub_section_title = $request->sub_section_title[$key] ?? null;
-                                $sub_section->sub_section_no = $request->sub_section_no[$key];
-                                $sub_section->sub_section_content = $request->sub_section[$key] ?? null;
-                                $sub_section->update();
-                            } else {
-                                $new_sub_section_no = $request->sub_section_no[$key];
-
-                                // Update existing SubSections with sub_section_no >= $new_sub_section_no
-                                SubSection::where('sub_section_no', '>=', $new_sub_section_no)->get()
-                                    ->each(function ($subSection) {
-                                        $subSection->increment('sub_section_no');
-                                    });
-                        
-                                // Update the current SubSection
-                                $sub_section->sub_section_title = $request->sub_section_title[$key] ?? null;
-                                $sub_section->sub_section_no = $new_sub_section_no;
-                                $sub_section->sub_section_content = $request->sub_section[$key] ?? null;
-                                $sub_section->update();
-                            }
+                        if ($sub_section->sub_section_id == $request->sub_section_id) {
+                            $sub_section->sub_section_title = $item ?? null;
+                            $sub_section->sub_section_no = $request->sub_section_no[$key] ?? null;
+                            $sub_section->sub_section_content = $request->sub_section[$key] ?? null;
+                            $sub_section->update();
+                        } else {
+                            $subsec = new SubSection();
+                            $subsec->section_id = $id ?? null;
+                            $subsec->sub_section_no = $request->sub_section_no[$key] ?? null;
+                            $subsec->section_no = $sections->section_no ?? null;
+                            $subsec->act_id = $sections->act_id ?? null;
+                            $subsec->chapter_id = $sections->chapter_id ?? null;
+                            $subsec->parts_id = $sections->parts_id ?? null;
+                            $subsec->sub_section_title = $item ?? null;
+                            $subsec->sub_section_content = $request->sub_section[$key] ?? null;
+                            $subsec->save();
                         }
-                    } else {
-                        SubSection::where('sub_section_no', '>=', $request->sub_section_no[$key])->get()
-                            ->each(function ($subSection) {
-                                $subSection->increment('sub_section_no');
-                            });
-                        $subsec = new SubSection();
-                        $subsec->section_id = $id ?? null;
-                        $subsec->sub_section_no = $sections->sub_section_no[$key];
-                        $subsec->section_no = $sections->section_no ?? null;
-                        $subsec->act_id = $sections->act_id ?? null;
-                        $subsec->chapter_id = $sections->chapter_id ?? null;
-                        $subsec->parts_id = $sections->parts_id ?? null;
-                        $subsec->sub_section_title = $request->sub_section_title[$key] ?? null;
-                        $subsec->sub_section_content = $request->sub_section[$key] ?? null;
-                        $subsec->save();
                     }
                 }
             }
@@ -269,33 +244,23 @@ class SectionController extends Controller
         }
     }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        try {
+            $section = Section::find($id);
+    
+            if (!$section) {
+                return redirect()->back()->withErrors(['error' => 'Section not found.']);
+            }
+    
+            $section->delete();
+    
+            return redirect()->back()->with('success', 'Section deleted successfully.');
+        } catch (\Exception $e) {
+            \Log::error('Error deleting section: ' . $e->getMessage());
+    
+            return redirect()->back()->withErrors(['error' => 'Failed to delete section. Please try again.' . $e->getMessage()]);
+        }
     }
+    
 }

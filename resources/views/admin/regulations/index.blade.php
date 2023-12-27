@@ -177,10 +177,10 @@
                                             <a href="#" title="View" class="px-1">
                                                 <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
                                             </a>
-                                            <a href="#" title="Delete" class="px-1">
+                                            <a href="{{ url('/delete_regulation/' . $item->regulation_id) }}" title="Delete" class="px-1" onclick="return confirm('Are you sure ?')">
                                                 <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                             </a>
-                                            <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_no' => $item->section_no]) }}"
+                                            <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_no' => $item->regulation_no]) }}"
                                                 title="Add Next Section" class="px-1">
                                                 <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                             </a>

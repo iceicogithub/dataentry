@@ -27,7 +27,7 @@ class PdfExportController extends Controller
             $partstype = PartsType::all();
             $forparts = Section::where('maintype_id',2)->get();
             $parts = Parts::where('act_id', $id)->get();
-            $regulation = Regulation::where('act_id', $id)->get();
+            $regulation = Regulation::where('act_id', $id)->whereIn('chapter_id', $chapter->pluck('chapter_id'))->get();
             $subType = SubType::all();
             // dd($regulation);
             // die();

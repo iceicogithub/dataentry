@@ -60,7 +60,14 @@
     <div class="container">
         <div class="text-uppercase fs-1" style="text-align: center">{{ $act->act_title }}</div>
         <hr>
-        <div class="fs-1" style="text-align: center">ARRANGEMENT OF SECTIONS</div>
+        @if (isset($section) && count($section) > 0)
+            <div class="fs-1" style="text-align: center">ARRANGEMENT OF SECTIONS</div>
+        @elseif (isset($regulation) && count($regulation) > 0)
+            <div class="fs-1" style="text-align: center">ARRANGEMENT OF REGULATIONS</div>
+        @else
+            <div class="fs-1" style="text-align: center">ARRANGEMENT OF OTHERS</div>
+        @endif
+
         <hr>
         @if ($type->contains('maintype_id', 1))
             @php $sectionCounter1 = 1; @endphp
@@ -68,15 +75,28 @@
                 <div style="text-align: center">
                     <div class="text-uppercase fs-2">{{ $chapterItem->chapter_title }}</div>
                 </div>
-                @if ($key === 0)
-                    <div style="text-align: start">Sections</div>
+                @if (!empty($section) && count($section) > 0)
+                    @if ($key === 0)
+                        <div style="text-align: start">Sections</div>
+                    @endif
+                    <div style="text-align: start">
+                        @foreach ($section->where('chapter_id', $chapterItem->chapter_id) as $sectionItem)
+                            <span class="text-capitalize fs-2">{{ $sectionCounter1++ }}.
+                                {{ $sectionItem->section_title }}</span><br>
+                        @endforeach
+                    </div>
                 @endif
-                <div style="text-align: start">
-                    @foreach ($section->where('chapter_id', $chapterItem->chapter_id) as $sectionItem)
-                        <span class="text-capitalize fs-2">{{ $sectionCounter1++ }}.
-                            {{ $sectionItem->section_title }}</span><br>
-                    @endforeach
-                </div>
+                @if (!empty($regulation) && count($regulation) > 0)
+                    @if ($key === 0)
+                        <div style="text-align: start">Regulation</div>
+                    @endif
+                    <div style="text-align: start">
+                        @foreach ($regulation->where('chapter_id', $chapterItem->chapter_id) as $regulationItem)
+                            <span class="text-capitalize fs-2">{{ $sectionCounter1++ }}.
+                                {{ $regulationItem->regulation_title }}</span><br>
+                        @endforeach
+                    </div>
+                @endif
             @endforeach
         @endif
         @if ($type->contains('maintype_id', 2))
@@ -113,14 +133,26 @@
                 <div style="text-align: center">
                     <div class="text-uppercase fs-2">{{ $chapterItem->chapter_title }}</div>
                 </div>
-                <div style="text-align: start">
-                    @foreach ($section->where('chapter_id', $chapterItem->chapter_id) as $sectionItem)
-                        <div class="section-padding">
-                            <span class="text-capitalize fs-2 fw-bold">{{ $sectionCounter2++ }}.
-                                {{ $sectionItem->section_title }}:-</span><span>{!! $sectionItem->section_content !!}</span>
-                        </div><br>
-                    @endforeach
-                </div>
+                @if (!empty($section) && count($section) > 0)
+                    <div style="text-align: start">
+                        @foreach ($section->where('chapter_id', $chapterItem->chapter_id) as $sectionItem)
+                            <div class="section-padding">
+                                <span class="text-capitalize fs-2 fw-bold">{{ $sectionCounter2++ }}.
+                                    {{ $sectionItem->section_title }}:-</span><span>{!! $sectionItem->section_content !!}</span>
+                            </div><br>
+                        @endforeach
+                    </div>
+                @endif
+                @if (!empty($regulation) && count($regulation) > 0)
+                    <div style="text-align: start">
+                        @foreach ($regulation->where('chapter_id', $chapterItem->chapter_id) as $regulationItem)
+                            <div class="section-padding">
+                                <span class="text-capitalize fs-2 fw-bold">{{ $sectionCounter2++ }}.
+                                    {{ $regulationItem->regulation_title }}:-</span><span>{!! $regulationItem->regulation_content !!}</span>
+                            </div><br>
+                        @endforeach
+                    </div>
+                @endif
             @endforeach
         @endif
         @if ($type->contains('maintype_id', 2))

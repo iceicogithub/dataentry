@@ -60,6 +60,7 @@ Route::get('/sub-section', [SectionController::class, 'SubSection_Index'])->name
 Route::get('/add-sub-section', [SectionController::class, 'SubSection_Create'])->name('add-sub-section');
 Route::get('/edit-section/{id}', [SectionController::class, 'edit_section'])->name('edit-section');
 Route::post('/update_all_section/{id}', [SectionController::class, 'update']);
+Route::get('/delete_section/{id}', [SectionController::class, 'destroy']);
 Route::get('/add_below_new_section/{id}/{section_no}', [SectionController::class, 'add_below_new_section'])->name('add_below_new_section');
 Route::post('/add_new_section', [SectionController::class, 'add_new_section']);
 
@@ -69,6 +70,7 @@ Route::get('/add-chapter', [ChapterController::class, 'create'])->name('add-chap
 Route::get('/get_act_regulation/{id}', [RegulationController::class, 'index'])->name('get_act_regulation');
 Route::get('/edit-regulation/{id}', [RegulationController::class, 'edit_regulation'])->name('edit-regulation');
 Route::post('/update_all_regulation/{id}', [RegulationController::class, 'update']);
+Route::get('/delete_regulation/{id}', [RegulationController::class, 'destroy']);
  
 
 Route::get('/export-pdf/{id}', [PdfExportController::class, 'exportToPdf'])->name('export-pdf');

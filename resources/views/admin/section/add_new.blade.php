@@ -4,11 +4,7 @@
         <div class="col-sm-4">
             <div class="page-header float-left">
                 <div class="page-title">
-                    @if ($sections->ChapterModel)
-                        <h1>Chapter : <span>{{ $sections->ChapterModel->chapter_title }}</span></h1>
-                    @else
-                        <h1>Parts : <span>{{ $sections->Partmodel->parts_title }}</span></h1>
-                    @endif
+
                 </div>
             </div>
         </div>
@@ -25,8 +21,8 @@
     <div class="content mt-3">
         <div class="row">
             <div class="col-lg-12">
-                <form id="form" action="/add_new_section" method="post"
-                    enctype="multipart/form-data" class="form form-horizontal">
+                <form id="form" action="/add_new_section" method="post" enctype="multipart/form-data"
+                    class="form form-horizontal">
                     @csrf
                     <!-- Your Blade View -->
                     @if ($errors->has('error'))
@@ -55,8 +51,20 @@
                                 <div>
                                     <div class="form-group form-default col-md-12 px-0" id="sectionDiv">
                                         <div class="form-group form-default" style="display: block">
+                                            @if ($sections->ChapterModel)
+                                                <label class="float-label font-weight-bold">Chapter :</label>
+                                                <span> <input type="text" name="chapter_title" class="form-control mb-3"
+                                                        value="{{ $sections->ChapterModel->chapter_title }}"></span>
+                                            @else
+                                                <label class="float-label font-weight-bold">Parts :</label>
+                                                <span> <input type="text" name="chapter_title" class="form-control mb-3"
+                                                        value="{{ $sections->Partmodel->parts_title }}"></span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group form-default" style="display: block">
                                             <label class="float-label font-weight-bold">Section Title :</label>
-                                            <span> <input type="text" name="section_title" class="form-control mb-3"></span>
+                                            <span> <input type="text" name="section_title"
+                                                    class="form-control mb-3"></span>
 
                                         </div>
                                         <div class="form-group form-default" style="display: block">
@@ -65,8 +73,6 @@
                                             <textarea type="text" id="section" name="section_content"
                                                 class="form-control section-textarea ckeditor-replace section" placeholder="Enter Section"></textarea>
                                         </div>
-
-
 
                                         <!-- If there are no subsections or footnotes, show the default section -->
                                         <div class="multi-addition-container col-md-12 px-0">
@@ -131,7 +137,8 @@
                                     </div>
 
                                     <div class="form-group form-default" id="articleDiv" style="display: none">
-                                        <input type="text" class="form-control mb-3" placeholder="Enter Article Title">
+                                        <input type="text" class="form-control mb-3"
+                                            placeholder="Enter Article Title">
                                         <textarea type="text" id="article" name="article" class="form-control ckeditor-replace article"></textarea>
                                     </div>
 

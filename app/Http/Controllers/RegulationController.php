@@ -145,6 +145,20 @@ class RegulationController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $regulation = Regulation::find($id);
+    
+            if (!$regulation) {
+                return redirect()->back()->withErrors(['error' => 'Regulation not found.']);
+            }
+    
+            $regulation->delete();
+    
+            return redirect()->back()->with('success', 'Regulation deleted successfully.');
+        } catch (\Exception $e) {
+            \Log::error('Error deleting regulation: ' . $e->getMessage());
+    
+            return redirect()->back()->withErrors(['error' => 'Failed to delete regulation. Please try again.' . $e->getMessage()]);
+        }
     }
 }

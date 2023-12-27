@@ -4,25 +4,7 @@
         <div class="col-sm-4">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1>
-                        @if ($sections->maintype_id == 1)
-                            Chapter
-                        @elseif($sections->maintype_id == 2)
-                            Parts
-                        @else
-                            Appendices
-                        @endif
 
-                        <span> :
-                            @if ($sections->maintype_id == 1)
-                                {{ $sections->ChapterModel->chapter_title }}
-                            @elseif($sections->maintype_id == 2)
-                                {{ $sections->Partmodel->parts_title }}
-                            @else
-                                No data
-                            @endif
-                        </span>
-                    </h1>
                 </div>
             </div>
         </div>
@@ -55,11 +37,28 @@
                         </div>
                     @endif
                     <input type="hidden" name="section_id" value="{{ $sections->section_id }}">
+                    <input type="hidden" name="chapter_id" value="{{ $sections->chapter_id }}">
+                    <input type="hidden" name="parts_id" value="{{ $sections->parts_id }}">
                     <div class="card p-5">
                         <div class="additional-section">
                             <div class="border col-md-12 p-3">
                                 <div>
                                     <div class="form-group form-default col-md-12 px-0" id="sectionDiv">
+
+                                        <div class="form-group form-default" style="display: block"> 
+                                            @if ($sections->maintype_id == 1)
+                                                <label class="float-label font-weight-bold">Chapter :</label>
+                                                <input type="text" name="chapter_title" placeholder="Enter Chapter Title." value="{{ $sections->ChapterModel->chapter_title }}" class="form-control mb-3">
+                                            @elseif($sections->maintype_id == 2)
+                                                <label class="float-label font-weight-bold">Parts :</label>
+                                                <input type="text" name="parts_title" placeholder="Enter Parts Title."
+                                                    value="{{ $sections->Partmodel->parts_title }}"
+                                                    class="form-control mb-3">
+                                            @else
+                                                Appendices
+                                            @endif
+                                        </div>
+
                                         <div class="form-group form-default" style="display: block">
                                             <label class="float-label font-weight-bold">Section :</label>
                                             <span class="d-flex">
@@ -69,8 +68,8 @@
                                                 <input type="text" name="section_title"
                                                     value="{{ $sections->section_title }}" class="form-control mb-3">
                                             </span>
-
                                         </div>
+
                                         <div class="form-group form-default" style="display: block">
                                             <label class="float-label">Section Description<span
                                                     class="text-danger">*</span></label>
@@ -185,14 +184,14 @@
                                                             </label>
                                                             <div class="show-sub_section" style="display: none">
                                                                 <span class="d-flex">
-                                                                <input type="text" name="sub_section_no[]"
-                                                                    class="form-control mb-3"
-                                                                    placeholder="Enter Sub-Section No."
-                                                                    style="width: 20%;">
-                                                                <input type="text" name="sub_section_title[]"
-                                                                    class="form-control mb-3"
-                                                                    placeholder="Enter Sub-Section Title">
-                                                            </span>
+                                                                    <input type="text" name="sub_section_no[]"
+                                                                        class="form-control mb-3"
+                                                                        placeholder="Enter Sub-Section No."
+                                                                        style="width: 20%;">
+                                                                    <input type="text" name="sub_section_title[]"
+                                                                        class="form-control mb-3"
+                                                                        placeholder="Enter Sub-Section Title">
+                                                                </span>
                                                                 <textarea type="text" name="sub_section[]" class="form-control ckeditor-replace sub_section"></textarea>
                                                             </div>
                                                         </div>
