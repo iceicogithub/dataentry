@@ -113,7 +113,7 @@
                                                                                 value="{{ $subSectionItem->sub_section_title ?? '' }}"
                                                                                 placeholder="Enter Sub-Section Title">
                                                                         </span>
-                                                                        <textarea type="text" name="sub_section[{{ $k }}]" class="form-control ckeditor-replace sub_section">{{ $subSectionItem->sub_section_content ?? '' }}</textarea>
+                                                                        <textarea type="text" name="sub_section_content[{{ $k }}]" class="form-control ckeditor-replace sub_section">{{ $subSectionItem->sub_section_content ?? '' }}</textarea>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -141,7 +141,7 @@
                                                                             class="form-control mb-3"
                                                                             value="{{ $footnoteItem->footnote_title ?? '' }}"
                                                                             placeholder="Enter Footnote Title">
-                                                                        <textarea type="text" name="footnote[{{ $a }}]" class="form-control ckeditor-replace footnote">{{ $footnoteItem->footnote_content ?? '' }}</textarea>
+                                                                        <textarea type="text" name="footnote_content[{{ $a }}]" class="form-control ckeditor-replace footnote">{{ $footnoteItem->footnote_content ?? '' }}</textarea>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -192,7 +192,7 @@
                                                                         class="form-control mb-3"
                                                                         placeholder="Enter Sub-Section Title">
                                                                 </span>
-                                                                <textarea type="text" name="sub_section[]" class="form-control ckeditor-replace sub_section"></textarea>
+                                                                <textarea type="text" name="sub_section_content[]" class="form-control ckeditor-replace sub_section"></textarea>
                                                             </div>
                                                         </div>
                                                         <div
@@ -210,7 +210,7 @@
                                                                 <input type="text" name="footnote_title[]"
                                                                     class="form-control mb-3"
                                                                     placeholder="Enter Footnote Title">
-                                                                <textarea type="text" name="footnote[]" class="form-control ckeditor-replace footnote"></textarea>
+                                                                <textarea type="text" name="footnote_content[]" class="form-control ckeditor-replace footnote"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -318,7 +318,7 @@
                                         style="width: 20%;">
                                         <input type="text" name="sub_section_title[${sectionCounter}]" class="form-control mb-3" placeholder="Enter Sub-Section Title">
                                     </span>
-                                        <textarea type="text" name="sub_section[${sectionCounter}]" class="form-control ckeditor-replace sub_section"></textarea>
+                                        <textarea type="text" name="sub_section_content[${sectionCounter}]" class="form-control ckeditor-replace sub_section"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
@@ -332,7 +332,7 @@
                                         </label>
                                         <div class="show-footnote" style="display: none">
                                         <input type="text" name="footnote_title[${sectionCounter}]" class="form-control mb-3" placeholder="Enter Footnote Title">
-                                        <textarea type="text" name="footnote[${sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
+                                        <textarea type="text" name="footnote_content[${sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                     </div>
                                     </div>

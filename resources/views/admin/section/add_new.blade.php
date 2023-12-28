@@ -36,9 +36,9 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <input type="hidden" name="section_no" value="{{ $sec_no }}">
                     <input type="hidden" name="maintype_id" value="{{ $sections->maintype_id }}">
                     <input type="hidden" name="act_id" value="{{ $sections->act_id }}">
+                    <input type="hidden" name="section_rank" value="{{ $section_rank }}">
                     @if ($sections->chapter_id)
                         <input type="hidden" name="chapter_id" value="{{ $sections->chapter_id }}">
                     @endif
@@ -62,9 +62,13 @@
                                             @endif
                                         </div>
                                         <div class="form-group form-default" style="display: block">
-                                            <label class="float-label font-weight-bold">Section Title :</label>
-                                            <span> <input type="text" name="section_title"
-                                                    class="form-control mb-3"></span>
+                                            <label class="float-label font-weight-bold">Section :</label>
+                                            <span class="d-flex">
+                                                <input type="text" name="section_no" class="form-control mb-3"
+                                                    style="width:20%" placeholder="Section No.">
+                                                <input type="text" name="section_title" class="form-control mb-3"
+                                                    placeholder="Section Title">
+                                            </span>
 
                                         </div>
                                         <div class="form-group form-default" style="display: block">

@@ -37,7 +37,7 @@ class RegulationController extends Controller
     {
         $regulations = Regulation::with('ChapterModel', 'Partmodel')->where('regulation_id', $id)->first();
         $reg = Regulation::where('regulation_id', $id)->with('footnoteModel')->get();
-        // dd($subsec);
+        // dd($reg);
         // die();
         return view('admin.regulations.edit', compact('regulations', 'reg'));
     }
@@ -62,21 +62,21 @@ class RegulationController extends Controller
                 $regulations->regulation_no = $request->regulation_no ?? null;
                 $regulations->update();
             } else {
-                $currentRegulationNo = (int)$request->regulation_no;
+                $currentRegulationNo = $request->regulation_no;
 
                 // Update Section records
-                Regulation::where('regulation_no', '>=', $currentRegulationNo)
-                    ->get()
-                    ->each(function ($regulation) {
-                        $regulation->increment('regulation_no');
-                    });
+                // Regulation::where('regulation_no', '>=', $currentRegulationNo)
+                //     ->get()
+                //     ->each(function ($regulation) {
+                //         $regulation->increment('regulation_no');
+                //     });
 
                 // Update Footnote records
-                Footnote::where('regulation_no', '>=', $currentRegulationNo)
-                    ->get()
-                    ->each(function ($footnote) {
-                        $footnote->increment('regulation_no');
-                    });
+                // Footnote::where('regulation_no', '>=', $currentRegulationNo)
+                //     ->get()
+                //     ->each(function ($footnote) {
+                //         $footnote->increment('regulation_no');
+                //     });
 
                 $regulations->regulation_content = $request->regulation_content ?? null;
                 $regulations->regulation_title = $request->regulation_title ?? null;

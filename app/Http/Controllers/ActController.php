@@ -34,7 +34,7 @@ class ActController extends Controller
         $act_id = $id;
         $act = Act::where('act_id', $act_id)->first();
         $act_section = Section::where('act_id', $id)->with('MainTypeModel', 'Partmodel', 'ChapterModel')
-            ->orderBy('section_no', 'asc')->get();
+            ->orderBy('section_rank', 'asc')->get();
 
         return view('admin.section.index', compact('act_section', 'act_id', 'act'));
     }
@@ -121,23 +121,25 @@ class ActController extends Controller
                                     }
 
                                     // Update Section records
-                                    Section::where('section_no', $currentSectionNo)
-                                        ->update(['section_no' => $nextSectionNo]);
+                                    // Section::where('section_no', $currentSectionNo)
+                                    //     ->update(['section_no' => $nextSectionNo]);
 
-                                    Section::where('section_no', '>', $currentSectionNo)
-                                        ->get()
-                                        ->each(function ($section) {
-                                            $section->increment('section_no');
-                                        });
+                                    // Section::where('section_no', '>', $currentSectionNo)
+                                    //     ->get()
+                                    //     ->each(function ($section) {
+                                    //         $section->increment('section_no');
+                                    //     });
                                 } else {
                                     // If the section doesn't exist, use the current section number
                                     $nextSectionNo = $currentSectionNo;
                                 }
 
                                 // Update SubSection records, Footnote records, etc. (similar to Section)
-
+                                $lastSection = Section::latest('section_rank')->first();
+                                $lastRank = $lastSection ? $lastSection->section_rank : 0;
                                 // Create the new section with the updated section_no
                                 $section = Section::create([
+                                    'section_rank' => $lastRank + 1,
                                     'section_no' => $nextSectionNo,
                                     'act_id' => $act->act_id,
                                     'maintype_id' => $maintypeId,

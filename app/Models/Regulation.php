@@ -28,7 +28,7 @@ class Regulation extends Model
     }
     public function footnoteModel()
     {
-        return $this->hasMany(Footnote::class, 'regulation_id', 'regulation_no');
+        return $this->hasMany(Footnote::class, 'regulation_id', 'regulation_id');
     }
     public function subtype()
     {

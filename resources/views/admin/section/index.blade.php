@@ -183,7 +183,7 @@
                                             <a href="{{ url('/delete_section/' . $item->section_id) }}" title="Delete" class="px-1" onclick="return confirm('Are you sure ?')">
                                                 <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                             </a>
-                                            <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_no' => $item->section_no]) }}"
+                                            <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_no' => $item->section_no, 'section_rank' => $item->section_rank]) }}"
                                                 title="Add Next Section" class="px-1">
                                                 <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                             </a>

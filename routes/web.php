@@ -61,7 +61,7 @@ Route::get('/add-sub-section', [SectionController::class, 'SubSection_Create'])-
 Route::get('/edit-section/{id}', [SectionController::class, 'edit_section'])->name('edit-section');
 Route::post('/update_all_section/{id}', [SectionController::class, 'update']);
 Route::get('/delete_section/{id}', [SectionController::class, 'destroy']);
-Route::get('/add_below_new_section/{id}/{section_no}', [SectionController::class, 'add_below_new_section'])->name('add_below_new_section');
+Route::get('/add_below_new_section/{id}/{section_no}/{section_rank}', [SectionController::class, 'add_below_new_section'])->name('add_below_new_section');
 Route::post('/add_new_section', [SectionController::class, 'add_new_section']);
 
 Route::get('/chapter', [ChapterController::class, 'index'])->name('chapter');

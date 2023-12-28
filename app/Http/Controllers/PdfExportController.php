@@ -23,9 +23,9 @@ class PdfExportController extends Controller
             $type = MainType::all();
             $act = Act::findOrFail($id);
             $chapter = Chapter::where('act_id', $id)->get();
-            $section = Section::where('act_id', $id)->whereIn('chapter_id', $chapter->pluck('chapter_id'))->get();
+            $section = Section::where('act_id', $id)->whereIn('chapter_id', $chapter->pluck('chapter_id'))->orderBy('section_rank', 'asc')->get();
             $partstype = PartsType::all();
-            $forparts = Section::where('maintype_id',2)->get();
+            $forparts = Section::where('maintype_id',2)->orderBy('section_rank', 'asc')->get();
             $parts = Parts::where('act_id', $id)->get();
             $regulation = Regulation::where('act_id', $id)->whereIn('chapter_id', $chapter->pluck('chapter_id'))->get();
             $subType = SubType::all();

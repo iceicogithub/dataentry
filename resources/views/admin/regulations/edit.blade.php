@@ -65,7 +65,7 @@
                                         <div class="form-group form-default" style="display: block">
                                             <label class="float-label font-weight-bold">Regulation :</label>
                                             <span class="d-flex">
-                                                <input type="number" name="regulation_no" class="form-control"
+                                                <input type="text" name="regulation_no" class="form-control"
                                                     style="width: 20%;" placeholder="Enter Regulation NO."
                                                     value="{{ $regulations->regulation_no }}">
                                                 <input type="text" name="regulation_title"
@@ -144,7 +144,7 @@
                                                                             class="form-control mb-3"
                                                                             value="{{ $footnoteItem->footnote_title ?? '' }}"
                                                                             placeholder="Enter Footnote Title">
-                                                                        <textarea type="text" name="footnote[{{ $a }}]" class="form-control ckeditor-replace footnote">{{ $footnoteItem->footnote_content ?? '' }}</textarea>
+                                                                        <textarea type="text" name="footnote_content[{{ $a }}]" class="form-control ckeditor-replace footnote">{{ $footnoteItem->footnote_content ?? '' }}</textarea>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -213,7 +213,7 @@
                                                                 <input type="text" name="footnote_title[]"
                                                                     class="form-control mb-3"
                                                                     placeholder="Enter Footnote Title">
-                                                                <textarea type="text" name="footnote[]" class="form-control ckeditor-replace footnote"></textarea>
+                                                                <textarea type="text" name="footnote_content[]" class="form-control ckeditor-replace footnote"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -318,7 +318,7 @@
                                         </label>
                                         <div class="show-footnote" style="display: none">
                                         <input type="text" name="footnote_title[${sectionCounter}]" class="form-control mb-3" placeholder="Enter Footnote Title">
-                                        <textarea type="text" name="footnote[${sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
+                                        <textarea type="text" name="footnote_content[${sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                     </div>
                                     </div>

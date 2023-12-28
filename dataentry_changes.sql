@@ -16,4 +16,7 @@ ALTER TABLE `sub_section` ADD `sub_section_no` INT(11) NULL AFTER `sub_section_i
 ALTER TABLE `acts` ADD `act_summary` VARCHAR(500) NULL AFTER `act_footnote_description`;(done)
 
 -- ********************************new changes ************************* 
-ALTER TABLE `section` CHANGE `section_no` `section_no` VARCHAR(11) NULL DEFAULT NULL;
+ALTER TABLE `section` CHANGE `section_no` `section_no` VARCHAR(11) NULL DEFAULT NULL;(done)
+
+ALTER TABLE `section` ADD `section_rank` VARCHAR(11) NULL AFTER `section_id`;
+

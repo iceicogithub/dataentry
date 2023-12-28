@@ -85,8 +85,7 @@
                                 {{ $sectionItem->section_title }}</span><br>
                         @endforeach
                     </div>
-                @endif
-                @if (!empty($regulation) && count($regulation) > 0)
+                @elseif (!empty($regulation) && count($regulation) > 0)
                     @if ($key === 0)
                         <div style="text-align: start">Regulation</div>
                     @endif
@@ -142,8 +141,7 @@
                             </div><br>
                         @endforeach
                     </div>
-                @endif
-                @if (!empty($regulation) && count($regulation) > 0)
+                @elseif(!empty($regulation) && count($regulation) > 0)
                     <div style="text-align: start">
                         @foreach ($regulation->where('chapter_id', $chapterItem->chapter_id) as $regulationItem)
                             <div class="section-padding">

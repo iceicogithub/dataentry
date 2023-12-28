@@ -28,15 +28,16 @@ class SectionController extends Controller
         return view('admin.section.index', compact('status'));
     }
 
-    public function add_below_new_section(Request $request, $id, $section_no)
+    public function add_below_new_section(Request $request, $id, $section_no, $section_rank)
     {
         $sec_no = $section_no;
+        $section_rank = $section_rank;
         $sections = Section::with('ChapterModel', 'Partmodel')->where('act_id', $id)
             ->where('section_no', $section_no)->first();
         // dd($sections);
         // die();
 
-        return view('admin.section.add_new', compact('sections', 'sec_no'));
+        return view('admin.section.add_new', compact('sections', 'sec_no','section_rank'));
     }
 
     public function add_new_section(Request $request)
@@ -50,10 +51,14 @@ class SectionController extends Controller
 
             $id = $request->act_id;
             $sec_no = $request->section_no;
+            $sec_rank = $request->section_rank;
             $maintypeId = $request->maintype_id;
 
             // Calculate the next section number
-            $nextSectionNo = $sec_no + 1;
+            $nextSectionNo = $sec_no;
+            $nextSectionRank = $sec_rank + 0.01;
+
+          
 
             // Update the existing sections' section_no in the Section table
             // Section::where('section_no', '>=', $nextSectionNo)
@@ -61,6 +66,7 @@ class SectionController extends Controller
 
             // Create the new section with the incremented section_no
             $section = Section::create([
+                'section_rank' => $nextSectionRank,
                 'section_no' => $nextSectionNo,
                 'act_id' => $request->act_id,
                 'maintype_id' => $maintypeId,
@@ -105,7 +111,7 @@ class SectionController extends Controller
                 return redirect()->back()->withErrors(['error' => 'Invalid maintypeId.']);
             }
 
-            return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Index created successfully');
+            return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Section created successfully');
         } catch (\Exception $e) {
             \Log::error('Error creating Act: ' . $e->getMessage());
 
@@ -114,9 +120,6 @@ class SectionController extends Controller
     }
 
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $status = Status::all();
@@ -139,8 +142,6 @@ class SectionController extends Controller
     {
         $sections = Section::with('ChapterModel', 'Partmodel')->where('section_id', $id)->first();
         $subsec = Section::where('section_id', $id)->with('subsectionModel', 'footnoteModel')->get();
-        // dd($sections);
-        // die();
         return view('admin.section.edit', compact('sections', 'subsec'));
     }
 
@@ -186,27 +187,28 @@ class SectionController extends Controller
             // Store Sub-Sections
             if ($request->has('sub_section_title')) {
                 foreach ($request->sub_section_title as $key => $item) {
-                    // Check if the key exists before using it
+                    // Check if sub_section_id is present in the request
                     if ($request->filled('sub_section_id.' . $key)) {
                         $sub_section = SubSection::find($request->sub_section_id[$key]);
-
-                        if ($sub_section->sub_section_id == $request->sub_section_id) {
+            
+                        // Check if $sub_section is found in the database and the IDs match
+                        if ($sub_section && $sub_section->sub_section_id == $request->sub_section_id[$key]) {
                             $sub_section->sub_section_title = $item ?? null;
                             $sub_section->sub_section_no = $request->sub_section_no[$key] ?? null;
-                            $sub_section->sub_section_content = $request->sub_section[$key] ?? null;
+                            $sub_section->sub_section_content = $request->sub_section_content[$key] ?? null;
                             $sub_section->update();
-                        } else {
-                            $subsec = new SubSection();
-                            $subsec->section_id = $id ?? null;
-                            $subsec->sub_section_no = $request->sub_section_no[$key] ?? null;
-                            $subsec->section_no = $sections->section_no ?? null;
-                            $subsec->act_id = $sections->act_id ?? null;
-                            $subsec->chapter_id = $sections->chapter_id ?? null;
-                            $subsec->parts_id = $sections->parts_id ?? null;
-                            $subsec->sub_section_title = $item ?? null;
-                            $subsec->sub_section_content = $request->sub_section[$key] ?? null;
-                            $subsec->save();
-                        }
+                        } 
+                    }else {
+                        $subsec = new SubSection();
+                        $subsec->section_id = $id ?? null;
+                        $subsec->sub_section_no = $request->sub_section_no[$key] ?? null;
+                        $subsec->section_no = $sections->section_no ?? null;
+                        $subsec->act_id = $sections->act_id ?? null;
+                        $subsec->chapter_id = $sections->chapter_id ?? null;
+                        $subsec->parts_id = $sections->parts_id ?? null;
+                        $subsec->sub_section_title = $item ?? null;
+                        $subsec->sub_section_content = $request->sub_section[$key] ?? null;
+                        $subsec->save();
                     }
                 }
             }
