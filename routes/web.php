@@ -6,6 +6,7 @@ use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\PdfExportController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\RegulationController;
+use App\Http\Controllers\RulesController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,7 @@ Route::get('/', function () {
 
 Route::get('/category', [CategoryController::class, 'index'])->name('category');
 
+// act controller 
 Route::get('/act', [ActController::class, 'index'])->name('act');
 Route::get('/new_act', [ActController::class, 'new_act'])->name('new_act');
 Route::post('/store_new_act', [ActController::class, 'store_new_act']);
@@ -54,6 +56,7 @@ Route::get('/edit-act', [ActController::class, 'edit'])->name('edit-act');
 Route::post('/store_act/{id}', [ActController::class, 'store']);
 Route::get('/get_act_section/{id}', [ActController::class, 'get_act_section'])->name('get_act_section');
 
+// section 
 // Route::get('/section', [SectionController::class, 'index'])->name('section');
 Route::get('/add-section', [SectionController::class, 'create'])->name('add-section');
 Route::get('/sub-section', [SectionController::class, 'SubSection_Index'])->name('sub-section');
@@ -64,13 +67,17 @@ Route::get('/delete_section/{id}', [SectionController::class, 'destroy']);
 Route::get('/add_below_new_section/{id}/{section_no}/{section_rank}', [SectionController::class, 'add_below_new_section'])->name('add_below_new_section');
 Route::post('/add_new_section', [SectionController::class, 'add_new_section']);
 
+// chapter 
 Route::get('/chapter', [ChapterController::class, 'index'])->name('chapter');
 Route::get('/add-chapter', [ChapterController::class, 'create'])->name('add-chapter');
 
+// regulation 
 Route::get('/get_act_regulation/{id}', [RegulationController::class, 'index'])->name('get_act_regulation');
 Route::get('/edit-regulation/{id}', [RegulationController::class, 'edit_regulation'])->name('edit-regulation');
 Route::post('/update_all_regulation/{id}', [RegulationController::class, 'update']);
 Route::get('/delete_regulation/{id}', [RegulationController::class, 'destroy']);
  
-
 Route::get('/export-pdf/{id}', [PdfExportController::class, 'exportToPdf'])->name('export-pdf');
+
+// rules 
+Route::get('/get_act_rule/{id}', [RulesController::class, 'index'])->name('get_act_rule');

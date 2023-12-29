@@ -18,5 +18,10 @@ ALTER TABLE `acts` ADD `act_summary` VARCHAR(500) NULL AFTER `act_footnote_descr
 -- ********************************new changes ************************* 
 ALTER TABLE `section` CHANGE `section_no` `section_no` VARCHAR(11) NULL DEFAULT NULL;(done)
 
-ALTER TABLE `section` ADD `section_rank` VARCHAR(11) NULL AFTER `section_id`;
+ALTER TABLE `section` ADD `section_rank` VARCHAR(11) NULL AFTER `section_id`;(done)
+
+rules table ;(done)
+ALTER TABLE `footnote` ADD `rule_id` INT(11) NULL AFTER `regulation_no`, ADD `rule_no` VARCHAR(255) NULL AFTER `rule_id`;(done)
+
+ALTER TABLE `section` CHANGE `section_rank` `section_rank` INT(11) NULL DEFAULT NULL;(done)
 

@@ -105,7 +105,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-title">Arrangement of Regulations</strong>
+                        <strong class="card-title">Arrangement of Rules</strong>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered text-center" id="myTable">
@@ -140,8 +140,8 @@
                                             Null
                                         @endif
                                     </th>
-                                    <th scope="col">Regulation No.</th>
-                                    <th scope="col">Regulation</th>
+                                    <th scope="col">Rule No.</th>
+                                    <th scope="col">Rule</th>
                                     <th scope="col">Date of changes</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -150,7 +150,7 @@
                                 @php
                                     $a = 1;
                                 @endphp
-                                @foreach ($act_regulation as $item)
+                                @foreach ($act_rule as $item)
                                     <tr>
                                         <td scope="row">@php echo $a++; @endphp</td>
                                         <td class="text-capitalize">
@@ -166,21 +166,21 @@
                                                 Appendices
                                             @endif
                                         </td>
-                                        <td class="text-capitalize">{{ $item->regulation_no }}</td>
-                                        <td class="text-capitalize">{{ $item->regulation_title }}</td>
+                                        <td class="text-capitalize">{{ $item->rule_no }}</td>
+                                        <td class="text-capitalize">{{ $item->rule_title }}</td>
                                         <td class="text-capitalize">{{ $item->updated_at }}</td>
                                         <td class="text-capitalize d-flex justify-content-center">
-                                            <a href="/edit-regulation/{{ $item->regulation_id }}" title="Edit"
+                                            <a href="/edit-rule/{{ $item->rule_id }}" title="Edit"
                                                 class="px-1">
                                                 <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                             </a>
                                             <a href="#" title="View" class="px-1">
                                                 <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
                                             </a>
-                                            <a href="{{ url('/delete_regulation/' . $item->regulation_id) }}" title="Delete" class="px-1" onclick="return confirm('Are you sure ?')">
+                                            <a href="{{ url('/delete_rule/' . $item->rule_id) }}" title="Delete" class="px-1" onclick="return confirm('Are you sure ?')">
                                                 <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                             </a>
-                                            <a href="{{ url('/add_below_new_regulation', ['act_id' => $item->act_id, 'regulation_no' => $item->regulation_no]) }}"
+                                            <a href="{{ url('/add_below_new_rule', ['act_id' => $item->act_id, 'rule_no' => $item->rule_no]) }}"
                                                 title="Add Next Section" class="px-1">
                                                 <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                             </a>

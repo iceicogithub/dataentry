@@ -219,7 +219,7 @@
                                         </label>
                                         <div class="show-sub_section" style="display: none">
                                         <input type="text" name="sub_section_title[${sectionCounter}]" class="form-control mb-3" placeholder="Enter Sub-Section Title">
-                                        <textarea type="text" name="sub_section[${sectionCounter}]" class="form-control ckeditor-replace sub_section"></textarea>
+                                        <textarea type="text" name="sub_section_content[${sectionCounter}]" class="form-control ckeditor-replace sub_section"></textarea>
                                         </div>
                                     </div>
                                     <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
@@ -233,7 +233,7 @@
                                         </label>
                                         <div class="show-footnote" style="display: none">
                                         <input type="text" name="footnote_title[${sectionCounter}]" class="form-control mb-3" placeholder="Enter Footnote Title">
-                                        <textarea type="text" name="footnote[${sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
+                                        <textarea type="text" name="footnote_content[${sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                     </div>
                                     </div>

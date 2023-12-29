@@ -79,34 +79,31 @@ class SectionController extends Controller
 
             if ($maintypeId == "1" || $maintypeId == "2") {
                 foreach ($request->sub_section_title as $key => $subSectionTitle) {
-                    // Update the existing sections' section_no in the SubSection table
-                    // SubSection::where('section_no', '>=', $nextSectionNo)
-                    //     ->increment('section_no');
-
-                    $sub_section = SubSection::create([
-                        'section_id' => $section->section_id,
-                        'section_no' => $nextSectionNo,
-                        'act_id' => $request->act_id,
-                        'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
-                        'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
-                        'sub_section_title' => $subSectionTitle,
-                        'sub_section_content' => $request->sub_section_content[$key],
-                    ]);
-
-                    // Update the existing sections' section_no in the Footnote table
-                    // Footnote::where('section_no', '>=', $nextSectionNo)
-                    //     ->increment('section_no');
-
-                    $footnote = Footnote::create([
-                        'section_id' => $section->section_id,
-                        'section_no' => $nextSectionNo,
-                        'act_id' => $request->act_id,
-                        'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
-                        'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
-                        'footnote_title' => $request->footnote_title[$key],
-                        'footnote_content' => $request->footnote_content[$key],
-                    ]);
+            // Create the new sub-section
+            $sub_section = SubSection::create([
+                'section_id' => $section->section_id,
+                'sub_section_no' => $section->sub_section_no[$key],
+                'section_no' => $nextSectionNo,
+                'act_id' => $request->act_id,
+                'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
+                'sub_section_title' => $subSectionTitle,
+                'sub_section_content' => $request->sub_section_content[$key],
+            ]);
                 }
+
+                foreach ($request->footnote_title as $key => $FootnoteTitle) {
+            // Create the new footnote
+            $footnote = Footnote::create([
+                'section_id' => $section->section_id,
+                'section_no' => $nextSectionNo,
+                'act_id' => $request->act_id,
+                'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
+                'footnote_title' =>  $FootnoteTitle,
+                'footnote_content' => $request->footnote_content[$key],
+            ]);
+        }
             } else {
                 return redirect()->back()->withErrors(['error' => 'Invalid maintypeId.']);
             }
@@ -118,6 +115,8 @@ class SectionController extends Controller
             return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
         }
     }
+    
+
 
 
     public function create()

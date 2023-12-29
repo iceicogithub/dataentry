@@ -90,57 +90,16 @@ class ActController extends Controller
                             ) {
                                 $currentSectionNo = $request->section_no[$key][$index];
 
-                                // Check if the current section number exists in the database
-                                $sectionExists = Section::where('section_no', $currentSectionNo)->exists();
-                                // dd($sectionExists);
-                                // die();
-                                // Create or update the section based on existence
-                                if ($sectionExists) {
-                                    // Extract numeric and alphabetic parts
-                                    preg_match('/^(\d+)([a-z]*)$/i', $currentSectionNo, $matches);
-                                    $numericPart = (int)$matches[1];
-                                    $alphabeticPart = $matches[2];
-
-                                    // Increment logic
-                                    if ($alphabeticPart === '') {
-                                        // If there is no alphabetic part, increment the numeric part
-                                        $nextSectionNo = $numericPart + 1;
-                                    } else {
-                                        // If there is an alphabetic part, increment it
-                                        $nextAlphabeticPart = ++$alphabeticPart;
-
-                                        // If the alphabetic part exceeds 'z', reset it to ''
-                                        if ($nextAlphabeticPart > 'z') {
-                                            $nextAlphabeticPart = '';
-                                            $numericPart++;
-                                        }
-
-                                        $nextSectionNo = $numericPart . $nextAlphabeticPart;
-                                        // dd($nextSectionNo);
-                                        // die();
-                                    }
-
-                                    // Update Section records
-                                    // Section::where('section_no', $currentSectionNo)
-                                    //     ->update(['section_no' => $nextSectionNo]);
-
-                                    // Section::where('section_no', '>', $currentSectionNo)
-                                    //     ->get()
-                                    //     ->each(function ($section) {
-                                    //         $section->increment('section_no');
-                                    //     });
-                                } else {
-                                    // If the section doesn't exist, use the current section number
-                                    $nextSectionNo = $currentSectionNo;
-                                }
-
                                 // Update SubSection records, Footnote records, etc. (similar to Section)
-                                $lastSection = Section::latest('section_rank')->first();
+                                $lastSection = Section::orderBy('section_rank', 'desc')->first();
+
+                                // dd($lastSection);
+                                // die();
                                 $lastRank = $lastSection ? $lastSection->section_rank : 0;
                                 // Create the new section with the updated section_no
                                 $section = Section::create([
                                     'section_rank' => $lastRank + 1,
-                                    'section_no' => $nextSectionNo,
+                                    'section_no' => $currentSectionNo,
                                     'act_id' => $act->act_id,
                                     'maintype_id' => $maintypeId,
                                     'chapter_id' => $chapt->chapter_id,
@@ -215,8 +174,11 @@ class ActController extends Controller
                         //         $footnote->increment('section_no');
                         //     });
 
-                        // Create the new section
+                        $lastSection = Section::max('section_rank');
+                        $lastRank = $lastSection ? $lastSection->section_rank : 0;
+                        // Create the new section with the updated section_no
                         $section = Section::create([
+                            'section_rank' => $lastRank + 1,
                             'section_no' => $currentSectionNo,
                             'act_id' => $act->act_id,
                             'maintype_id' => $maintypeId,
@@ -226,7 +188,7 @@ class ActController extends Controller
                         ]);
                     }
                 } else {
-                    dd("something went wrong");
+                    dd("something went wrong - right now we are working only in chapter and parts");
                 }
             }
             if ($request->subtypes_id[$key] == 1) {
