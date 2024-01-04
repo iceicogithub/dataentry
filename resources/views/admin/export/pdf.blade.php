@@ -125,7 +125,7 @@
         <div class="text-uppercase fs-1" style="text-align: center">{{ $act->act_title }}</div>
         <div class="text-uppercase fs-2" style="text-align: center">{{ $act->act_no }}</div>
         <div class="fs-3 text-end">[{{ $act->act_date }}]</div>
-        <p class="fs-3">{!! $act->act_description !!}</p>
+        <p class="fs-3">{!! $act->act_description ! !}</p>
         @if ($type->contains('maintype_id', 1))
             @php $sectionCounter2 = 1; @endphp
             @foreach ($chapter as $key => $chapterItem)

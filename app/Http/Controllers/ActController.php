@@ -174,7 +174,7 @@ class ActController extends Controller
                         //         $footnote->increment('section_no');
                         //     });
 
-                        $lastSection = Section::max('section_rank');
+                        $lastSection = Section::orderBy('section_rank', 'desc')->first();
                         $lastRank = $lastSection ? $lastSection->section_rank : 0;
                         // Create the new section with the updated section_no
                         $section = Section::create([
@@ -229,10 +229,7 @@ class ActController extends Controller
             return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
         }
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-
+    
     public function new_act()
     {
         $category = Category::all();
@@ -272,18 +269,11 @@ class ActController extends Controller
     }
 
 
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit()
     {
         return view('admin.act.edit');

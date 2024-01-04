@@ -18,9 +18,7 @@ use Illuminate\Http\Request;
 
 class SectionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $status = Status::all();
@@ -37,13 +35,11 @@ class SectionController extends Controller
         // dd($sections);
         // die();
 
-        return view('admin.section.add_new', compact('sections', 'sec_no','section_rank'));
+        return view('admin.section.add_new', compact('sections', 'sec_no', 'section_rank'));
     }
 
     public function add_new_section(Request $request)
     {
-        // dd($request);
-        // die();
         try {
             $chapter = Chapter::find($request->chapter_id);
             $chapter->chapter_title = $request->chapter_title;
@@ -58,7 +54,7 @@ class SectionController extends Controller
             $nextSectionNo = $sec_no;
             $nextSectionRank = $sec_rank + 0.01;
 
-          
+
 
             // Update the existing sections' section_no in the Section table
             // Section::where('section_no', '>=', $nextSectionNo)
@@ -78,32 +74,61 @@ class SectionController extends Controller
             ]);
 
             if ($maintypeId == "1" || $maintypeId == "2") {
-                foreach ($request->sub_section_title as $key => $subSectionTitle) {
-            // Create the new sub-section
-            $sub_section = SubSection::create([
-                'section_id' => $section->section_id,
-                'sub_section_no' => $section->sub_section_no[$key],
-                'section_no' => $nextSectionNo,
-                'act_id' => $request->act_id,
-                'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
-                'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
-                'sub_section_title' => $subSectionTitle,
-                'sub_section_content' => $request->sub_section_content[$key],
-            ]);
+                if ($request->has('sec_footnote_title') && is_array($request->sec_footnote_title)) {
+                    foreach ($request->sec_footnote_title as $key => $FootnoteTitle) {
+                        // Check if the arrays are set, if not, provide default values
+                        $footnoteContent = $request->sec_footnote_content[$key] ?? null;
+
+                        // Create the new footnote
+                        $footnote = Footnote::create([
+                            'section_id' => $section->section_id,
+                            'section_no' => $nextSectionNo,
+                            'act_id' => $request->act_id,
+                            'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                            'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
+                            'footnote_title' => $FootnoteTitle,
+                            'footnote_content' => $footnoteContent,
+                        ]);
+                    }
                 }
 
-                foreach ($request->footnote_title as $key => $FootnoteTitle) {
-            // Create the new footnote
-            $footnote = Footnote::create([
-                'section_id' => $section->section_id,
-                'section_no' => $nextSectionNo,
-                'act_id' => $request->act_id,
-                'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
-                'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
-                'footnote_title' =>  $FootnoteTitle,
-                'footnote_content' => $request->footnote_content[$key],
-            ]);
-        }
+                if ($request->has('sub_footnote_title') && is_array($request->sub_footnote_title)) {
+                    foreach ($request->sub_footnote_title as $key => $subFootnoteTitles) {
+                        // Check if the arrays are set, if not, provide default values
+                        $subFootnoteContents = $request->sub_footnote_content[$key] ?? [];
+
+                        // Create the new sub-section
+                        $sub_section = SubSection::create([
+                            'section_id' => $section->section_id,
+                            'sub_section_no' => $request->sub_section_no[$key] ?? null,
+                            'section_no' => $nextSectionNo,
+                            'act_id' => $request->act_id,
+                            'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                            'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
+                            'sub_section_title' => $request->sub_section_title[$key] ?? null,
+                            'sub_section_content' => $request->sub_section_content[$key] ?? null,
+                        ]);
+
+                        // Check if the subFootnoteTitles is an array
+                        if (is_array($subFootnoteTitles)) {
+                            foreach ($subFootnoteTitles as $index => $footnoteTitle) {
+                                // Check if the arrays are set, if not, provide default values
+                                $footnoteContent = $subFootnoteContents[$index] ?? null;
+
+                                // Create the new footnote
+                                $footnote = Footnote::create([
+                                    'sub_section_id' => $sub_section->sub_section_id,
+                                    'section_id' => $section->section_id,
+                                    'act_id' => $request->act_id,
+                                    'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                                    'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
+                                    'footnote_title' => $footnoteTitle,
+                                    'footnote_content' => $footnoteContent,
+                                ]);
+                            }
+                        }
+                    }
+                }
             } else {
                 return redirect()->back()->withErrors(['error' => 'Invalid maintypeId.']);
             }
@@ -115,9 +140,6 @@ class SectionController extends Controller
             return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
         }
     }
-    
-
-
 
     public function create()
     {
@@ -140,14 +162,33 @@ class SectionController extends Controller
     public function edit_section($id)
     {
         $sections = Section::with('ChapterModel', 'Partmodel')->where('section_id', $id)->first();
-        $subsec = Section::where('section_id', $id)->with('subsectionModel', 'footnoteModel')->get();
-        return view('admin.section.edit', compact('sections', 'subsec'));
+        $subsec = Section::where('section_id', $id)
+            ->with(['subsectionModel', 'footnoteModel' => function ($query) {
+                $query->whereNull('sub_section_id');
+            }])
+            ->get();
+
+        $sub_section_f = SubSection::where('section_id', $id)->with('footnoteModel')->get();
+
+        $count = 0; 
+
+        if ($sub_section_f) {
+            foreach ($sub_section_f as $sub_section) {
+                $count += $sub_section->footnoteModel->count();
+            }
+        }
+
+
+
+        return view('admin.section.edit', compact('sections', 'subsec', 'sub_section_f', 'count'));
     }
+
 
     public function update(Request $request, $id)
     {
         // dd($request);
         // die();
+
         try {
             if ($request->has('chapter_id')) {
                 $chapter = Chapter::find($request->chapter_id);
@@ -177,27 +218,90 @@ class SectionController extends Controller
                 return redirect()->route('edit-section', ['id' => $id])->withErrors(['error' => 'Section not found']);
             }
             if ($sections) {
+
                 $sections->section_content = $request->section_content ?? null;
                 $sections->section_title = $request->section_title ?? null;
                 $sections->section_no = $request->section_no ?? null;
                 $sections->update();
+
+
+                if ($request->has('sec_footnote_title')) {
+                    foreach ($request->sec_footnote_title as $key => $items) {
+                        // Check if the key exists before using it
+                        foreach ($items as $kys => $item) {
+                            // Check if the sec_footnote_id exists at the specified index
+                            if (isset($request->sec_footnote_id[$key][$kys])) {
+                                // Use first() instead of get() to get a single model instance
+                                $foot = Footnote::find($request->sec_footnote_id[$key][$kys]);
+
+                                if ($foot) {
+                                    $foot->update([
+                                        'footnote_title' => $item ?? null,
+                                        'footnote_content' => $request->sec_footnote_content[$key][$kys] ?? null,
+                                    ]);
+                                }
+                            } else {
+                                // Create a new footnote
+                                $footnote = new Footnote();
+                                $footnote->section_id = $id ?? null;
+                                $footnote->section_no = $sections->section_no ?? null;
+                                $footnote->act_id = $sections->act_id ?? null;
+                                $footnote->chapter_id = $sections->chapter_id ?? null;
+                                $footnote->parts_id = $sections->parts_id ?? null;
+                                $footnote->footnote_title = $item ?? null;
+                                $footnote->footnote_content = $request->sec_footnote_content[$key][$kys] ?? null;
+                                $footnote->save();
+                            }
+                        }
+                    }
+                }
             }
 
             // Store Sub-Sections
+
             if ($request->has('sub_section_title')) {
                 foreach ($request->sub_section_title as $key => $item) {
                     // Check if sub_section_id is present in the request
                     if ($request->filled('sub_section_id.' . $key)) {
                         $sub_section = SubSection::find($request->sub_section_id[$key]);
-            
+
                         // Check if $sub_section is found in the database and the IDs match
                         if ($sub_section && $sub_section->sub_section_id == $request->sub_section_id[$key]) {
                             $sub_section->sub_section_title = $item ?? null;
                             $sub_section->sub_section_no = $request->sub_section_no[$key] ?? null;
                             $sub_section->sub_section_content = $request->sub_section_content[$key] ?? null;
                             $sub_section->update();
-                        } 
-                    }else {
+
+                            if ($request->has('sub_footnote_title')) {
+                                foreach ($request->sub_footnote_title[$key] as $kys => $item) {
+                                    // Check if the sec_footnote_id exists at the specified index
+                                    if (isset($request->sub_footnote_id[$key][$kys])) {
+                                        // Use first() instead of get() to get a single model instance
+                                        $foot = Footnote::find($request->sub_footnote_id[$key][$kys]);
+
+                                        if ($foot) {
+                                            $foot->update([
+                                                'footnote_title' => $item ?? null,
+                                                'footnote_content' => $request->sub_footnote_content[$key][$kys] ?? null,
+                                            ]);
+                                        }
+                                    } else {
+                                        // Create a new footnote only if sub_footnote_id does not exist
+                                        $footnote = new Footnote();
+                                        $footnote->sub_section_id = $sub_section->sub_section_id;
+                                        $footnote->section_id = $id ?? null;
+                                        $footnote->act_id = $sections->act_id ?? null;
+                                        $footnote->chapter_id = $sections->chapter_id ?? null;
+                                        $footnote->parts_id = $sections->parts_id ?? null;
+                                        $footnote->footnote_title = $item ?? null;
+                                        $footnote->footnote_content = $request->sub_footnote_content[$key][$kys] ?? null;
+                                        $footnote->save();
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // Existing subsection not found, create a new one
                         $subsec = new SubSection();
                         $subsec->section_id = $id ?? null;
                         $subsec->sub_section_no = $request->sub_section_no[$key] ?? null;
@@ -206,37 +310,28 @@ class SectionController extends Controller
                         $subsec->chapter_id = $sections->chapter_id ?? null;
                         $subsec->parts_id = $sections->parts_id ?? null;
                         $subsec->sub_section_title = $item ?? null;
-                        $subsec->sub_section_content = $request->sub_section[$key] ?? null;
+                        $subsec->sub_section_content = $request->sub_section_content[$key] ?? null;
                         $subsec->save();
-                    }
-                }
-            }
 
-            // Store Footnotes
-            if ($request->has('footnote_title')) {
-                foreach ($request->footnote_title as $key => $item) {
-                    // Check if the key exists before using it
-                    if ($request->filled('footnote_id.' . $key)) {
-                        $foot = Footnote::find($request->footnote_id[$key]);
-
-                        if ($foot) {
-                            $foot->footnote_title = $request->footnote_title[$key] ?? null;
-                            $foot->footnote_content = $request->footnote[$key] ?? null;
-                            $foot->update();
+                        if ($request->has('sub_footnote_title')) {
+                            foreach ($request->sub_footnote_title[$key] as $kys => $item) {
+                                // Create a new footnote for the newly created subsection
+                                $footnote = new Footnote();
+                                $footnote->sub_section_id = $subsec->sub_section_id;
+                                $footnote->section_id = $id ?? null;
+                                $footnote->act_id = $sections->act_id ?? null;
+                                $footnote->chapter_id = $sections->chapter_id ?? null;
+                                $footnote->parts_id = $sections->parts_id ?? null;
+                                $footnote->footnote_title = $item ?? null;
+                                $footnote->footnote_content = $request->sub_footnote_content[$key][$kys] ?? null;
+                                $footnote->save();
+                            }
                         }
-                    } else {
-                        $footnote = new Footnote();
-                        $footnote->section_id = $id ?? null;
-                        $footnote->section_no = $sections->section_no ?? null;
-                        $footnote->act_id = $sections->act_id ?? null;
-                        $footnote->chapter_id = $sections->chapter_id ?? null;
-                        $footnote->parts_id = $sections->parts_id ?? null;
-                        $footnote->footnote_title = $request->footnote_title[$key] ?? null;
-                        $footnote->footnote_content = $request->footnote[$key] ?? null;
-                        $footnote->save();
                     }
                 }
             }
+
+
 
             return redirect()->route('get_act_section', ['id' => $sections->act_id])->with('success', 'Section updated successfully');
         } catch (\Exception $e) {
@@ -249,19 +344,18 @@ class SectionController extends Controller
     {
         try {
             $section = Section::find($id);
-    
+
             if (!$section) {
                 return redirect()->back()->withErrors(['error' => 'Section not found.']);
             }
-    
+
             $section->delete();
-    
+
             return redirect()->back()->with('success', 'Section deleted successfully.');
         } catch (\Exception $e) {
             \Log::error('Error deleting section: ' . $e->getMessage());
-    
+
             return redirect()->back()->withErrors(['error' => 'Failed to delete section. Please try again.' . $e->getMessage()]);
         }
     }
-    
 }
