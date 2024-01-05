@@ -255,14 +255,15 @@ class ActController extends Controller
 
     public function store_new_act(Request $request)
     {
-        // dd($request);
-        // die();
         try {
             $act = new Act();
             $act->category_id = $request->category_id;
             $act->state_id = $request->state_id ?? null;
             $act->act_title = $request->act_title;
-            $act->act_summary = json_encode($request->act_summary);
+            $actSummaries = ActSummary::pluck('id')->map(function ($id) {
+                return (string) $id;
+            })->toArray();
+            $act->act_summary = json_encode($actSummaries);
             $act->save();
 
             return redirect()->route('act')->with('success', 'Act created successfully');
