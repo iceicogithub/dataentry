@@ -304,85 +304,231 @@
             // Add -Remove Chapter
             $(document).ready(function() {
 
-                $(document).on('click', '.add-chapter', function() {
-                    let clonedSection = $(this).closest('.section-set').clone(true);
-                    clonedSection.find('input, textarea').val('');
-                    clonedSection.find('.sectionTitle:not(:first)').remove();
-                    clonedSection.insertAfter($(this).closest('.section-set'));
+                let chapterCount = 0;
 
-                    // Increment chapter count for the cloned section
-                    let chapterCount = parseInt(clonedSection.data('chapter-count')) || 0;
+                $(document).on('click', '.add-chapter', function() {
                     chapterCount++;
-                    clonedSection.data('chapter-count', chapterCount);
+
+                    var newSection = `
+                    <div class="section-set col-md-12 px-0 mb-2" data-chapter-count="${chapterCount}">
+                                    <div class="px-0 col-md-6">
+                                        <div class="form-group">
+                                            <label for="type" class=" form-control-label">Select Type<span
+                                                    class="text-danger">*</span></label>
+                                            <select class="select form-control text-capitalize type typeSelector"
+                                                name="maintype_id[]" id="typeSelector">
+                                                @foreach ($mtype as $item)
+                                                    <option value="{{ $item->maintype_id }}" class="text-capitalize">
+                                                        {{ $item->type }}</option>
+                                                @endforeach
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="section-container border col-md-12 p-3">
+                                        <div class="col-md-12 px-0">
+                                            <div class="form-group form-default">
+                                                {{-- for chapter --}}
+                                                <div id="chapterSection" class="chapterSection">
+                                                    <label class="float-label"> Chapter <span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea name="chapter_title[]" class="form-control mb-3 chapter_title" placeholder="Enter Chapter Title"
+                                                        id="chapter_title"></textarea>
+                                                </div>
+
+                                                {{-- for parts --}}
+                                                <div id="partSection" class="partSection" style="display: none">
+                                                    <label class="float-label"> Part <span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea name="parts_title[]" class="form-control mb-3 parts_title" placeholder="Enter Part Title" id="parts_title"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="additional-section">
+                                            <div class="border col-md-12 p-3">
+                                                <div>
+                                                    <div class="col-md-6 px-0">
+                                                        <div class="form-group">
+                                                            <label for="select" class="form-control-label">Select<span
+                                                                    class="text-danger">*</span></label>
+                                                            <select class="select form-control text-capitalize sub_textarea"
+                                                                name="subtypes_id[]" id="select">
+                                                                <option selected disabled>Select</option>
+                                                                @foreach ($stype as $item)
+                                                                    <option value="{{ $item->subtypes_id }}"
+                                                                        class="text-capitalize">
+                                                                        {{ $item->type }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group form-default col-md-12 px-0" id="1Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default sectionTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Section Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex sectionTitle my-1">
+                                                                <input type="text" name="section_no[${chapterCount}][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Section NO.">
+                                                                <input type="text" name="section_title[${chapterCount}][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Section Title">
+                                                                <button type="button"
+                                                                    class="add-sectionTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-sectionTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group form-default w-50" id="2Div"
+                                                        style="display: none">
+                                                        <label class="float-label">Article Title<span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="text" name="article_title[]"
+                                                            class="form-control mb-3" placeholder="Enter Article Title">
+                                                    </div>
+
+                                                    <div class="form-group form-default w-50" id="3Div"
+                                                        style="display: none">
+                                                        <label class="float-label">Order & Rules Title<span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="text" name="order&rules_title[]"
+                                                            class="form-control mb-3"
+                                                            placeholder="Enter Order & Rules Title">
+                                                    </div>
+                                                    <div class="form-group form-default col-md-12 px-0" id="4Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default RegulationTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Regulation Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex RegulationTitle my-1">
+                                                                <input type="text" name="regulation_no[][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Regulation NO.">
+                                                                <input type="text" name="regulation_title[][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Regulation Title">
+                                                                <button type="button"
+                                                                    class="add-RegulationTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-RegulationTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 px-0 py-3">
+                                        <div class="float-right">
+                                            <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
+                                                ( for add and remove Chapter )
+                                            </span>
+                                            <button type="button" class="btn btn-sm social facebook p-0 add-chapter">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm social youtube p-0 remove-chapter">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                        `;
+
+                    // Append the new section to the container
+                    $('.section-set-container').append(newSection);
+
+                    // Increment CKEditor IDs and replace them
+                    // CKEDITOR.replace($('.section-set:last').find('.chapter_title')[0]);
+                    // CKEDITOR.replace($('.section-set:last').find('.parts_title')[0]);
 
                     // Update chapter title input name attribute
                     // Update chapter title input name and id attributes
-                    clonedSection.find('textarea[name^="chapter_title"]').attr('name',
+                    $('.section-set:last').find('textarea[name^="chapter_title"]').attr('name',
                         'chapter_title[' + chapterCount + ']');
-                    clonedSection.find('textarea[name^="chapter_title"]').attr('id',
+                    $('.section-set:last').find('textarea[name^="chapter_title"]').attr('id',
                         'chapter_title[' + chapterCount + ']');
-
-                    CKEDITOR.replace('chapter_title[' + chapterCount + ']');
 
                     // Update parts title input name and id attributes
-                    clonedSection.find('textarea[name^="parts_title"]').attr('name',
+                    $('.section-set:last').find('textarea[name^="parts_title"]').attr('name',
                         'parts_title[' + chapterCount + ']');
-                    clonedSection.find('textarea[name^="parts_title"]').attr('id', 'parts_title[' +
-                        chapterCount + ']');
-                    CKEDITOR.replace('parts_title[' + chapterCount + ']');
-
+                    $('.section-set:last').find('textarea[name^="parts_title"]').attr('id',
+                        'parts_title[' + chapterCount + ']');
 
                     // Update section select input name attribute
-                    clonedSection.find('select[name^="subtypes_id"]').attr('name', 'subtypes_id[' +
-                        chapterCount + ']');
+                    $('.section-set:last').find('select[name^="subtypes_id"]').attr('name',
+                        'subtypes_id[' + chapterCount + ']');
 
                     // Update section no input name attribute
-                    clonedSection.find('input[name^="section_no"]').each(function(index) {
-                        $(this).attr('name', 'section_no[' + chapterCount + '][' +
-                            index + ']');
+                    $('.section-set:last').find('input[name^="section_no"]').each(function(index) {
+                        $(this).attr('name', 'section_no[' + chapterCount + '][' + index +
+                            ']');
                     });
 
                     // Update section title input name attribute
-                    clonedSection.find('input[name^="section_title"]').each(function(index) {
+                    $('.section-set:last').find('input[name^="section_title"]').each(function(
+                        index) {
                         $(this).attr('name', 'section_title[' + chapterCount + '][' +
                             index + ']');
                     });
 
+                    // Increment CKEditor IDs and replace them for the new section
+                    CKEDITOR.replace($('.section-set:last').find('.chapter_title')[0]);
+                    CKEDITOR.replace($('.section-set:last').find('.parts_title')[0]);
 
-                    clonedSection.find('.add-chapter, .remove-chapter').show();
+                    // Increment sectionCounter if needed
+                    sectionCounter++;
+
+                    // Reset sub_sectionCounter
+                    sub_sectionCounter = 0;
                 });
 
                 $(document).on('click', '.remove-chapter', function() {
+                    // Ensure there is always at least one section
                     if ($('.section-set').length > 1) {
                         $(this).closest('.section-set').remove();
                     }
                 });
 
+
                 // for sections 
                 $(document).on('click', '.add-sectionTitle', function() {
                     let sectionTitleMain = $(this).closest('.section-set').find(
-                        '.sectionTitleMain');
+                    '.sectionTitleMain');
                     let clonedSectionTitle = sectionTitleMain.find('.sectionTitle:first').clone(
                         true);
                     clonedSectionTitle.find('input').val('');
 
-                    // Get the chapter count from the data attribute of the closest .section-set
-                    let chapterCount = parseInt($(this).closest('.section-set').data(
-                        'chapter-count')) || 0;
+                    // Get the chapter count from the global variable
+                    let currentChapterCount = chapterCount;
 
                     // Increment the section index for the new section title
                     let lastIndex = sectionTitleMain.find('.sectionTitle').length;
 
                     // Update the input name attribute with the new chapter and section indexes
                     clonedSectionTitle.find('input[name^="section_no"]').each(function(index) {
-                        $(this).attr('name', 'section_no[' + chapterCount + '][' + (
-                            lastIndex + index) + ']');
+                        $(this).attr('name',
+                            `section_no[${currentChapterCount}][${lastIndex + index}]`);
                     });
 
                     // Update the input name attribute with the new chapter and section indexes
                     clonedSectionTitle.find('input[name^="section_title"]').each(function(index) {
-                        $(this).attr('name', 'section_title[' + chapterCount + '][' + (
-                            lastIndex + index) + ']');
+                        $(this).attr('name',
+                            `section_title[${currentChapterCount}][${lastIndex + index}]`
+                            );
                     });
 
                     sectionTitleMain.append(clonedSectionTitle);
