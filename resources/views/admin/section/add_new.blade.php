@@ -120,9 +120,7 @@
                                                                 <input type="text" name="sub_section_no[]"
                                                                     class="form-control mb-3" style="width: 20%"
                                                                     placeholder="Enter Sub-Section No.">
-                                                                <input type="text" name="sub_section_title[]"
-                                                                    class="form-control mb-3"
-                                                                    placeholder="Enter Sub-Section Title">
+                                                                
                                                             </span>
                                                             <textarea type="text" name="sub_section_content[]" class="form-control ckeditor-replace sub_section"></textarea>
                                                         </div>
@@ -251,7 +249,7 @@
                                             </label>
                                             <div class="show-sub_section" style="display: none">
                                                 <span class="d-flex"><input type="text" name="sub_section_no[${sectionCounter}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Section No.">
-                                                <input type="text" name="sub_section_title[${sectionCounter}]" class="form-control mb-3" placeholder="Enter Sub-Section Title"></span>
+                                                </span>
                                                 <textarea type="text" name="sub_section_content[${sectionCounter}]" class="form-control ckeditor-replace sub_section"></textarea>
                                             </div>
                                         </div>
@@ -312,19 +310,19 @@
                 // Find the closest multi-addition container
                 var multiAdditionContainer = $(this).closest('.multi-addition');
 
-                // Find the associated sub_section_title within the multi-addition container
-                var associatedSubSectionTitle = multiAdditionContainer.find('[name^="sub_section_title["]');
+                // Find the associated sub_section_no within the multi-addition container
+                var associatedSubSectionTitle = multiAdditionContainer.find('[name^="sub_section_no["]');
 
                 // Check if the associatedSubSectionTitle is found
                 if (associatedSubSectionTitle.length > 0) {
-                    // Extract the index from the name attribute of the sub_section_title
+                    // Extract the index from the name attribute of the sub_section_no
                     var sectionIndexMatch = associatedSubSectionTitle.attr('name').match(/\[(\d*)\]/);
 
                     // Set currentIndex to 0 if the index is empty
                     var currentIndex = sectionIndexMatch && sectionIndexMatch[1] !== '' ?
                         parseInt(sectionIndexMatch[1], 10) : 0;
 
-                    console.log('Current index of sub_section_title:', currentIndex);
+                    console.log('Current index of sub_section_no:', currentIndex);
 
                     var newSection = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote2-addition">
                             <label class="float-label">
@@ -363,7 +361,7 @@
                     subSectionIndex = sub_sectionCounter;
                     sub_sectionCounter++;
                 } else {
-                    console.error('Associated sub_section_title not found.');
+                    console.error('Associated sub_section_no not found.');
                 }
             });
 

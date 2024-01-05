@@ -40,10 +40,25 @@ class SectionController extends Controller
 
     public function add_new_section(Request $request)
     {
+        // dd($request);
+        // die();
         try {
-            $chapter = Chapter::find($request->chapter_id);
-            $chapter->chapter_title = $request->chapter_title;
-            $chapter->update();
+            if ($request->has('chapter_id')) {
+                $chapter = Chapter::find($request->chapter_id);
+
+                if ($chapter) {
+                    $chapter->chapter_title = $request->chapter_title;
+                    $chapter->update();
+                }
+            } elseif ($request->has('parts_id')) {
+                $part = Parts::find($request->parts_id);
+
+                if ($part) {
+                    $part->parts_title = $request->parts_title;
+                    $part->update();
+                }
+            }
+           
 
             $id = $request->act_id;
             $sec_no = $request->section_no;
@@ -102,7 +117,6 @@ class SectionController extends Controller
                             'act_id' => $request->act_id,
                             'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                             'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
-                            'sub_section_title' => $request->sub_section_title[$key] ?? null,
                             'sub_section_content' => $request->sub_section_content[$key] ?? null,
                         ]);
 
@@ -164,7 +178,7 @@ class SectionController extends Controller
 
         $sub_section_f = SubSection::where('section_id', $id)->with('footnoteModel')->get();
 
-        $count = 0; 
+        $count = 0;
 
         if ($sub_section_f) {
             foreach ($sub_section_f as $sub_section) {
@@ -183,7 +197,7 @@ class SectionController extends Controller
         // dd($request);
         // die();
 
-        try {
+        // try {
             if ($request->has('chapter_id')) {
                 $chapter = Chapter::find($request->chapter_id);
 
@@ -251,20 +265,20 @@ class SectionController extends Controller
 
             // Store Sub-Sections
 
-            if ($request->has('sub_section_title')) {
-                foreach ($request->sub_section_title as $key => $item) {
+            if ($request->has('sub_section_no')) {
+                foreach ($request->sub_section_no as $key => $item) {
                     // Check if sub_section_id is present in the request
-                    if ($request->filled('sub_section_id.' . $key)) {
-                        $sub_section = SubSection::find($request->sub_section_id[$key]);
+                    if ($request->filled('sub_section_id') && is_array($request->sub_section_id) && array_key_exists($key, $request->sub_section_id)) {
 
+                        $sub_section = SubSection::find($request->sub_section_id[$key]);
+                        
                         // Check if $sub_section is found in the database and the IDs match
                         if ($sub_section && $sub_section->sub_section_id == $request->sub_section_id[$key]) {
-                            $sub_section->sub_section_title = $item ?? null;
-                            $sub_section->sub_section_no = $request->sub_section_no[$key] ?? null;
+                            $sub_section->sub_section_no = $item ?? null;
                             $sub_section->sub_section_content = $request->sub_section_content[$key] ?? null;
                             $sub_section->update();
 
-                            if ($request->has('sub_footnote_content')) {
+                            if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
                                 foreach ($request->sub_footnote_content[$key] as $kys => $item) {
                                     // Check if the sec_footnote_id exists at the specified index
                                     if (isset($request->sub_footnote_id[$key][$kys])) {
@@ -294,12 +308,11 @@ class SectionController extends Controller
                         // Existing subsection not found, create a new one
                         $subsec = new SubSection();
                         $subsec->section_id = $id ?? null;
-                        $subsec->sub_section_no = $request->sub_section_no[$key] ?? null;
+                        $subsec->sub_section_no = $item ?? null;
                         $subsec->section_no = $sections->section_no ?? null;
                         $subsec->act_id = $sections->act_id ?? null;
                         $subsec->chapter_id = $sections->chapter_id ?? null;
                         $subsec->parts_id = $sections->parts_id ?? null;
-                        $subsec->sub_section_title = $item ?? null;
                         $subsec->sub_section_content = $request->sub_section_content[$key] ?? null;
                         $subsec->save();
 
@@ -323,10 +336,10 @@ class SectionController extends Controller
 
 
             return redirect()->route('get_act_section', ['id' => $sections->act_id])->with('success', 'Section updated successfully');
-        } catch (\Exception $e) {
-            \Log::error('Error updating Act: ' . $e->getMessage());
-            return redirect()->route('edit-section', ['id' => $id])->withErrors(['error' => 'Failed to update Section. Please try again.' . $e->getMessage()]);
-        }
+        // } catch (\Exception $e) {
+        //     \Log::error('Error updating Act: ' . $e->getMessage());
+        //     return redirect()->route('edit-section', ['id' => $id])->withErrors(['error' => 'Failed to update Section. Please try again.' . $e->getMessage()]);
+        // }
     }
 
     public function destroy(string $id)

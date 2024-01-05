@@ -48,15 +48,14 @@
                                         <div class="form-group form-default" style="display: block">
                                             @if ($sections->maintype_id == 1)
                                                 <label class="float-label font-weight-bold">Chapter :</label>
-                                                <input type="text" name="chapter_title"
-                                                    placeholder="Enter Chapter Title."
-                                                    value="{{ $sections->ChapterModel->chapter_title }}"
-                                                    class="form-control mb-3">
+                                                
+                                                    <textarea name="chapter_title" class="form-control mb-3 chapter_title" placeholder="Enter Chapter Title"
+                                                    id="c_title">{{ $sections->ChapterModel->chapter_title }}</textarea>
                                             @elseif($sections->maintype_id == 2)
                                                 <label class="float-label font-weight-bold">Parts :</label>
-                                                <input type="text" name="parts_title" placeholder="Enter Parts Title."
-                                                    value="{{ $sections->Partmodel->parts_title }}"
-                                                    class="form-control mb-3">
+                                                
+                                                    <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title"
+                                                    id="p_title">{{ $sections->Partmodel->parts_title }}</textarea>
                                             @else
                                                 Appendices
                                             @endif
@@ -149,7 +148,7 @@
                                                                         <button type="button"
                                                                             class="btn btn-sm social facebook p-0 add-sub_section">
                                                                             <i
-                                                                                class="fa {{ !empty($subSectionItem->sub_section_title) ? 'fa-minus' : 'fa-plus' }}"></i>
+                                                                                class="fa {{ !empty($subSectionItem->sub_section_no) ? 'fa-minus' : 'fa-plus' }}"></i>
                                                                         </button>
                                                                     </span>
                                                                 </label>
@@ -160,13 +159,9 @@
                                                                             class="form-control mb-3"
                                                                             value="{{ $subSectionItem->sub_section_no ?? '' }}"
                                                                             placeholder="Enter Sub-Section No."
-                                                                            style="width: 20%;">
-                                                                        <input type="text"
-                                                                            name="sub_section_title[{{ $k }}]"
-                                                                            class="form-control mb-3"
-                                                                            value="{{ $subSectionItem->sub_section_title ?? '' }}"
-                                                                            placeholder="Enter Sub-Section Title"
-                                                                            data-index="{{ $k }}">
+                                                                            style="width: 20%;"
+                                                                            data-index="{{ $k }}"">
+                                                                       
                                                                     </span>
                                                                     <textarea type="text" name="sub_section_content[{{ $k }}]"
                                                                         class="form-control ckeditor-replace sub_section">{{ $subSectionItem->sub_section_content ?? '' }}</textarea>
@@ -261,11 +256,9 @@
                                                                     <input type="text" name="sub_section_no[]"
                                                                         class="form-control mb-3"
                                                                         placeholder="Enter Sub-Section No."
-                                                                        style="width: 20%;">
-                                                                    <input type="text" name="sub_section_title[]"
-                                                                        class="form-control mb-3"
-                                                                        placeholder="Enter Sub-Section Title"
+                                                                        style="width: 20%;"
                                                                         data-index="0">
+                                                                    
                                                                 </span>
                                                                 <textarea type="text" name="sub_section_content[]" class="form-control ckeditor-replace sub_section"></textarea>
                                                             </div>
@@ -341,6 +334,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            CKEDITOR.replace('c_title');
+            CKEDITOR.replace('p_title');
             CKEDITOR.replace('section');
             CKEDITOR.replace('state_amendment');
 
@@ -408,8 +403,7 @@
                                             </span>
                                             </label>
                                             <div class="show-sub_section" style="display: none">
-                                                <span class="d-flex"><input type="text" name="sub_section_no[${sectionCounterIndex}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Section No.">
-                                                <input type="text" name="sub_section_title[${sectionCounterIndex}]" class="form-control mb-3" placeholder="Enter Sub-Section Title" data-index="${sectionCounterIndex}"></span>
+                                                <span class="d-flex"><input type="text" name="sub_section_no[${sectionCounterIndex}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Section No." data-index="${sectionCounterIndex}">  </span>
                                                 <textarea type="text" name="sub_section_content[${sectionCounterIndex}]" class="form-control ckeditor-replace sub_section"></textarea>
                                             </div>
                                         </div>
@@ -469,19 +463,19 @@
                 // Find the closest multi-addition container
                 var multiAdditionContainer = $(this).closest('.multi-addition');
 
-                // Find the associated sub_section_title within the multi-addition container
-                var associatedSubSectionTitle = multiAdditionContainer.find('[name^="sub_section_title["]');
+                // Find the associated sub_section_no within the multi-addition container
+                var associatedSubSectionTitle = multiAdditionContainer.find('[name^="sub_section_no["]');
 
                 // Check if the associatedSubSectionTitle is found
                 if (associatedSubSectionTitle.length > 0) {
-                    // Extract the index from the name attribute of the sub_section_title
+                    // Extract the index from the name attribute of the sub_section_no
                     var sectionIndexMatch = associatedSubSectionTitle.attr('name').match(/\[(\d*)\]/);
 
                     // Set currentIndex to 0 if the index is empty
                     var currentIndex = sectionIndexMatch && sectionIndexMatch[1] !== '' ?
                         parseInt(sectionIndexMatch[1], 10) : 0;
 
-                    console.log('Current index of sub_section_title:', currentIndex);
+                    console.log('Current index of sub_section_no:', currentIndex);
 
                     var newSection = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote2-addition">
                             <label class="float-label">
@@ -526,7 +520,7 @@
                     subSectionIndex = sub_sectionCounter;
                     sub_sectionCounter++;
                 } else {
-                    console.error('Associated sub_section_title not found.');
+                    console.error('Associated sub_section_no not found.');
                 }
             });
 
