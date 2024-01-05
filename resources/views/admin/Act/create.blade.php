@@ -90,36 +90,23 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group parts" style="display: none">
-                                            <label for="parts" class=" form-control-label">Select Part<span
-                                                    class="text-danger">*</span></label>
-                                            <select class="select form-control text-capitalize" name="partstype_id[]">
-                                                <option selected disabled>Select Part</option>
-                                                @foreach ($parts as $item)
-                                                    <option value="{{ $item->partstype_id }}" class="text-capitalize">
-                                                        {{ $item->parts }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
+
                                     <div class="section-container border col-md-12 p-3">
                                         <div class="col-md-12 px-0">
-                                            <div class="form-group form-default w-50">
+                                            <div class="form-group form-default">
                                                 {{-- for chapter --}}
                                                 <div id="chapterSection" class="chapterSection">
                                                     <label class="float-label"> Chapter <span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" name="chapter_title[]" class="form-control mb-3"
-                                                        placeholder="Enter Chapter Title" id="chapterTitle">
+                                                    <textarea name="chapter_title[]" class="form-control mb-3 chapter_title" placeholder="Enter Chapter Title"
+                                                        id="chapter_title"></textarea>
                                                 </div>
 
                                                 {{-- for parts --}}
                                                 <div id="partSection" class="partSection" style="display: none">
                                                     <label class="float-label"> Part <span
                                                             class="text-danger">*</span></label>
-                                                    <input type="text" name="parts_title[]" class="form-control mb-3"
-                                                        placeholder="Enter Part Title" id="partTitle">
+                                                    <textarea name="parts_title[]" class="form-control mb-3 parts_title" placeholder="Enter Part Title" id="parts_title"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -130,8 +117,7 @@
                                                         <div class="form-group">
                                                             <label for="select" class="form-control-label">Select<span
                                                                     class="text-danger">*</span></label>
-                                                            <select
-                                                                class="select form-control text-capitalize sub_textarea"
+                                                            <select class="select form-control text-capitalize sub_textarea"
                                                                 name="subtypes_id[]" id="select">
                                                                 <option selected disabled>Select</option>
                                                                 @foreach ($stype as $item)
@@ -230,13 +216,13 @@
                             @php
                                 $displayStyle = $showFormTitle ? 'block' : 'none';
                             @endphp
-                            <div class="col-md-12 px-3" style="display: {{ $displayStyle }}">
-                                <div class="form-group form-default">
-                                    <label class="float-label"> Form Title <span class="text-danger">*</span></label>
-                                    <input type="text" name="form_title" class="form-control mb-3"
-                                        placeholder="Enter Form Title" value="{{ $act->form_title }}">
-                                </div>
-                            </div>
+                            <!--<div class="col-md-12 px-3" style="display: {{ $displayStyle }}">-->
+                            <!--    <div class="form-group form-default">-->
+                            <!--        <label class="float-label"> Form Title <span class="text-danger">*</span></label>-->
+                            <!--        <input type="text" name="form_title" class="form-control mb-3"-->
+                            <!--            placeholder="Enter Form Title" value="{{ $act->form_title }}">-->
+                            <!--    </div>-->
+                            <!--</div>-->
 
 
                             <div class="col-md-12">
@@ -254,8 +240,22 @@
 @section('script')
     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- <script>
+            $(document).ready(function() {
+                CKEDITOR.replaceAll('chapter_title', {
+                   
+                });
+            });
+            $(document).ready(function() {
+                CKEDITOR.replaceAll('parts_title', {
+                
+                });
+            });
+        </script> --}}
     <script>
         $(document).ready(function() {
+            CKEDITOR.replace('chapter_title');
+            CKEDITOR.replace('parts_title');
 
             // for category type
             $(document).on('change', '.category', function() {
@@ -300,24 +300,10 @@
                 sectionDiv.show();
             });
 
-            // Add -Remove Section
-            // $(document).on('click', '.add-sectionTitle', function() {
-            //     var clonedSection = $(this).closest('.sectionTitleMain').find('.sectionTitle').first()
-            //         .clone();
-            //     clonedSection.find('input').val('');
-            //     $(this).closest('.sectionTitleMain').append(
-            //         clonedSection);
-            // });
-
-            // $(document).on('click', '.remove-sectionTitle', function() {
-            //     var sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
-            //     if (sectionTitles.length > 1) {
-            //         $(this).closest('.sectionTitle').remove();
-            //     }
-            // });
 
             // Add -Remove Chapter
             $(document).ready(function() {
+
                 $(document).on('click', '.add-chapter', function() {
                     let clonedSection = $(this).closest('.section-set').clone(true);
                     clonedSection.find('input, textarea').val('');
@@ -330,10 +316,21 @@
                     clonedSection.data('chapter-count', chapterCount);
 
                     // Update chapter title input name attribute
-                    clonedSection.find('input[name^="chapter_title"]').attr('name',
+                    // Update chapter title input name and id attributes
+                    clonedSection.find('textarea[name^="chapter_title"]').attr('name',
                         'chapter_title[' + chapterCount + ']');
-                    clonedSection.find('input[name^="parts_title"]').attr('name', 'parts_title[' +
+                    clonedSection.find('textarea[name^="chapter_title"]').attr('id',
+                        'chapter_title[' + chapterCount + ']');
+
+                    CKEDITOR.replace('chapter_title[' + chapterCount + ']');
+
+                    // Update parts title input name and id attributes
+                    clonedSection.find('textarea[name^="parts_title"]').attr('name',
+                        'parts_title[' + chapterCount + ']');
+                    clonedSection.find('textarea[name^="parts_title"]').attr('id', 'parts_title[' +
                         chapterCount + ']');
+                    CKEDITOR.replace('parts_title[' + chapterCount + ']');
+
 
                     // Update section select input name attribute
                     clonedSection.find('select[name^="subtypes_id"]').attr('name', 'subtypes_id[' +
@@ -350,6 +347,7 @@
                         $(this).attr('name', 'section_title[' + chapterCount + '][' +
                             index + ']');
                     });
+
 
                     clonedSection.find('.add-chapter, .remove-chapter').show();
                 });

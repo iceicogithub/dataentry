@@ -77,23 +77,7 @@
                                             <textarea type="text" id="section" name="section_content"
                                                 class="form-control section-textarea ckeditor-replace section mb-3" placeholder="Enter Section"></textarea>
                                             <div class="footnote-addition-container">
-                                                {{-- <div class="form-group form-default mt-3 fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
-                                                    <label class="float-label">
-                                                        Add Footnote
-                                                        <span class="pl-2">
-                                                            <button type="button"
-                                                                class="btn btn-sm social facebook p-0 add-footnote">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                        </span>
-                                                    </label>
-                                                    <div class="show-footnote" style="display: none"> --}}
-                                                {{-- fotnote for section  --}}
-                                                {{-- <input type="text" name="sec_footnote_title[]"
-                                                            class="form-control mb-3" placeholder="Enter Footnote Title">
-                                                        <textarea type="text" name="sec_footnote_content[]" class="form-control ckeditor-replace footnote"></textarea>
-                                                    </div>
-                                                </div> --}}
+                                              
 
                                                 <div class="col-md-12 px-0 py-3">
                                                     <div class="float-right">
@@ -352,8 +336,7 @@
                             </span>
                             </label>
                             <div class="show-footnote" style="display: none">
-                                <input type="text" name="sub_footnote_title[${currentIndex}][${sub_sectionCounter}]" class="form-control mb-3" placeholder="Enter Footnote Title">
-                                <textarea type="text" name="sub_footnote_content[${currentIndex}][${sub_sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
+                                 <textarea type="text" name="sub_footnote_content[${currentIndex}][${sub_sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
                             </div>
                             <div class="col-md-12 px-0 py-3">
                                 <div class="float-right">
@@ -402,7 +385,6 @@
                                         </span>
                                         </label>
                                         <div class="show-footnote" style="display: none">
-                                            <input type="text" name="sec_footnote_title[${sectionCounter}]" class="form-control mb-3" placeholder="Enter Footnote Title">
                                             <textarea type="text" name="sec_footnote_content[${sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                    

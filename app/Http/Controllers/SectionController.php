@@ -74,10 +74,9 @@ class SectionController extends Controller
             ]);
 
             if ($maintypeId == "1" || $maintypeId == "2") {
-                if ($request->has('sec_footnote_title') && is_array($request->sec_footnote_title)) {
-                    foreach ($request->sec_footnote_title as $key => $FootnoteTitle) {
+                if ($request->has('sec_footnote_content') && is_array($request->sec_footnote_content)) {
+                    foreach ($request->sec_footnote_content as $key => $footnoteContent) {
                         // Check if the arrays are set, if not, provide default values
-                        $footnoteContent = $request->sec_footnote_content[$key] ?? null;
 
                         // Create the new footnote
                         $footnote = Footnote::create([
@@ -86,16 +85,14 @@ class SectionController extends Controller
                             'act_id' => $request->act_id,
                             'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                             'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
-                            'footnote_title' => $FootnoteTitle,
                             'footnote_content' => $footnoteContent,
                         ]);
                     }
                 }
 
-                if ($request->has('sub_footnote_title') && is_array($request->sub_footnote_title)) {
-                    foreach ($request->sub_footnote_title as $key => $subFootnoteTitles) {
+                if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content)) {
+                    foreach ($request->sub_footnote_content as $key => $subFootnoteContents) {
                         // Check if the arrays are set, if not, provide default values
-                        $subFootnoteContents = $request->sub_footnote_content[$key] ?? [];
 
                         // Create the new sub-section
                         $sub_section = SubSection::create([
@@ -110,10 +107,8 @@ class SectionController extends Controller
                         ]);
 
                         // Check if the subFootnoteTitles is an array
-                        if (is_array($subFootnoteTitles)) {
-                            foreach ($subFootnoteTitles as $index => $footnoteTitle) {
-                                // Check if the arrays are set, if not, provide default values
-                                $footnoteContent = $subFootnoteContents[$index] ?? null;
+                        if (is_array($subFootnoteContents)) {
+                            foreach ($subFootnoteContents as $index => $footnoteContent) {
 
                                 // Create the new footnote
                                 $footnote = Footnote::create([
@@ -122,7 +117,6 @@ class SectionController extends Controller
                                     'act_id' => $request->act_id,
                                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
-                                    'footnote_title' => $footnoteTitle,
                                     'footnote_content' => $footnoteContent,
                                 ]);
                             }
@@ -225,8 +219,8 @@ class SectionController extends Controller
                 $sections->update();
 
 
-                if ($request->has('sec_footnote_title')) {
-                    foreach ($request->sec_footnote_title as $key => $items) {
+                if ($request->has('sec_footnote_content')) {
+                    foreach ($request->sec_footnote_content as $key => $items) {
                         // Check if the key exists before using it
                         foreach ($items as $kys => $item) {
                             // Check if the sec_footnote_id exists at the specified index
@@ -236,8 +230,7 @@ class SectionController extends Controller
 
                                 if ($foot) {
                                     $foot->update([
-                                        'footnote_title' => $item ?? null,
-                                        'footnote_content' => $request->sec_footnote_content[$key][$kys] ?? null,
+                                        'footnote_content' => $item ?? null,
                                     ]);
                                 }
                             } else {
@@ -248,8 +241,7 @@ class SectionController extends Controller
                                 $footnote->act_id = $sections->act_id ?? null;
                                 $footnote->chapter_id = $sections->chapter_id ?? null;
                                 $footnote->parts_id = $sections->parts_id ?? null;
-                                $footnote->footnote_title = $item ?? null;
-                                $footnote->footnote_content = $request->sec_footnote_content[$key][$kys] ?? null;
+                                $footnote->footnote_content = $item ?? null;
                                 $footnote->save();
                             }
                         }
@@ -272,8 +264,8 @@ class SectionController extends Controller
                             $sub_section->sub_section_content = $request->sub_section_content[$key] ?? null;
                             $sub_section->update();
 
-                            if ($request->has('sub_footnote_title')) {
-                                foreach ($request->sub_footnote_title[$key] as $kys => $item) {
+                            if ($request->has('sub_footnote_content')) {
+                                foreach ($request->sub_footnote_content[$key] as $kys => $item) {
                                     // Check if the sec_footnote_id exists at the specified index
                                     if (isset($request->sub_footnote_id[$key][$kys])) {
                                         // Use first() instead of get() to get a single model instance
@@ -281,8 +273,7 @@ class SectionController extends Controller
 
                                         if ($foot) {
                                             $foot->update([
-                                                'footnote_title' => $item ?? null,
-                                                'footnote_content' => $request->sub_footnote_content[$key][$kys] ?? null,
+                                                'footnote_content' => $item ?? null,
                                             ]);
                                         }
                                     } else {
@@ -293,8 +284,7 @@ class SectionController extends Controller
                                         $footnote->act_id = $sections->act_id ?? null;
                                         $footnote->chapter_id = $sections->chapter_id ?? null;
                                         $footnote->parts_id = $sections->parts_id ?? null;
-                                        $footnote->footnote_title = $item ?? null;
-                                        $footnote->footnote_content = $request->sub_footnote_content[$key][$kys] ?? null;
+                                        $footnote->footnote_content = $item ?? null;
                                         $footnote->save();
                                     }
                                 }
@@ -313,8 +303,8 @@ class SectionController extends Controller
                         $subsec->sub_section_content = $request->sub_section_content[$key] ?? null;
                         $subsec->save();
 
-                        if ($request->has('sub_footnote_title')) {
-                            foreach ($request->sub_footnote_title[$key] as $kys => $item) {
+                        if ($request->has('sub_footnote_content')) {
+                            foreach ($request->sub_footnote_content[$key] as $kys => $item) {
                                 // Create a new footnote for the newly created subsection
                                 $footnote = new Footnote();
                                 $footnote->sub_section_id = $subsec->sub_section_id;
@@ -322,8 +312,7 @@ class SectionController extends Controller
                                 $footnote->act_id = $sections->act_id ?? null;
                                 $footnote->chapter_id = $sections->chapter_id ?? null;
                                 $footnote->parts_id = $sections->parts_id ?? null;
-                                $footnote->footnote_title = $item ?? null;
-                                $footnote->footnote_content = $request->sub_footnote_content[$key][$kys] ?? null;
+                                $footnote->footnote_content = $item ?? null;
                                 $footnote->save();
                             }
                         }

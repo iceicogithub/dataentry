@@ -65,7 +65,7 @@
                                                     class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
                                             <a href="/view-main-act/{{$item->act_id}}" title="View" class="px-1"><i
                                                     class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
-                                            <a href="#" title="Delete" class="px-1"><i
+                                            <a href="/delete-act/{{$item->act_id}}" onclick="return confirm('Are you sure ?')" title="Delete" class="px-1"><i
                                                     class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
                                         </td>
                                     </tr>

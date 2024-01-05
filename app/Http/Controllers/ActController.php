@@ -18,6 +18,8 @@ use App\Models\State;
 use App\Models\Status;
 use App\Models\SubType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class ActController extends Controller
 {
@@ -33,10 +35,14 @@ class ActController extends Controller
     {
         $act_id = $id;
         $act = Act::where('act_id', $act_id)->first();
+        if ($act) {
+            $act_footnote_titles = json_decode($act->act_footnote_title, true);
+            $act_footnote_descriptions = json_decode($act->act_footnote_description, true);
+        }
         $act_section = Section::where('act_id', $id)->with('MainTypeModel', 'Partmodel', 'ChapterModel')
             ->orderBy('section_rank', 'asc')->get();
 
-        return view('admin.section.index', compact('act_section', 'act_id', 'act'));
+        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions'));
     }
 
     public function create(Request $request, $id)
@@ -210,15 +216,24 @@ class ActController extends Controller
     }
     public function update_main_act(Request $request, $id)
     {
+
         try {
+            $validator = Validator::make($request->all(), [
+                'act_footnote_title.*' => 'nullable',
+                'act_footnote_description.*' => 'nullable',
+            ]);
+
+            if ($validator->fails()) {
+                throw ValidationException::withMessages($validator->errors()->toArray());
+            }
 
             $act = Act::find($id);
             $act->act_title = $request->act_title;
             $act->act_no = $request->act_no ?? null;
             $act->act_date = $request->act_date ?? null;
             $act->act_description = $request->act_description ?? null;
-            $act->act_footnote_title = $request->act_footnote_title ?? null;
-            $act->act_footnote_description = $request->act_footnote_description ?? null;
+            $act->act_footnote_title = json_encode($request->act_footnote_title);
+            $act->act_footnote_description = json_encode($request->act_footnote_description);
             $act->update();
 
 
@@ -229,7 +244,7 @@ class ActController extends Controller
             return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
         }
     }
-    
+
     public function new_act()
     {
         $category = Category::all();
@@ -292,6 +307,20 @@ class ActController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $act = Act::find($id);
+
+            if (!$act) {
+                return redirect()->back()->withErrors(['error' => 'Section not found.']);
+            }
+
+            $act->delete();
+
+            return redirect()->back()->with('success', 'Act deleted successfully.');
+        } catch (\Exception $e) {
+            \Log::error('Error deleting section: ' . $e->getMessage());
+
+            return redirect()->back()->withErrors(['error' => 'Failed to delete section. Please try again.' . $e->getMessage()]);
+        }
     }
 }

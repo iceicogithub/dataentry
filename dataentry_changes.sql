@@ -25,6 +25,6 @@ ALTER TABLE `footnote` ADD `rule_id` INT(11) NULL AFTER `regulation_no`, ADD `ru
 
 ALTER TABLE `section` CHANGE `section_rank` `section_rank` INT(11) NULL DEFAULT NULL;(done)
 
-ALTER TABLE `footnote` ADD `sub_section_id` INT NULL AFTER `section_no`;
+ALTER TABLE `footnote` ADD `sub_section_id` INT NULL AFTER `section_no`;(done)
 
 

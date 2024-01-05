@@ -100,13 +100,7 @@
                                                                         <input type="hidden"
                                                                             name="sec_footnote_id[{{ $s }}][{{ $f }}]"
                                                                             value="{{ $footnote->footnote_id }}">
-                                                                        <input type="text"
-                                                                            name="sec_footnote_title[{{ $s }}][{{ $f }}]"
-                                                                            value="{{ $footnote->footnote_title }}"
-                                                                            class="form-control mb-3"
-                                                                            placeholder="Enter Footnote Title"
-                                                                            data-footSecIndex="[{{ $f }}]"
-                                                                            data-secIndex="[{{ $s }}]">
+                                                                      
                                                                         <textarea type="text" name="sec_footnote_content[{{ $s }}][{{ $f }}]"
                                                                             class="form-control ckeditor-replace footnote">{{ $footnote->footnote_content }}</textarea>
                                                                     </div>
@@ -192,17 +186,13 @@
                                                                             <button type="button"
                                                                                 class="btn btn-sm social facebook p-0 add-footnote">
                                                                                 <i
-                                                                                    class="fa {{ !empty($footnoteItem->footnote_title) ? 'fa-minus' : 'fa-plus' }}"></i>
+                                                                                    class="fa {{ !empty($footnoteItem->footnote_content) ? 'fa-minus' : 'fa-plus' }}"></i>
                                                                             </button>
                                                                         </span>
                                                                     </label>
                                                                     <div class="show-footnote">
-                                                                        <input type="text"
-                                                                            name="sub_footnote_title[{{ $k }}][{{ $a }}]"
-                                                                            class="form-control mb-3"
-                                                                            value="{{ $footnoteItem->footnote_title ?? '' }}"
-                                                                            placeholder="Enter Footnote Title">
-                                                                        <textarea type="text" name="footnote_content[{{ $k }}][{{ $a }}]"
+                                                                       
+                                                                        <textarea type="text" name="sub_footnote_content[{{ $k }}][{{ $a }}]"
                                                                             class="form-control ckeditor-replace footnote">{{ $footnoteItem->footnote_content ?? '' }}</textarea>
                                                                     </div>
                                                                 </div>
@@ -503,7 +493,7 @@
                             </span>
                             </label>
                             <div class="show-footnote" style="display: none">
-                                <input type="text" name="sub_footnote_title[${currentIndex}][${sub_sectionCounter}]" class="form-control mb-3" placeholder="Enter Footnote Title">
+                                
                                 <textarea type="text" name="sub_footnote_content[${currentIndex}][${sub_sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
                             </div>
                             <div class="col-md-12 px-0 py-3">
@@ -565,7 +555,7 @@
                                         </span>
                                         </label>
                                         <div class="show-footnote" style="display: none">
-                                            <input type="text" name="sec_footnote_title[${lastInputSec}][${footCounterIndex}]" class="form-control mb-3" placeholder="Enter Footnote Title">
+                                           
                                             <textarea type="text" name="sec_footnote_content[${lastInputSec}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                    

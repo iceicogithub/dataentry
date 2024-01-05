@@ -44,7 +44,7 @@ class PdfExportController extends Controller
                 'subType' => $subType
             ]);
 
-            return $pdf->download('invoice.pdf');
+           return $pdf->download("{$act->act_title}.pdf");
         } catch (ModelNotFoundException $e) {
             return redirect()->route('act');
         }

@@ -60,32 +60,26 @@
     <div class="container">
         <div class="text-uppercase fs-1" style="text-align: center">{{ $act->act_title }}</div>
         <hr>
-        @if (isset($section) && count($section) > 0)
             <div class="fs-1" style="text-align: center">ARRANGEMENT OF SECTIONS</div>
-        @elseif (isset($regulation) && count($regulation) > 0)
-            <div class="fs-1" style="text-align: center">ARRANGEMENT OF REGULATIONS</div>
-        @else
-            <div class="fs-1" style="text-align: center">ARRANGEMENT OF OTHERS</div>
-        @endif
-
         <hr>
         @if ($type->contains('maintype_id', 1))
             @php $sectionCounter1 = 1; @endphp
             @foreach ($chapter as $key => $chapterItem)
                 <div style="text-align: center">
-                    <div class="text-uppercase fs-2">{{ $chapterItem->chapter_title }}</div>
+                    <div class="text-uppercase fs-2" style="margin-block: 0.5rem;">{{ $chapterItem->chapter_title }}</div>
                 </div>
                 @if (!empty($section) && count($section) > 0)
                     @if ($key === 0)
                         <div style="text-align: start">Sections</div>
                     @endif
-                    <div style="text-align: start">
+                    <div style="text-align: start; margin-top: 0.5rem;">
                         @foreach ($section->where('chapter_id', $chapterItem->chapter_id) as $sectionItem)
                             <span class="text-capitalize fs-2">{{ $sectionCounter1++ }}.
                                 {{ $sectionItem->section_title }}</span><br>
                         @endforeach
                     </div>
-                @elseif (!empty($regulation) && count($regulation) > 0)
+                @endif
+                @if (!empty($regulation) && count($regulation) > 0)
                     @if ($key === 0)
                         <div style="text-align: start">Regulation</div>
                     @endif
@@ -102,11 +96,10 @@
             @php $displayedSections = []; @endphp
             @foreach ($parts as $part)
                 @php
-                    $sectionKey = $part->act_id . '' . $part->maintype_id . '' . $part->partstype_id . '_' . $part->parts_title;
+                    $sectionKey = $part->act_id . '' . $part->maintype_id . '_' . $part->parts_title;
                 @endphp
                 <div style="text-align: center">
                     @if (!in_array($sectionKey, $displayedSections))
-                        <div class="text-uppercase fs-3 section-padding">{{ $part->partsTypepdf->parts }}</div>
                         <div class="text-uppercase fs-2">{{ $part->parts_title }}</div>
                         @php $displayedSections[] = $sectionKey; @endphp
                     @endif
@@ -125,7 +118,7 @@
         <div class="text-uppercase fs-1" style="text-align: center">{{ $act->act_title }}</div>
         <div class="text-uppercase fs-2" style="text-align: center">{{ $act->act_no }}</div>
         <div class="fs-3 text-end">[{{ $act->act_date }}]</div>
-        <p class="fs-3">{!! $act->act_description ! !}</p>
+        <p class="fs-3">{!! $act->act_description !!}</p>
         @if ($type->contains('maintype_id', 1))
             @php $sectionCounter2 = 1; @endphp
             @foreach ($chapter as $key => $chapterItem)
@@ -157,11 +150,10 @@
             @php $displayedSections = []; @endphp
             @foreach ($parts as $part)
                 @php
-                    $sectionKey = $part->act_id . '' . $part->maintype_id . '' . $part->partstype_id . '_' . $part->parts_title;
+                    $sectionKey = $part->act_id . '' . $part->maintype_id . '_' . $part->parts_title;
                 @endphp
                 <div style="text-align: center">
                     @if (!in_array($sectionKey, $displayedSections))
-                        <div class="text-uppercase fs-3 section-padding">{{ $part->partsTypepdf->parts }}</div>
                         <div class="text-uppercase fs-2">{{ $part->parts_title }}</div>
                         @php $displayedSections[] = $sectionKey; @endphp
                     @endif

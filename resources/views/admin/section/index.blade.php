@@ -12,10 +12,11 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/add-act/{{ $act_id }}" class="mr-2"><button class="btn btn-success">Add Index</button></a>
+                        <a href="/add-act/{{ $act_id }}" class="mr-2"><button class="btn btn-success">Add
+                                Index</button></a>
                         <a href="/edit-main-act/{{ $act_id }}"><button class="btn btn-danger">Back</button></a>
                     </ol>
-                    
+
                 </div>
 
 
@@ -75,23 +76,48 @@
                                     cols="30" rows="3">{{ $act->act_description }}</textarea>
                             </div>
                         </div>
-                        <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                            <label class="float-label">
-                                 Footnote
-                                <span class="pl-2">
-                                    <button type="button" class="btn btn-sm social facebook p-0 add-footnote">
+                        @if ($act_footnote_descriptions)
+                            @foreach ($act_footnote_descriptions as $key => $act_footnote_description)
+                                <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
+                                    <label class="float-label">
+                                        Footnote
+                                        <span class="pl-2">
+                                            <button type="button" class="btn btn-sm social facebook p-0 add-footnote">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </span>
+                                    </label>
+                                    <div class="show-footnote" style="">
+                                        <div class="footnote-entry">
+                                            <textarea type="text" name="act_footnote_description[]" id="ck[{{ $key }}]"
+                                                class="form-control ckeditor-replace footnote" placeholder="Enter Footnote Description">
+                                                {{ $act_footnote_description }}</textarea>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endIf
+
+                        <div class="footnote-addition-container float-right col-md-12 ">
+
+                            <div class="px-0 py-3">
+                                <div class="float-right">
+                                    <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
+                                        (add Footnote)
+                                    </span>
+                                    <button type="button" class="btn btn-sm social facebook p-0 add-multi-footnote">
                                         <i class="fa fa-plus"></i>
                                     </button>
-                                </span>
-                            </label>
-                            <div class="show-footnote" style="display: none">
-                                <input type="text" value="{{ $act->act_footnote_title }}" name="act_footnote_title" class="form-control mb-3"
-                                    placeholder="Enter Footnote Title">
-                                <textarea type="text" name="act_footnote_description" id="act_footnote" class="form-control ckeditor-replace footnote">{{ $act->act_footnote_description }}</textarea>
+                                    <button type="button" class="btn btn-sm social youtube p-0 remove-multi-footnote">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
                             </div>
+
                         </div>
 
-                        <div class="col-md-12 text-right">
+                        <div class="col-md-12 text-right mt-2">
                             <div class="form-group">
                                 <button type="submit" class="btn  btn-success">Update Data</button>
                             </div>
@@ -180,7 +206,8 @@
                                             <a href="#" title="View" class="px-1">
                                                 <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
                                             </a>
-                                            <a href="{{ url('/delete_section/' . $item->section_id) }}" title="Delete" class="px-1" onclick="return confirm('Are you sure ?')">
+                                            <a href="{{ url('/delete_section/' . $item->section_id) }}" title="Delete"
+                                                class="px-1" onclick="return confirm('Are you sure ?')">
                                                 <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                             </a>
                                             <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_no' => $item->section_no, 'section_rank' => $item->section_rank]) }}"
@@ -201,19 +228,78 @@
 
     <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @if ($act_footnote_descriptions)
+        <script>
+            $(document).ready(function() {
+                CKEDITOR.replaceAll('ckeditor-replace', {
+                    // Additional configuration options if needed
+                    // ...
+                });
+            });
+        </script>
+    @endif
     <script>
         CKEDITOR.replace('act_description');
         CKEDITOR.replace('act_footnote');
 
-        $(document).on('click', '.add-footnote', function() {
-                var icon = $(this).find('i');
-                var section = $(this).closest('.form-default').find('.show-footnote');
-                section.slideToggle();
-                icon.toggleClass('fa-plus fa-minus');
 
-                // Initialize CKEditor for the new textarea
-                CKEDITOR.replace(section.find('.ckeditor-replace.footnote')[0]);
-            });
+        $(document).on('click', '.add-footnote', function() {
+            var icon = $(this).find('i');
+            var section = $(this).closest('.form-default').find('.show-footnote');
+            section.slideToggle();
+            icon.toggleClass('fa-plus fa-minus');
+
+            // Initialize CKEditor for the new textarea
+            CKEDITOR.replace(section.find('.ckeditor-replace.footnote')[0]);
+        });
     </script>
-    
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.add-multi-footnote', function() {
+
+
+                var newSection = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
+                                        <label class="float-label">
+                                        Add Footnote
+                                        <span class="pl-2">
+                                            <button type="button" class="btn btn-sm social facebook p-0 add-footnote">
+                                            <i class="fa fa-plus"></i>
+                                            </button>
+                                        </span>
+                                        </label>
+                                        <div class="show-footnote" style="display: none">
+                                            <textarea type="text" name="act_footnote_description[]" class="form-control ckeditor-replace footnote"></textarea>
+                                        </div>
+                                   
+                                        <div class="col-md-12 px-0 py-3">
+                                            <div class="float-right">
+                                                <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
+                                                ( Add footnote )
+                                                </span>
+                                                <button type="button" class="btn btn-sm social facebook p-0 add-multi-footnote">
+                                                <i class="fa fa-plus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm social youtube p-0 remove-multi-footnote">
+                                                <i class="fa fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                `;
+
+                $('.footnote-addition-container').append(newSection);
+
+                CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[0]);
+            });
+
+            $(document).on('click', '.remove-multi-footnote', function() {
+                if ($('.footnote-addition').length > 1) {
+                    $('.footnote-addition:last').remove();
+                }
+            });
+
+        });
+    </script>
+
 @endsection

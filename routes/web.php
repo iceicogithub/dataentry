@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
 // Route::get('/rename_column', function () {
 //         if (Schema::hasTable('acts') && Schema::hasColumn('acts', 'category')) {
 //             DB::statement('ALTER TABLE acts CHANGE category category_id VARCHAR(255)');
@@ -46,6 +48,7 @@ Route::get('/category', [CategoryController::class, 'index'])->name('category');
 
 // act controller 
 Route::get('/act', [ActController::class, 'index'])->name('act');
+Route::get('/delete-act/{id}', [ActController::class, 'destroy']);
 Route::get('/new_act', [ActController::class, 'new_act'])->name('new_act');
 Route::post('/store_new_act', [ActController::class, 'store_new_act']);
 Route::post('/update_main_act/{id}', [ActController::class, 'update_main_act']);
