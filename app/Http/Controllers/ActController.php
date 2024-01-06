@@ -309,18 +309,26 @@ class ActController extends Controller
     {
         try {
             $act = Act::find($id);
-
             if (!$act) {
-                return redirect()->back()->withErrors(['error' => 'Section not found.']);
+                return redirect()->back()->withErrors(['error' => 'Act not found.']);
             }
-
+    
+            // Delete related records
+            Chapter::where('act_id', $id)->delete();
+            Parts::where('act_id', $id)->delete();
+            Section::where('act_id', $id)->delete();
+            Regulation::where('act_id', $id)->delete();
+            SubSection::where('act_id', $id)->delete();
+            Footnote::where('act_id', $id)->delete();
+    
             $act->delete();
-
-            return redirect()->back()->with('success', 'Act deleted successfully.');
+    
+            return redirect()->back()->with('success', 'Act and related records deleted successfully.');
         } catch (\Exception $e) {
-            \Log::error('Error deleting section: ' . $e->getMessage());
-
-            return redirect()->back()->withErrors(['error' => 'Failed to delete section. Please try again.' . $e->getMessage()]);
+            \Log::error('Error deleting act and related records: ' . $e->getMessage());
+    
+            return redirect()->back()->withErrors(['error' => 'Failed to delete act and related records. Please try again.' . $e->getMessage()]);
         }
     }
+    
 }

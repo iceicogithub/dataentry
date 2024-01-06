@@ -50,7 +50,8 @@ class SectionController extends Controller
                     $chapter->chapter_title = $request->chapter_title;
                     $chapter->update();
                 }
-            } elseif ($request->has('parts_id')) {
+            } 
+            if ($request->has('parts_id')) {
                 $part = Parts::find($request->parts_id);
 
                 if ($part) {
@@ -100,6 +101,7 @@ class SectionController extends Controller
                             'act_id' => $request->act_id,
                             'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                             'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
+                            'footnote_no' => $request->sec_footnote_no[$key],
                             'footnote_content' => $footnoteContent,
                         ]);
                     }
@@ -131,6 +133,7 @@ class SectionController extends Controller
                                     'act_id' => $request->act_id,
                                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
+                                    'footnote_no' => $request->sec_footnote_no[$key][$index],
                                     'footnote_content' => $footnoteContent,
                                 ]);
                             }
@@ -205,9 +208,10 @@ class SectionController extends Controller
                     $chapter->chapter_title = $request->chapter_title;
                     $chapter->update();
                 }
-            } elseif ($request->has('parts_id')) {
+            } 
+            if ($request->has('parts_id')) {
                 $part = Parts::find($request->parts_id);
-
+                
                 if ($part) {
                     $part->parts_title = $request->parts_title;
                     $part->update();
@@ -245,6 +249,7 @@ class SectionController extends Controller
                                 if ($foot) {
                                     $foot->update([
                                         'footnote_content' => $item ?? null,
+                                        'footnote_no' => $request->sec_footnote_no[$key][$kys] ?? null,
                                     ]);
                                 }
                             } else {
@@ -256,6 +261,7 @@ class SectionController extends Controller
                                 $footnote->chapter_id = $sections->chapter_id ?? null;
                                 $footnote->parts_id = $sections->parts_id ?? null;
                                 $footnote->footnote_content = $item ?? null;
+                                $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
                                 $footnote->save();
                             }
                         }
@@ -288,6 +294,7 @@ class SectionController extends Controller
                                         if ($foot) {
                                             $foot->update([
                                                 'footnote_content' => $item ?? null,
+                                                'footnote_no' => $request->sub_footnote_no[$key][$kys] ?? null,
                                             ]);
                                         }
                                     } else {
@@ -299,6 +306,7 @@ class SectionController extends Controller
                                         $footnote->chapter_id = $sections->chapter_id ?? null;
                                         $footnote->parts_id = $sections->parts_id ?? null;
                                         $footnote->footnote_content = $item ?? null;
+                                        $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
                                         $footnote->save();
                                     }
                                 }
@@ -326,6 +334,7 @@ class SectionController extends Controller
                                 $footnote->chapter_id = $sections->chapter_id ?? null;
                                 $footnote->parts_id = $sections->parts_id ?? null;
                                 $footnote->footnote_content = $item ?? null;
+                                $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
                                 $footnote->save();
                             }
                         }

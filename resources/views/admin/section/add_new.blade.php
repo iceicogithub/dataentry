@@ -334,6 +334,8 @@
                             </span>
                             </label>
                             <div class="show-footnote" style="display: none">
+                                <input type="text" name="sub_footnote_no[${currentIndex}][${sub_sectionCounter}]" class="form-control mb-3"
+                                                    style="width:20%" placeholder="Footnote No.">
                                  <textarea type="text" name="sub_footnote_content[${currentIndex}][${sub_sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
                             </div>
                             <div class="col-md-12 px-0 py-3">
@@ -383,6 +385,8 @@
                                         </span>
                                         </label>
                                         <div class="show-footnote" style="display: none">
+                                                <input type="text" name="sec_footnote_no[${sectionCounter}]" class="form-control mb-3"
+                                                    style="width:20%" placeholder="Footnote No.">
                                             <textarea type="text" name="sec_footnote_content[${sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                    
