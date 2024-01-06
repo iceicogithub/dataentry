@@ -184,9 +184,9 @@
                                         <td scope="row">@php echo $a++; @endphp</td>
                                         <td class="text-capitalize">
                                             @if ($item->maintype_id == 1)
-                                                {{ $item->ChapterModel->chapter_title }}
+                                                {!! $item->ChapterModel->chapter_title !!}
                                             @elseif($item->maintype_id == 2)
-                                                {{ $item->Partmodel->parts_title }}
+                                                {!! $item->Partmodel->parts_title !!}
                                             @elseif($item->maintype_id == 3)
                                                 Priliminary
                                             @elseif($item->maintype_id == 4)

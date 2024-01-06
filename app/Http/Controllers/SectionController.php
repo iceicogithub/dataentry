@@ -324,20 +324,24 @@ class SectionController extends Controller
                         $subsec->sub_section_content = $request->sub_section_content[$key] ?? null;
                         $subsec->save();
 
-                        if ($request->has('sub_footnote_content')) {
+                        if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
                             foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                                // Create a new footnote for the newly created subsection
-                                $footnote = new Footnote();
-                                $footnote->sub_section_id = $subsec->sub_section_id;
-                                $footnote->section_id = $id ?? null;
-                                $footnote->act_id = $sections->act_id ?? null;
-                                $footnote->chapter_id = $sections->chapter_id ?? null;
-                                $footnote->parts_id = $sections->parts_id ?? null;
-                                $footnote->footnote_content = $item ?? null;
-                                $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
-                                $footnote->save();
+                                // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
+                                if (isset($request->sub_footnote_no[$key][$kys], $request->sub_footnote_content[$key][$kys])) {
+                                    // Create a new footnote for the newly created subsection
+                                    $footnote = new Footnote();
+                                    $footnote->sub_section_id = $subsec->sub_section_id;
+                                    $footnote->section_id = $id ?? null;
+                                    $footnote->act_id = $sections->act_id ?? null;
+                                    $footnote->chapter_id = $sections->chapter_id ?? null;
+                                    $footnote->parts_id = $sections->parts_id ?? null;
+                                    $footnote->footnote_content = $item ?? null;
+                                    $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
+                                    $footnote->save();
+                                }
                             }
                         }
+                        
                     }
                 }
             }

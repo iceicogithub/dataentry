@@ -16,4 +16,6 @@ class SubSection extends Model
     {
         return $this->hasMany(Footnote::class, 'sub_section_id', 'sub_section_id');
     }
+
+   
 }
