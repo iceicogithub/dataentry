@@ -14,6 +14,8 @@ use App\Models\SubSection;
 use App\Models\SubType;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Barryvdh\DomPDF\PDF;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -22,17 +24,24 @@ class PdfExportController extends Controller
     public function exportToPdf(Request $request, $id)
     {
         try {
+
+            $options = new Options();
+            $options->set('isHtml5ParserEnabled', true);
+            $dompdf = new Dompdf($options);
+
+
+
             $type = MainType::all();
             $act = Act::findOrFail($id);
             $chapter = Chapter::where('act_id', $id)->get();
             $part = Parts::where('act_id', $id)->get();
 
             $section = Section::where('act_id', $id)
-            ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
-            ->orWhereIn('parts_id', $part->pluck('parts_id'))
-            ->with('subsectionModel','footnoteModel')
-            ->orderBy('section_rank', 'asc')
-            ->get();
+                ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
+                ->orWhereIn('parts_id', $part->pluck('parts_id'))
+                ->with('subsectionModel', 'footnoteModel')
+                ->orderBy('section_rank', 'asc')
+                ->get();
 
             // dd($section);
             // die();

@@ -12,7 +12,8 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/add-act/{{ $act_id }}" class="mr-2"><button class="btn btn-success">Add Index</button></a>
+                        <a href="/add-act/{{ $act_id }}" class="mr-2"><button class="btn btn-success">Add
+                                Index</button></a>
                         <a href="/edit-main-act/{{ $act_id }}"><button class="btn btn-danger">Back</button></a>
                     </ol>
                 </div>
@@ -74,7 +75,7 @@
                         </div>
                         <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                             <label class="float-label">
-                                 Footnote
+                                Footnote
                                 <span class="pl-2">
                                     <button type="button" class="btn btn-sm social facebook p-0 add-footnote">
                                         <i class="fa fa-plus"></i>
@@ -82,9 +83,10 @@
                                 </span>
                             </label>
                             <div class="show-footnote" style="display: none">
-                                <input type="text" value="{{ $act->act_footnote_title }}" name="act_footnote_title" class="form-control mb-3"
-                                    placeholder="Enter Footnote Title">
-                                <textarea type="text" name="act_footnote_description" id="act_footnote" class="form-control ckeditor-replace footnote">{{ $act->act_footnote_description }}</textarea>
+                                <input type="text" value="{{ $act->act_footnote_title }}" name="act_footnote_title"
+                                    class="form-control mb-3" placeholder="Enter Footnote Title">
+                                <textarea type="text" name="act_footnote_description" id="act_footnote"
+                                    class="form-control ckeditor-replace footnote">{{ $act->act_footnote_description }}</textarea>
                             </div>
                         </div>
 
@@ -129,12 +131,14 @@
                                         @if ($chapter && $chapter->maintype_id)
                                             @if ($chapter->ChapterType->maintype_id == '1')
                                                 Chapter
-                                            @else
                                             @endif
                                         @elseif($parts && $parts->maintype_id)
                                             @if ($parts->PartsType->maintype_id == '2')
                                                 Parts
-                                            @else
+                                            @endif
+                                        @elseif($parts && $parts->maintype_id == 2 && ($chapter && $chapter->maintype_id == 1))
+                                            @if ($parts && $parts->maintype_id == 2 && ($chapter && $chapter->maintype_id == 1))
+                                                Chapter && Parts
                                             @endif
                                         @else
                                             Null
@@ -155,9 +159,9 @@
                                         <td scope="row">@php echo $a++; @endphp</td>
                                         <td class="text-capitalize">
                                             @if ($item->maintype_id == 1)
-                                                {{ $item->ChapterModel->chapter_title }}
+                                                {!! $item->ChapterModel->chapter_title !!}
                                             @elseif($item->maintype_id == 2)
-                                                {{ $item->Partmodel->parts_title }}
+                                                {!! $item->Partmodel->parts_title !!}
                                             @elseif($item->maintype_id == 3)
                                                 Priliminary
                                             @elseif($item->maintype_id == 4)
@@ -177,7 +181,8 @@
                                             <a href="#" title="View" class="px-1">
                                                 <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
                                             </a>
-                                            <a href="{{ url('/delete_regulation/' . $item->regulation_id) }}" title="Delete" class="px-1" onclick="return confirm('Are you sure ?')">
+                                            <a href="{{ url('/delete_regulation/' . $item->regulation_id) }}"
+                                                title="Delete" class="px-1" onclick="return confirm('Are you sure ?')">
                                                 <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                             </a>
                                             <a href="{{ url('/add_below_new_regulation', ['act_id' => $item->act_id, 'regulation_no' => $item->regulation_no]) }}"
@@ -203,14 +208,14 @@
         CKEDITOR.replace('act_footnote');
 
         $(document).on('click', '.add-footnote', function() {
-                var icon = $(this).find('i');
-                var section = $(this).closest('.form-default').find('.show-footnote');
-                section.slideToggle();
-                icon.toggleClass('fa-plus fa-minus');
+            var icon = $(this).find('i');
+            var section = $(this).closest('.form-default').find('.show-footnote');
+            section.slideToggle();
+            icon.toggleClass('fa-plus fa-minus');
 
-                // Initialize CKEditor for the new textarea
-                CKEDITOR.replace(section.find('.ckeditor-replace.footnote')[0]);
-            });
+            // Initialize CKEditor for the new textarea
+            CKEDITOR.replace(section.find('.ckeditor-replace.footnote')[0]);
+        });
     </script>
-    
+
 @endsection

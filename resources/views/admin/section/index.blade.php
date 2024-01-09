@@ -158,13 +158,15 @@
                                         @if ($chapter && $chapter->maintype_id)
                                             @if ($chapter->ChapterType->maintype_id == '1')
                                                 Chapter
-                                            @else
                                             @endif
                                         @elseif($parts && $parts->maintype_id)
                                             @if ($parts->PartsType->maintype_id == '2')
                                                 Parts
-                                            @else
                                             @endif
+                                        @elseif(($parts && $parts->maintype_id == 2) && ($chapter && $chapter->maintype_id == 1))
+                                            @if (($parts && $parts->maintype_id == 2) && ($chapter && $chapter->maintype_id == 1))
+                                            Chapter && Parts
+                                            @endif 
                                         @else
                                             Null
                                         @endif

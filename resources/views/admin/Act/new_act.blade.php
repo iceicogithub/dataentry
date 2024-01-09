@@ -43,8 +43,8 @@
                                 <div class="form-group">
                                     <label for="role" class=" form-control-label">Select Category<span
                                             class="text-danger">*</span></label>
-                                    <select class="select form-control text-capitalize category" name="category_id">
-                                        <option selected disabled>Select Category</option>
+                                    <select class="select form-control text-capitalize category" name="category_id" required>
+                                        <option value="" selected disabled>Select Category</option>
                                         @foreach ($category as $value)
                                             <option value="{{ $value->category_id }}" class="text-capitalize">
                                                 {{ $value->category }}</option>
@@ -56,8 +56,8 @@
                                 <div class="form-group">
                                     <label for="state" class=" form-control-label">Select state<span
                                             class="text-danger">*</span></label>
-                                    <select class="select form-control text-capitalize" name="state_id">
-                                        <option selected disabled>Select State</option>
+                                    <select class="select form-control text-capitalize" name="state_id" >
+                                        <option value="" selected disabled>Select State</option>
                                         @foreach ($states as $item)
                                             <option value="{{ $item->state_id }}" class="text-capitalize">
                                                 {{ $item->name }}</option>
@@ -69,7 +69,7 @@
                                 <div class="form-group form-default">
                                     <label class="float-label"> Act <span class="text-danger">*</span></label>
                                     <input type="text" name="act_title" class="form-control mb-3"
-                                        placeholder="Enter Act Title">
+                                        placeholder="Enter Act Title" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
