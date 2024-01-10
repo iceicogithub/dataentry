@@ -69,7 +69,7 @@
     </div>
 @endsection
 @section('script')
-    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/4.16.2/full-all/ckeditor.js"></script>
     <script>
         CKEDITOR.replace('chapter');
     </script>

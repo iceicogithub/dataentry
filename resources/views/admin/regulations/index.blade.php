@@ -201,8 +201,17 @@
     </div>
 
 
-    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.2/full-all/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      {{-- <script>
+        // Initialize CKEditor
+        CKEDITOR.replace('act_description', {
+            extraPlugins: 'basicstyles,superscript',
+            toolbar: [
+                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript'] },
+            ],
+        });
+    </script> --}}
     <script>
         CKEDITOR.replace('act_description');
         CKEDITOR.replace('act_footnote');

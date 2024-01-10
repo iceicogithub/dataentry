@@ -238,7 +238,7 @@
     </div>
 @endsection
 @section('script')
-    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.2/full-all/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     {{-- <script>
             $(document).ready(function() {
@@ -507,7 +507,7 @@
                 // for sections 
                 $(document).on('click', '.add-sectionTitle', function() {
                     let sectionTitleMain = $(this).closest('.section-set').find(
-                    '.sectionTitleMain');
+                        '.sectionTitleMain');
                     let clonedSectionTitle = sectionTitleMain.find('.sectionTitle:first').clone(
                         true);
                     clonedSectionTitle.find('input').val('');
@@ -528,7 +528,7 @@
                     clonedSectionTitle.find('input[name^="section_title"]').each(function(index) {
                         $(this).attr('name',
                             `section_title[${currentChapterCount}][${lastIndex + index}]`
-                            );
+                        );
                     });
 
                     sectionTitleMain.append(clonedSectionTitle);
