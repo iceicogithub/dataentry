@@ -57,15 +57,15 @@
                         <div class="col-md-12">
                             <div class="form-group form-default">
                                 <label class="float-label"> Act NO.<span class="text-danger">*</span></label>
-                                <input type="text" name="act_no" value="{{ $act->act_no }}" class="form-control mb-3"
-                                    placeholder="Enter Act No.">
+                                <textarea name="act_no" class="form-control mb-3" placeholder="Enter Act No" id="act_no"
+                                    cols="30" rows="3">{{ $act->act_no }}</textarea>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group form-default">
                                 <label class="float-label">Act Date<span class="text-danger">*</span></label>
-                                <input type="text" name="act_date" value="{{ $act->act_date }}" class="form-control mb-3"
-                                    placeholder="Enter Act Date">
+                                <input type="text" name="act_date" value="{{ $act->act_date }}"
+                                    class="form-control mb-3" placeholder="Enter Act Date">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -142,11 +142,15 @@
                                 @php
                                     use App\Models\Chapter;
                                     use App\Models\Parts;
+                                    use App\Models\Priliminary;
 
                                     $chapter = Chapter::with('ChapterType')
                                         ->where('act_id', $act_id)
                                         ->first();
                                     $parts = Parts::with('PartsType')
+                                        ->where('act_id', $act_id)
+                                        ->first();
+                                    $priliminary = Priliminary::with('PriliminaryType')
                                         ->where('act_id', $act_id)
                                         ->first();
 
@@ -155,7 +159,16 @@
                                 <tr>
                                     <th scope="col">Sr.No</th>
                                     <th scope="col">
-                                        @if ($chapter && $chapter->maintype_id)
+                                        
+                                        @if($parts && $parts->maintype_id == 2 && ($chapter && $chapter->maintype_id == 1))
+                                            @if ($parts && $parts->maintype_id == 2 && ($chapter && $chapter->maintype_id == 1))
+                                                Chapter & Parts
+                                            @endif
+                                        @elseif($parts && $parts->maintype_id == 2 && ($priliminary && $priliminary->maintype_id == 3))
+                                            @if ($parts && $parts->maintype_id == 2 && ($priliminary && $priliminary->maintype_id == 3))
+                                            Parts & Priliminary
+                                            @endif
+                                        @elseif ($chapter && $chapter->maintype_id)
                                             @if ($chapter->ChapterType->maintype_id == '1')
                                                 Chapter
                                             @endif
@@ -163,10 +176,6 @@
                                             @if ($parts->PartsType->maintype_id == '2')
                                                 Parts
                                             @endif
-                                        @elseif(($parts && $parts->maintype_id == 2) && ($chapter && $chapter->maintype_id == 1))
-                                            @if (($parts && $parts->maintype_id == 2) && ($chapter && $chapter->maintype_id == 1))
-                                            Chapter && Parts
-                                            @endif 
                                         @else
                                             Null
                                         @endif
@@ -190,7 +199,7 @@
                                             @elseif($item->maintype_id == 2)
                                                 {!! $item->Partmodel->parts_title !!}
                                             @elseif($item->maintype_id == 3)
-                                                Priliminary
+                                                {!! $item->PriliminaryModel->priliminary_title !!}
                                             @elseif($item->maintype_id == 4)
                                                 Schedules
                                             @else
@@ -241,6 +250,7 @@
         </script>
     @endif
     <script>
+        CKEDITOR.replace('act_no');
         CKEDITOR.replace('act_description');
         CKEDITOR.replace('act_footnote');
 

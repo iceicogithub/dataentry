@@ -108,6 +108,13 @@
                                                             class="text-danger">*</span></label>
                                                     <textarea name="parts_title[]" class="form-control mb-3 parts_title" placeholder="Enter Part Title" id="parts_title"></textarea>
                                                 </div>
+
+                                                {{-- for priliminary --}}
+                                                <div id="priliminarySection" class="priliminarySection" style="display: none">
+                                                    <label class="float-label"> Priliminary <span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea name="priliminary_title[]" class="form-control mb-3 parts_title" placeholder="Enter Priliminary Title" id="priliminary_title"></textarea>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="additional-section">
@@ -256,6 +263,7 @@
         $(document).ready(function() {
             CKEDITOR.replace('chapter_title');
             CKEDITOR.replace('parts_title');
+            CKEDITOR.replace('priliminary_title');
 
             // for category type
             $(document).on('change', '.category', function() {
@@ -281,6 +289,7 @@
                 var sectionContainer = $(this).closest('.section-set');
                 var chapterSection = sectionContainer.find('.chapterSection');
                 var partSection = sectionContainer.find('.partSection');
+                var priliminarySection = sectionContainer.find('.priliminarySection');
 
                 chapterSection.hide();
                 partSection.hide();
@@ -289,6 +298,8 @@
                     chapterSection.show();
                 } else if (selectedValue == '2') {
                     partSection.show();
+                } else if (selectedValue == '3') {
+                    priliminarySection.show();
                 }
             });
 

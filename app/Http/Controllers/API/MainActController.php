@@ -24,15 +24,32 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MainActController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    public function show()
+    {
+        try {
+            $act = Act::all();
+            return response()->json([
+                'status' => 200,
+                'data' =>   [
+                    'act' => $act,
+                ]
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Resource not found.' . $e->getMessage(),
+                'data' => null
+            ]);
+        }
+    }
+
     public function index(Request $request, $id)
     {
         try {
 
-            $type = MainType::all();
             $act = Act::findOrFail($id);
+            $type = MainType::all();
             $chapter = Chapter::where('act_id', $id)->get();
             $part = Parts::where('act_id', $id)->get();
 
@@ -47,7 +64,7 @@ class MainActController extends Controller
             $subType = SubType::all();
 
             return response()->json([
-                'status' => true,
+                'status' => 200,
                 'data' =>   [
                     'act' => $act,
                     'chapter' => $chapter,
@@ -57,12 +74,18 @@ class MainActController extends Controller
                     'subType' => $subType
                 ]
             ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Act not found with the provided ID.',
+                'data' => null
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
-                'status' => false,
-                'message' => 'Resource not found.' . $e->getMessage(),
+                'status' => 404,
+                'message' => 'Internal Server Error: ' . $e->getMessage(),
                 'data' => null
-            ]);
+            ], 500);
         }
     }
 
@@ -105,17 +128,17 @@ class MainActController extends Controller
                 'subType' => $subType
             ]);
 
-        // Get PDF contents as a string
-        $pdfContents = $pdf->output();
+            // Get PDF contents as a string
+            $pdfContents = $pdf->output();
 
-        // Set response headers for PDF download
-        $headers = [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'attachment; filename="' . $act->act_title . '.pdf"',
-        ];
+            // Set response headers for PDF download
+            $headers = [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="' . $act->act_title . '.pdf"',
+            ];
 
-        // Return PDF as response
-        return response($pdfContents, 200, $headers);
+            // Return PDF as response
+            return response($pdfContents, 200, $headers);
         } catch (Exception $e) {
             return response()->json([
                 'status' => false,
@@ -137,10 +160,7 @@ class MainActController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.

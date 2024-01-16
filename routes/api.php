@@ -20,6 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
+Route::get('/act', [MainActController::class, 'show']);
+
 Route::get('/mainact/{id}', [MainActController::class, 'index']);
 
 Route::get('/generate_pdf/{id}', [MainActController::class, 'create']);

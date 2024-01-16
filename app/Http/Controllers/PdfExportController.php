@@ -8,6 +8,7 @@ use App\Models\Footnote;
 use App\Models\MainType;
 use App\Models\Parts;
 use App\Models\PartsType;
+use App\Models\Priliminary;
 use App\Models\Regulation;
 use App\Models\Section;
 use App\Models\SubSection;
@@ -33,32 +34,33 @@ class PdfExportController extends Controller
 
             $type = MainType::all();
             $act = Act::findOrFail($id);
+            $act_footnotes = Act::where('act_id',$id)->get();
             $chapter = Chapter::where('act_id', $id)->get();
-            $part = Parts::where('act_id', $id)->get();
+            $parts = Parts::where('act_id', $id)->get();
+            $priliminary = Priliminary::where('act_id', $id)->get();
 
             $section = Section::where('act_id', $id)
                 ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
-                ->orWhereIn('parts_id', $part->pluck('parts_id'))
+                ->orWhereIn('parts_id', $parts->pluck('parts_id'))
+                ->orWhereIn('priliminary_id', $priliminary->pluck('priliminary_id'))
                 ->with('subsectionModel', 'footnoteModel')
                 ->orderBy('section_rank', 'asc')
                 ->get();
 
-            // dd($section);
-            // die();
-
             $partstype = PartsType::all();
-            $parts = Parts::where('act_id', $id)->get();
             $regulation = Regulation::where('act_id', $id)->whereIn('chapter_id', $chapter->pluck('chapter_id'))->get();
             $subType = SubType::all();
 
 
             $pdf = FacadePdf::loadView('admin.export.pdf', [
                 'act' => $act,
+                'act_footnotes' => $act_footnotes,
                 'chapter' => $chapter,
                 'section' => $section,
                 'type' => $type,
                 'partstype' => $partstype,
                 'parts' => $parts,
+                'priliminary' => $priliminary,
                 'regulation' => $regulation,
                 'subType' => $subType
             ]);

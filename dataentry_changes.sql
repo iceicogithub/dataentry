@@ -27,4 +27,7 @@ ALTER TABLE `section` CHANGE `section_rank` `section_rank` INT(11) NULL DEFAULT 
 
 ALTER TABLE `footnote` ADD `sub_section_id` INT NULL AFTER `section_no`;(done)
 
+ALTER TABLE `acts` CHANGE `act_footnote_description` `act_footnote_description` VARCHAR(25555) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;(done)
+
+
 
