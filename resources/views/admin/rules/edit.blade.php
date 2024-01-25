@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{ $sections->act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="/get_act_section/{{ $rule->act_id }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -21,7 +21,7 @@
     <div class="content mt-3">
         <div class="row">
             <div class="col-lg-12">
-                <form id="form" action="/update_all_section/{{ $sections->section_id }}" method="post"
+                <form id="form" action="/update_all_rule/{{ $rule->rule_id }}" method="post"
                     enctype="multipart/form-data" class="form form-horizontal">
                     @csrf
                     <!-- Your Blade View -->
@@ -36,9 +36,8 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <input type="hidden" name="section_id" value="{{ $sections->section_id }}">
-                    <input type="hidden" name="chapter_id" value="{{ $sections->chapter_id }}">
-                    <input type="hidden" name="parts_id" value="{{ $sections->parts_id }}">
+                    <input type="hidden" name="rule_id" value="{{ $rule->rule_id }}">
+                    <input type="hidden" name="schedule_id" value="{{ $rule->schedule_id }}">
                     <div class="card p-5">
                         <div class="additional-section">
                             <div class="border col-md-12 p-3">
@@ -46,45 +45,36 @@
                                     <div class="form-group form-default col-md-12 px-0" id="sectionDiv">
 
                                         <div class="form-group form-default" style="display: block">
-                                            @if ($sections->maintype_id == 1)
-                                                <label class="float-label font-weight-bold">Chapter :</label>
+                                            @if ($rule->maintype_id == 4)
+                                                <label class="float-label font-weight-bold">Schedule :</label>
 
-                                                <textarea name="chapter_title" class="form-control mb-3 chapter_title" placeholder="Enter Chapter Title" id="c_title">{{ $sections->ChapterModel->chapter_title }}</textarea>
-                                            @elseif($sections->maintype_id == 2)
-                                                <label class="float-label font-weight-bold">Parts :</label>
-
-                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="p_title">{{ $sections->Partmodel->parts_title }}</textarea>
-                                            @elseif($sections->maintype_id == 3)
-                                                <label class="float-label font-weight-bold">Priliminary :</label>
-
-                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="p_title">{{ $sections->Priliminarymodel->priliminary_title }}</textarea>
-                                            @else
-                                                Appendices
+                                                <textarea name="schedule_title" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title"
+                                                    id="s_title">{{ $rule->ScheduleModel->schedule_title }}</textarea>
                                             @endif
                                         </div>
 
                                         <div class="form-group form-default" style="display: block">
-                                            <label class="float-label font-weight-bold">Section :</label>
+                                            <label class="float-label font-weight-bold">Rules :</label>
                                             <span class="d-flex">
-                                                <input type="text" name="section_no" class="form-control"
-                                                    style="width: 20%;" placeholder="Enter Section NO."
-                                                    value="{{ $sections->section_no }}">
-                                                <input type="text" name="section_title"
-                                                    value="{{ $sections->section_title }}" class="form-control mb-3">
+                                                <input type="text" name="rule_no" class="form-control"
+                                                    style="width: 20%;" placeholder="Enter Rule NO."
+                                                    value="{{ $rule->rule_no }}">
+                                                <input type="text" name="rule_title" value="{{ $rule->rule_title }}"
+                                                    class="form-control mb-3">
                                             </span>
                                         </div>
 
                                         <div class="form-group form-default" style="display: block">
-                                            <label class="float-label">Section Description<span
+                                            <label class="float-label">Rule Description<span
                                                     class="text-danger">*</span></label>
-                                            <textarea type="text" id="section" name="section_content"
-                                                class="form-control section-textarea ckeditor-replace section" placeholder="Enter Section">{{ $sections->section_content }}</textarea>
+                                            <textarea type="text" id="rule" name="rule_content" class="form-control rule-textarea ckeditor-replace rule"
+                                                placeholder="Enter Rule">{{ $rule->rule_content }}</textarea>
 
                                             <div class="footnote-addition-container">
-                                                @if ($subsec->isNotEmpty())
-                                                    @foreach ($subsec as $s => $section)
-                                                        @if ($section->footnoteModel)
-                                                            @foreach ($section->footnoteModel as $f => $footnote)
+                                                @if ($subrule->isNotEmpty())
+                                                    @foreach ($subrule as $s => $subrules)
+                                                        @if ($subrules->footnoteModel)
+                                                            @foreach ($subrules->footnoteModel as $f => $footnote)
                                                                 <div
                                                                     class="form-group form-default mt-3 fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
                                                                     <label class="float-label">
@@ -99,10 +89,10 @@
                                                                     <div class="show-footnote" style="display: block">
                                                                         {{-- footnote for section --}}
                                                                         <input type="hidden"
-                                                                            name="sec_footnote_id[{{ $s }}][{{ $f }}]"
+                                                                            name="rule_footnote_id[{{ $s }}][{{ $f }}]"
                                                                             value="{{ $footnote->footnote_id }}">
 
-                                                                        <textarea type="text" name="sec_footnote_content[{{ $s }}][{{ $f }}]"
+                                                                        <textarea type="text" name="rule_footnote_content[{{ $s }}][{{ $f }}]"
                                                                             class="form-control ckeditor-replace footnote">{{ $footnote->footnote_content }}</textarea>
                                                                     </div>
                                                                 </div>
@@ -111,12 +101,12 @@
                                                     @endforeach
                                                 @endif
 
-                                                @if (count($section->footnoteModel) < 1)
+                                                @if (count($subrules->footnoteModel) < 1)
                                                     <div class="col-md-12 px-0 py-3">
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (Add footnote for section)
+                                                                (Add footnote for rule)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-footnote">
@@ -129,12 +119,12 @@
                                                         </div>
                                                     </div>
                                                 @endif
-                                                @if ($sub_section_f->count() > 0 || $count > 0)
+                                                @if ($sub_rule_f->count() > 0 || $count > 0)
                                                     <div class="col-md-12 px-0 py-3">
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (for add and remove Sub-Section and
+                                                                (for add and remove Sub-Rule and
                                                                 Footnote)
                                                             </span>
                                                             <button type="button"
@@ -153,44 +143,44 @@
                                         </div>
 
 
-                                        @if ($sub_section_f->count() > 0 || $count > 0)
-                                            @foreach ($sub_section_f as $k => $subSectionItem)
+                                        @if ($sub_rule_f->count() > 0 || $count > 0)
+                                            @foreach ($sub_rule_f as $k => $subRuleItem)
                                                 <div class="multi-addition-container col-md-12 px-0">
                                                     <div class="multi-addition">
                                                         {{-- @foreach ($subSectionItem->footnoteModel as $f => $footnoteItem) --}}
-                                                        <input type="hidden" name="sub_section_id[{{ $k }}]"
-                                                            value="{{ $subSectionItem->sub_section_id }}">
+                                                        <input type="hidden" name="sub_rule_id[{{ $k }}]"
+                                                            value="{{ $subRuleItem->sub_rule_id }}">
                                                         <div class="border col-md-12 p-3">
                                                             <div
                                                                 class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                                                 <label class="float-label">
-                                                                    Add Sub-Section
+                                                                    Add Sub-Rule
                                                                     <span class="pl-2">
                                                                         <button type="button"
                                                                             class="btn btn-sm social facebook p-0 add-sub_section">
                                                                             <i
-                                                                                class="fa {{ $subSectionItem->sub_section_no ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                                class="fa {{ !empty($subRuleItem->sub_rule_no) ? 'fa-minus' : 'fa-plus' }}"></i>
                                                                         </button>
                                                                     </span>
                                                                 </label>
-                                                                <div class="show-sub_section">
+                                                                <div class="show-sub_rule">
                                                                     <span class="d-flex">
                                                                         <input type="text"
-                                                                            name="sub_section_no[{{ $k }}]"
+                                                                            name="sub_rule_no[{{ $k }}]"
                                                                             class="form-control mb-3"
-                                                                            value="{{ $subSectionItem->sub_section_no ?? '' }}"
-                                                                            placeholder="Enter Sub-Section No."
+                                                                            value="{{ $subRuleItem->sub_rule_no ?? '' }}"
+                                                                            placeholder="Enter Sub-Rule No."
                                                                             style="width: 20%;"
                                                                             data-index="{{ $k }}"">
 
                                                                     </span>
-                                                                    <textarea type="text" name="sub_section_content[{{ $k }}]"
-                                                                        class="form-control ckeditor-replace sub_section">{{ $subSectionItem->sub_section_content ?? '' }}</textarea>
+                                                                    <textarea type="text" name="sub_rule_content[{{ $k }}]"
+                                                                        class="form-control ckeditor-replace sub_rule">{{ $subRuleItem->sub_rule_content ?? '' }}</textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        @if (count($subSectionItem->footnoteModel) > 0)
-                                                            @foreach ($subSectionItem->footnoteModel as $a => $footnoteItem)
+                                                        @if (count($subRuleItem->footnoteModel) > 0)
+                                                            @foreach ($subRuleItem->footnoteModel as $a => $footnoteItem)
                                                                 <input type="hidden"
                                                                     name="sub_footnote_id[{{ $k }}][{{ $a }}]"
                                                                     value="{{ $footnoteItem->footnote_id }}">
@@ -216,11 +206,12 @@
                                                             @endforeach
                                                         @else
                                                             <div class="footnote2-addition-container">
+
                                                                 <div class="col-md-12 px-0 py-3">
                                                                     <div class="float-right">
                                                                         <span style="font-size: small;"
                                                                             class="px-2 text-uppercase font-weight-bold">
-                                                                            (add Footnote for sub-section)
+                                                                            (add Footnote for sub-rule)
                                                                         </span>
                                                                         <button type="button"
                                                                             class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -232,6 +223,7 @@
                                                                         </button>
                                                                     </div>
                                                                 </div>
+
                                                             </div>
                                                         @endif
 
@@ -239,17 +231,17 @@
                                                             <div class="float-right">
                                                                 <span style="font-size: small;"
                                                                     class="px-2 text-uppercase font-weight-bold">
-                                                                    (for add and remove Sub-Section and
+                                                                    (for add and remove Sub-Rule and
                                                                     Footnote)
                                                                 </span>
                                                                 <button type="button"
                                                                     class="btn btn-sm social facebook p-0 add-multi-addition">
                                                                     <i class="fa fa-plus"></i>
                                                                 </button>
-                                                                {{-- <button type="button"
+                                                                <button type="button"
                                                                     class="btn btn-sm social youtube p-0 remove-multi-addition">
                                                                     <i class="fa fa-minus"></i>
-                                                                </button> --}}
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -263,7 +255,7 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (for add and remove Sub-Section and
+                                                                (for add and remove Sub-Rule and
                                                                 Footnote)
                                                             </span>
                                                             <button type="button"
@@ -309,13 +301,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            CKEDITOR.replace('c_title');
-            CKEDITOR.replace('p_title');
-            CKEDITOR.replace('section');
+            CKEDITOR.replace('s_title');
+            CKEDITOR.replace('rule');
             CKEDITOR.replace('state_amendment');
 
             // Initialize CKEditor for existing sections
-            $('.ckeditor-replace.sub_section').each(function() {
+            $('.ckeditor-replace.sub_rule').each(function() {
                 CKEDITOR.replace($(this).attr('name'));
             });
 
@@ -324,24 +315,24 @@
                 CKEDITOR.replace($(this).attr('name'));
             });
 
-            $(document).on('click', '.add-sub_section', function() {
+            $(document).on('click', '.add-sub_rule', function() {
                 var icon = $(this).find('i');
-                var section = $(this).closest('.form-default').find('.show-sub_section');
-                section.slideToggle();
+                var rule = $(this).closest('.form-default').find('.show-sub_rule');
+                rule.slideToggle();
                 icon.toggleClass('fa-plus fa-minus');
 
                 // Initialize CKEditor for the new textarea
-                CKEDITOR.replace(section.find('.ckeditor-replace.sub_section')[0]);
+                CKEDITOR.replace(rule.find('.ckeditor-replace.sub_rule')[0]);
             });
 
             $(document).on('click', '.add-footnote', function() {
                 var icon = $(this).find('i');
-                var section = $(this).closest('.form-default').find('.show-footnote');
-                section.slideToggle();
+                var rule = $(this).closest('.form-default').find('.show-footnote');
+                rule.slideToggle();
                 icon.toggleClass('fa-plus fa-minus');
 
                 // Initialize CKEditor for the new textarea
-                CKEDITOR.replace(section.find('.ckeditor-replace.footnote')[0]);
+                CKEDITOR.replace(rule.find('.ckeditor-replace.footnote')[0]);
             });
 
 
@@ -351,51 +342,48 @@
                     CKEDITOR.replace(this);
                 });
             }
-
             $(document).ready(function() {
                 initializeCKEditor();
             });
 
-            let sectionCounter = 1;
-            let sub_sectionCounter = 0;
-            let subSectionIndex = 0;
+            let ruleCounter = 1;
+            let sub_ruleCounter = 0;
+            let subRuleIndex = 0;
             let currentIndex;
 
-            // for adding sub section and footnote
             $(document).on('click', '.add-multi-addition', function() {
                 var lastInput = $('[data-index]:last').data('index');
                 // Find the clicked element's index
                 var clickedIndex = $(this).closest('.multi-addition').index();
 
                 // Find the maximum sectionCounterIndex among all elements
-                var maxSectionCounterIndex = 0;
+                var maxruleCounterIndex = 0;
 
                 $('.multi-addition').each(function() {
                     var index = parseInt($(this).find('[data-index]').data('index'));
-                    if (!isNaN(index) && index > maxSectionCounterIndex) {
-                        maxSectionCounterIndex = index;
+                    if (!isNaN(index) && index > maxruleCounterIndex) {
+                        maxruleCounterIndex = index;
                     }
                 });
 
                 // Calculate the new sectionCounterIndex based on the clicked index
-                var sectionCounterIndex = Math.max(clickedIndex, maxSectionCounterIndex) + 1;
+                var ruleCounterIndex = Math.max(clickedIndex, maxruleCounterIndex) + 1;
 
-
-                var newSection = `
+                var newRule = `
                                 <div class="multi-addition">
                                     <div class="border col-md-12 p-3">
                                         <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                             <label class="float-label">
-                                            Add Sub-Section
+                                            Add Sub-Rule
                                             <span class="pl-2">
-                                                <button type="button" class="btn btn-sm social facebook p-0 add-sub_section">
+                                                <button type="button" class="btn btn-sm social facebook p-0 add-sub_rule">
                                                 <i class="fa fa-plus"></i>
                                                 </button>
                                             </span>
                                             </label>
-                                            <div class="show-sub_section" style="display: none">
-                                                <span class="d-flex"><input type="text" name="sub_section_no[${sectionCounterIndex}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Section No." data-index="${sectionCounterIndex}">  </span>
-                                                <textarea type="text" name="sub_section_content[${sectionCounterIndex}]" class="form-control ckeditor-replace sub_section" placeholder="Enter Sub-Section Ttile"></textarea>
+                                            <div class="show-sub_rule" style="display: none">
+                                                <span class="d-flex"><input type="text" name="sub_rule_no[${ruleCounterIndex}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Rule No." data-index="${ruleCounterIndex}">  </span>
+                                                <textarea type="text" name="sub_rule_content[${ruleCounterIndex}]" class="form-control ckeditor-replace sub_rule"></textarea>
                                             </div>
                                         </div>
                                     
@@ -404,7 +392,7 @@
                                                                 <div class="float-right">
                                                                     <span style="font-size: small;"
                                                                         class="px-2 text-uppercase font-weight-bold">
-                                                                        (Add footnote for sub-section)
+                                                                        (Add footnote for sub-rule)
                                                                     </span>
                                                                     <button type="button"
                                                                         class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -421,7 +409,7 @@
                                     <div class="col-md-12 px-0 py-3">
                                         <div class="float-right">
                                             <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                            ( for add and remove Sub-Section and Footnote )
+                                            ( for add and remove Sub-Rule and Footnote )
                                             </span>
                                             <button type="button" class="btn btn-sm social facebook p-0 add-multi-addition">
                                             <i class="fa fa-plus"></i>
@@ -435,11 +423,9 @@
                                 `;
 
 
-                // $('.multi-addition-container').append(newSection);
+                // $('.multi-addition-container').append(newRule);
                 var $clickedElement = $(this).closest('.multi-addition');
-                $clickedElement.after(newSection);
-
-
+                $clickedElement.after(newRule);
 
                 CKEDITOR.replace($('.multi-addition:last').find('.ckeditor-replace')[0]);
                 CKEDITOR.replace($('.multi-addition:last').find('.ckeditor-replace')[1]);
@@ -447,15 +433,15 @@
                 // Update sub_section_no and sub_section_content names in all elements
                 $('.multi-addition').each(function(index) {
                     var newIndex = index + 1;
-                    $(this).find(`[name^="sub_section_no["]`).attr('name',
-                        `sub_section_no[${newIndex}]`);
-                    $(this).find(`[name^="sub_section_content["]`).attr('name',
-                        `sub_section_content[${newIndex}]`);
+                    $(this).find(`[name^="sub_rule_no["]`).attr('name',
+                        `sub_rule_no[${newIndex}]`);
+                    $(this).find(`[name^="sub_rule_content["]`).attr('name',
+                        `sub_rule_content[${newIndex}]`);
                     $(this).find('[data-index]').attr('data-index', newIndex);
                 });
 
-                sectionCounter++;
-                sub_sectionCounter = 0;
+                ruleCounter++;
+                sub_ruleCounter = 0;
 
             });
 
@@ -470,26 +456,25 @@
                 }
             });
 
-            //  for sub section footnote 
             $(document).on('click', '.add-multi-footnote2', function() {
                 // Find the closest multi-addition container
                 var multiAdditionContainer = $(this).closest('.multi-addition');
 
                 // Find the associated sub_section_no within the multi-addition container
-                var associatedSubSectionTitle = multiAdditionContainer.find('[name^="sub_section_no["]');
+                var associatedSubRuleTitle = multiAdditionContainer.find('[name^="sub_rule_no["]');
 
                 // Check if the associatedSubSectionTitle is found
-                if (associatedSubSectionTitle.length > 0) {
+                if (associatedSubRuleTitle.length > 0) {
                     // Extract the index from the name attribute of the sub_section_no
-                    var sectionIndexMatch = associatedSubSectionTitle.attr('name').match(/\[(\d*)\]/);
+                    var ruleIndexMatch = associatedSubRuleTitle.attr('name').match(/\[(\d*)\]/);
 
                     // Set currentIndex to 0 if the index is empty
-                    var currentIndex = sectionIndexMatch && sectionIndexMatch[1] !== '' ?
-                        parseInt(sectionIndexMatch[1], 10) : 0;
+                    var currentIndex = ruleIndexMatch && ruleIndexMatch[1] !== '' ?
+                        parseInt(ruleIndexMatch[1], 10) : 0;
 
-                    console.log('Current index of sub_section_no:', currentIndex);
+                    console.log('Current index of sub_rule_no:', currentIndex);
 
-                    var newSection = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote2-addition">
+                    var newRule = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote2-addition">
                             <label class="float-label">
                             Add Footnote
                             <span class="pl-2">
@@ -499,15 +484,14 @@
                             </span>
                             </label>
                             <div class="show-footnote" style="display: none">
-                                <textarea type="text" name="sub_footnote_content[${currentIndex}][${sub_sectionCounter}]" class="form-control ckeditor-replace footnote"></textarea>
+                                <textarea type="text" name="sub_footnote_content[${currentIndex}][${sub_ruleCounter}]" class="form-control ckeditor-replace footnote"></textarea>
                             </div>
-                          
                         </div>`;
 
                     // Find the footnote2-addition-container within the multi-addition container
                     var footnote2AdditionContainer = multiAdditionContainer.find(
                         '.footnote2-addition-container');
-                    footnote2AdditionContainer.append(newSection);
+                    footnote2AdditionContainer.append(newRule);
 
                     // CKEDITOR.replace(footnote2AdditionContainer.find('.footnote2-addition:last').find(
                     //     '.ckeditor-replace')[0]);
@@ -516,10 +500,10 @@
                             0]);
                     }, 100); // Adjust the delay as needed
 
-                    subSectionIndex = sub_sectionCounter;
-                    sub_sectionCounter++;
+                    subRuleIndex = sub_ruleCounter;
+                    sub_ruleCounter++;
                 } else {
-                    console.error('Associated sub_section_no not found.');
+                    console.error('Associated sub_rule_no not found.');
                 }
             });
 
@@ -538,7 +522,7 @@
                 var footCounterIndex = parseInt(lastInputFoot) + 1;
                 // console.log(footCounterIndex);
 
-                var newSection = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
+                var newRule = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
                                         <label class="float-label">
                                         Add Footnote
                                         <span class="pl-2">
@@ -548,15 +532,14 @@
                                         </span>
                                         </label>
                                         <div class="show-footnote" style="display: none">
-                                            <textarea type="text" name="sec_footnote_content[${lastInputSec}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
+                                            <textarea type="text" name="rule_footnote_content[${lastInputSec}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                    
-                                       
                                     </div>
                                     
                                 `;
 
-                $('.footnote-addition-container').append(newSection);
+                $('.footnote-addition-container').append(newRule);
 
                 CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[0]);
                 // CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[1]);

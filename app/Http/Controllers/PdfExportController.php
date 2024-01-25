@@ -10,6 +10,8 @@ use App\Models\Parts;
 use App\Models\PartsType;
 use App\Models\Priliminary;
 use App\Models\Regulation;
+use App\Models\Rules;
+use App\Models\Schedule;
 use App\Models\Section;
 use App\Models\SubSection;
 use App\Models\SubType;
@@ -38,13 +40,20 @@ class PdfExportController extends Controller
             $chapter = Chapter::where('act_id', $id)->get();
             $parts = Parts::where('act_id', $id)->get();
             $priliminary = Priliminary::where('act_id', $id)->get();
+            $schedule = Schedule::where('act_id', $id)->get();
 
             $section = Section::where('act_id', $id)
                 ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
                 ->orWhereIn('parts_id', $parts->pluck('parts_id'))
                 ->orWhereIn('priliminary_id', $priliminary->pluck('priliminary_id'))
                 ->with('subsectionModel', 'footnoteModel')
-                ->orderBy('section_rank', 'asc')
+                ->orderByRaw('CAST(section_rank AS SIGNED) ASC')
+                ->get();
+
+            $rule = Rules::where('act_id', $id)
+                ->whereIn('schedule_id', $schedule->pluck('schedule_id'))
+                ->with('footnoteModel','subruleModel')
+                ->orderByRaw('CAST(rule_rank AS SIGNED) ASC')
                 ->get();
 
             $partstype = PartsType::all();
@@ -55,14 +64,16 @@ class PdfExportController extends Controller
             $pdf = FacadePdf::loadView('admin.export.pdf', [
                 'act' => $act,
                 'act_footnotes' => $act_footnotes,
-                'chapter' => $chapter,
-                'section' => $section,
                 'type' => $type,
-                'partstype' => $partstype,
-                'parts' => $parts,
+                'chapter' => $chapter,
                 'priliminary' => $priliminary,
+                'schedule' => $schedule,
+                'parts' => $parts,
+                'partstype' => $partstype,
+                'subType' => $subType,
+                'section' => $section,
+                'rule' => $rule,
                 'regulation' => $regulation,
-                'subType' => $subType
             ]);
 
             return $pdf->download("{$act->act_title}.pdf");

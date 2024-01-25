@@ -60,7 +60,7 @@
                                             </span>
                                         </td>
                                          --}}
-                                        <td class="text-capitalize">
+                                        <td class="text-capitalize d-flex">
                                             <a href="/edit-main-act/{{$item->act_id}}" title="Edit" class="px-1"><i
                                                     class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
                                             <a href="/view-main-act/{{$item->act_id}}" title="View" class="px-1"><i

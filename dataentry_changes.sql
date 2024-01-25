@@ -29,5 +29,15 @@ ALTER TABLE `footnote` ADD `sub_section_id` INT NULL AFTER `section_no`;(done)
 
 ALTER TABLE `acts` CHANGE `act_footnote_description` `act_footnote_description` VARCHAR(25555) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;(done)
 
+ALTER TABLE `rules` ADD `schedule_id` INT(11) NULL AFTER `parts_id`;(done)
 
+ALTER TABLE `footnote` ADD `schedule_id` INT(11) NULL AFTER `priliminary_id`;(done)
+
+ALTER TABLE `rules` ADD `rule_rank` INT(11) NULL AFTER `rule_no`;(done)
+
+ALTER TABLE `rules` CHANGE `rule_no` `rule_no` VARCHAR(255) NULL DEFAULT NULL;(done)
+
+new table of subrules 
+
+ALTER TABLE `footnote` ADD `sub_rule_id` INT(11) NULL AFTER `rule_no`;(done)
 

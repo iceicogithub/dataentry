@@ -18,8 +18,6 @@
                     </ol>
 
                 </div>
-
-
             </div>
         </div>
 
@@ -57,15 +55,15 @@
                         <div class="col-md-12">
                             <div class="form-group form-default">
                                 <label class="float-label"> Act NO.<span class="text-danger">*</span></label>
-                                <textarea name="act_no" class="form-control mb-3" placeholder="Enter Act No" id="act_no"
-                                    cols="30" rows="3">{{ $act->act_no }}</textarea>
+                                <textarea name="act_no" class="form-control mb-3" placeholder="Enter Act No" id="act_no" cols="30"
+                                    rows="3">{{ $act->act_no }}</textarea>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group form-default">
                                 <label class="float-label">Act Date<span class="text-danger">*</span></label>
-                                <input type="text" name="act_date" value="{{ $act->act_date }}"
-                                    class="form-control mb-3" placeholder="Enter Act Date">
+                                <input type="text" name="act_date" value="{{ $act->act_date }}" class="form-control mb-3"
+                                    placeholder="Enter Act Date">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -143,6 +141,7 @@
                                     use App\Models\Chapter;
                                     use App\Models\Parts;
                                     use App\Models\Priliminary;
+                                    use App\Models\Schedule;
 
                                     $chapter = Chapter::with('ChapterType')
                                         ->where('act_id', $act_id)
@@ -153,20 +152,34 @@
                                     $priliminary = Priliminary::with('PriliminaryType')
                                         ->where('act_id', $act_id)
                                         ->first();
+                                    $schedule = Schedule::with('ScheduleType')
+                                        ->where('act_id', $act_id)
+                                        ->first();
 
                                 @endphp
 
                                 <tr>
                                     <th scope="col">Sr.No</th>
                                     <th scope="col">
-                                        
-                                        @if($parts && $parts->maintype_id == 2 && ($chapter && $chapter->maintype_id == 1))
+                                        @if (
+                                            $parts &&
+                                                $parts->maintype_id == 2 &&
+                                                ($priliminary && $priliminary->maintype_id == 3) &&
+                                                ($schedule && $schedule->maintype_id == 4))
+                                            @if (
+                                                $parts &&
+                                                    $parts->maintype_id == 2 &&
+                                                    ($priliminary && $priliminary->maintype_id == 3) &&
+                                                    ($schedule && $schedule->maintype_id == 4))
+                                                Parts, Priliminary & Schedule
+                                            @endif
+                                        @elseif ($parts && $parts->maintype_id == 2 && ($chapter && $chapter->maintype_id == 1))
                                             @if ($parts && $parts->maintype_id == 2 && ($chapter && $chapter->maintype_id == 1))
                                                 Chapter & Parts
                                             @endif
                                         @elseif($parts && $parts->maintype_id == 2 && ($priliminary && $priliminary->maintype_id == 3))
                                             @if ($parts && $parts->maintype_id == 2 && ($priliminary && $priliminary->maintype_id == 3))
-                                            Parts & Priliminary
+                                                Parts & Priliminary
                                             @endif
                                         @elseif ($chapter && $chapter->maintype_id)
                                             @if ($chapter->ChapterType->maintype_id == '1')
@@ -180,8 +193,40 @@
                                             Null
                                         @endif
                                     </th>
-                                    <th scope="col">Section No.</th>
-                                    <th scope="col">Section</th>
+                                    <th scope="col">
+                                        @if (
+                                            $parts &&
+                                                $parts->maintype_id == 2 &&
+                                                ($priliminary && $priliminary->maintype_id == 3) &&
+                                                ($schedule && $schedule->maintype_id == 4))
+                                            @if (
+                                                $parts &&
+                                                    $parts->maintype_id == 2 &&
+                                                    ($priliminary && $priliminary->maintype_id == 3) &&
+                                                    ($schedule && $schedule->maintype_id == 4))
+                                                Section No. & Rule No.
+                                            @endif
+                                        @else
+                                            Section No.
+                                        @endif
+                                    </th>
+                                    <th scope="col">
+                                        @if (
+                                            $parts &&
+                                                $parts->maintype_id == 2 &&
+                                                ($priliminary && $priliminary->maintype_id == 3) &&
+                                                ($schedule && $schedule->maintype_id == 4))
+                                            @if (
+                                                $parts &&
+                                                    $parts->maintype_id == 2 &&
+                                                    ($priliminary && $priliminary->maintype_id == 3) &&
+                                                    ($schedule && $schedule->maintype_id == 4))
+                                                Section & Rule
+                                            @endif
+                                        @else
+                                            Section 
+                                        @endif
+                                    </th>
                                     <th scope="col">Date of changes</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -228,6 +273,37 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                @if ($act_rule)
+                                    @foreach ($act_rule as $item)
+                                        <tr>
+                                            <td scope="row">@php echo $a++; @endphp</td>
+                                            <td class="text-capitalize">
+                                                @if ($item->maintype_id == 4)
+                                                    {!! $item->Schedulemodel->schedule_title !!}
+                                                @endif
+                                            </td>
+                                            <td class="text-capitalize">{{ $item->rule_no }}</td>
+                                            <td class="text-capitalize">{{ $item->rule_title }}</td>
+                                            <td class="text-capitalize">{{ $item->updated_at }}</td>
+                                            <td class="text-capitalize d-flex justify-content-center">
+                                                <a href="/edit-rule/{{ $item->rule_id }}" title="Edit" class="px-1">
+                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                </a>
+                                                <a href="#" title="View" class="px-1">
+                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/delete_rule/' . $item->rule_id) }}" title="Delete"
+                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/add_below_new_rule', ['act_id' => $item->act_id, 'rule_no' => $item->rule_no, 'rule_rank' => $item->rule_rank]) }}"
+                                                    title="Add Next Rule" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>

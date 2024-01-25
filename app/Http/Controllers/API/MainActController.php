@@ -10,6 +10,9 @@ use App\Models\Footnote;
 use App\Models\MainType;
 use App\Models\Parts;
 use App\Models\PartsType;
+use App\Models\Priliminary;
+use App\Models\Rules;
+use App\Models\Schedule;
 use App\Models\Regulation;
 use App\Models\Section;
 use App\Models\SubSection;
@@ -53,7 +56,7 @@ class MainActController extends Controller
             $chapter = Chapter::where('act_id', $id)->get();
             $part = Parts::where('act_id', $id)->get();
 
-            $section = Section::where('act_id', $id)
+            $sections = Section::where('act_id', $id)
                 ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
                 ->orWhereIn('parts_id', $part->pluck('parts_id'))
                 ->with('subsectionModel', 'footnoteModel')
@@ -63,15 +66,28 @@ class MainActController extends Controller
             $parts = Parts::where('act_id', $id)->get();
             $subType = SubType::all();
 
+            // Assuming $sections is an array of sections
+            $sectionList = [];
+
+            foreach ($sections as $section) {
+                $sectionList[] = [
+                    'SectionId' => $section->section_id,
+                    'Name' => $section->section_title,
+                    'Subsection' => $section->subsectionModel,
+                    'Footnote' => $section->footnoteModel,
+                ];
+            }
+
             return response()->json([
                 'status' => 200,
-                'data' =>   [
-                    'act' => $act,
+                'data' => [
+                    'actId' => $act->act_id,
+                    'actName' => $act->act_title,
+                    'actDescription' => $act->act_description,
                     'chapter' => $chapter,
-                    'section' => $section,
-                    'type' => $type,
                     'parts' => $parts,
-                    'subType' => $subType
+                    'subType' => $subType,
+                    'sectionList' => $sectionList,
                 ]
             ]);
         } catch (ModelNotFoundException $e) {
@@ -102,30 +118,43 @@ class MainActController extends Controller
 
             $type = MainType::all();
             $act = Act::findOrFail($id);
+            $act_footnotes = Act::where('act_id', $id)->get();
             $chapter = Chapter::where('act_id', $id)->get();
-            $part = Parts::where('act_id', $id)->get();
+            $parts = Parts::where('act_id', $id)->get();
+            $priliminary = Priliminary::where('act_id', $id)->get();
+            $schedule = Schedule::where('act_id', $id)->get();
 
             $section = Section::where('act_id', $id)
                 ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
-                ->orWhereIn('parts_id', $part->pluck('parts_id'))
+                ->orWhereIn('parts_id', $parts->pluck('parts_id'))
+                ->orWhereIn('priliminary_id', $priliminary->pluck('priliminary_id'))
                 ->with('subsectionModel', 'footnoteModel')
                 ->orderBy('section_rank', 'asc')
                 ->get();
 
+            $rule = Rules::where('act_id', $id)
+            ->whereIn('schedule_id', $schedule->pluck('schedule_id'))
+            ->with('footnoteModel')
+            ->orderBy('rule_rank', 'asc')
+            ->get();    
+
             $partstype = PartsType::all();
-            $parts = Parts::where('act_id', $id)->get();
             $regulation = Regulation::where('act_id', $id)->whereIn('chapter_id', $chapter->pluck('chapter_id'))->get();
             $subType = SubType::all();
 
             $pdf = FacadePdf::loadView('admin.export.pdf', [
                 'act' => $act,
-                'chapter' => $chapter,
-                'section' => $section,
+                'act_footnotes' => $act_footnotes,
                 'type' => $type,
-                'partstype' => $partstype,
+                'chapter' => $chapter,
+                'priliminary' => $priliminary,
+                'schedule' => $schedule,
                 'parts' => $parts,
+                'partstype' => $partstype,
+                'subType' => $subType,
+                'section' => $section,
+                'rule' => $rule,
                 'regulation' => $regulation,
-                'subType' => $subType
             ]);
 
             // Get PDF contents as a string

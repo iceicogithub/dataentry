@@ -109,12 +109,13 @@
                                                     <textarea name="parts_title[]" class="form-control mb-3 parts_title" placeholder="Enter Part Title" id="parts_title"></textarea>
                                                 </div>
 
-                                                {{-- for priliminary --}}
-                                                <div id="priliminarySection" class="priliminarySection" style="display: none">
-                                                    <label class="float-label"> Priliminary <span
-                                                            class="text-danger">*</span></label>
-                                                    <textarea name="priliminary_title[]" class="form-control mb-3 parts_title" placeholder="Enter Priliminary Title" id="priliminary_title"></textarea>
-                                                </div>
+                                            </div>
+                                            {{-- for schedule --}}
+                                            <div id="scheduleSection" class="scheduleSection" style="display: none">
+                                                <label class="float-label"> Schedule <span
+                                                        class="text-danger">*</span></label>
+                                                <textarea name="schedule_title[]" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title"
+                                                    id="schedule_title"></textarea>
                                             </div>
                                         </div>
                                         <div class="additional-section">
@@ -159,6 +160,30 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="form-group form-default col-md-12 px-0" id="3Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default ruleTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Order & Rules Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex ruleTitle my-1">
+                                                                <input type="text" name="rule_no[][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Rule NO.">
+                                                                <input type="text" name="rule_title[][]"
+                                                                    class="form-control" placeholder="Enter Rule Title">
+                                                                <button type="button"
+                                                                    class="add-ruleTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-ruleTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                     <div class="form-group form-default w-50" id="2Div"
                                                         style="display: none">
                                                         <label class="float-label">Article Title<span
@@ -167,14 +192,6 @@
                                                             class="form-control mb-3" placeholder="Enter Article Title">
                                                     </div>
 
-                                                    <div class="form-group form-default w-50" id="3Div"
-                                                        style="display: none">
-                                                        <label class="float-label">Order & Rules Title<span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" name="order&rules_title[]"
-                                                            class="form-control mb-3"
-                                                            placeholder="Enter Order & Rules Title">
-                                                    </div>
                                                     <div class="form-group form-default col-md-12 px-0" id="4Div"
                                                         style="display:none">
                                                         <div class="form-group form-default RegulationTitleMain"
@@ -264,6 +281,7 @@
             CKEDITOR.replace('chapter_title');
             CKEDITOR.replace('parts_title');
             CKEDITOR.replace('priliminary_title');
+            CKEDITOR.replace('schedule_title');
 
             // for category type
             $(document).on('change', '.category', function() {
@@ -290,9 +308,12 @@
                 var chapterSection = sectionContainer.find('.chapterSection');
                 var partSection = sectionContainer.find('.partSection');
                 var priliminarySection = sectionContainer.find('.priliminarySection');
+                var scheduleSection = sectionContainer.find('.scheduleSection');
 
                 chapterSection.hide();
                 partSection.hide();
+                priliminarySection.hide();
+                scheduleSection.hide();
 
                 if (selectedValue == '1') {
                     chapterSection.show();
@@ -300,6 +321,8 @@
                     partSection.show();
                 } else if (selectedValue == '3') {
                     priliminarySection.show();
+                } else if (selectedValue == '4') {
+                    scheduleSection.show();
                 }
             });
 
@@ -354,6 +377,19 @@
                                                             class="text-danger">*</span></label>
                                                     <textarea name="parts_title[]" class="form-control mb-3 parts_title" placeholder="Enter Part Title" id="parts_title"></textarea>
                                                 </div>
+
+                                                <div id="priliminarySection" class="priliminarySection" style="display: none">
+                                                    <label class="float-label"> Priliminary <span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea name="priliminary_title[]" class="form-control mb-3 priliminary_title" placeholder="Enter Priliminary Title" id="priliminary_title"></textarea>
+                                                </div>
+
+                                                {{-- for schedule --}}
+                                                <div id="scheduleSection" class="scheduleSection" style="display: none">
+                                                    <label class="float-label"> Schedule <span class="text-danger">*</span></label>
+                                                    <textarea name="schedule_title[]" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title" id="schedule_title"></textarea>  
+                                                </div>
+
                                             </div>
                                         </div>
                                         <div class="additional-section">
@@ -398,21 +434,36 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="form-group form-default col-md-12 px-0" id="3Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default ruleTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Order & Rules Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex ruleTitle my-1">
+                                                                <input type="text" name="rule_no[${chapterCount}][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Rule NO.">
+                                                                <input type="text" name="rule_title[${chapterCount}][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Rule Title">
+                                                                <button type="button"
+                                                                    class="add-ruleTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-ruleTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="form-group form-default w-50" id="2Div"
                                                         style="display: none">
                                                         <label class="float-label">Article Title<span
                                                                 class="text-danger">*</span></label>
                                                         <input type="text" name="article_title[]"
                                                             class="form-control mb-3" placeholder="Enter Article Title">
-                                                    </div>
-
-                                                    <div class="form-group form-default w-50" id="3Div"
-                                                        style="display: none">
-                                                        <label class="float-label">Order & Rules Title<span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" name="order&rules_title[]"
-                                                            class="form-control mb-3"
-                                                            placeholder="Enter Order & Rules Title">
                                                     </div>
                                                     <div class="form-group form-default col-md-12 px-0" id="4Div"
                                                         style="display:none">
@@ -499,6 +550,8 @@
                     // Increment CKEditor IDs and replace them for the new section
                     CKEDITOR.replace($('.section-set:last').find('.chapter_title')[0]);
                     CKEDITOR.replace($('.section-set:last').find('.parts_title')[0]);
+                    CKEDITOR.replace($('.section-set:last').find('.priliminary_title')[0]);
+                    CKEDITOR.replace($('.section-set:last').find('.schedule_title')[0]);
 
                     // Increment sectionCounter if needed
                     sectionCounter++;
@@ -549,6 +602,53 @@
                     let sectionTitles = $(this).closest('.sectionTitleMain').find('.sectionTitle');
                     if (sectionTitles.length > 1) {
                         $(this).closest('.sectionTitle').remove();
+                    }
+                });
+
+
+                // for rule 
+                $(document).ready(function() {
+                    $(document).on('click', '.add-ruleTitle', function() {
+                        let ruleTitleMain = $(this).closest('.section-set').find(
+                            '.ruleTitleMain');
+                        let clonedruleTitle = ruleTitleMain.find('.ruleTitle:first')
+                            .clone(
+                                true);
+                        clonedruleTitle.find('input').val('');
+
+
+                        // Get the chapter count from the data attribute of the closest .section-set
+                        let chapterCount = parseInt($(this).closest('.section-set').data(
+                            'chapter-count')) || 0;
+
+                        // Increment the section index for the new section title
+                        let lastIndex = ruleTitleMain.find('.ruleTitle').length;
+
+                        // Update the input name attribute with the new chapter and section indexes
+                        clonedruleTitle.find('input[name^="rule_no"]').each(function(
+                            index) {
+                            $(this).attr('name', 'rule_no[' + chapterCount + '][' +
+                                (
+                                    lastIndex + index) + ']');
+                        });
+
+                        // Update the input name attribute with the new chapter and section indexes
+                        clonedruleTitle.find('input[name^="rule_title"]').each(function(
+                            index) {
+                            $(this).attr('name', 'rule_title[' + chapterCount +
+                                '][' + (
+                                    lastIndex + index) + ']');
+                        });
+
+                        ruleTitleMain.append(clonedruleTitle);
+                    });
+                });
+
+                $(document).on('click', '.remove-ruleTitle', function() {
+                    let ruleTitles = $(this).closest('.ruleTitleMain').find(
+                        '.ruleTitle');
+                    if (ruleTitles.length > 1) {
+                        $(this).closest('.ruleTitle').remove();
                     }
                 });
 

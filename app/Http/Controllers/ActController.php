@@ -14,9 +14,12 @@ use App\Models\Chapter;
 use App\Models\Form;
 use App\Models\Priliminary;
 use App\Models\Regulation;
+use App\Models\Rules;
+use App\Models\Schedule;
 use App\Models\Section;
 use App\Models\State;
 use App\Models\Status;
+use App\Models\SubRules;
 use App\Models\SubType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -40,10 +43,15 @@ class ActController extends Controller
             $act_footnote_titles = json_decode($act->act_footnote_title, true);
             $act_footnote_descriptions = json_decode($act->act_footnote_description, true);
         }
-        $act_section = Section::where('act_id', $id)->with('MainTypeModel', 'Partmodel', 'ChapterModel','PriliminaryModel')
-            ->orderBy('section_rank', 'asc')->get();
+        $act_section = Section::where('act_id', $id)->with('MainTypeModel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+        ->orderByRaw('CAST(section_rank AS SIGNED) ASC')
+        ->get();
 
-        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions'));
+        $act_rule = Rules::where('act_id', $id)->with('MainTypeModel', 'Schedulemodel', 'footnoteModel',)
+        ->orderByRaw('CAST(rule_rank AS SIGNED) ASC')
+        ->get();
+
+        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions','act_rule'));
     }
 
     public function create(Request $request, $id)
@@ -241,6 +249,53 @@ class ActController extends Controller
                             'section_title' => $sectiontitle,
                         ]);
                     }
+                } elseif ($maintypeId == "4") {
+                    $schedule = new Schedule();
+                    $schedule->act_id = $act->act_id ?? null;
+                    $schedule->maintype_id = $maintypeId;
+                    $schedule->schedule_title = $request->schedule_title[$key] ?? null;
+                    $schedule->save();
+
+                    $subtypes_id = $request->subtypes_id[$key] ?? null;
+
+                    foreach ($request->rule_title[$key] as $index => $ruletitle) {
+                        $currentruleNo = $request->rule_no[$key][$index];
+                        //    dd($currentSectionNo);
+                        //    die();
+                        // Update Section records
+                        // Section::where('section_no', '>=', $currentSectionNo)
+                        //     ->get()
+                        //     ->each(function ($section) {
+                        //         $section->increment('section_no');
+                        //     });
+
+                        // Update SubSection records
+                        // SubSection::where('section_no', '>=', $currentSectionNo)
+                        //     ->get()
+                        //     ->each(function ($subSection) {
+                        //         $subSection->increment('section_no');
+                        //     });
+
+                        // Update Footnote records
+                        // Footnote::where('section_no', '>=', $currentSectionNo)
+                        //     ->get()
+                        //     ->each(function ($footnote) {
+                        //         $footnote->increment('section_no');
+                        //     });
+
+                        $lastrule = Rules::orderBy('rule_rank', 'desc')->first();
+                        $lastRank = $lastrule ? $lastrule->rule_rank : 0;
+                        // Create the new section with the updated section_no
+                        $rule = Rules::create([
+                            'rule_rank' => $lastRank + 1,
+                            'rule_no' => $currentruleNo,
+                            'act_id' => $act->act_id,
+                            'maintype_id' => $maintypeId,
+                            'schedule_id' => $schedule->schedule_id,
+                            'subtypes_id' => $subtypes_id,
+                            'rule_title' => $ruletitle,
+                        ]);
+                    }
                 } else {
                     dd("something went wrong - right now we are working only in chapter and parts");
                 }
@@ -249,6 +304,8 @@ class ActController extends Controller
                 return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Section added successfully');
             } elseif ($request->subtypes_id[$key] == 4) {
                 return redirect()->route('get_act_regulation', ['id' => $id])->with('success', 'Regulation added successfully');
+            } else {
+                return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Index added successfully');
             }
         } catch (\Exception $e) {
             \Log::error('Error creating Act: ' . $e->getMessage());
@@ -333,27 +390,12 @@ class ActController extends Controller
     }
 
 
-    public function show(string $id)
-    {
-        //
-    }
 
     public function edit()
     {
         return view('admin.act.edit');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         try {
@@ -361,23 +403,24 @@ class ActController extends Controller
             if (!$act) {
                 return redirect()->back()->withErrors(['error' => 'Act not found.']);
             }
-    
+
             // Delete related records
             Chapter::where('act_id', $id)->delete();
             Parts::where('act_id', $id)->delete();
             Section::where('act_id', $id)->delete();
+            Rules::where('act_id', $id)->delete();
             Regulation::where('act_id', $id)->delete();
             SubSection::where('act_id', $id)->delete();
+            SubRules::where('act_id', $id)->delete();
             Footnote::where('act_id', $id)->delete();
-    
+
             $act->delete();
-    
+
             return redirect()->back()->with('success', 'Act and related records deleted successfully.');
         } catch (\Exception $e) {
             \Log::error('Error deleting act and related records: ' . $e->getMessage());
-    
+
             return redirect()->back()->withErrors(['error' => 'Failed to delete act and related records. Please try again.' . $e->getMessage()]);
         }
     }
-    
 }

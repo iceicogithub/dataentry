@@ -45,20 +45,29 @@
                     @if ($sections->parts_id)
                         <input type="hidden" name="parts_id" value="{{ $sections->parts_id }}">
                     @endif
+                    @if ($sections->priliminary_id)
+                        <input type="hidden" name="priliminary_id" value="{{ $sections->priliminary_id }}">
+                    @endif
                     <div class="card p-5">
                         <div class="additional-section">
                             <div class="border col-md-12 p-3">
                                 <div>
                                     <div class="form-group form-default col-md-12 px-0" id="sectionDiv">
                                         <div class="form-group form-default" style="display: block">
-                                            @if ($sections->ChapterModel)
+                                            @if ($sections->maintype_id == 1)
                                                 <label class="float-label font-weight-bold">Chapter :</label>
-                                                <span> <input type="text" name="chapter_title" class="form-control mb-3"
-                                                        value="{{ $sections->ChapterModel->chapter_title }}"></span>
-                                            @else
+
+                                                <textarea name="chapter_title" class="form-control mb-3 chapter_title" placeholder="Enter Chapter Title" id="c_title">{{ $sections->ChapterModel->chapter_title }}</textarea>
+                                            @elseif($sections->maintype_id == 2)
                                                 <label class="float-label font-weight-bold">Parts :</label>
-                                                <span> <input type="text" name="chapter_title" class="form-control mb-3"
-                                                        value="{{ $sections->Partmodel->parts_title }}"></span>
+
+                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="part_title">{{ $sections->Partmodel->parts_title }}</textarea>
+                                            @elseif($sections->maintype_id == 3)
+                                                <label class="float-label font-weight-bold">Priliminary :</label>
+
+                                                <textarea name="priliminary_title" class="form-control mb-3 priliminary_title" placeholder="Enter Priliminary Title" id="p_title">{{ $sections->Priliminarymodel->priliminary_title }}</textarea>
+                                            @else
+                                                Appendices
                                             @endif
                                         </div>
                                         <div class="form-group form-default" style="display: block">
@@ -194,6 +203,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            CKEDITOR.replace('c_title');
+            CKEDITOR.replace('part_title');
+            CKEDITOR.replace('p_title');
             CKEDITOR.replace('section');
             CKEDITOR.replace('state_amendment');
 

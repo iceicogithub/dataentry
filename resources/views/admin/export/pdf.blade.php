@@ -115,6 +115,39 @@
             @endforeach
         @endif
 
+        {{-- for schedule  --}}
+        @if ($type->contains('maintype_id', 4))
+        <div style="text-align: center; margin-top: 0.2rem;">
+            THE FIRST SCHEDULE
+        </div>
+        <hr style="width: 10% !important;margin: 10px auto !important;">
+        
+            @php $displayedschedules = []; @endphp
+            @foreach ($schedule as $key => $schedules)
+                @php
+                    $scheduleKey = $schedules->act_id . '' . $schedules->maintype_id . '_' . $schedules->schedule_title;
+                @endphp
+               
+                <div style="text-align: center">
+                    @if (!in_array($scheduleKey, $displayedschedules))
+                        <div
+                            style="text-align: center; text-transform: uppercase !important; font-size: 15px !important;">
+                            {!! $schedules->schedule_title !!}</div>
+                        @php $displayedschedules[] = $sectionKey; @endphp
+                    @endif
+                </div>
+                @if ($key === 0)
+                    <div style="text-align: start">Rules</div>
+                @endif
+                <div style="text-align: start; margin-top: 0.2rem;">
+                    @foreach ($rule->where('schedule_id', $schedules->schedule_id) as $ruleItem)
+                        <span
+                            style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">{{ $ruleItem->rule_no }}.
+                            {{ $ruleItem->rule_title }}</span><br><br>
+                    @endforeach
+                </div>
+            @endforeach
+        @endif
 
     </div>
 
@@ -127,20 +160,23 @@
         <div style="font-size: 13px !important; text-align: right !important;">[{{ $act->act_date }}]</div>
         <p style="font-size: 13px !important;">{!! $act->act_description !!}</p>
 
-        @foreach($act_footnotes as $act_footnote)
-        @php
-            $footnote_description_array = json_decode($act_footnote->act_footnote_description, true);
-        @endphp
-    
-        @if ($footnote_description_array && count($footnote_description_array) > 0)
-            <hr style="width: 10% !important;margin: 10px auto !important;">
-        @endif
-    
-        @foreach ($footnote_description_array as $footnote)
-            <p class="footnote" style="padding-left: 2rem !important; font-size: 15px !important;">{!! $footnote !!}</p>
+        @foreach ($act_footnotes as $act_footnote)
+            @php
+                $footnote_description_array = json_decode($act_footnote->act_footnote_description, true);
+            @endphp
+
+            @if ($footnote_description_array && count($footnote_description_array) > 0)
+                <hr style="width: 10% !important;margin: 10px auto !important;">
+            @endif
+
+            @if ($footnote_description_array)
+                @foreach ($footnote_description_array as $footnote)
+                    <p class="footnote" style="padding-left: 2rem !important; font-size: 15px !important;">
+                        {!! $footnote !!}</p>
+                @endforeach
+            @endif
         @endforeach
-    @endforeach
-    
+
 
 
         {{-- for chapter  --}}
@@ -155,8 +191,8 @@
 
                     <div style="text-align: start">
                         @foreach ($section->where('chapter_id', $chapterItem->chapter_id) as $item)
-                            <strong><span style="font-size: 15px !important;">{{ $item->section_no }}.
-                                    {{ $item->section_title }}:-</span></strong><span>{!! $item->section_content !!}</span><br>
+                            <strong><span style="font-size: 15px !important;">{{ $item->section_no }} 
+                                    {{ $item->section_title }} </span></strong><span>{!! $item->section_content !!}</span><br>
                             @foreach ($item->subsectionModel as $subSection)
                                 <table style="margin-left: 2%">
                                     <tr>
@@ -193,8 +229,8 @@
 
                     <div style="text-align: start">
                         @foreach ($section->where('priliminary_id', $priliminaryItem->priliminary_id) as $item)
-                            <strong><span style="font-size: 15px !important;">{{ $item->section_no }}.
-                                    {{ $item->section_title }}:-</span></strong><span>{!! $item->section_content !!}</span><br>
+                            <strong><span style="font-size: 15px !important;">{{ $item->section_no }} 
+                                    {{ $item->section_title }} </span></strong><span>{!! $item->section_content !!}</span><br>
                             @foreach ($item->subsectionModel as $subSection)
                                 <table style="margin-left: 2%">
                                     <tr>
@@ -236,8 +272,8 @@
 
                     <div style="text-align: start">
                         @foreach ($section->where('parts_id', $part->parts_id) as $item)
-                            <strong><span style="font-size: 15px !important;">{{ $item->section_no }}.
-                                    {{ $item->section_title }}:-</span></strong><span>{!! $item->section_content !!}</span><br>
+                            <strong><span style="font-size: 15px !important;">{{ $item->section_no }} 
+                                    {{ $item->section_title }} </span></strong><span>{!! $item->section_content !!}</span><br>
                             @foreach ($item->subsectionModel as $subSection)
                                 <span style="font-size: 15px !important;">{{ $subSection->sub_section_no }}.
                                     {!! $subSection->sub_section_content !!}</span>
@@ -253,6 +289,44 @@
 
                     </div>
                 @endforeach
+            @endif
+        </div>
+
+        {{-- for Schedule  --}}
+        <div>
+
+            @if ($type->contains('maintype_id', 4))
+                @php $ruleCounter2 = 1; @endphp
+
+                @foreach ($schedule as $key => $scheduleItem)
+                    <div style="text-align: center">
+                        <div style="text-transform: uppercase !important; font-size: 15px !important;">
+                            {!! $scheduleItem->schedule_title !!}</div>
+                    </div>
+
+                    <div style="text-align: start">
+                        @foreach ($rule->where('schedule_id', $scheduleItem->schedule_id) as $item)
+                            <strong><span style="font-size: 15px !important;">{{ $item->rule_no }}
+                                    {{ $item->rule_title }} </span></strong><span>{!! $item->rule_content !!}</span><br>
+                            @foreach ($item->subruleModel as $subRule)
+                                <table style="margin-left: 2%">
+                                    <tr>
+                                        <td style="vertical-align: middle;">{{ $subRule->sub_rule_no }}</td>
+                                        <td style="">{!! $subRule->sub_rule_content !!}</td>
+                                    </tr>
+                                </table>
+                            @endforeach
+
+                            @if ($item->footnoteModel->count() > 0)
+                                <hr style="width: 10% !important;margin: 10px auto !important;">
+                            @endif
+                            @foreach ($item->footnoteModel as $footnoteModel)
+                                <span class="footnote" @style('padding-left: 2rem !important; font-size: 15px !important;')>{!! $footnoteModel->footnote_content !!}</span>
+                            @endforeach
+                        @endforeach
+                    </div>
+                @endforeach
+
             @endif
         </div>
 

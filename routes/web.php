@@ -83,4 +83,8 @@ Route::get('/delete_regulation/{id}', [RegulationController::class, 'destroy']);
 Route::get('/export-pdf/{id}', [PdfExportController::class, 'exportToPdf'])->name('export-pdf');
 
 // rules 
-Route::get('/get_act_rule/{id}', [RulesController::class, 'index'])->name('get_act_rule');
+Route::get('/edit-rule/{id}', [RulesController::class, 'edit_rule'])->name('edit-rule');
+Route::post('/update_all_rule/{id}', [RulesController::class, 'update']);
+Route::get('/add_below_new_rule/{id}/{rule_no}/{rule_rank}', [RulesController::class, 'add_below_new_rule'])->name('add_below_new_rule');
+Route::post('/add_new_rule', [RulesController::class, 'add_new_rule']);
+Route::get('/delete_rule/{id}', [RulesController::class, 'destroy']);
