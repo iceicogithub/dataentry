@@ -164,7 +164,7 @@ class RulesController extends Controller
         // dd($request);
         // die();
 
-        // try {
+        try {
         if ($request->has('schedule_id')) {
             $schedule = Schedule::find($request->schedule_id);
 
@@ -298,10 +298,38 @@ class RulesController extends Controller
 
 
         return redirect()->route('get_act_section', ['id' => $rules->act_id])->with('success', 'Rule updated successfully');
-        // } catch (\Exception $e) {
-        //     \Log::error('Error updating Act: ' . $e->getMessage());
-        //     return redirect()->route('edit-rule', ['id' => $id])->withErrors(['error' => 'Failed to update Section. Please try again.' . $e->getMessage()]);
-        // }
+        } catch (\Exception $e) {
+            \Log::error('Error updating Act: ' . $e->getMessage());
+            return redirect()->route('edit-rule', ['id' => $id])->withErrors(['error' => 'Failed to update Section. Please try again.' . $e->getMessage()]);
+        }
+    }
+
+    public function view_sub_rule(Request $request,  $id)
+    {
+        $rule = Rules::where('rule_id', $id)->first();
+        $sub_rule = SubRules::where('rule_id', $id)->with('footnoteModel')->get();
+        return view('admin.rules.view', compact('rule','sub_rule'));
+    }
+
+    public function destroy_sub_rule(string $id)
+    {
+        try {
+            $subrule = SubRules::find($id);
+
+            if (!$subrule) {
+                return redirect()->back()->withErrors(['error' => 'Sub-Rule not found.']);
+            }
+            
+            Footnote::where('sub_rule_id', $id)->delete();
+
+            $subrule->delete();
+
+            return redirect()->back()->with('success', 'Sub-Rule and related records deleted successfully.');
+        } catch (\Exception $e) {
+            \Log::error('Error deleting Sub-Rule: ' . $e->getMessage());
+
+            return redirect()->back()->withErrors(['error' => 'Failed to delete Sub-Rule. Please try again.' . $e->getMessage()]);
+        }
     }
 
     public function destroy(string $id)

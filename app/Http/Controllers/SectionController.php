@@ -358,6 +358,34 @@ class SectionController extends Controller
         }
     }
 
+    public function view_sub_section(Request $request,  $id)
+    {
+        $section = Section::where('section_id', $id)->first();
+        $sub_section = SubSection::where('section_id', $id)->with('footnoteModel')->get();
+        return view('admin.section.view', compact('section','sub_section'));
+    }
+
+    public function destroy_sub_section(string $id)
+    {
+        try {
+            $subsection = SubSection::find($id);
+
+            if (!$subsection) {
+                return redirect()->back()->withErrors(['error' => 'Sub-Section not found.']);
+            }
+            
+            Footnote::where('sub_section_id', $id)->delete();
+
+            $subsection->delete();
+
+            return redirect()->back()->with('success', 'Sub-Section and related records deleted successfully.');
+        } catch (\Exception $e) {
+            \Log::error('Error deleting Sub-Section: ' . $e->getMessage());
+
+            return redirect()->back()->withErrors(['error' => 'Failed to delete Sub-Section. Please try again.' . $e->getMessage()]);
+        }
+    }
+
     public function destroy(string $id)
     {
         try {

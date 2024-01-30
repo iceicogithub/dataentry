@@ -259,7 +259,7 @@
                                                 class="px-1">
                                                 <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                             </a>
-                                            <a href="#" title="View" class="px-1">
+                                            <a href="/view-sub-section/{{ $item->section_id }}" title="View" class="px-1">
                                                 <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
                                             </a>
                                             <a href="{{ url('/delete_section/' . $item->section_id) }}" title="Delete"
@@ -289,7 +289,7 @@
                                                 <a href="/edit-rule/{{ $item->rule_id }}" title="Edit" class="px-1">
                                                     <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                                 </a>
-                                                <a href="#" title="View" class="px-1">
+                                                <a href="/view-sub-rule/{{ $item->rule_id }}" title="View" class="px-1">
                                                     <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
                                                 </a>
                                                 <a href="{{ url('/delete_rule/' . $item->rule_id) }}" title="Delete"

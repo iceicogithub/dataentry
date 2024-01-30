@@ -96,49 +96,6 @@
 
                                     <div class="multi-addition-container col-md-12 px-0">
                                         <div class="multi-addition">
-                                            <div class="border col-md-12 p-3">
-                                                <div
-                                                    class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                                                    <label class="float-label">
-                                                        Add Sub-Rule
-                                                        <span class="pl-2">
-                                                            <button type="button"
-                                                                class="btn btn-sm social facebook p-0 add-sub_rule">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                        </span>
-                                                    </label>
-                                                    <div class="show-sub_rule" style="display: none">
-                                                        <span class="d-flex">
-                                                            <input type="text" name="sub_rule_no[]"
-                                                                class="form-control mb-3" placeholder="Enter Sub-Rule No."
-                                                                style="width: 20%;" data-index="0">
-
-                                                        </span>
-                                                        <textarea type="text" name="sub_rule_content[]" class="form-control ckeditor-replace sub_rule"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="footnote2-addition-container">
-
-                                                    <div class="col-md-12 px-0 py-3">
-                                                        <div class="float-right">
-                                                            <span style="font-size: small;"
-                                                                class="px-2 text-uppercase font-weight-bold">
-                                                                (add Footnote for sub-rule)
-                                                            </span>
-                                                            <button type="button"
-                                                                class="btn btn-sm social facebook p-0 add-multi-footnote2">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                <i class="fa fa-minus"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-                                            </div>
                                             <div class="col-md-12 px-0 py-3">
                                                 <div class="float-right">
                                                     <span style="font-size: small;"
@@ -238,7 +195,22 @@
 
             $(document).on('click', '.add-multi-addition', function() {
                 var lastInput = $('[data-index]:last').data('index');
-                var ruleCounterIndex = lastInput + 1;
+                // Find the clicked element's index
+                var clickedIndex = $(this).closest('.multi-addition').index();
+
+                // Find the maximum sectionCounterIndex among all elements
+                var maxRuleCounterIndex = 0;
+
+                $('.multi-addition').each(function() {
+                    var index = parseInt($(this).find('[data-index]').data('index'));
+                    if (!isNaN(index) && index > maxRuleCounterIndex) {
+                        maxRuleCounterIndex = index;
+                    }
+                });
+
+                // Calculate the new sectionCounterIndex based on the clicked index
+                var ruleCounterIndex = Math.max(clickedIndex, maxRuleCounterIndex) + 1;
+
 
                 var newRule = `
                                     <div class="multi-addition">
@@ -294,18 +266,36 @@
                                     `;
 
 
-                $('.multi-addition-container').append(newRule);
+                  // $('.multi-addition-container').append(newSection);
+                  var $clickedElement = $(this).closest('.multi-addition');
+                $clickedElement.after(newRule);
 
                 CKEDITOR.replace($('.multi-addition:last').find('.ckeditor-replace')[0]);
                 CKEDITOR.replace($('.multi-addition:last').find('.ckeditor-replace')[1]);
+               
+                // Update sub_section_no and sub_section_content names in all elements
+                $('.multi-addition').each(function(index) {
+                    var newIndex = index + 1;
+                    $(this).find(`[name^="sub_rule_no["]`).attr('name',
+                        `sub_rule_no[${newIndex}]`);
+                    $(this).find(`[name^="sub_rule_content["]`).attr('name',
+                        `sub_rule_content[${newIndex}]`);
+                    $(this).find('[data-index]').attr('data-index', newIndex);
+                });
+
                 ruleCounter++;
                 sub_ruleCounter = 0;
 
             });
 
             $(document).on('click', '.remove-multi-addition', function() {
-                if ($('.multi-addition').length > 1) {
-                    $('.multi-addition:last').remove();
+                var $clickedElement = $(this).closest('.multi-addition');
+
+                if ($('.multi-addition').length > 0) {
+                    $clickedElement.remove();
+
+                    // Find the index of the clicked element
+                    var index = $('.multi-addition').index($clickedElement);
                 }
             });
 
@@ -339,19 +329,6 @@
                                 <div class="show-footnote" style="display: none">
                                     <textarea type="text" name="sub_footnote_content[${currentIndex}][${sub_ruleCounter}]" class="form-control ckeditor-replace footnote"></textarea>
                                 </div>
-                                <div class="col-md-12 px-0 py-3">
-                                    <div class="float-right">
-                                        <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                        ( Add Footnote sub-rule )
-                                        </span>
-                                        <button type="button" class="btn btn-sm social facebook p-0 add-multi-footnote2">
-                                        <i class="fa fa-plus"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                </div>
                             </div>`;
 
                     // Find the footnote2-addition-container within the multi-addition container
@@ -374,7 +351,7 @@
             });
 
             $(document).on('click', '.remove-multi-footnote2', function() {
-                if ($('.footnote2-addition').length > 1) {
+                if ($('.footnote2-addition').length > 0) {
                     $('.footnote2-addition:last').remove();
                 }
             });
@@ -400,20 +377,6 @@
                                             <div class="show-footnote" style="display: none">
                                                 <textarea type="text" name="rule_footnote_content[${lastInputSec}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
                                             </div>
-                                    
-                                            <div class="col-md-12 px-0 py-3">
-                                                <div class="float-right">
-                                                    <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                                    ( Add footnote for Rule)
-                                                    </span>
-                                                    <button type="button" class="btn btn-sm social facebook p-0 add-multi-footnote">
-                                                    <i class="fa fa-plus"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-sm social youtube p-0 remove-multi-footnote">
-                                                    <i class="fa fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
                                         </div>
                                         
                                     `;
@@ -427,7 +390,7 @@
             });
 
             $(document).on('click', '.remove-multi-footnote', function() {
-                if ($('.footnote-addition').length > 1) {
+                if ($('.footnote-addition').length > 0) {
                     $('.footnote-addition:last').remove();
                 }
             });

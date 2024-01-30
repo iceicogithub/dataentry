@@ -129,27 +129,27 @@
                                                         </div>
                                                     </div>
                                                 @endif
-                                                @if ($sub_section_f->count() > 0 || $count > 0)
-                                                    <div class="col-md-12 px-0 py-3">
-                                                        <div class="float-right">
-                                                            <span style="font-size: small;"
-                                                                class="px-2 text-uppercase font-weight-bold">
-                                                                (for add and remove Sub-Section and
-                                                                Footnote)
-                                                            </span>
-                                                            <button type="button"
-                                                                class="btn btn-sm social facebook p-0 add-multi-addition">
-                                                                <i class="fa fa-plus"></i>
-                                                            </button>
-                                                            <button type="button"
-                                                                class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                                <i class="fa fa-minus"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                @endif
-                                            </div>
 
+                                            </div>
+                                            @if ($sub_section_f->count() > 0 || $count > 0)
+                                                <div class="col-md-12 px-0 py-3">
+                                                    <div class="float-right">
+                                                        <span style="font-size: small;"
+                                                            class="px-2 text-uppercase font-weight-bold">
+                                                            (for add and remove Sub-Section and
+                                                            Footnote)
+                                                        </span>
+                                                        <button type="button"
+                                                            class="btn btn-sm social facebook p-0 add-multi-addition">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                        <button type="button"
+                                                            class="btn btn-sm social youtube p-0 remove-multi-addition">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
 
 

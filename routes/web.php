@@ -65,6 +65,8 @@ Route::get('/add-section', [SectionController::class, 'create'])->name('add-sect
 Route::get('/sub-section', [SectionController::class, 'SubSection_Index'])->name('sub-section');
 Route::get('/add-sub-section', [SectionController::class, 'SubSection_Create'])->name('add-sub-section');
 Route::get('/edit-section/{id}', [SectionController::class, 'edit_section'])->name('edit-section');
+Route::get('/view-sub-section/{id}', [SectionController::class, 'view_sub_section'])->name('view_sub_section');
+Route::get('/delete_sub_section/{id}', [SectionController::class, 'destroy_sub_section']);
 Route::post('/update_all_section/{id}', [SectionController::class, 'update']);
 Route::get('/delete_section/{id}', [SectionController::class, 'destroy']);
 Route::get('/add_below_new_section/{id}/{section_no}/{section_rank}', [SectionController::class, 'add_below_new_section'])->name('add_below_new_section');
@@ -88,3 +90,5 @@ Route::post('/update_all_rule/{id}', [RulesController::class, 'update']);
 Route::get('/add_below_new_rule/{id}/{rule_no}/{rule_rank}', [RulesController::class, 'add_below_new_rule'])->name('add_below_new_rule');
 Route::post('/add_new_rule', [RulesController::class, 'add_new_rule']);
 Route::get('/delete_rule/{id}', [RulesController::class, 'destroy']);
+Route::get('/view-sub-rule/{id}', [RulesController::class, 'view_sub_rule'])->name('view_sub_rule');
+Route::get('/delete_sub_rule/{id}', [RulesController::class, 'destroy_sub_rule']);

@@ -43,15 +43,36 @@ class ActController extends Controller
             $act_footnote_titles = json_decode($act->act_footnote_title, true);
             $act_footnote_descriptions = json_decode($act->act_footnote_description, true);
         }
-        $act_section = Section::where('act_id', $id)->with('MainTypeModel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
-        ->orderByRaw('CAST(section_rank AS SIGNED) ASC')
-        ->get();
-
+        
+        $act_section = Section::where('act_id', $id)
+        ->with('MainTypeModel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+        ->get()
+        ->sortBy(function ($section) {
+            $mixstring = $section->section_no;
+    
+            preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches);
+    
+            $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
+            $alphabeticPart = strtolower($matches[2]);
+    
+            return $numericPart . $alphabeticPart;
+        });
+        
         $act_rule = Rules::where('act_id', $id)->with('MainTypeModel', 'Schedulemodel', 'footnoteModel',)
-        ->orderByRaw('CAST(rule_rank AS SIGNED) ASC')
-        ->get();
+        ->get()
+        ->sortBy(function ($rule) {
+            $mixstring = $rule->rule_no;
+    
+            preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches);
+    
+            $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
+            $alphabeticPart = strtolower($matches[2]);
+    
+            return $numericPart . $alphabeticPart;
+        });
+    
 
-        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions','act_rule'));
+        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule'));
     }
 
     public function create(Request $request, $id)
