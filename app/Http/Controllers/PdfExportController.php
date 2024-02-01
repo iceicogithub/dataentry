@@ -47,14 +47,43 @@ class PdfExportController extends Controller
                 ->orWhereIn('parts_id', $parts->pluck('parts_id'))
                 ->orWhereIn('priliminary_id', $priliminary->pluck('priliminary_id'))
                 ->with('subsectionModel', 'footnoteModel')
-                ->orderByRaw('CAST(section_rank AS SIGNED) ASC')
-                ->get();
+                ->get()
+                ->sortBy(function ($section) {
+                    $mixstring = $section->section_no;
+            
+                   // Check if the regular expression matches
+                    if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
+                        $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
+                        $alphabeticPart = strtolower($matches[2]);
+            
+                        return $numericPart . $alphabeticPart;
+                    } else {
+                        // Handle the case where the regular expression doesn't match
+                        // You can choose to return something specific or handle it in another way
+                        return $mixstring; // Default behavior is to return the mixstring as is
+                    }
+                });
+
 
             $rule = Rules::where('act_id', $id)
                 ->whereIn('schedule_id', $schedule->pluck('schedule_id'))
                 ->with('footnoteModel','subruleModel')
-                ->orderByRaw('CAST(rule_rank AS SIGNED) ASC')
-                ->get();
+                ->get()
+                ->sortBy(function ($rule) {
+                    $mixstring = $rule->rule_no;
+            
+                    // Check if the regular expression matches
+                    if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
+                        $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
+                        $alphabeticPart = strtolower($matches[2]);
+            
+                        return $numericPart . $alphabeticPart;
+                    } else {
+                        // Handle the case where the regular expression doesn't match
+                        // You can choose to return something specific or handle it in another way
+                        return $mixstring; // Default behavior is to return the mixstring as is
+                    }
+                });
 
             $partstype = PartsType::all();
             $regulation = Regulation::where('act_id', $id)->whereIn('chapter_id', $chapter->pluck('chapter_id'))->get();

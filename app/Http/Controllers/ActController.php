@@ -50,26 +50,38 @@ class ActController extends Controller
         ->sortBy(function ($section) {
             $mixstring = $section->section_no;
     
-            preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches);
+           // Check if the regular expression matches
+            if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
+                $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
+                $alphabeticPart = strtolower($matches[2]);
     
-            $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-            $alphabeticPart = strtolower($matches[2]);
-    
-            return $numericPart . $alphabeticPart;
+                return $numericPart . $alphabeticPart;
+            } else {
+                // Handle the case where the regular expression doesn't match
+                // You can choose to return something specific or handle it in another way
+                return $mixstring; // Default behavior is to return the mixstring as is
+            }
         });
         
-        $act_rule = Rules::where('act_id', $id)->with('MainTypeModel', 'Schedulemodel', 'footnoteModel',)
+        $act_rule = Rules::where('act_id', $id)
+        ->with('MainTypeModel', 'Schedulemodel', 'footnoteModel')
         ->get()
         ->sortBy(function ($rule) {
             $mixstring = $rule->rule_no;
     
-            preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches);
+            // Check if the regular expression matches
+            if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
+                $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
+                $alphabeticPart = strtolower($matches[2]);
     
-            $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-            $alphabeticPart = strtolower($matches[2]);
-    
-            return $numericPart . $alphabeticPart;
+                return $numericPart . $alphabeticPart;
+            } else {
+                // Handle the case where the regular expression doesn't match
+                // You can choose to return something specific or handle it in another way
+                return $mixstring; // Default behavior is to return the mixstring as is
+            }
         });
+
     
 
         return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule'));

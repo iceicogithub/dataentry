@@ -37,7 +37,7 @@
                     @endif
                     <div style="text-align: start; margin-top: 0.2rem;">
                         @foreach ($section->where('chapter_id', $chapterItem->chapter_id) as $sectionItem)
-                            <span style="font-size: 15px !important;">{{ $sectionItem->section_no }}.
+                            <span style="font-size: 15px !important;">{{ $sectionItem->section_no }}
                                 {{ $sectionItem->section_title }}</span><br><br>
                         @endforeach
                     </div>
@@ -50,7 +50,7 @@
                     <div style="text-align: start; margin-top: 0.2rem;">
                         @foreach ($regulation->where('chapter_id', $chapterItem->chapter_id) as $regulationItem)
                             <span
-                                style="text-align: start; font-size: 15px !important;">{{ $regulationItem->regulation_no }}.
+                                style="text-align: start; font-size: 15px !important;">{{ $regulationItem->regulation_no }}
                                 {{ $regulationItem->regulation_title }}</span><br><br>
                         @endforeach
                     </div>
@@ -80,7 +80,7 @@
                 <div style="text-align: start; margin-top: 0.2rem;">
                     @foreach ($section->where('priliminary_id', $priliminarys->priliminary_id) as $priliminaryItem)
                         <span
-                            style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">{{ $priliminaryItem->section_no }}.
+                            style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">{{ $priliminaryItem->section_no }}
                             {{ $priliminaryItem->section_title }}</span><br><br>
                     @endforeach
                 </div>
@@ -108,7 +108,7 @@
                 <div style="text-align: start; margin-top: 0.2rem;">
                     @foreach ($section->where('parts_id', $part->parts_id) as $partsItem)
                         <span
-                            style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">{{ $partsItem->section_no }}.
+                            style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">{{ $partsItem->section_no }}
                             {{ $partsItem->section_title }}</span><br><br>
                     @endforeach
                 </div>
@@ -116,7 +116,7 @@
         @endif
 
         {{-- for schedule  --}}
-        @if ($type->contains('maintype_id', 4))
+        @if ($type->contains('maintype_id', 4) && count($schedule) > 0)
         <div style="text-align: center; margin-top: 0.2rem;">
             THE FIRST SCHEDULE
         </div>
@@ -142,7 +142,7 @@
                 <div style="text-align: start; margin-top: 0.2rem;">
                     @foreach ($rule->where('schedule_id', $schedules->schedule_id) as $ruleItem)
                         <span
-                            style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">{{ $ruleItem->rule_no }}.
+                            style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">{{ $ruleItem->rule_no }}
                             {{ $ruleItem->rule_title }}</span><br><br>
                     @endforeach
                 </div>

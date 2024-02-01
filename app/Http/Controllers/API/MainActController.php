@@ -58,23 +58,100 @@ class MainActController extends Controller
 
             $sections = Section::where('act_id', $id)
                 ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
-                ->orWhereIn('parts_id', $part->pluck('parts_id'))
-                ->with('subsectionModel', 'footnoteModel')
-                ->orderBy('section_rank', 'asc')
-                ->get();
+                ->orWhereIn('parts_id', $part->pluck('part_id'))
+                ->with('subsectionModel', 'footnoteModel', 'Partmodel', 'ChapterModel')
+                ->get()
+                ->sortBy(function ($section) {
+                    $mixstring = $section->section_no;
 
-            $parts = Parts::where('act_id', $id)->get();
-            $subType = SubType::all();
+                    // Check if the regular expression matches
+                    if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
+                        $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
+                        $alphabeticPart = strtolower($matches[2]);
 
-            // Assuming $sections is an array of sections
+                        return $numericPart . $alphabeticPart;
+                    } else {
+                        // Handle the case where the regular expression doesn't match
+                        return $mixstring; // Default behavior is to return the mixstring as is
+                    }
+                });
+
+            $chapterList = [];
+
+            foreach ($chapter as $item) {
+                $chapterSections = [];
+
+                foreach ($sections as $index => $section) {
+                    if ($section->chapter_id == $item->chapter_id) {
+                        $subSectionsList = [];
+
+                        foreach ($section->subsectionModel as $subsection) {
+                            if ($subsection->chapter_id == $item->chapter_id) {
+                                $subSectionsList[] = '<p><span>' . $subsection->sub_section_no . '</span>' . $subsection->sub_section_content . '</p>';
+                            }
+                        }
+
+                        $footnoteList = [];
+
+                        foreach ($section->footnoteModel as $footnote) {
+                            if ($footnote->chapter_id == $item->chapter_id) {
+                                $footnoteList[] = '<p>' . $footnote->footnote_content . '</p>';
+                            }
+                        }
+
+                        $subSectionString = implode('', $subSectionsList);
+                        $footnoteString = implode('', $footnoteList);
+
+                        $chapterSections[] = '<div id="' . $index . '"><h4 data-label="amusoftech" class="font-weight-bold mb-3">' . $section->section_title . '</h4></br><p><p>' . $section->section_content . '</p></p>' . $subSectionString . '' . $footnoteString . '</div>';
+                    }
+                }
+
+                $sectionString = implode('', $chapterSections);
+
+                $chapterList[] = '<h2 id=""><strong>' . $item->chapter_title . '</strong></h2><p>' . $item->chapter_content . '</p>' . $sectionString;
+            }
+
+            $partList = [];
+
+            foreach ($part as $item) {
+                $partSections = [];
+
+                foreach ($sections as $index => $section) {
+                    if ($section->part_id == $item->part_id) {
+                        $subSectionsList = [];
+
+                        foreach ($section->subsectionModel as $subsection) {
+                            if ($subsection->part_id == $item->part_id) {
+                                $subSectionsList[] = '<p><span>' . $subsection->sub_section_no . '</span>' . $subsection->sub_section_content . '</p>';
+                            }
+                        }
+
+                        $footnoteList = [];
+
+                        foreach ($section->footnoteModel as $footnote) {
+                            if ($footnote->part_id == $item->part_id) {
+                                $footnoteList[] = '<p>' . $footnote->footnote_content . '</p>';
+                            }
+                        }
+
+                        $subSectionString = implode('', $subSectionsList);
+                        $footnoteString = implode('', $footnoteList);
+
+                        $partSections[] = '<div id="' . $index . '"><h4 data-label="amusoftech" class="font-weight-bold mb-3">' . $section->section_title . '</h4></br><p><p>' . $section->section_content . '</p></p>' . $subSectionString . '' . $footnoteString . '</div>';
+                    }
+                }
+
+                $sectionString = implode('', $partSections);
+
+                $partList[] = '<h2 id=""><strong>' . $item->part_title . '</strong></h2><p>' . $item->part_content . '</p>' . $sectionString;
+            }
+
             $sectionList = [];
 
             foreach ($sections as $section) {
                 $sectionList[] = [
                     'SectionId' => $section->section_id,
                     'Name' => $section->section_title,
-                    'Subsection' => $section->subsectionModel,
-                    'Footnote' => $section->footnoteModel,
                 ];
             }
 
@@ -83,10 +160,7 @@ class MainActController extends Controller
                 'data' => [
                     'actId' => $act->act_id,
                     'actName' => $act->act_title,
-                    'actDescription' => $act->act_description,
-                    'chapter' => $chapter,
-                    'parts' => $parts,
-                    'subType' => $subType,
+                    'actDescription' => '<h1 id=""><strong>' . $act->act_title . '</strong> </h1><p><strong>' . $act->act_no . '</strong></p><p><strong>' . $act->act_date . '</strong></p>' . implode('', $chapterList) . '' . implode('', $partList) . '',
                     'sectionList' => $sectionList,
                 ]
             ]);
@@ -98,16 +172,15 @@ class MainActController extends Controller
             ], 404);
         } catch (Exception $e) {
             return response()->json([
-                'status' => 404,
+                'status' => 500,
                 'message' => 'Internal Server Error: ' . $e->getMessage(),
                 'data' => null
             ], 500);
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
+
 
     public function create($id)
     {
@@ -133,10 +206,10 @@ class MainActController extends Controller
                 ->get();
 
             $rule = Rules::where('act_id', $id)
-            ->whereIn('schedule_id', $schedule->pluck('schedule_id'))
-            ->with('footnoteModel')
-            ->orderBy('rule_rank', 'asc')
-            ->get();    
+                ->whereIn('schedule_id', $schedule->pluck('schedule_id'))
+                ->with('footnoteModel')
+                ->orderBy('rule_rank', 'asc')
+                ->get();
 
             $partstype = PartsType::all();
             $regulation = Regulation::where('act_id', $id)->whereIn('chapter_id', $chapter->pluck('chapter_id'))->get();
