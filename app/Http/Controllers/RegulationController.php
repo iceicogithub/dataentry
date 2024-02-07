@@ -64,19 +64,7 @@ class RegulationController extends Controller
             } else {
                 $currentRegulationNo = $request->regulation_no;
 
-                // Update Section records
-                // Regulation::where('regulation_no', '>=', $currentRegulationNo)
-                //     ->get()
-                //     ->each(function ($regulation) {
-                //         $regulation->increment('regulation_no');
-                //     });
-
-                // Update Footnote records
-                // Footnote::where('regulation_no', '>=', $currentRegulationNo)
-                //     ->get()
-                //     ->each(function ($footnote) {
-                //         $footnote->increment('regulation_no');
-                //     });
+               
 
                 $regulations->regulation_content = $request->regulation_content ?? null;
                 $regulations->regulation_title = $request->regulation_title ?? null;

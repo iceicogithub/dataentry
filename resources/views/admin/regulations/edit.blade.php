@@ -32,7 +32,8 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_regulation/{{ $regulations->act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="/get_act_regulation/{{ $regulations->act_id }}"><button
+                                class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -50,7 +51,11 @@
                             {{ $errors->first('error') }}
                         </div>
                     @endif
-
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                     @if (session('error'))
                         <div class="alert alert-success">
                             {{ session('error') }}
@@ -128,16 +133,24 @@
                                                             <div class="border col-md-12 p-3">
                                                                 <div
                                                                     class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                                                                    <label class="float-label">
-                                                                        Add Footnote
-                                                                        <span class="pl-2">
-                                                                            <button type="button"
-                                                                                class="btn btn-sm social facebook p-0 add-footnote">
-                                                                                <i
-                                                                                    class="fa {{ !empty($footnoteItem->footnote_title) ? 'fa-minus' : 'fa-plus' }}"></i>
-                                                                            </button>
-                                                                        </span>
-                                                                    </label>
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <label class="float-label">
+                                                                            Add Footnote
+                                                                            <span class="pl-2">
+                                                                                <button type="button"
+                                                                                    class="btn btn-sm social facebook p-0 add-footnote">
+                                                                                    <i
+                                                                                        class="fa {{ !empty($footnoteItem->footnote_title) ? 'fa-minus' : 'fa-plus' }}"></i>
+                                                                                </button>
+                                                                            </span>
+                                                                        </label>
+                                                                        <div>
+                                                                            <a href="{{ url('/delete_footnote/' . $footnoteItem->footnote_id) }}"
+                                                                                onclick="return confirm('Are you sure ?')"><i
+                                                                                    class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
+                                                                        </div>
+                                                                    </div>
+
                                                                     <div class="show-footnote">
                                                                         <input type="text"
                                                                             name="footnote_title[{{ $a }}]"
@@ -261,7 +274,7 @@
 @endsection
 
 @section('script')
-<script src="https://cdn.ckeditor.com/4.16.2/full-all/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.2/full-all/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {

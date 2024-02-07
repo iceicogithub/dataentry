@@ -7,6 +7,7 @@ use App\Http\Controllers\PdfExportController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\RegulationController;
 use App\Http\Controllers\RulesController;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -92,3 +93,13 @@ Route::post('/add_new_rule', [RulesController::class, 'add_new_rule']);
 Route::get('/delete_rule/{id}', [RulesController::class, 'destroy']);
 Route::get('/view-sub-rule/{id}', [RulesController::class, 'view_sub_rule'])->name('view_sub_rule');
 Route::get('/delete_sub_rule/{id}', [RulesController::class, 'destroy_sub_rule']);
+
+// article 
+Route::get('/edit-article/{id}', [ArticleController::class, 'edit_article'])->name('edit-article');
+Route::post('/update_all_article/{id}', [ArticleController::class, 'update']);
+Route::get('/add_below_new_article/{id}/{article_no}/{article_rank}', [ArticleController::class, 'add_below_new_article'])->name('add_below_new_article');
+Route::post('/add_new_article', [ArticleController::class, 'add_new_article']);
+Route::get('/delete_article/{id}', [ArticleController::class, 'destroy']);
+Route::get('/view-sub-article/{id}', [ArticleController::class, 'view_sub_article'])->name('view_sub_article');
+Route::get('/delete_sub_article/{id}', [ArticleController::class, 'destroy_sub_article']);
+Route::get('/delete_footnote/{id}', [ArticleController::class, 'delete_footnote']);

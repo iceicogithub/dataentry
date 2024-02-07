@@ -41,3 +41,10 @@ new table of subrules
 
 ALTER TABLE `footnote` ADD `sub_rule_id` INT(11) NULL AFTER `rule_no`;(done)
 
+appedices table   
+articles table 
+sub_articles table 
+subTYPES table 
+ALTER TABLE `footnote` ADD `article_id` INT(11) NULL AFTER `sub_rule_id`, ADD `article_no` INT(11) NULL AFTER `article_id`, ADD `sub_article_id` INT(11) NULL AFTER `article_no`;
+ALTER TABLE `footnote` ADD `appendices_id` INT(11) NULL AFTER `schedule_id`;
+

@@ -30,7 +30,11 @@
                             {{ $errors->first('error') }}
                         </div>
                     @endif
-
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                     @if (session('error'))
                         <div class="alert alert-success">
                             {{ session('error') }}
@@ -87,15 +91,23 @@
                                                             @foreach ($section->footnoteModel as $f => $footnote)
                                                                 <div
                                                                     class="form-group form-default mt-3 fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
-                                                                    <label class="float-label">
-                                                                        Add Footnote
-                                                                        <span class="pl-2">
-                                                                            <button type="button"
-                                                                                class="btn btn-sm social facebook p-0 add-footnote">
-                                                                                <i class="fa fa-minus"></i>
-                                                                            </button>
-                                                                        </span>
-                                                                    </label>
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <label class="float-label">
+                                                                            Add Footnote
+                                                                            <span class="pl-2">
+                                                                                <button type="button"
+                                                                                    class="btn btn-sm social facebook p-0 add-footnote">
+                                                                                    <i class="fa fa-minus"></i>
+                                                                                </button>
+                                                                            </span>
+                                                                        </label>
+                                                                        <div>
+                                                                            <a href="{{ url('/delete_footnote/' . $footnote->footnote_id) }}"
+                                                                                onclick="return confirm('Are you sure ?')"><i
+                                                                                    class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
+                                                                        </div>
+                                                                    </div>
+
                                                                     <div class="show-footnote" style="display: block">
                                                                         {{-- footnote for section --}}
                                                                         <input type="hidden"
@@ -197,16 +209,24 @@
                                                                 <div class="border col-md-12 p-3">
                                                                     <div
                                                                         class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                                                                        <label class="float-label">
-                                                                            Add Footnote
-                                                                            <span class="pl-2">
-                                                                                <button type="button"
-                                                                                    class="btn btn-sm social facebook p-0 add-footnote">
-                                                                                    <i
-                                                                                        class="fa {{ !empty($footnoteItem->footnote_content) ? 'fa-minus' : 'fa-plus' }}"></i>
-                                                                                </button>
-                                                                            </span>
-                                                                        </label>
+                                                                        <div class="d-flex justify-content-between">
+                                                                            <label class="float-label">
+                                                                                Add Footnote
+                                                                                <span class="pl-2">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-sm social facebook p-0 add-footnote">
+                                                                                        <i
+                                                                                            class="fa {{ !empty($footnoteItem->footnote_content) ? 'fa-minus' : 'fa-plus' }}"></i>
+                                                                                    </button>
+                                                                                </span>
+                                                                            </label>
+                                                                            <div>
+                                                                                <a href="{{ url('/delete_footnote/' . $footnoteItem->footnote_id) }}"
+                                                                                    onclick="return confirm('Are you sure ?')"><i
+                                                                                        class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
+                                                                            </div>
+                                                                        </div>
+
                                                                         <div class="show-footnote">
                                                                             <textarea type="text" name="sub_footnote_content[{{ $k }}][{{ $a }}]"
                                                                                 class="form-control ckeditor-replace footnote">{{ $footnoteItem->footnote_content ?? '' }}</textarea>

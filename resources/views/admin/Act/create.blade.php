@@ -117,6 +117,13 @@
                                                 <textarea name="schedule_title[]" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title"
                                                     id="schedule_title"></textarea>
                                             </div>
+                                            {{-- for appendix --}}
+                                            <div id="appendicesSection" class="appendicesSection" style="display: none">
+                                                <label class="float-label"> Appendices <span
+                                                        class="text-danger">*</span></label>
+                                                <textarea name="appendices_title[]" class="form-control mb-3 appendices_title" placeholder="Enter Appendices Title"
+                                                    id="appendices_title"></textarea>
+                                            </div>
                                         </div>
                                         <div class="additional-section">
                                             <div class="border col-md-12 p-3">
@@ -125,7 +132,8 @@
                                                         <div class="form-group">
                                                             <label for="select" class="form-control-label">Select<span
                                                                     class="text-danger">*</span></label>
-                                                            <select class="select form-control text-capitalize sub_textarea"
+                                                            <select
+                                                                class="select form-control text-capitalize sub_textarea"
                                                                 name="subtypes_id[]" id="select">
                                                                 <option selected disabled>Select</option>
                                                                 @foreach ($stype as $item)
@@ -184,12 +192,29 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group form-default w-50" id="2Div"
+                                                    <div class="form-group form-default col-md-12 px-0" id="2Div"
                                                         style="display: none">
-                                                        <label class="float-label">Article Title<span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" name="article_title[]"
-                                                            class="form-control mb-3" placeholder="Enter Article Title">
+                                                        <div class="form-group form-default ArticleTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Article Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex ArticleTitle my-1">
+                                                                <input type="text" name="article_no[][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Article NO.">
+                                                                <input type="text" name="article_title[][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Article Title">
+                                                                <button type="button"
+                                                                    class="add-ArticleTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-ArticleTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
                                                     <div class="form-group form-default col-md-12 px-0" id="4Div"
@@ -282,6 +307,7 @@
             CKEDITOR.replace('parts_title');
             CKEDITOR.replace('priliminary_title');
             CKEDITOR.replace('schedule_title');
+            CKEDITOR.replace('appendices_title');
 
             // for category type
             $(document).on('change', '.category', function() {
@@ -309,11 +335,13 @@
                 var partSection = sectionContainer.find('.partSection');
                 var priliminarySection = sectionContainer.find('.priliminarySection');
                 var scheduleSection = sectionContainer.find('.scheduleSection');
+                var appendicesSection = sectionContainer.find('.appendicesSection');
 
                 chapterSection.hide();
                 partSection.hide();
                 priliminarySection.hide();
                 scheduleSection.hide();
+                appendicesSection.hide();
 
                 if (selectedValue == '1') {
                     chapterSection.show();
@@ -323,6 +351,8 @@
                     priliminarySection.show();
                 } else if (selectedValue == '4') {
                     scheduleSection.show();
+                } else if (selectedValue == '5') {
+                    appendicesSection.show();
                 }
             });
 
@@ -388,6 +418,13 @@
                                                 <div id="scheduleSection" class="scheduleSection" style="display: none">
                                                     <label class="float-label"> Schedule <span class="text-danger">*</span></label>
                                                     <textarea name="schedule_title[]" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title" id="schedule_title"></textarea>  
+                                                </div>
+                                                {{-- for appendix --}}
+                                                <div id="appendicesSection" class="appendicesSection" style="display: none">
+                                                    <label class="float-label"> Appendices <span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea name="appendices_title[]" class="form-control mb-3 appendices_title" placeholder="Enter Appendices Title"
+                                                        id="appendices_title"></textarea>
                                                 </div>
 
                                             </div>
@@ -458,12 +495,29 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group form-default w-50" id="2Div"
+                                                    <div class="form-group form-default col-md-12 px-0" id="2Div"
                                                         style="display: none">
-                                                        <label class="float-label">Article Title<span
-                                                                class="text-danger">*</span></label>
-                                                        <input type="text" name="article_title[]"
-                                                            class="form-control mb-3" placeholder="Enter Article Title">
+                                                        <div class="form-group form-default ArticleTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Article Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex ArticleTitle my-1">
+                                                                <input type="text" name="article_no[${chapterCount}][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Article NO.">
+                                                                <input type="text" name="article_title[${chapterCount}][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Article Title">
+                                                                <button type="button"
+                                                                    class="add-ArticleTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-ArticleTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="form-group form-default col-md-12 px-0" id="4Div"
                                                         style="display:none">
@@ -472,10 +526,10 @@
                                                             <label class="float-label">Regulation Title<span
                                                                     class="text-danger">*</span></label>
                                                             <div class="d-flex RegulationTitle my-1">
-                                                                <input type="text" name="regulation_no[][]"
+                                                                <input type="text" name="regulation_no[${chapterCount}][]"
                                                                     class="form-control" style="width: 20%;"
                                                                     placeholder="Enter Regulation NO.">
-                                                                <input type="text" name="regulation_title[][]"
+                                                                <input type="text" name="regulation_title[${chapterCount}][]"
                                                                     class="form-control"
                                                                     placeholder="Enter Regulation Title">
                                                                 <button type="button"
@@ -552,6 +606,7 @@
                     CKEDITOR.replace($('.section-set:last').find('.parts_title')[0]);
                     CKEDITOR.replace($('.section-set:last').find('.priliminary_title')[0]);
                     CKEDITOR.replace($('.section-set:last').find('.schedule_title')[0]);
+                    CKEDITOR.replace($('.section-set:last').find('.appendices_title')[0]);
 
                     // Increment sectionCounter if needed
                     sectionCounter++;
@@ -690,6 +745,47 @@
                         '.RegulationTitle');
                     if (RegulationTitles.length > 1) {
                         $(this).closest('.RegulationTitle').remove();
+                    }
+                });
+
+                // for articles 
+                $(document).on('click', '.add-ArticleTitle', function() {
+                    let ArticleTitleMain = $(this).closest('.section-set').find(
+                        '.ArticleTitleMain');
+                    let clonedArticleTitle = ArticleTitleMain.find('.ArticleTitle:first')
+                        .clone(
+                            true);
+                    clonedArticleTitle.find('input').val('');
+
+                    // Get the chapter count from the data attribute of the closest .section-set
+                    let chapterCount = parseInt($(this).closest('.section-set').data(
+                        'chapter-count')) || 0;
+
+                    // Increment the section index for the new section title
+                    let lastIndex = ArticleTitleMain.find('.ArticleTitle').length;
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedArticleTitle.find('input[name^="article_no"]').each(function(
+                        index) {
+                        $(this).attr('name', 'article_no[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedArticleTitle.find('input[name^="article_title"]').each(function(
+                        index) {
+                        $(this).attr('name', 'article_title[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    ArticleTitleMain.append(clonedArticleTitle);
+                });
+
+                $(document).on('click', '.remove-ArticleTitle', function() {
+                    let ArticleTitles = $(this).closest('.ArticleTitleMain').find(
+                        '.ArticleTitle');
+                    if (ArticleTitles.length > 1) {
+                        $(this).closest('.ArticleTitle').remove();
                     }
                 });
 

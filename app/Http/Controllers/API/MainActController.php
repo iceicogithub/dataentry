@@ -87,7 +87,7 @@ class MainActController extends Controller
 
                         foreach ($section->subsectionModel as $subsection) {
                             if ($subsection->chapter_id == $item->chapter_id) {
-                                $subSectionsList[] = '<p><span>' . $subsection->sub_section_no . '</span>' . $subsection->sub_section_content . '</p>';
+                                $subSectionsList[] = '<div style="display:flex!important;"><div>' . $subsection->sub_section_no . '</div><div>' . $subsection->sub_section_content . '</div></div>';
                             }
                         }
 
@@ -95,20 +95,20 @@ class MainActController extends Controller
 
                         foreach ($section->footnoteModel as $footnote) {
                             if ($footnote->chapter_id == $item->chapter_id) {
-                                $footnoteList[] = '<p>' . $footnote->footnote_content . '</p>';
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
                             }
                         }
 
                         $subSectionString = implode('', $subSectionsList);
                         $footnoteString = implode('', $footnoteList);
 
-                        $chapterSections[] = '<div id="' . $index . '"><h4 data-label="amusoftech" class="font-weight-bold mb-3">' . $section->section_title . '</h4></br><p><p>' . $section->section_content . '</p></p>' . $subSectionString . '' . $footnoteString . '</div>';
+                        $chapterSections[] = '<div id="' . $section->section_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $section->section_no . '</h4><h4 class="font-weight-bold mb-3">' . $section->section_title . '</h4></div></br><div>' . $section->section_content . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                     }
                 }
 
                 $sectionString = implode('', $chapterSections);
 
-                $chapterList[] = '<h2 id=""><strong>' . $item->chapter_title . '</strong></h2><p>' . $item->chapter_content . '</p>' . $sectionString;
+                $chapterList[] = '<h2 style="text-align:center!important;" id=""><strong>' . $item->chapter_title . '</strong></h2><div>' . $item->chapter_content . '</div>' . $sectionString;
             }
 
             $partList = [];
@@ -122,7 +122,7 @@ class MainActController extends Controller
 
                         foreach ($section->subsectionModel as $subsection) {
                             if ($subsection->part_id == $item->part_id) {
-                                $subSectionsList[] = '<p><span>' . $subsection->sub_section_no . '</span>' . $subsection->sub_section_content . '</p>';
+                                $subSectionsList[] = '<div style="display:flex!important;"><div>' . $subsection->sub_section_no . '</div><div>' . $subsection->sub_section_content . '</div ></div>';
                             }
                         }
 
@@ -130,20 +130,20 @@ class MainActController extends Controller
 
                         foreach ($section->footnoteModel as $footnote) {
                             if ($footnote->part_id == $item->part_id) {
-                                $footnoteList[] = '<p>' . $footnote->footnote_content . '</p>';
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
                             }
                         }
 
                         $subSectionString = implode('', $subSectionsList);
                         $footnoteString = implode('', $footnoteList);
 
-                        $partSections[] = '<div id="' . $index . '"><h4 data-label="amusoftech" class="font-weight-bold mb-3">' . $section->section_title . '</h4></br><p><p>' . $section->section_content . '</p></p>' . $subSectionString . '' . $footnoteString . '</div>';
+                        $partSections[] = '<div id="' . $section->section_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $section->section_no . '</h4><h4 class="font-weight-bold mb-3">' . $section->section_title . '</h4></div><div>' . $section->section_content . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                     }
                 }
 
                 $sectionString = implode('', $partSections);
 
-                $partList[] = '<h2 id=""><strong>' . $item->part_title . '</strong></h2><p>' . $item->part_content . '</p>' . $sectionString;
+                $partList[] = '<h2 style="text-align:center!important;" id=""><strong>' . $item->part_title . '</strong></h2><p>' . $item->part_content . '</p>' . $sectionString;
             }
 
             $sectionList = [];
@@ -160,7 +160,7 @@ class MainActController extends Controller
                 'data' => [
                     'actId' => $act->act_id,
                     'actName' => $act->act_title,
-                    'actDescription' => '<h1 id=""><strong>' . $act->act_title . '</strong> </h1><p><strong>' . $act->act_no . '</strong></p><p><strong>' . $act->act_date . '</strong></p>' . implode('', $chapterList) . '' . implode('', $partList) . '',
+                    'actDescription' => '<h1 id=""><strong>' . $act->act_title . '</strong> </h1><div><strong>' . $act->act_no . '</strong></div><div><strong>' . $act->act_date . '</strong></div>' . implode('', $chapterList) . '' . implode('', $partList) . '',
                     'sectionList' => $sectionList,
                 ]
             ]);

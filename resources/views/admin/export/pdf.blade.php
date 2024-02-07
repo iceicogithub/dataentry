@@ -21,6 +21,7 @@
         <div style="text-align: center; font-size: 20px !important;">ARRANGEMENT OF SECTIONS</div>
         <hr style="width: 10% !important;margin: 10px auto !important;">
 
+        <div style="text-align: start; margin-top: 0.2rem;">PREAMBLE</div>
         {{-- for chapter  --}}
         @if ($type->contains('maintype_id', 1))
             @php
@@ -32,9 +33,7 @@
                         {!! $chapterItem->chapter_title !!}</div>
                 </div>
                 @if (!empty($section) && count($section) > 0)
-                    @if ($key === 0)
-                        <div style="text-align: start; margin-top: 0.2rem;">Sections</div>
-                    @endif
+                   
                     <div style="text-align: start; margin-top: 0.2rem;">
                         @foreach ($section->where('chapter_id', $chapterItem->chapter_id) as $sectionItem)
                             <span style="font-size: 15px !important;">{{ $sectionItem->section_no }}
@@ -44,9 +43,9 @@
                 @endif
                 {{-- for regulation  --}}
                 @if (!empty($regulation) && count($regulation) > 0)
-                    @if ($key === 0)
+                    {{-- @if ($key === 0)
                         <div style="text-align: start; margin-top: 0.2rem;">Regulation</div>
-                    @endif
+                    @endif --}}
                     <div style="text-align: start; margin-top: 0.2rem;">
                         @foreach ($regulation->where('chapter_id', $chapterItem->chapter_id) as $regulationItem)
                             <span
@@ -74,9 +73,9 @@
                         @php $displayedSections[] = $sectionKey; @endphp
                     @endif
                 </div>
-                @if ($key === 0)
+                {{-- @if ($key === 0)
                     <div style="text-align: start">Sections</div>
-                @endif
+                @endif --}}
                 <div style="text-align: start; margin-top: 0.2rem;">
                     @foreach ($section->where('priliminary_id', $priliminarys->priliminary_id) as $priliminaryItem)
                         <span
@@ -102,9 +101,9 @@
                         @php $displayedSections[] = $sectionKey; @endphp
                     @endif
                 </div>
-                @if ($key === 0)
+                {{-- @if ($key === 0)
                     <div style="text-align: start">Sections</div>
-                @endif
+                @endif --}}
                 <div style="text-align: start; margin-top: 0.2rem;">
                     @foreach ($section->where('parts_id', $part->parts_id) as $partsItem)
                         <span
@@ -117,17 +116,17 @@
 
         {{-- for schedule  --}}
         @if ($type->contains('maintype_id', 4) && count($schedule) > 0)
-        <div style="text-align: center; margin-top: 0.2rem;">
-            THE FIRST SCHEDULE
-        </div>
-        <hr style="width: 10% !important;margin: 10px auto !important;">
-        
+            <div style="text-align: center; margin-top: 0.2rem;">
+                THE FIRST SCHEDULE
+            </div>
+            <hr style="width: 10% !important;margin: 10px auto !important;">
+
             @php $displayedschedules = []; @endphp
             @foreach ($schedule as $key => $schedules)
                 @php
                     $scheduleKey = $schedules->act_id . '' . $schedules->maintype_id . '_' . $schedules->schedule_title;
                 @endphp
-               
+
                 <div style="text-align: center">
                     @if (!in_array($scheduleKey, $displayedschedules))
                         <div
@@ -191,7 +190,7 @@
 
                     <div style="text-align: start">
                         @foreach ($section->where('chapter_id', $chapterItem->chapter_id) as $item)
-                            <strong><span style="font-size: 15px !important;">{{ $item->section_no }} 
+                            <strong><span style="font-size: 15px !important;">{{ $item->section_no }}
                                     {{ $item->section_title }} </span></strong><span>{!! $item->section_content !!}</span><br>
                             @foreach ($item->subsectionModel as $subSection)
                                 <table style="margin-left: 2%">
@@ -229,8 +228,9 @@
 
                     <div style="text-align: start">
                         @foreach ($section->where('priliminary_id', $priliminaryItem->priliminary_id) as $item)
-                            <strong><span style="font-size: 15px !important;">{{ $item->section_no }} 
-                                    {{ $item->section_title }} </span></strong><span>{!! $item->section_content !!}</span><br>
+                            <strong><span style="font-size: 15px !important;">{{ $item->section_no }}
+                                    {{ $item->section_title }}
+                                </span></strong><span>{!! $item->section_content !!}</span><br>
                             @foreach ($item->subsectionModel as $subSection)
                                 <table style="margin-left: 2%">
                                     <tr>
@@ -272,11 +272,16 @@
 
                     <div style="text-align: start">
                         @foreach ($section->where('parts_id', $part->parts_id) as $item)
-                            <strong><span style="font-size: 15px !important;">{{ $item->section_no }} 
-                                    {{ $item->section_title }} </span></strong><span>{!! $item->section_content !!}</span><br>
+                            <strong><span style="font-size: 15px !important;">{{ $item->section_no }}
+                                    {{ $item->section_title }}
+                                </span></strong><span>{!! $item->section_content !!}</span><br>
                             @foreach ($item->subsectionModel as $subSection)
-                                <span style="font-size: 15px !important;">{{ $subSection->sub_section_no }}.
-                                    {!! $subSection->sub_section_content !!}</span>
+                                <table style="margin-left: 2%">
+                                    <tr>
+                                        <td style="vertical-align: middle;">{{ $subSection->sub_section_no }}</td>
+                                        <td style="">{!! $subSection->sub_section_content !!}</td>
+                                    </tr>
+                                </table>
                             @endforeach
 
                             @if ($item->footnoteModel->count() > 0)

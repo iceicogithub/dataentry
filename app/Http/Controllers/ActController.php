@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Act;
 use App\Models\ActSummary;
+use App\Models\Appendices;
+use App\Models\Article;
 use App\Models\Category;
 use App\Models\MainType;
 use App\Models\Parts;
@@ -81,10 +83,29 @@ class ActController extends Controller
                 return $mixstring; // Default behavior is to return the mixstring as is
             }
         });
+        
+        $act_article = Article::where('act_id', $id)
+        ->with('MainTypeModel', 'Schedulemodel','Appendicesmodel','Partmodel','ChapterModel','PriliminaryModel')
+        ->get()
+        ->sortBy(function ($article) {
+            $mixstring = $article->article_no;
+    
+            // Check if the regular expression matches
+            if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
+                $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
+                $alphabeticPart = strtolower($matches[2]);
+    
+                return $numericPart . $alphabeticPart;
+            } else {
+                // Handle the case where the regular expression doesn't match
+                // You can choose to return something specific or handle it in another way
+                return $mixstring; // Default behavior is to return the mixstring as is
+            }
+        });
 
     
 
-        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule'));
+        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule','act_article'));
     }
 
     public function create(Request $request, $id)
@@ -122,6 +143,7 @@ class ActController extends Controller
 
 
             foreach ($request->maintype_id as $key => $maintypeId) {
+
                 if ($maintypeId == "1") {
                     $chapt = new Chapter();
                     $chapt->act_id = $act->act_id ?? null;
@@ -141,8 +163,6 @@ class ActController extends Controller
                                 // Update SubSection records, Footnote records, etc. (similar to Section)
                                 $lastSection = Section::orderBy('section_rank', 'desc')->first();
 
-                                // dd($lastSection);
-                                // die();
                                 $lastRank = $lastSection ? $lastSection->section_rank : 0;
                                 // Create the new section with the updated section_no
                                 $section = Section::create([
@@ -157,17 +177,11 @@ class ActController extends Controller
                             }
                         }
                     } elseif ($request->subtypes_id[$key] == 4) {
-                        //  dd($request);
-                        //  die();
+                        
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
                         foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
                             $currentRegulationNo = $request->regulation_no[$key][$index];
-                            // Update Section records
-                            // Regulation::where('regulation_no', '>=', $currentRegulationNo)
-                            //     ->get()
-                            //     ->each(function ($regulation) {
-                            //         $regulation->increment('regulation_no');
-                            //     });
+                           
 
                             $regulation = Regulation::create([
                                 'regulation_no' => $currentRegulationNo,
@@ -187,6 +201,7 @@ class ActController extends Controller
                             ]);
                         }
                     }
+
                 } elseif ($maintypeId == "2") {
                     $parts = new Parts();
                     $parts->act_id = $act->act_id ?? null;
@@ -199,28 +214,7 @@ class ActController extends Controller
 
                     foreach ($request->section_title[$key] as $index => $sectiontitle) {
                         $currentSectionNo = $request->section_no[$key][$index];
-                        //    dd($currentSectionNo);
-                        //    die();
-                        // Update Section records
-                        // Section::where('section_no', '>=', $currentSectionNo)
-                        //     ->get()
-                        //     ->each(function ($section) {
-                        //         $section->increment('section_no');
-                        //     });
-
-                        // Update SubSection records
-                        // SubSection::where('section_no', '>=', $currentSectionNo)
-                        //     ->get()
-                        //     ->each(function ($subSection) {
-                        //         $subSection->increment('section_no');
-                        //     });
-
-                        // Update Footnote records
-                        // Footnote::where('section_no', '>=', $currentSectionNo)
-                        //     ->get()
-                        //     ->each(function ($footnote) {
-                        //         $footnote->increment('section_no');
-                        //     });
+                       
 
                         $lastSection = Section::orderBy('section_rank', 'desc')->first();
                         $lastRank = $lastSection ? $lastSection->section_rank : 0;
@@ -235,6 +229,7 @@ class ActController extends Controller
                             'section_title' => $sectiontitle,
                         ]);
                     }
+
                 } elseif ($maintypeId == "3") {
                     $priliminary = new Priliminary();
                     $priliminary->act_id = $act->act_id ?? null;
@@ -246,28 +241,7 @@ class ActController extends Controller
 
                     foreach ($request->section_title[$key] as $index => $sectiontitle) {
                         $currentSectionNo = $request->section_no[$key][$index];
-                        //    dd($currentSectionNo);
-                        //    die();
-                        // Update Section records
-                        // Section::where('section_no', '>=', $currentSectionNo)
-                        //     ->get()
-                        //     ->each(function ($section) {
-                        //         $section->increment('section_no');
-                        //     });
-
-                        // Update SubSection records
-                        // SubSection::where('section_no', '>=', $currentSectionNo)
-                        //     ->get()
-                        //     ->each(function ($subSection) {
-                        //         $subSection->increment('section_no');
-                        //     });
-
-                        // Update Footnote records
-                        // Footnote::where('section_no', '>=', $currentSectionNo)
-                        //     ->get()
-                        //     ->each(function ($footnote) {
-                        //         $footnote->increment('section_no');
-                        //     });
+                       
 
                         $lastSection = Section::orderBy('section_rank', 'desc')->first();
                         $lastRank = $lastSection ? $lastSection->section_rank : 0;
@@ -282,6 +256,7 @@ class ActController extends Controller
                             'section_title' => $sectiontitle,
                         ]);
                     }
+
                 } elseif ($maintypeId == "4") {
                     $schedule = new Schedule();
                     $schedule->act_id = $act->act_id ?? null;
@@ -293,28 +268,7 @@ class ActController extends Controller
 
                     foreach ($request->rule_title[$key] as $index => $ruletitle) {
                         $currentruleNo = $request->rule_no[$key][$index];
-                        //    dd($currentSectionNo);
-                        //    die();
-                        // Update Section records
-                        // Section::where('section_no', '>=', $currentSectionNo)
-                        //     ->get()
-                        //     ->each(function ($section) {
-                        //         $section->increment('section_no');
-                        //     });
-
-                        // Update SubSection records
-                        // SubSection::where('section_no', '>=', $currentSectionNo)
-                        //     ->get()
-                        //     ->each(function ($subSection) {
-                        //         $subSection->increment('section_no');
-                        //     });
-
-                        // Update Footnote records
-                        // Footnote::where('section_no', '>=', $currentSectionNo)
-                        //     ->get()
-                        //     ->each(function ($footnote) {
-                        //         $footnote->increment('section_no');
-                        //     });
+                       
 
                         $lastrule = Rules::orderBy('rule_rank', 'desc')->first();
                         $lastRank = $lastrule ? $lastrule->rule_rank : 0;
@@ -329,7 +283,35 @@ class ActController extends Controller
                             'rule_title' => $ruletitle,
                         ]);
                     }
-                } else {
+
+                } elseif ($maintypeId == "5") {
+                    $appendices = new Appendices();
+                    $appendices->act_id = $act->act_id ?? null;
+                    $appendices->maintype_id = $maintypeId;
+                    $appendices->appendices_title = $request->appendices_title[$key] ?? null;
+                    $appendices->save();
+
+                    $subtypes_id = $request->subtypes_id[$key] ?? null;
+
+                    foreach ($request->article_title[$key] as $index => $articletitle) {
+                        $currentarticleNo = $request->article_no[$key][$index];
+                       
+
+                        $lastarticle = Article::orderBy('article_rank', 'desc')->first();
+                        $lastRank = $lastarticle ? $lastarticle->article_rank : 0;
+                        // Create the new section with the updated section_no
+                        $article = Article::create([
+                            'article_rank' => $lastRank + 1,
+                            'article_no' => $currentarticleNo,
+                            'act_id' => $act->act_id,
+                            'maintype_id' => $maintypeId,
+                            'appendices_id' => $appendices->appendices_id,
+                            'subtypes_id' => $subtypes_id,
+                            'article_title' => $articletitle,
+                        ]);
+                    }
+                    
+                }  else {
                     dd("something went wrong - right now we are working only in chapter and parts");
                 }
             }
