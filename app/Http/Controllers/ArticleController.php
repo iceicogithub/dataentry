@@ -233,14 +233,14 @@ class ArticleController extends Controller
         // }
     }
 
-    public function add_below_new_article(Request $request, $id, $article_no, $article_rank)
+    public function add_below_new_article(Request $request, $id, $article_id, $article_rank)
     {
-        $article_no = $article_no;
+        
         $article_rank = $article_rank;
         $article = Article::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendicesmodel','Schedulemodel')->where('act_id', $id)
-            ->where('article_no', $article_no)->first();
+            ->where('article_id', $article_id)->first();
 
-        return view('admin.article.add_new', compact('article', 'article_no', 'article_rank'));
+        return view('admin.article.add_new', compact('article', 'article_rank'));
     }
 
     public function add_new_article(Request $request)

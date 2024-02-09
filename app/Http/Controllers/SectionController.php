@@ -27,21 +27,21 @@ class SectionController extends Controller
         return view('admin.section.index', compact('status'));
     }
 
-    public function add_below_new_section(Request $request, $id, $section_no, $section_rank)
+    public function add_below_new_section(Request $request, $id, $section_id, $section_rank)
     {
-        $sec_no = $section_no;
+        
         $section_rank = $section_rank;
         $sections = Section::with('ChapterModel', 'Partmodel', 'PriliminaryModel')->where('act_id', $id)
-            ->where('section_no', $section_no)->first();
+            ->where('section_id', $section_id)->first();
 
-        return view('admin.section.add_new', compact('sections', 'sec_no', 'section_rank'));
+        return view('admin.section.add_new', compact('sections', 'section_rank'));
     }
 
     public function add_new_section(Request $request)
     {
         // dd($request);
         // die();
-        // try {
+        try {
         if ($request->has('chapter_id')) {
             $chapter = Chapter::find($request->chapter_id);
 
@@ -69,12 +69,12 @@ class SectionController extends Controller
 
 
         $id = $request->act_id;
-        $sec_no = $request->section_no;
+        // $sec_no = $request->section_no;
         $sec_rank = $request->section_rank;
         $maintypeId = $request->maintype_id;
 
         // Calculate the next section number
-        $nextSectionNo = $sec_no;
+        // $nextSectionNo = $sec_no;
         $nextSectionRank = $sec_rank + 0.01;
 
 
@@ -86,7 +86,7 @@ class SectionController extends Controller
         // Create the new section with the incremented section_no
         $section = Section::create([
             'section_rank' => $nextSectionRank ?? 1,
-            'section_no' => $nextSectionNo,
+            // 'section_no' => $nextSectionNo ?? null,
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
             'chapter_id' => $request->chapter_id ?? null,
@@ -120,7 +120,7 @@ class SectionController extends Controller
                 $sub_section = SubSection::create([
                     'section_id' => $section->section_id,
                     'sub_section_no' => $item ?? null,
-                    'section_no' => $nextSectionNo,
+                    // 'section_no' => $nextSectionNo,
                     'act_id' => $request->act_id,
                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
@@ -149,11 +149,11 @@ class SectionController extends Controller
         }
 
         return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Section created successfully');
-        // } catch (\Exception $e) {
-        //     \Log::error('Error creating Act: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            \Log::error('Error creating Act: ' . $e->getMessage());
 
-        //     return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
-        // }
+            return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
+        }
     }
 
     public function create()
@@ -298,7 +298,6 @@ class SectionController extends Controller
                                         if ($foot) {
                                             $foot->update([
                                                 'footnote_content' => $item ?? null,
-                                                'footnote_no' => $request->sub_footnote_no[$key][$kys] ?? null,
                                             ]);
                                         }
                                     } else {
@@ -310,7 +309,6 @@ class SectionController extends Controller
                                         $footnote->chapter_id = $sections->chapter_id ?? null;
                                         $footnote->parts_id = $sections->parts_id ?? null;
                                         $footnote->footnote_content = $item ?? null;
-                                        $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
                                         $footnote->save();
                                     }
                                 }
@@ -331,7 +329,7 @@ class SectionController extends Controller
                         if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
                             foreach ($request->sub_footnote_content[$key] as $kys => $item) {
                                 // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
-                                if (isset($request->sub_footnote_no[$key][$kys], $request->sub_footnote_content[$key][$kys])) {
+                                if (isset($request->sub_footnote_no[$key][$kys], $request->sub_footnote_content[$key][$kys])) { 
                                     // Create a new footnote for the newly created subsection
                                     $footnote = new Footnote();
                                     $footnote->sub_section_id = $subsec->sub_section_id;
@@ -340,7 +338,6 @@ class SectionController extends Controller
                                     $footnote->chapter_id = $sections->chapter_id ?? null;
                                     $footnote->parts_id = $sections->parts_id ?? null;
                                     $footnote->footnote_content = $item ?? null;
-                                    $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
                                     $footnote->save();
                                 }
                             }

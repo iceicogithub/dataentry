@@ -27,14 +27,14 @@ class RulesController extends Controller
     {
     }
 
-    public function add_below_new_rule(Request $request, $id, $rule_no, $rule_rank)
+    public function add_below_new_rule(Request $request, $id, $rule_id, $rule_rank)
     {
-        $rule_no = $rule_no;
+       
         $rule_rank = $rule_rank;
         $rule = Rules::with('Schedulemodel')->where('act_id', $id)
-            ->where('rule_no', $rule_no)->first();
+            ->where('rule_id', $rule_id)->first();
 
-        return view('admin.rules.add_new', compact('rule', 'rule_no', 'rule_rank'));
+        return view('admin.rules.add_new', compact('rule', 'rule_rank'));
     }
 
     public function add_new_rule(Request $request)
@@ -53,12 +53,12 @@ class RulesController extends Controller
 
 
             $id = $request->act_id;
-            $rule_no = $request->rule_no;
+            // $rule_no = $request->rule_no;
             $rule_rank = $request->rule_rank;
             $maintypeId = $request->maintype_id;
 
             // Calculate the next section number
-            $nextRuleNo = $rule_no;
+            // $nextRuleNo = $rule_no;
             $nextRuleRank = $rule_rank + 0.01;
             // dd($nextRuleRank);
             // die();
@@ -72,7 +72,7 @@ class RulesController extends Controller
             // Create the new section with the incremented section_no
             $rule = Rules::create([
                 'rule_rank'    => $nextRuleRank ?? 1,
-                'rule_no'      => $nextRuleNo,
+                // 'rule_no'      => $nextRuleNo,
                 'act_id'       => $request->act_id,
                 'maintype_id'  => $maintypeId,
                 'schedule_id'  => $request->schedule_id ?? null,
@@ -102,7 +102,7 @@ class RulesController extends Controller
                     $sub_rule = SubRules::create([
                         'rule_id' => $rule->rule_id,
                         'sub_rule_no' => $item ?? null,
-                        'rule_no' => $nextRuleNo,
+                        // 'rule_no' => $nextRuleNo,
                         'act_id' => $request->act_id,
                         'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
                         'sub_rule_content' => $request->sub_rule_content[$key] ?? null,
