@@ -406,19 +406,7 @@
                                             <textarea type="text" name="act_footnote_description[]" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                    
-                                        <div class="col-md-12 px-0 py-3">
-                                            <div class="float-right">
-                                                <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                                ( Add footnote )
-                                                </span>
-                                                <button type="button" class="btn btn-sm social facebook p-0 add-multi-footnote">
-                                                <i class="fa fa-plus"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-sm social youtube p-0 remove-multi-footnote">
-                                                <i class="fa fa-minus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
+                                       
                                     </div>
                                     
                                 `;
@@ -429,7 +417,7 @@
             });
 
             $(document).on('click', '.remove-multi-footnote', function() {
-                if ($('.footnote-addition').length > 1) {
+                if ($('.footnote-addition').length > 0) {
                     $('.footnote-addition:last').remove();
                 }
             });
