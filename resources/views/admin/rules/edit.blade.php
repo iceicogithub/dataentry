@@ -59,13 +59,11 @@
 
                                         <div class="form-group form-default" style="display: block">
                                             <label class="float-label font-weight-bold">Rules :</label>
-                                            <span class="d-flex">
-                                                <input type="text" name="rule_no" class="form-control"
-                                                    style="width: 20%;" placeholder="Enter Rule NO."
-                                                    value="{{ $rule->rule_no }}">
-                                                <input type="text" name="rule_title" value="{{ $rule->rule_title }}"
-                                                    class="form-control mb-3">
-                                            </span>
+
+                                            <input type="text" name="rule_no" class="form-control" style="width: 20%;"
+                                                placeholder="Enter Rule NO." value="{{ $rule->rule_no }}">
+                                            <textarea type="text" id="rule_title" name="rule_title"
+                                                class="form-control section-textarea ckeditor-replace section" placeholder="Enter Rule Title">{{ $rule->rule_title }}</textarea>
                                         </div>
 
                                         <div class="form-group form-default" style="display: block">
@@ -323,6 +321,7 @@
         $(document).ready(function() {
             CKEDITOR.replace('s_title');
             CKEDITOR.replace('rule');
+            CKEDITOR.replace('rule_title');
             CKEDITOR.replace('state_amendment');
 
             // Initialize CKEditor for existing sections

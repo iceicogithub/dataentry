@@ -60,7 +60,7 @@ class PdfExportController extends Controller
                     } else {
                         // Handle the case where the regular expression doesn't match
                         // You can choose to return something specific or handle it in another way
-                        return $mixstring; // Default behavior is to return the mixstring as is
+                        // return $mixstring; // Default behavior is to return the mixstring as is
                     }
                 });
 
@@ -81,7 +81,7 @@ class PdfExportController extends Controller
                     } else {
                         // Handle the case where the regular expression doesn't match
                         // You can choose to return something specific or handle it in another way
-                        return $mixstring; // Default behavior is to return the mixstring as is
+                        // return $mixstring; // Default behavior is to return the mixstring as is
                     }
                 });
 

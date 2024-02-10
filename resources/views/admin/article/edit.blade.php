@@ -83,13 +83,13 @@
 
                                         <div class="form-group form-default" style="display: block">
                                             <label class="float-label font-weight-bold">Article :</label>
-                                            <span class="d-flex">
-                                                <input type="text" name="article_no" class="form-control"
-                                                    style="width: 20%;" placeholder="Enter Article NO."
-                                                    value="{{ $article->article_no }}">
-                                                <input type="text" name="article_title"
-                                                    value="{{ $article->article_title }}" class="form-control mb-3">
-                                            </span>
+
+                                            <input type="text" name="article_no" class="form-control" style="width: 20%;"
+                                                placeholder="Enter Article NO." value="{{ $article->article_no }}">
+
+                                            <textarea type="text" id="article_title" name="article_title"
+                                                class="form-control section-textarea ckeditor-replace section" placeholder="Enter Article Title">{{ $article->article_title }}</textarea>
+
                                         </div>
 
                                         <div class="form-group form-default" style="display: block">
