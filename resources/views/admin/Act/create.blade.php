@@ -108,6 +108,7 @@
                                                             class="text-danger">*</span></label>
                                                     <textarea name="parts_title[]" class="form-control mb-3 parts_title" placeholder="Enter Part Title" id="parts_title"></textarea>
                                                 </div>
+                                                  
                                                 <div id="priliminarySection" class="priliminarySection" style="display: none">
                                                     <label class="float-label"> Priliminary <span
                                                             class="text-danger">*</span></label>

@@ -69,13 +69,14 @@
 
                                         <div class="form-group form-default" style="display: block">
                                             <label class="float-label font-weight-bold">Section :</label>
-                                            <span class="d-flex">
-                                                <input type="text" name="section_no" class="form-control"
+                                            
+                                                <input type="text" name="section_no" class="form-control my-3"
                                                     style="width: 20%;" placeholder="Enter Section NO."
                                                     value="{{ $sections->section_no }}">
-                                                <input type="text" name="section_title"
-                                                    value="{{ $sections->section_title }}" class="form-control mb-3">
-                                            </span>
+                                                    <textarea type="text" id="section_title" name="section_title"
+                                                    class="form-control section-textarea ckeditor-replace section" placeholder="Enter Section Title">{{ $sections->section_title }}</textarea>
+                                               
+                                            
                                         </div>
 
                                         <div class="form-group form-default" style="display: block">
@@ -332,6 +333,7 @@
             CKEDITOR.replace('c_title');
             CKEDITOR.replace('p_title');
             CKEDITOR.replace('section');
+            CKEDITOR.replace('section_title');
             CKEDITOR.replace('state_amendment');
 
             // Initialize CKEditor for existing sections

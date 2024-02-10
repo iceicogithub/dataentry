@@ -93,7 +93,7 @@
                                         </div>
 
                                     </div>
-                                </div>
+                                </div>  
                             @endforeach
                         @endIf
 
@@ -251,7 +251,7 @@
                                                 @endif
                                             </td>
                                             <td class="text-capitalize">{{ $item->section_no }}</td>
-                                            <td class="text-capitalize">{{ $item->section_title }}</td>
+                                            <td class="text-capitalize">{!! $item->section_title !!}</td>
                                             <td class="text-capitalize">{{ $item->updated_at }}</td>
                                             <td class="text-capitalize d-flex justify-content-center">
                                                 <a href="/edit-section/{{ $item->section_id }}" title="Edit"
