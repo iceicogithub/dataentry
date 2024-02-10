@@ -114,7 +114,6 @@
                                                             class="text-danger">*</span></label>
                                                     <textarea name="priliminary_title[]" class="form-control mb-3 priliminary_title" placeholder="Enter Priliminary Title" id="priliminary_title"></textarea>
                                                 </div>
-
                                             </div>
                                             {{-- for schedule --}}
                                             <div id="scheduleSection" class="scheduleSection" style="display: none">

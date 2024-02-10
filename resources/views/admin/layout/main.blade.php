@@ -77,7 +77,9 @@
         })(jQuery);
     </script>
     <script>
-        let table = new DataTable('#myTable');
+        let table = new DataTable('#myTable', {
+            sorting: false
+        });
     </script>
 
 </body>
