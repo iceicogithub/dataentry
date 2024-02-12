@@ -84,7 +84,7 @@
                                         <div class="form-group form-default" style="display: block">
                                             <label class="float-label font-weight-bold">Article :</label>
 
-                                            <input type="text" name="article_no" class="form-control" style="width: 20%;"
+                                            <input type="text" name="article_no" class="form-control my-3" style="width: 20%;"
                                                 placeholder="Enter Article NO." value="{{ $article->article_no }}">
 
                                             <textarea type="text" id="article_title" name="article_title"

@@ -108,11 +108,13 @@
                                                             class="text-danger">*</span></label>
                                                     <textarea name="parts_title[]" class="form-control mb-3 parts_title" placeholder="Enter Part Title" id="parts_title"></textarea>
                                                 </div>
-                                                  
-                                                <div id="priliminarySection" class="priliminarySection" style="display: none">
+
+                                                <div id="priliminarySection" class="priliminarySection"
+                                                    style="display: none">
                                                     <label class="float-label"> Priliminary <span
                                                             class="text-danger">*</span></label>
-                                                    <textarea name="priliminary_title[]" class="form-control mb-3 priliminary_title" placeholder="Enter Priliminary Title" id="priliminary_title"></textarea>
+                                                    <textarea name="priliminary_title[]" class="form-control mb-3 priliminary_title" placeholder="Enter Priliminary Title"
+                                                        id="priliminary_title"></textarea>
                                                 </div>
                                             </div>
                                             {{-- for schedule --}}
@@ -177,7 +179,7 @@
                                                         style="display:none">
                                                         <div class="form-group form-default ruleTitleMain"
                                                             style="display: block">
-                                                            <label class="float-label">Order & Rules Title<span
+                                                            <label class="float-label">Rules Title<span
                                                                     class="text-danger">*</span></label>
                                                             <div class="d-flex ruleTitle my-1">
                                                                 <input type="text" name="rule_no[][]"
@@ -241,6 +243,128 @@
                                                                 </button>
                                                                 <button type="button"
                                                                     class="btn btn-sm social youtube p-0 remove-RegulationTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group form-default col-md-12 px-0" id="5Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default ListTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">List Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex ListTitle my-1">
+                                                                <input type="text" name="list_no[][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter List NO.">
+                                                                <input type="text" name="list_title[][]"
+                                                                    class="form-control" placeholder="Enter List Title">
+                                                                <button type="button"
+                                                                    class="add-ListTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-ListTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group form-default col-md-12 px-0" id="6Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default PartTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Part Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex PartTitle my-1">
+                                                                <input type="text" name="part_no[][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Part NO.">
+                                                                <input type="text" name="part_title[][]"
+                                                                    class="form-control" placeholder="Enter Part Title">
+                                                                <button type="button"
+                                                                    class="add-PartTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-PartTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group form-default col-md-12 px-0" id="7Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default AppendixTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Appendix Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex AppendixTitle my-1">
+                                                                <input type="text" name="appendix_no[][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Appendix NO.">
+                                                                <input type="text" name="appendix_title[][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Appendix Title">
+                                                                <button type="button"
+                                                                    class="add-AppendixTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-AppendixTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group form-default col-md-12 px-0" id="8Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default OrderTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Order Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex OrderTitle my-1">
+                                                                <input type="text" name="order_no[][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Order NO.">
+                                                                <input type="text" name="order_title[][]"
+                                                                    class="form-control" placeholder="Enter Order Title">
+                                                                <button type="button"
+                                                                    class="add-OrderTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-OrderTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group form-default col-md-12 px-0" id="9Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default AnnextureTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Annexture Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex AnnextureTitle my-1">
+                                                                <input type="text" name="annexture_no[][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Annexture NO.">
+                                                                <input type="text" name="annexture_title[][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Annexture Title">
+                                                                <button type="button"
+                                                                    class="add-AnnextureTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-AnnextureTitle">
                                                                     <i class="fa fa-minus"></i>
                                                                 </button>
                                                             </div>
@@ -549,6 +673,133 @@
                                                         </div>
                                                     </div>
 
+                                                    
+                                                    <div class="form-group form-default col-md-12 px-0" id="5Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default ListTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">List Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex ListTitle my-1">
+                                                                <input type="text" name="list_no[${chapterCount}][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter List NO.">
+                                                                <input type="text" name="list_title[${chapterCount}][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter List Title">
+                                                                <button type="button"
+                                                                    class="add-ListTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-ListTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group form-default col-md-12 px-0" id="6Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default PartTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Part Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex PartTitle my-1">
+                                                                <input type="text" name="part_no[${chapterCount}][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Part NO.">
+                                                                <input type="text" name="part_title[${chapterCount}][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Part Title">
+                                                                <button type="button"
+                                                                    class="add-PartTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-PartTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group form-default col-md-12 px-0" id="7Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default AppendixTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Appendix Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex AppendixTitle my-1">
+                                                                <input type="text" name="appendix_no[${chapterCount}][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Appendix NO.">
+                                                                <input type="text" name="appendix_title[${chapterCount}][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Appendix Title">
+                                                                <button type="button"
+                                                                    class="add-AppendixTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-AppendixTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group form-default col-md-12 px-0" id="8Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default OrderTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Order Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex OrderTitle my-1">
+                                                                <input type="text" name="order_no[${chapterCount}][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Order NO.">
+                                                                <input type="text" name="order_title[${chapterCount}][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Order Title">
+                                                                <button type="button"
+                                                                    class="add-OrderTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-OrderTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group form-default col-md-12 px-0" id="9Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default AnnextureTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Annexture Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex AnnextureTitle my-1">
+                                                                <input type="text" name="annexture_no[${chapterCount}][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Annexture NO.">
+                                                                <input type="text" name="annexture_title[${chapterCount}][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Annexture Title">
+                                                                <button type="button"
+                                                                    class="add-AnnextureTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-AnnextureTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
                                                 </div>
                                             </div>
                                         </div>
@@ -791,6 +1042,211 @@
                         '.ArticleTitle');
                     if (ArticleTitles.length > 1) {
                         $(this).closest('.ArticleTitle').remove();
+                    }
+                });
+
+                // for list 
+                $(document).on('click', '.add-ListTitle', function() {
+                    let ListTitleMain = $(this).closest('.section-set').find(
+                        '.ListTitleMain');
+                    let clonedListTitle = ListTitleMain.find('.ListTitle:first')
+                        .clone(
+                            true);
+                    clonedListTitle.find('input').val('');
+
+                    // Get the chapter count from the data attribute of the closest .section-set
+                    let chapterCount = parseInt($(this).closest('.section-set').data(
+                        'chapter-count')) || 0;
+
+                    // Increment the section index for the new section title
+                    let lastIndex = ListTitleMain.find('.ListTitle').length;
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedListTitle.find('input[name^="list_no"]').each(function(
+                        index) {
+                        $(this).attr('name', 'list_no[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedListTitle.find('input[name^="list_title"]').each(function(
+                        index) {
+                        $(this).attr('name', 'list_title[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    ListTitleMain.append(clonedListTitle);
+                });
+
+                $(document).on('click', '.remove-ListTitle', function() {
+                    let ListTitles = $(this).closest('.ListTitleMain').find(
+                        '.ListTitle');
+                    if (ListTitles.length > 1) {
+                        $(this).closest('.ListTitle').remove();
+                    }
+                });
+
+                // for Part 
+                $(document).on('click', '.add-PartTitle', function() {
+                    let PartTitleMain = $(this).closest('.section-set').find(
+                        '.PartTitleMain');
+                    let clonedPartTitle = PartTitleMain.find('.PartTitle:first')
+                        .clone(
+                            true);
+                    clonedPartTitle.find('input').val('');
+
+                    // Get the chapter count from the data attribute of the closest .section-set
+                    let chapterCount = parseInt($(this).closest('.section-set').data(
+                        'chapter-count')) || 0;
+
+                    // Increment the section index for the new section title
+                    let lastIndex = PartTitleMain.find('.PartTitle').length;
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedPartTitle.find('input[name^="part_no"]').each(function(
+                        index) {
+                        $(this).attr('name', 'part_no[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedPartTitle.find('input[name^="part_title"]').each(function(
+                        index) {
+                        $(this).attr('name', 'part_title[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    PartTitleMain.append(clonedPartTitle);
+                });
+
+                $(document).on('click', '.remove-PartTitle', function() {
+                    let PartTitles = $(this).closest('.PartTitleMain').find(
+                        '.PartTitle');
+                    if (PartTitles.length > 1) {
+                        $(this).closest('.PartTitle').remove();
+                    }
+                });
+
+                // for Appendix 
+                $(document).on('click', '.add-AppendixTitle', function() {
+                    let AppendixTitleMain = $(this).closest('.section-set').find(
+                        '.AppendixTitleMain');
+                    let clonedAppendixTitle = AppendixTitleMain.find('.AppendixTitle:first')
+                        .clone(
+                            true);
+                    clonedAppendixTitle.find('input').val('');
+
+                    // Get the chapter count from the data attribute of the closest .section-set
+                    let chapterCount = parseInt($(this).closest('.section-set').data(
+                        'chapter-count')) || 0;
+
+                    // Increment the section index for the new section title
+                    let lastIndex = AppendixTitleMain.find('.AppendixTitle').length;
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedAppendixTitle.find('input[name^="appendix_no"]').each(function(
+                        index) {
+                        $(this).attr('name', 'appendix_no[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedAppendixTitle.find('input[name^="appendix_title"]').each(function(
+                        index) {
+                        $(this).attr('name', 'appendix_title[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    AppendixTitleMain.append(clonedAppendixTitle);
+                });
+
+                $(document).on('click', '.remove-AppendixTitle', function() {
+                    let AppendixTitles = $(this).closest('.AppendixTitleMain').find(
+                        '.AppendixTitle');
+                    if (AppendixTitles.length > 1) {
+                        $(this).closest('.AppendixTitle').remove();
+                    }
+                });
+
+                // for Order 
+                $(document).on('click', '.add-OrderTitle', function() {
+                    let OrderTitleMain = $(this).closest('.section-set').find(
+                        '.OrderTitleMain');
+                    let clonedOrderTitle = OrderTitleMain.find('.OrderTitle:first')
+                        .clone(
+                            true);
+                    clonedOrderTitle.find('input').val('');
+
+                    // Get the chapter count from the data attribute of the closest .section-set
+                    let chapterCount = parseInt($(this).closest('.section-set').data(
+                        'chapter-count')) || 0;
+
+                    // Increment the section index for the new section title
+                    let lastIndex = OrderTitleMain.find('.OrderTitle').length;
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedOrderTitle.find('input[name^="order_no"]').each(function(
+                        index) {
+                        $(this).attr('name', 'order_no[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedOrderTitle.find('input[name^="oder_title"]').each(function(
+                        index) {
+                        $(this).attr('name', 'order_title[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    OrderTitleMain.append(clonedOrderTitle);
+                });
+
+                $(document).on('click', '.remove-OrderTitle', function() {
+                    let OrderTitles = $(this).closest('.OrderTitleMain').find(
+                        '.OrderTitle');
+                    if (OrderTitles.length > 1) {
+                        $(this).closest('.OrderTitle').remove();
+                    }
+                });
+
+                // for Annexture 
+                $(document).on('click', '.add-AnnextureTitle', function() {
+                    let AnnextureTitleMain = $(this).closest('.section-set').find(
+                        '.AnnextureTitleMain');
+                    let clonedAnnextureTitle = AnnextureTitleMain.find('.AnnextureTitle:first')
+                        .clone(
+                            true);
+                    clonedAnnextureTitle.find('input').val('');
+
+                    // Get the chapter count from the data attribute of the closest .section-set
+                    let chapterCount = parseInt($(this).closest('.section-set').data(
+                        'chapter-count')) || 0;
+
+                    // Increment the section index for the new section title
+                    let lastIndex = AnnextureTitleMain.find('.AnnextureTitle').length;
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedAnnextureTitle.find('input[name^="annexture_no"]').each(function(
+                        index) {
+                        $(this).attr('name', 'annexture_no[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedAnnextureTitle.find('input[name^="annexture_title"]').each(function(
+                        index) {
+                        $(this).attr('name', 'annexture_title[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    AnnextureTitleMain.append(clonedAnnextureTitle);
+                });
+
+                $(document).on('click', '.remove-AnnextureTitle', function() {
+                    let AnnextureTitles = $(this).closest('.AnnextureTitleMain').find(
+                        '.AnnextureTitle');
+                    if (AnnextureTitles.length > 1) {
+                        $(this).closest('.AnnextureTitle').remove();
                     }
                 });
 

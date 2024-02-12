@@ -60,7 +60,7 @@
                                         <div class="form-group form-default" style="display: block">
                                             <label class="float-label font-weight-bold">Rules :</label>
 
-                                            <input type="text" name="rule_no" class="form-control" style="width: 20%;"
+                                            <input type="text" name="rule_no" class="form-control my-3" style="width: 20%;"
                                                 placeholder="Enter Rule NO." value="{{ $rule->rule_no }}">
                                             <textarea type="text" id="rule_title" name="rule_title"
                                                 class="form-control section-textarea ckeditor-replace section" placeholder="Enter Rule Title">{{ $rule->rule_title }}</textarea>
