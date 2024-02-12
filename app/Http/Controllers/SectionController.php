@@ -86,7 +86,7 @@ class SectionController extends Controller
         // Create the new section with the incremented section_no
         $section = Section::create([
             'section_rank' => $nextSectionRank ?? 1,
-            // 'section_no' => $nextSectionNo ?? null,
+            'section_no' => $request->section_no ?? null,
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
             'chapter_id' => $request->chapter_id ?? null,
@@ -120,7 +120,7 @@ class SectionController extends Controller
                 $sub_section = SubSection::create([
                     'section_id' => $section->section_id,
                     'sub_section_no' => $item ?? null,
-                    // 'section_no' => $nextSectionNo,
+                    'section_no' => $request->section_no ?? null,
                     'act_id' => $request->act_id,
                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
