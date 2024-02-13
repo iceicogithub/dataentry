@@ -251,7 +251,7 @@
                                                 @endif
                                             </td>
                                             <td class="text-capitalize">{{ $item->section_no }}</td>
-                                            <td class="text-capitalize">{!! $item->section_title !!}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->section_title) !!}</td>
                                             <td class="text-capitalize">{{ $item->updated_at }}</td>
                                             <td class="text-capitalize d-flex justify-content-center">
                                                 <a href="/edit-section/{{ $item->section_id }}" title="Edit"
@@ -285,8 +285,8 @@
                                                 @endif
                                             </td>
                                             <td class="text-capitalize">{{ $item->rule_no }}</td>
-                                            <td class="text-capitalize">{!! $item->rule_title !!}</td>
-                                            <td class="text-capitalize">{{ $item->updated_at }}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->rule_title) !!}</td>
+                                          <td class="text-capitalize">{{ $item->updated_at }}</td>
                                             <td class="text-capitalize d-flex justify-content-center">
                                                 <a href="/edit-rule/{{ $item->rule_id }}" title="Edit" class="px-1">
                                                     <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
@@ -327,7 +327,7 @@
                                                 @endif
                                             </td>
                                             <td class="text-capitalize">{{ $item->article_no }}</td>
-                                            <td class="text-capitalize">{!! $item->article_title !!}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->article_title) !!}</td>
                                             <td class="text-capitalize">{{ $item->updated_at }}</td>
                                             <td class="text-capitalize d-flex justify-content-center">
                                                 <a href="/edit-article/{{ $item->article_id }}" title="Edit"

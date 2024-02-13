@@ -45,67 +45,68 @@ class ActController extends Controller
             $act_footnote_titles = json_decode($act->act_footnote_title, true);
             $act_footnote_descriptions = json_decode($act->act_footnote_description, true);
         }
-        
+
         $act_section = Section::where('act_id', $id)
-        ->with('MainTypeModel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
-        ->get()
-        ->sortBy(function ($section) {
-            $mixstring = $section->section_no;
-    
-           // Check if the regular expression matches
-            if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                $alphabeticPart = strtolower($matches[2]);
-    
-                return $numericPart . $alphabeticPart;
-            } else {
-                // Handle the case where the regular expression doesn't match
-                // You can choose to return something specific or handle it in another way
-                // return $mixstring; // Default behavior is to return the mixstring as is
-            }
-        });
-        
+            ->with('MainTypeModel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+            ->get()
+            ->sortBy(function ($section) {
+                $mixstring = $section->section_no;
+
+                // Check if the regular expression matches
+                if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
+                    $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
+                    $alphabeticPart = strtolower($matches[2]);
+
+                    return $numericPart . $alphabeticPart;
+                } else {
+                    // Handle the case where the regular expression doesn't match
+                    // You can choose to return something specific or handle it in another way
+                    return $mixstring; // Default behavior is to return the mixstring as is
+                }
+            }, SORT_NATURAL);
+
+
         $act_rule = Rules::where('act_id', $id)
-        ->with('MainTypeModel', 'Schedulemodel', 'footnoteModel')
-        ->get()
-        ->sortBy(function ($rule) {
-            $mixstring = $rule->rule_no;
-    
-            // Check if the regular expression matches
-            if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                $alphabeticPart = strtolower($matches[2]);
-    
-                return $numericPart . $alphabeticPart;
-            } else {
-                // Handle the case where the regular expression doesn't match
-                // You can choose to return something specific or handle it in another way
-                // return $mixstring; // Default behavior is to return the mixstring as is
-            }
-        });
-        
+            ->with('MainTypeModel', 'Schedulemodel', 'footnoteModel')
+            ->get()
+            ->sortBy(function ($rule) {
+                $mixstring = $rule->rule_no;
+
+                // Check if the regular expression matches
+                if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
+                    $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
+                    $alphabeticPart = strtolower($matches[2]);
+
+                    return $numericPart . $alphabeticPart;
+                } else {
+                    // Handle the case where the regular expression doesn't match
+                    // You can choose to return something specific or handle it in another way
+                    return $mixstring; // Default behavior is to return the mixstring as is
+                }
+            }, SORT_NATURAL);
+
         $act_article = Article::where('act_id', $id)
-        ->with('MainTypeModel', 'Schedulemodel','Appendicesmodel','Partmodel','ChapterModel','PriliminaryModel')
-        ->get()
-        ->sortBy(function ($article) {
-            $mixstring = $article->article_no;
-    
-            // Check if the regular expression matches
-            if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                $alphabeticPart = strtolower($matches[2]);
-    
-                return $numericPart . $alphabeticPart;
-            } else {
-                // Handle the case where the regular expression doesn't match
-                // You can choose to return something specific or handle it in another way
-                // return $mixstring; // Default behavior is to return the mixstring as is
-            }
-        });
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+            ->get()
+            ->sortBy(function ($article) {
+                $mixstring = $article->article_no;
 
-    
+                // Check if the regular expression matches
+                if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
+                    $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
+                    $alphabeticPart = strtolower($matches[2]);
 
-        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule','act_article'));
+                    return $numericPart . $alphabeticPart;
+                } else {
+                    // Handle the case where the regular expression doesn't match
+                    // You can choose to return something specific or handle it in another way
+                    return $mixstring; // Default behavior is to return the mixstring as is
+                }
+            }, SORT_NATURAL);
+
+
+
+        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule', 'act_article'));
     }
 
     public function create(Request $request, $id)
@@ -176,6 +177,7 @@ class ActController extends Controller
                                 ]);
                             }
                         }
+<<<<<<< HEAD
                     }
                     
                     elseif ($request->subtypes_id[$key] == 2){
@@ -230,10 +232,14 @@ class ActController extends Controller
                     
                     elseif ($request->subtypes_id[$key] == 4) {
                         
+=======
+                    } elseif ($request->subtypes_id[$key] == 4) {
+
+>>>>>>> 79f72fd394a9c1f3ffefcaaf78f2302613175126
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
                         foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
                             $currentRegulationNo = $request->regulation_no[$key][$index];
-                           
+
 
                             $regulation = Regulation::create([
                                 'regulation_no' => $currentRegulationNo,
@@ -253,6 +259,7 @@ class ActController extends Controller
                             ]);
                         }
                     }
+<<<<<<< HEAD
 
 
                     elseif ($request->subtypes_id[$key] == 5) {
@@ -390,6 +397,8 @@ class ActController extends Controller
                     }
 
 
+=======
+>>>>>>> 79f72fd394a9c1f3ffefcaaf78f2302613175126
                 } elseif ($maintypeId == "2") {
                     $parts = new Parts();
                     $parts->act_id = $act->act_id ?? null;
@@ -402,7 +411,7 @@ class ActController extends Controller
 
                     foreach ($request->section_title[$key] as $index => $sectiontitle) {
                         $currentSectionNo = $request->section_no[$key][$index];
-                       
+
 
                         $lastSection = Section::orderBy('section_rank', 'desc')->first();
                         $lastRank = $lastSection ? $lastSection->section_rank : 0;
@@ -417,7 +426,6 @@ class ActController extends Controller
                             'section_title' => $sectiontitle,
                         ]);
                     }
-
                 } elseif ($maintypeId == "3") {
                     $priliminary = new Priliminary();
                     $priliminary->act_id = $act->act_id ?? null;
@@ -429,7 +437,7 @@ class ActController extends Controller
 
                     foreach ($request->section_title[$key] as $index => $sectiontitle) {
                         $currentSectionNo = $request->section_no[$key][$index];
-                       
+
 
                         $lastSection = Section::orderBy('section_rank', 'desc')->first();
                         $lastRank = $lastSection ? $lastSection->section_rank : 0;
@@ -444,7 +452,6 @@ class ActController extends Controller
                             'section_title' => $sectiontitle,
                         ]);
                     }
-
                 } elseif ($maintypeId == "4") {
                     $schedule = new Schedule();
                     $schedule->act_id = $act->act_id ?? null;
@@ -456,7 +463,7 @@ class ActController extends Controller
 
                     foreach ($request->rule_title[$key] as $index => $ruletitle) {
                         $currentruleNo = $request->rule_no[$key][$index];
-                       
+
 
                         $lastrule = Rules::orderBy('rule_rank', 'desc')->first();
                         $lastRank = $lastrule ? $lastrule->rule_rank : 0;
@@ -471,7 +478,6 @@ class ActController extends Controller
                             'rule_title' => $ruletitle,
                         ]);
                     }
-
                 } elseif ($maintypeId == "5") {
                     $appendices = new Appendices();
                     $appendices->act_id = $act->act_id ?? null;
@@ -483,7 +489,7 @@ class ActController extends Controller
 
                     foreach ($request->article_title[$key] as $index => $articletitle) {
                         $currentarticleNo = $request->article_no[$key][$index];
-                       
+
 
                         $lastarticle = Article::orderBy('article_rank', 'desc')->first();
                         $lastRank = $lastarticle ? $lastarticle->article_rank : 0;
@@ -498,8 +504,7 @@ class ActController extends Controller
                             'article_title' => $articletitle,
                         ]);
                     }
-                    
-                }  else {
+                } else {
                     dd("something went wrong - right now we are working only in chapter and parts");
                 }
             }
