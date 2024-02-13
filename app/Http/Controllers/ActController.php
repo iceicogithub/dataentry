@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Act;
 use App\Models\ActSummary;
+use App\Models\Annexture;
 use App\Models\Appendices;
+use App\Models\Appendix;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Lists;
 use App\Models\MainType;
+use App\Models\Orders;
+use App\Models\Part;
 use App\Models\Parts;
 use App\Models\PartsType;
 use App\Models\SubSection;
@@ -132,7 +137,7 @@ class ActController extends Controller
         // dd($request);
         // die();
 
-        try {
+        // try {
 
             $act = Act::find($id);
             $act->update([
@@ -177,7 +182,6 @@ class ActController extends Controller
                                 ]);
                             }
                         }
-<<<<<<< HEAD
                     }
                     
                     elseif ($request->subtypes_id[$key] == 2){
@@ -194,23 +198,15 @@ class ActController extends Controller
                                'article_title' => $articletitle,
                             ]);
 
-                            $articleId = $article->article_id;
-
-                            $form = Form::create([
-                                'article_id' => $articleId,
-                                'act_id' => $act->act_id,
-                                'form_title' => $request->form_title,
-                            ]);
                         }
                     }
-
 
                     elseif ($request->subtypes_id[$key] == 3){
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
                         foreach($request->rule_title[$key] as $index => $ruletitle) {
                             $currentRuleNo = $request->rule_no[$key][$index];
 
-                            $rule = Rule::create([
+                            $rule = Rules::create([
                                'rule_no' => $currentRuleNo,
                                'act_id' => $act->act_id,
                                'maintype_id' => $maintypeId,
@@ -218,24 +214,11 @@ class ActController extends Controller
                                'subtypes_id' => $subtypes_id,
                                'rule_title' => $ruletitle,
                             ]);
-
-                            $ruleId = $rule->rule_id;
-
-                            $form = Form::create([
-                                'rule_id' => $ruleId,
-                                'act_id' => $act->act_id,
-                                'form_title' => $request->form_title,
-                            ]);
                         }
                     }
                     
-                    
                     elseif ($request->subtypes_id[$key] == 4) {
                         
-=======
-                    } elseif ($request->subtypes_id[$key] == 4) {
-
->>>>>>> 79f72fd394a9c1f3ffefcaaf78f2302613175126
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
                         foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
                             $currentRegulationNo = $request->regulation_no[$key][$index];
@@ -250,17 +233,15 @@ class ActController extends Controller
                                 'regulation_title' => $regulationtitle,
                             ]);
 
-                            $regulationId = $regulation->regulation_id;
+                            // $regulationId = $regulation->regulation_id;
 
-                            $form = Form::create([
-                                'regulation_id' => $regulationId,
-                                'act_id' => $act->act_id,
-                                'form_title' => $request->form_title,
-                            ]);
+                            // $form = Form::create([
+                            //     'regulation_id' => $regulationId,
+                            //     'act_id' => $act->act_id,
+                            //     'form_title' => $request->form_title,
+                            // ]);
                         }
                     }
-<<<<<<< HEAD
-
 
                     elseif ($request->subtypes_id[$key] == 5) {
                         
@@ -269,7 +250,7 @@ class ActController extends Controller
                             $currentListNo = $request->list_no[$key][$index];
                            
 
-                            $list = List::create([
+                            $list = Lists::create([
                                 'list_no' => $currentListNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
@@ -278,17 +259,9 @@ class ActController extends Controller
                                 'list_title' => $listtitle,
                             ]);
 
-                            $listId = $list->list_id;
-
-                            $form = Form::create([
-                                'list_id' => $listId,
-                                'act_id' => $act->act_id,
-                                'form_title' => $request->form_title,
-                            ]);
                         }
                     }
 
-                    
                     elseif ($request->subtypes_id[$key] == 6) {
                         
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
@@ -305,16 +278,8 @@ class ActController extends Controller
                                 'part_title' => $parttitle,
                             ]);
 
-                            $partId = $part->part_id;
-
-                            $form = Form::create([
-                                'part_id' => $partId,
-                                'act_id' => $act->act_id,
-                                'form_title' => $request->form_title,
-                            ]);
                         }
                     }
-
 
                     elseif ($request->subtypes_id[$key] == 7) {
                         
@@ -332,16 +297,8 @@ class ActController extends Controller
                                 'appendix_title' => $appendixtitle,
                             ]);
 
-                            $appendixId = $appendix->appendix_id;
-
-                            $form = Form::create([
-                                'appendix_id' => $appendixId,
-                                'act_id' => $act->act_id,
-                                'form_title' => $request->form_title,
-                            ]);
                         }
                     }
-
 
                     elseif ($request->subtypes_id[$key] == 8) {
                         
@@ -350,25 +307,17 @@ class ActController extends Controller
                             $currentOrderNo = $request->order_no[$key][$index];
                            
 
-                            $order = Order::create([
+                            $order = Orders::create([
                                 'order_no' => $currentOrderNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
                                 'chapter_id' => $chapt->chapter_id,
                                 'subtypes_id' => $subtypes_id,
-                                'ordertitle' => $order_title,
+                                'order_title' => $ordertitle,
                             ]);
 
-                            $orderId = $order->order_id;
-
-                            $form = Form::create([
-                                'order_id' => $orderId,
-                                'act_id' => $act->act_id,
-                                'form_title' => $request->form_title,
-                            ]);
                         }
                     }
-
 
                     elseif ($request->subtypes_id[$key] == 9) {
                         
@@ -383,22 +332,13 @@ class ActController extends Controller
                                 'maintype_id' => $maintypeId,
                                 'chapter_id' => $chapt->chapter_id,
                                 'subtypes_id' => $subtypes_id,
-                                'annexturetitle' => $annexture_title,
+                                'annexture_title' => $annexturetitle,
                             ]);
 
-                            $annextureId = $annexture->annexture_id;
-
-                            $form = Form::create([
-                                'annexture_id' => $annextureId,
-                                'act_id' => $act->act_id,
-                                'form_title' => $request->form_title,
-                            ]);
                         }
                     }
 
 
-=======
->>>>>>> 79f72fd394a9c1f3ffefcaaf78f2302613175126
                 } elseif ($maintypeId == "2") {
                     $parts = new Parts();
                     $parts->act_id = $act->act_id ?? null;
@@ -407,25 +347,187 @@ class ActController extends Controller
                     $parts->parts_title = $request->parts_title[$key] ?? null;
                     $parts->save();
 
-                    $subtypes_id = $request->subtypes_id[$key] ?? null;
+                    if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->section_title[$key] as $index => $sectiontitle) {
+                            if (
+                                isset($request->section_no[$key][$index]) &&
+                                is_string($request->section_no[$key][$index])
+                            ) {
+                                $currentSectionNo = $request->section_no[$key][$index];
 
-                    foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                        $currentSectionNo = $request->section_no[$key][$index];
+                                // Update SubSection records, Footnote records, etc. (similar to Section)
+                                $lastSection = Section::orderBy('section_rank', 'desc')->first();
 
-
-                        $lastSection = Section::orderBy('section_rank', 'desc')->first();
-                        $lastRank = $lastSection ? $lastSection->section_rank : 0;
-                        // Create the new section with the updated section_no
-                        $section = Section::create([
-                            'section_rank' => $lastRank + 1,
-                            'section_no' => $currentSectionNo,
-                            'act_id' => $act->act_id,
-                            'maintype_id' => $maintypeId,
-                            'parts_id' => $parts->parts_id,
-                            'subtypes_id' => $subtypes_id,
-                            'section_title' => $sectiontitle,
-                        ]);
+                                $lastRank = $lastSection ? $lastSection->section_rank : 0;
+                                // Create the new section with the updated section_no
+                                $section = Section::create([
+                                    'section_rank' => $lastRank + 1,
+                                    'section_no' => $currentSectionNo,
+                                    'act_id' => $act->act_id,
+                                    'maintype_id' => $maintypeId,
+                                    'parts_id' => $parts->parts_id,
+                                    'subtypes_id' => $subtypes_id,
+                                    'section_title' => $sectiontitle,
+                                ]);
+                            }
+                        }
                     }
+                    
+                    elseif ($request->subtypes_id[$key] == 2){
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach($request->article_title[$key] as $index => $articletitle) {
+                            $currentArticleNo = $request->article_no[$key][$index];
+
+                            $article = Article::create([
+                               'article_no' => $currentArticleNo,
+                               'act_id' => $act->act_id,
+                               'maintype_id' => $maintypeId,
+                               'parts_id' => $parts->parts_id,
+                               'subtypes_id' => $subtypes_id,
+                               'article_title' => $articletitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 3){
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach($request->rule_title[$key] as $index => $ruletitle) {
+                            $currentRuleNo = $request->rule_no[$key][$index];
+
+                            $rule = Rules::create([
+                               'rule_no' => $currentRuleNo,
+                               'act_id' => $act->act_id,
+                               'maintype_id' => $maintypeId,
+                               'parts_id' => $parts->parts_id,
+                               'subtypes_id' => $subtypes_id,
+                               'rule_title' => $ruletitle,
+                            ]);
+                        }
+                    }
+                    
+                    elseif ($request->subtypes_id[$key] == 4) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
+                            $currentRegulationNo = $request->regulation_no[$key][$index];
+
+
+                            $regulation = Regulation::create([
+                                'regulation_no' => $currentRegulationNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'regulation_title' => $regulationtitle,
+                            ]);
+
+                            // $regulationId = $regulation->regulation_id;
+
+                            // $form = Form::create([
+                            //     'regulation_id' => $regulationId,
+                            //     'act_id' => $act->act_id,
+                            //     'form_title' => $request->form_title,
+                            // ]);
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 5) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->list_title[$key] as $index => $listtitle) {
+                            $currentListNo = $request->list_no[$key][$index];
+                           
+
+                            $list = Lists::create([
+                                'list_no' => $currentListNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'list_title' => $listtitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 6) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->part_title[$key] as $index => $parttitle) {
+                            $currentPartNo = $request->part_no[$key][$index];
+                           
+
+                            $part = Part::create([
+                                'part_no' => $currentPartNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'part_title' => $parttitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 7) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->appendix_title[$key] as $index => $appendixtitle) {
+                            $currentAppendixNo = $request->appendix_no[$key][$index];
+                           
+
+                            $appendix = Appendix::create([
+                                'appendix_no' => $currentAppendixNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'appendix_title' => $appendixtitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 8) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->order_title[$key] as $index => $ordertitle) {
+                            $currentOrderNo = $request->order_no[$key][$index];
+                           
+
+                            $order = Orders::create([
+                                'order_no' => $currentOrderNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'order_title' => $ordertitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 9) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->annexture_title[$key] as $index => $annexturetitle) {
+                            $currentAnnextureNo = $request->annexture_no[$key][$index];
+                           
+
+                            $annexture = Annexture::create([
+                                'annexture_no' => $currentAnnextureNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'annexture_title' => $annexturetitle,
+                            ]);
+
+                        }
+                    }
+
                 } elseif ($maintypeId == "3") {
                     $priliminary = new Priliminary();
                     $priliminary->act_id = $act->act_id ?? null;
@@ -433,24 +535,185 @@ class ActController extends Controller
                     $priliminary->priliminary_title = $request->priliminary_title[$key] ?? null;
                     $priliminary->save();
 
-                    $subtypes_id = $request->subtypes_id[$key] ?? null;
+                    if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->section_title[$key] as $index => $sectiontitle) {
+                            if (
+                                isset($request->section_no[$key][$index]) &&
+                                is_string($request->section_no[$key][$index])
+                            ) {
+                                $currentSectionNo = $request->section_no[$key][$index];
 
-                    foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                        $currentSectionNo = $request->section_no[$key][$index];
+                                // Update SubSection records, Footnote records, etc. (similar to Section)
+                                $lastSection = Section::orderBy('section_rank', 'desc')->first();
+
+                                $lastRank = $lastSection ? $lastSection->section_rank : 0;
+                                // Create the new section with the updated section_no
+                                $section = Section::create([
+                                    'section_rank' => $lastRank + 1,
+                                    'section_no' => $currentSectionNo,
+                                    'act_id' => $act->act_id,
+                                    'maintype_id' => $maintypeId,
+                                    'priliminary_id' => $priliminary->priliminary_id,
+                                    'subtypes_id' => $subtypes_id,
+                                    'section_title' => $sectiontitle,
+                                ]);
+                            }
+                        }
+                    }
+                    
+                    elseif ($request->subtypes_id[$key] == 2){
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach($request->article_title[$key] as $index => $articletitle) {
+                            $currentArticleNo = $request->article_no[$key][$index];
+
+                            $article = Article::create([
+                               'article_no' => $currentArticleNo,
+                               'act_id' => $act->act_id,
+                               'maintype_id' => $maintypeId,
+                               'priliminary_id' => $priliminary->priliminary_id,
+                               'subtypes_id' => $subtypes_id,
+                               'article_title' => $articletitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 3){
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach($request->rule_title[$key] as $index => $ruletitle) {
+                            $currentRuleNo = $request->rule_no[$key][$index];
+
+                            $rule = Rules::create([
+                               'rule_no' => $currentRuleNo,
+                               'act_id' => $act->act_id,
+                               'maintype_id' => $maintypeId,
+                               'priliminary_id' => $priliminary->priliminary_id,
+                               'subtypes_id' => $subtypes_id,
+                               'rule_title' => $ruletitle,
+                            ]);
+                        }
+                    }
+                    
+                    elseif ($request->subtypes_id[$key] == 4) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
+                            $currentRegulationNo = $request->regulation_no[$key][$index];
 
 
-                        $lastSection = Section::orderBy('section_rank', 'desc')->first();
-                        $lastRank = $lastSection ? $lastSection->section_rank : 0;
-                        // Create the new section with the updated section_no
-                        $section = Section::create([
-                            'section_rank' => $lastRank + 1,
-                            'section_no' => $currentSectionNo,
-                            'act_id' => $act->act_id,
-                            'maintype_id' => $maintypeId,
-                            'priliminary_id' => $priliminary->priliminary_id,
-                            'subtypes_id' => $subtypes_id,
-                            'section_title' => $sectiontitle,
-                        ]);
+                            $regulation = Regulation::create([
+                                'regulation_no' => $currentRegulationNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'regulation_title' => $regulationtitle,
+                            ]);
+
+                            // $regulationId = $regulation->regulation_id;
+
+                            // $form = Form::create([
+                            //     'regulation_id' => $regulationId,
+                            //     'act_id' => $act->act_id,
+                            //     'form_title' => $request->form_title,
+                            // ]);
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 5) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->list_title[$key] as $index => $listtitle) {
+                            $currentListNo = $request->list_no[$key][$index];
+                           
+
+                            $list = Lists::create([
+                                'list_no' => $currentListNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'list_title' => $listtitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 6) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->part_title[$key] as $index => $parttitle) {
+                            $currentPartNo = $request->part_no[$key][$index];
+                           
+
+                            $part = Part::create([
+                                'part_no' => $currentPartNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'part_title' => $parttitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 7) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->appendix_title[$key] as $index => $appendixtitle) {
+                            $currentAppendixNo = $request->appendix_no[$key][$index];
+                           
+
+                            $appendix = Appendix::create([
+                                'appendix_no' => $currentAppendixNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'appendix_title' => $appendixtitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 8) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->order_title[$key] as $index => $ordertitle) {
+                            $currentOrderNo = $request->order_no[$key][$index];
+                           
+
+                            $order = Orders::create([
+                                'order_no' => $currentOrderNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'order_title' => $ordertitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 9) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->annexture_title[$key] as $index => $annexturetitle) {
+                            $currentAnnextureNo = $request->annexture_no[$key][$index];
+                           
+
+                            $annexture = Annexture::create([
+                                'annexture_no' => $currentAnnextureNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'annexture_title' => $annexturetitle,
+                            ]);
+
+                        }
                     }
                 } elseif ($maintypeId == "4") {
                     $schedule = new Schedule();
@@ -459,24 +722,185 @@ class ActController extends Controller
                     $schedule->schedule_title = $request->schedule_title[$key] ?? null;
                     $schedule->save();
 
-                    $subtypes_id = $request->subtypes_id[$key] ?? null;
+                    if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->section_title[$key] as $index => $sectiontitle) {
+                            if (
+                                isset($request->section_no[$key][$index]) &&
+                                is_string($request->section_no[$key][$index])
+                            ) {
+                                $currentSectionNo = $request->section_no[$key][$index];
 
-                    foreach ($request->rule_title[$key] as $index => $ruletitle) {
-                        $currentruleNo = $request->rule_no[$key][$index];
+                                // Update SubSection records, Footnote records, etc. (similar to Section)
+                                $lastSection = Section::orderBy('section_rank', 'desc')->first();
+
+                                $lastRank = $lastSection ? $lastSection->section_rank : 0;
+                                // Create the new section with the updated section_no
+                                $section = Section::create([
+                                    'section_rank' => $lastRank + 1,
+                                    'section_no' => $currentSectionNo,
+                                    'act_id' => $act->act_id,
+                                    'maintype_id' => $maintypeId,
+                                    'schedule_id' => $schedule->schedule_id,
+                                    'subtypes_id' => $subtypes_id,
+                                    'section_title' => $sectiontitle,
+                                ]);
+                            }
+                        }
+                    }
+                    
+                    elseif ($request->subtypes_id[$key] == 2){
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach($request->article_title[$key] as $index => $articletitle) {
+                            $currentArticleNo = $request->article_no[$key][$index];
+
+                            $article = Article::create([
+                               'article_no' => $currentArticleNo,
+                               'act_id' => $act->act_id,
+                               'maintype_id' => $maintypeId,
+                               'schedule_id' => $schedule->schedule_id,
+                               'subtypes_id' => $subtypes_id,
+                               'article_title' => $articletitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 3){
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach($request->rule_title[$key] as $index => $ruletitle) {
+                            $currentRuleNo = $request->rule_no[$key][$index];
+
+                            $rule = Rules::create([
+                               'rule_no' => $currentRuleNo,
+                               'act_id' => $act->act_id,
+                               'maintype_id' => $maintypeId,
+                               'schedule_id' => $schedule->schedule_id,
+                               'subtypes_id' => $subtypes_id,
+                               'rule_title' => $ruletitle,
+                            ]);
+                        }
+                    }
+                    
+                    elseif ($request->subtypes_id[$key] == 4) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
+                            $currentRegulationNo = $request->regulation_no[$key][$index];
 
 
-                        $lastrule = Rules::orderBy('rule_rank', 'desc')->first();
-                        $lastRank = $lastrule ? $lastrule->rule_rank : 0;
-                        // Create the new section with the updated section_no
-                        $rule = Rules::create([
-                            'rule_rank' => $lastRank + 1,
-                            'rule_no' => $currentruleNo,
-                            'act_id' => $act->act_id,
-                            'maintype_id' => $maintypeId,
-                            'schedule_id' => $schedule->schedule_id,
-                            'subtypes_id' => $subtypes_id,
-                            'rule_title' => $ruletitle,
-                        ]);
+                            $regulation = Regulation::create([
+                                'regulation_no' => $currentRegulationNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'regulation_title' => $regulationtitle,
+                            ]);
+
+                            // $regulationId = $regulation->regulation_id;
+
+                            // $form = Form::create([
+                            //     'regulation_id' => $regulationId,
+                            //     'act_id' => $act->act_id,
+                            //     'form_title' => $request->form_title,
+                            // ]);
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 5) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->list_title[$key] as $index => $listtitle) {
+                            $currentListNo = $request->list_no[$key][$index];
+                           
+
+                            $list = Lists::create([
+                                'list_no' => $currentListNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'list_title' => $listtitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 6) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->part_title[$key] as $index => $parttitle) {
+                            $currentPartNo = $request->part_no[$key][$index];
+                           
+
+                            $part = Part::create([
+                                'part_no' => $currentPartNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'part_title' => $parttitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 7) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->appendix_title[$key] as $index => $appendixtitle) {
+                            $currentAppendixNo = $request->appendix_no[$key][$index];
+                           
+
+                            $appendix = Appendix::create([
+                                'appendix_no' => $currentAppendixNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'appendix_title' => $appendixtitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 8) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->order_title[$key] as $index => $ordertitle) {
+                            $currentOrderNo = $request->order_no[$key][$index];
+                           
+
+                            $order = Orders::create([
+                                'order_no' => $currentOrderNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'order_title' => $ordertitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 9) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->annexture_title[$key] as $index => $annexturetitle) {
+                            $currentAnnextureNo = $request->annexture_no[$key][$index];
+                           
+
+                            $annexture = Annexture::create([
+                                'annexture_no' => $currentAnnextureNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'annexture_title' => $annexturetitle,
+                            ]);
+
+                        }
                     }
                 } elseif ($maintypeId == "5") {
                     $appendices = new Appendices();
@@ -485,24 +909,185 @@ class ActController extends Controller
                     $appendices->appendices_title = $request->appendices_title[$key] ?? null;
                     $appendices->save();
 
-                    $subtypes_id = $request->subtypes_id[$key] ?? null;
+                    if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->section_title[$key] as $index => $sectiontitle) {
+                            if (
+                                isset($request->section_no[$key][$index]) &&
+                                is_string($request->section_no[$key][$index])
+                            ) {
+                                $currentSectionNo = $request->section_no[$key][$index];
 
-                    foreach ($request->article_title[$key] as $index => $articletitle) {
-                        $currentarticleNo = $request->article_no[$key][$index];
+                                // Update SubSection records, Footnote records, etc. (similar to Section)
+                                $lastSection = Section::orderBy('section_rank', 'desc')->first();
+
+                                $lastRank = $lastSection ? $lastSection->section_rank : 0;
+                                // Create the new section with the updated section_no
+                                $section = Section::create([
+                                    'section_rank' => $lastRank + 1,
+                                    'section_no' => $currentSectionNo,
+                                    'act_id' => $act->act_id,
+                                    'maintype_id' => $maintypeId,
+                                    'appendices_id' => $appendices->appendices_id,
+                                    'subtypes_id' => $subtypes_id,
+                                    'section_title' => $sectiontitle,
+                                ]);
+                            }
+                        }
+                    }
+                    
+                    elseif ($request->subtypes_id[$key] == 2){
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach($request->article_title[$key] as $index => $articletitle) {
+                            $currentArticleNo = $request->article_no[$key][$index];
+
+                            $article = Article::create([
+                               'article_no' => $currentArticleNo,
+                               'act_id' => $act->act_id,
+                               'maintype_id' => $maintypeId,
+                               'appendices_id' => $appendices->appendices_id,
+                               'subtypes_id' => $subtypes_id,
+                               'article_title' => $articletitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 3){
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach($request->rule_title[$key] as $index => $ruletitle) {
+                            $currentRuleNo = $request->rule_no[$key][$index];
+
+                            $rule = Rules::create([
+                               'rule_no' => $currentRuleNo,
+                               'act_id' => $act->act_id,
+                               'maintype_id' => $maintypeId,
+                               'appendices_id' => $appendices->appendices_id,
+                               'subtypes_id' => $subtypes_id,
+                               'rule_title' => $ruletitle,
+                            ]);
+                        }
+                    }
+                    
+                    elseif ($request->subtypes_id[$key] == 4) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
+                            $currentRegulationNo = $request->regulation_no[$key][$index];
 
 
-                        $lastarticle = Article::orderBy('article_rank', 'desc')->first();
-                        $lastRank = $lastarticle ? $lastarticle->article_rank : 0;
-                        // Create the new section with the updated section_no
-                        $article = Article::create([
-                            'article_rank' => $lastRank + 1,
-                            'article_no' => $currentarticleNo,
-                            'act_id' => $act->act_id,
-                            'maintype_id' => $maintypeId,
-                            'appendices_id' => $appendices->appendices_id,
-                            'subtypes_id' => $subtypes_id,
-                            'article_title' => $articletitle,
-                        ]);
+                            $regulation = Regulation::create([
+                                'regulation_no' => $currentRegulationNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendices_id' => $appendices->appendices_id,
+                                'subtypes_id' => $subtypes_id,
+                                'regulation_title' => $regulationtitle,
+                            ]);
+
+                            // $regulationId = $regulation->regulation_id;
+
+                            // $form = Form::create([
+                            //     'regulation_id' => $regulationId,
+                            //     'act_id' => $act->act_id,
+                            //     'form_title' => $request->form_title,
+                            // ]);
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 5) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->list_title[$key] as $index => $listtitle) {
+                            $currentListNo = $request->list_no[$key][$index];
+                           
+
+                            $list = Lists::create([
+                                'list_no' => $currentListNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendices_id' => $appendices->appendices_id,
+                                'subtypes_id' => $subtypes_id,
+                                'list_title' => $listtitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 6) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->part_title[$key] as $index => $parttitle) {
+                            $currentPartNo = $request->part_no[$key][$index];
+                           
+
+                            $part = Part::create([
+                                'part_no' => $currentPartNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendices_id' => $appendices->appendices_id,
+                                'subtypes_id' => $subtypes_id,
+                                'part_title' => $parttitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 7) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->appendix_title[$key] as $index => $appendixtitle) {
+                            $currentAppendixNo = $request->appendix_no[$key][$index];
+                           
+
+                            $appendix = Appendix::create([
+                                'appendix_no' => $currentAppendixNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendices_id' => $appendices->appendices_id,
+                                'subtypes_id' => $subtypes_id,
+                                'appendix_title' => $appendixtitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 8) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->order_title[$key] as $index => $ordertitle) {
+                            $currentOrderNo = $request->order_no[$key][$index];
+                           
+
+                            $order = Orders::create([
+                                'order_no' => $currentOrderNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendices_id' => $appendices->appendices_id,
+                                'subtypes_id' => $subtypes_id,
+                                'order_title' => $ordertitle,
+                            ]);
+
+                        }
+                    }
+
+                    elseif ($request->subtypes_id[$key] == 9) {
+                        
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->annexture_title[$key] as $index => $annexturetitle) {
+                            $currentAnnextureNo = $request->annexture_no[$key][$index];
+                           
+
+                            $annexture = Annexture::create([
+                                'annexture_no' => $currentAnnextureNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendices_id' => $appendices->appendices_id,
+                                'subtypes_id' => $subtypes_id,
+                                'annexture_title' => $annexturetitle,
+                            ]);
+
+                        }
                     }
                 } else {
                     dd("something went wrong - right now we are working only in chapter and parts");
@@ -515,11 +1100,11 @@ class ActController extends Controller
             } else {
                 return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Index added successfully');
             }
-        } catch (\Exception $e) {
-            \Log::error('Error creating Act: ' . $e->getMessage());
+        // } catch (\Exception $e) {
+        //     \Log::error('Error creating Act: ' . $e->getMessage());
 
-            return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
-        }
+        //     return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
+        // }
     }
 
     public function view(Request $request, $id)

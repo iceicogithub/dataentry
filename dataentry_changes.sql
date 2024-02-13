@@ -51,3 +51,17 @@ ALTER TABLE `footnote` ADD `appendices_id` INT(11) NULL AFTER `schedule_id`;](do
 INSERT INTO `subtypes` (`subtypes_id`, `type`) VALUES (NULL, 'ORDER'), (NULL, 'ANNEXTURE');(done)
 
 
+-- 13/02/2024
+ALTER TABLE `section` ADD `appendices_id` INT(11) NULL DEFAULT NULL AFTER `maintype_id`, ADD `schedule_id` INT(11) NULL DEFAULT NULL AFTER `appendices_id`;
+ALTER TABLE `rules` ADD `appendices_id` INT(11) NULL DEFAULT NULL AFTER `maintype_id`, ADD `priliminary_id` INT(11) NULL DEFAULT NULL AFTER `appendices_id`;
+ALTER TABLE `regulations` ADD `regulation_rank` VARCHAR(255) NULL DEFAULT NULL AFTER `regulation_no`, ADD `appendices_id` INT(11) NULL DEFAULT NULL AFTER `regulation_rank`, ADD `schedule_id` INT(11) NULL DEFAULT NULL AFTER `appendices_id`, ADD `priliminary_id` INT(11) NULL DEFAULT NULL AFTER `schedule_id`;
+
+[
+list,
+part,
+appendix
+order,
+annexture
+this above table would be added 
+]
+
