@@ -30,10 +30,9 @@
             @foreach ($chapter as $key => $chapterItem)
                 <div style="text-align: center; margin-bottom: 0.5rem;">
                     <div style="text-transform: uppercase !important; font-size: 15px !important;">
-                        {!! $chapterItem->chapter_title !!}</div>
+                        {!! preg_replace('/[0-9\[\]\.]/', '', $chapterItem->chapter_title) !!}</div>
                 </div>
                 @if (!empty($section) && count($section) > 0)
-                   
                     <div style="text-align: start; margin-top: 0.2rem;">
                         @foreach ($section->where('chapter_id', $chapterItem->chapter_id) as $sectionItem)
                             <span style="font-size: 15px !important;">{{ $sectionItem->section_no }}
@@ -48,9 +47,14 @@
                     @endif --}}
                     <div style="text-align: start; margin-top: 0.2rem;">
                         @foreach ($regulation->where('chapter_id', $chapterItem->chapter_id) as $regulationItem)
-                            <span
-                                style="text-align: start; font-size: 15px !important;">{{ $regulationItem->regulation_no }}
-                                {!! preg_replace('/[0-9\[\]\.]/', '', $regulationItem->regulation_title) !!}</span><br><br>
+                            <table style="text-align: start; font-size: 15px !important;">
+                                <tr>
+                                    <td style="vertical-align: baseline;">
+                                        <p>{{ $regulationItem->regulation_no }}</p>
+                                    </td>
+                                    <td> {!! preg_replace('/[0-9\[\]\.]/', '', $regulationItem->regulation_title) !!}</td>
+                                </tr>
+                            </table>
                         @endforeach
                     </div>
                 @endif
@@ -69,7 +73,7 @@
                     @if (!in_array($sectionKey, $displayedSections))
                         <div
                             style="text-align: center; text-transform: uppercase !important; font-size: 15px !important;">
-                            {!! $priliminarys->priliminary_title !!}</div>
+                            {!! preg_replace('/[0-9\[\]\.]/', '', $priliminarys->priliminary_title) !!}</div>
                         @php $displayedSections[] = $sectionKey; @endphp
                     @endif
                 </div>
@@ -78,9 +82,14 @@
                 @endif --}}
                 <div style="text-align: start; margin-top: 0.2rem;">
                     @foreach ($section->where('priliminary_id', $priliminarys->priliminary_id) as $priliminaryItem)
-                        <span
-                            style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">{{ $priliminaryItem->section_no }}
-                            {!! preg_replace('/[0-9\[\]\.]/', '', $priliminaryItem->section_title) !!}</span><br><br>
+                        <table style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">
+                            <tr>
+                                <td style="vertical-align: baseline;">
+                                    <p>{{ $priliminaryItem->section_no }}</p>
+                                </td>
+                                <td>{!! preg_replace('/[0-9\[\]\.]/', '', $priliminaryItem->section_title) !!}</td>
+                            </tr>
+                        </table>
                     @endforeach
                 </div>
             @endforeach
@@ -97,7 +106,7 @@
                     @if (!in_array($sectionKey, $displayedSections))
                         <div
                             style="text-align: center; text-transform: uppercase !important; font-size: 15px !important;">
-                            {!! $part->parts_title !!}</div>
+                            {!! preg_replace('/[0-9\[\]\.]/', '', $part->parts_title) !!}</div>
                         @php $displayedSections[] = $sectionKey; @endphp
                     @endif
                 </div>
@@ -106,9 +115,14 @@
                 @endif --}}
                 <div style="text-align: start; margin-top: 0.2rem;">
                     @foreach ($section->where('parts_id', $part->parts_id) as $partsItem)
-                        <span
-                            style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">{{ $partsItem->section_no }}
-                            {!! preg_replace('/[0-9\[\]\.]/', '', $partsItem->section_title) !!}</span><br><br>
+                        <table style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">
+                            <tr>
+                                <td style="vertical-align: baseline;">
+                                    <p>{{ $partsItem->section_no }}</p>
+                                </td>
+                                <td> {!! preg_replace('/[0-9\[\]\.]/', '', $partsItem->section_title) !!}</td>
+                            </tr>
+                        </table>
                     @endforeach
                 </div>
             @endforeach
@@ -131,16 +145,21 @@
                     @if (!in_array($scheduleKey, $displayedschedules))
                         <div
                             style="text-align: center; text-transform: uppercase !important; font-size: 15px !important;">
-                            {!! $schedules->schedule_title !!}</div>
+                            {!! preg_replace('/[0-9\[\]\.]/', '', $schedules->schedule_title) !!} </div>
                         @php $displayedschedules[] = $scheduleKey; @endphp
                     @endif
                 </div>
-                
+
                 <div style="text-align: start; margin-top: 0.2rem;">
                     @foreach ($rule->where('schedule_id', $schedules->schedule_id) as $ruleItem)
-                        <span
-                            style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">{{ $ruleItem->rule_no }}
-                            {!! preg_replace('/[0-9\[\]\.]/', '', $ruleItem->rule_title) !!}</span><br><br>
+                        <table style="text-align: start; margin-top: 0.5rem; font-size: 15px !important;">
+                            <tr>
+                                <td style="vertical-align: baseline;">
+                                    <p>{{ $ruleItem->rule_no }}</p>
+                                </td>
+                                <td>{!! preg_replace('/[0-9\[\]\.]/', '', $ruleItem->rule_title) !!} </td>
+                            </tr>
+                        </table>
                     @endforeach
                 </div>
             @endforeach
@@ -189,11 +208,14 @@
                     <div style="text-align: start">
                         @foreach ($section->where('chapter_id', $chapterItem->chapter_id) as $item)
                             <strong><span style="font-size: 15px !important;">{{ $item->section_no }}
-                                    {{ $item->section_title }} </span></strong><span>{!! $item->section_content !!}</span><br>
+                                    {!! $item->section_title !!}
+                                </span></strong><span>{!! $item->section_content !!}</span><br>
                             @foreach ($item->subsectionModel as $subSection)
-                                <table style="margin-left: 2%">
+                                <table style="margin-left: 2%; text-align:justify;">
                                     <tr>
-                                        <td style="vertical-align: middle;">{{ $subSection->sub_section_no }}</td>
+                                        <td style="vertical-align: baseline;">
+                                            <p>{{ $subSection->sub_section_no }}</p>
+                                        </td>
                                         <td style="">{!! $subSection->sub_section_content !!}</td>
                                     </tr>
 
@@ -227,12 +249,14 @@
                     <div style="text-align: start">
                         @foreach ($section->where('priliminary_id', $priliminaryItem->priliminary_id) as $item)
                             <strong><span style="font-size: 15px !important;">{{ $item->section_no }}
-                                    {{ $item->section_title }}
+                                    {!! $item->section_title !!}
                                 </span></strong><span>{!! $item->section_content !!}</span><br>
                             @foreach ($item->subsectionModel as $subSection)
-                                <table style="margin-left: 2%">
+                                <table style="margin-left: 2%; text-align:justify;">
                                     <tr>
-                                        <td style="vertical-align: middle;">{{ $subSection->sub_section_no }}</td>
+                                        <td style="vertical-align: baseline;">
+                                            <p>{{ $subSection->sub_section_no }}</p>
+                                        </td>
                                         <td style="">{!! $subSection->sub_section_content !!}</td>
                                     </tr>
                                 </table>
@@ -271,12 +295,14 @@
                     <div style="text-align: start">
                         @foreach ($section->where('parts_id', $part->parts_id) as $item)
                             <strong><span style="font-size: 15px !important;">{{ $item->section_no }}
-                                    {{ $item->section_title }}
+                                    {!! $item->section_title !!}
                                 </span></strong><span>{!! $item->section_content !!}</span><br>
                             @foreach ($item->subsectionModel as $subSection)
-                                <table style="margin-left: 2%">
+                                <table style="margin-left: 2%; text-align:justify;">
                                     <tr>
-                                        <td style="vertical-align: middle;">{{ $subSection->sub_section_no }}</td>
+                                        <td style="vertical-align: baseline;">
+                                            <p>{{ $subSection->sub_section_no }}</p>
+                                        </td>
                                         <td style="">{!! $subSection->sub_section_content !!}</td>
                                     </tr>
                                 </table>
@@ -310,11 +336,13 @@
                     <div style="text-align: start">
                         @foreach ($rule->where('schedule_id', $scheduleItem->schedule_id) as $item)
                             <strong><span style="font-size: 15px !important;">{{ $item->rule_no }}
-                                    {{ $item->rule_title }} </span></strong><span>{!! $item->rule_content !!}</span><br>
+                                    {!! $item->rule_title !!} </span></strong><span>{!! $item->rule_content !!}</span><br>
                             @foreach ($item->subruleModel as $subRule)
-                                <table style="margin-left: 2%">
+                                <table style="margin-left: 2%; text-align:justify;">
                                     <tr>
-                                        <td style="vertical-align: middle;">{{ $subRule->sub_rule_no }}</td>
+                                        <td style="vertical-align: baseline;">
+                                            <p>{{ $subRule->sub_rule_no }}</p>
+                                        </td>
                                         <td style="">{!! $subRule->sub_rule_content !!}</td>
                                     </tr>
                                 </table>

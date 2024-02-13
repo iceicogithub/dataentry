@@ -59,11 +59,32 @@
                                     rows="3">{{ $act->act_no }}</textarea>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-default">
+                                <label class="float-label">Enactment Date<span class="text-danger">*</span></label>
+                                <input type="date" name="enactment_date" value="{{ $act->enactment_date }}"
+                                    class="form-control mb-3">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-default">
+                                <label class="float-label">Enforcement Date<span class="text-danger">*</span></label>
+                                <input type="date" name="enforcement_date" value="{{ $act->enforcement_date }}"
+                                    class="form-control mb-3">
+                            </div>
+                        </div>
                         <div class="col-md-12">
                             <div class="form-group form-default">
                                 <label class="float-label">Act Date<span class="text-danger">*</span></label>
-                                <input type="text" name="act_date" value="{{ $act->act_date }}" class="form-control mb-3"
-                                    placeholder="Enter Act Date">
+                                <input type="text" name="act_date" value="{{ $act->act_date }}"
+                                    class="form-control mb-3" placeholder="Enter Act Date">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group form-default">
+                                <label class="float-label">Ministry<span class="text-danger">*</span></label>
+                                <input type="text" name="ministry" value="{{ $act->ministry }}"
+                                    class="form-control mb-3" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -93,7 +114,7 @@
                                         </div>
 
                                     </div>
-                                </div>  
+                                </div>
                             @endforeach
                         @endIf
 
@@ -144,21 +165,11 @@
                                     use App\Models\Schedule;
                                     use App\Models\Appendices;
 
-                                    $chapter = Chapter::with('ChapterType')
-                                        ->where('act_id', $act_id)
-                                        ->first();
-                                    $parts = Parts::with('PartsType')
-                                        ->where('act_id', $act_id)
-                                        ->first();
-                                    $priliminary = Priliminary::with('PriliminaryType')
-                                        ->where('act_id', $act_id)
-                                        ->first();
-                                    $schedule = Schedule::with('ScheduleType')
-                                        ->where('act_id', $act_id)
-                                        ->first();
-                                    $appendices = Appendices::with('AppendicesType')
-                                        ->where('act_id', $act_id)
-                                        ->first();
+                                    $chapter = Chapter::with('ChapterType')->where('act_id', $act_id)->first();
+                                    $parts = Parts::with('PartsType')->where('act_id', $act_id)->first();
+                                    $priliminary = Priliminary::with('PriliminaryType')->where('act_id', $act_id)->first();
+                                    $schedule = Schedule::with('ScheduleType')->where('act_id', $act_id)->first();
+                                    $appendices = Appendices::with('AppendicesType')->where('act_id', $act_id)->first();
 
                                 @endphp
 
@@ -232,6 +243,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                
                                 @php
                                     $a = 1;
                                 @endphp
@@ -246,6 +258,10 @@
                                                     {!! $item->Partmodel->parts_title !!}
                                                 @elseif($item->maintype_id == 3)
                                                     {!! $item->PriliminaryModel->priliminary_title !!}
+                                                @elseif($item->maintype_id == 4)
+                                                    {!! $item->Schedulemodel->schedule_title !!}
+                                                @elseif($item->maintype_id == 5)
+                                                    {!! $item->Appendicesmodel->appendices_title !!}
                                                 @else
                                                     null
                                                 @endif
@@ -275,38 +291,7 @@
                                         </tr>
                                     @endforeach
                                 @endif
-                                @if ($act_rule)
-                                    @foreach ($act_rule as $item)
-                                        <tr>
-                                            <td scope="row">@php echo $a++; @endphp</td>
-                                            <td class="text-capitalize">
-                                                @if ($item->maintype_id == 4)
-                                                    {!! $item->Schedulemodel->schedule_title !!}
-                                                @endif
-                                            </td>
-                                            <td class="text-capitalize">{{ $item->rule_no }}</td>
-                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->rule_title) !!}</td>
-                                          <td class="text-capitalize">{{ $item->updated_at }}</td>
-                                            <td class="text-capitalize d-flex justify-content-center">
-                                                <a href="/edit-rule/{{ $item->rule_id }}" title="Edit" class="px-1">
-                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                                </a>
-                                                <a href="/view-sub-rule/{{ $item->rule_id }}" title="View"
-                                                    class="px-1">
-                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                                </a>
-                                                <a href="{{ url('/delete_rule/' . $item->rule_id) }}" title="Delete"
-                                                    class="px-1" onclick="return confirm('Are you sure ?')">
-                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                                </a>
-                                                <a href="{{ url('/add_below_new_rule', ['act_id' => $item->act_id, 'rule_id' => $item->rule_id, 'rule_rank' => $item->rule_rank]) }}"
-                                                    title="Add Next Rule" class="px-1">
-                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
+
                                 @if ($act_article)
                                     @foreach ($act_article as $item)
                                         <tr>
@@ -351,6 +336,315 @@
                                         </tr>
                                     @endforeach
                                 @endif
+
+                                @if ($act_rule)
+                                    @foreach ($act_rule as $item)
+                                        <tr>
+                                            <td scope="row">@php echo $a++; @endphp</td>
+                                            <td class="text-capitalize">
+                                                @if ($item->maintype_id == 1)
+                                                    {!! $item->ChapterModel->chapter_title !!}
+                                                @elseif($item->maintype_id == 2)
+                                                    {!! $item->Partmodel->parts_title !!}
+                                                @elseif($item->maintype_id == 3)
+                                                    {!! $item->PriliminaryModel->priliminary_title !!}
+                                                @elseif($item->maintype_id == 4)
+                                                    {!! $item->Schedulemodel->schedule_title !!}
+                                                @elseif($item->maintype_id == 5)
+                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                @else
+                                                    null
+                                                @endif
+                                            </td>
+                                            <td class="text-capitalize">{{ $item->rule_no }}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->rule_title) !!}</td>
+                                            <td class="text-capitalize">{{ $item->updated_at }}</td>
+                                            <td class="text-capitalize d-flex justify-content-center">
+                                                <a href="/edit-rule/{{ $item->rule_id }}" title="Edit" class="px-1">
+                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                </a>
+                                                <a href="/view-sub-rule/{{ $item->rule_id }}" title="View"
+                                                    class="px-1">
+                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/delete_rule/' . $item->rule_id) }}" title="Delete"
+                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/add_below_new_rule', ['act_id' => $item->act_id, 'rule_id' => $item->rule_id, 'rule_rank' => $item->rule_rank]) }}"
+                                                    title="Add Next Rule" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
+                                @if ($act_regulation)
+                                    @foreach ($act_regulation as $item)
+                                        <tr>
+                                            <td scope="row">@php echo $a++; @endphp</td>
+                                            <td class="text-capitalize">
+                                                @if ($item->maintype_id == 1)
+                                                    {!! $item->ChapterModel->chapter_title !!}
+                                                @elseif($item->maintype_id == 2)
+                                                    {!! $item->Partmodel->parts_title !!}
+                                                @elseif($item->maintype_id == 3)
+                                                    {!! $item->PriliminaryModel->priliminary_title !!}
+                                                @elseif($item->maintype_id == 4)
+                                                    {!! $item->Schedulemodel->schedule_title !!}
+                                                @elseif($item->maintype_id == 5)
+                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                @else
+                                                    null
+                                                @endif
+                                            </td>
+                                            <td class="text-capitalize">{{ $item->regulation_no }}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->regulation_title) !!}</td>
+                                            <td class="text-capitalize">{{ $item->updated_at }}</td>
+                                            <td class="text-capitalize d-flex justify-content-center">
+                                                <a href="/edit-regulation/{{ $item->regulation_id }}" title="Edit"
+                                                    class="px-1">
+                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                </a>
+                                                <a href="/view-sub-regulation/{{ $item->regulation_id }}" title="View"
+                                                    class="px-1">
+                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/delete_regulation/' . $item->regulation_id) }}"
+                                                    title="Delete" class="px-1"
+                                                    onclick="return confirm('Are you sure ?')">
+                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/add_below_new_regulation', ['act_id' => $item->act_id, 'regulation_id' => $item->regulation_id, 'regulation_rank' => $item->regulation_rank]) }}"
+                                                    title="Add Next Regulation" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
+                                @if ($act_list)
+                                    @foreach ($act_list as $item)
+                                        <tr>
+                                            <td scope="row">@php echo $a++; @endphp</td>
+                                            <td class="text-capitalize">
+                                                @if ($item->maintype_id == 1)
+                                                    {!! $item->ChapterModel->chapter_title !!}
+                                                @elseif($item->maintype_id == 2)
+                                                    {!! $item->Partmodel->parts_title !!}
+                                                @elseif($item->maintype_id == 3)
+                                                    {!! $item->PriliminaryModel->priliminary_title !!}
+                                                @elseif($item->maintype_id == 4)
+                                                    {!! $item->Schedulemodel->schedule_title !!}
+                                                @elseif($item->maintype_id == 5)
+                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                @else
+                                                    null
+                                                @endif
+                                            </td>
+                                            <td class="text-capitalize">{{ $item->list_no }}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->list_title) !!}</td>
+                                            <td class="text-capitalize">{{ $item->updated_at }}</td>
+                                            <td class="text-capitalize d-flex justify-content-center">
+                                                <a href="/edit-list/{{ $item->list_id }}" title="Edit" class="px-1">
+                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                </a>
+                                                <a href="/view-sub-list/{{ $item->list_id }}" title="View"
+                                                    class="px-1">
+                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/delete_list/' . $item->list_id) }}" title="Delete"
+                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/add_below_new_list', ['act_id' => $item->act_id, 'list_id' => $item->list_id, 'list_rank' => $item->list_rank]) }}"
+                                                    title="Add Next List" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
+                                @if ($act_part)
+                                    @foreach ($act_part as $item)
+                                        <tr>
+                                            <td scope="row">@php echo $a++; @endphp</td>
+                                            <td class="text-capitalize">
+                                                @if ($item->maintype_id == 1)
+                                                    {!! $item->ChapterModel->chapter_title !!}
+                                                @elseif($item->maintype_id == 2)
+                                                    {!! $item->Partmodel->parts_title !!}
+                                                @elseif($item->maintype_id == 3)
+                                                    {!! $item->PriliminaryModel->priliminary_title !!}
+                                                @elseif($item->maintype_id == 4)
+                                                    {!! $item->Schedulemodel->schedule_title !!}
+                                                @elseif($item->maintype_id == 5)
+                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                @else
+                                                    null
+                                                @endif
+                                            </td>
+                                            <td class="text-capitalize">{{ $item->part_no }}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->part_title) !!}</td>
+                                            <td class="text-capitalize">{{ $item->updated_at }}</td>
+                                            <td class="text-capitalize d-flex justify-content-center">
+                                                <a href="/edit-part/{{ $item->part_id }}" title="Edit" class="px-1">
+                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                </a>
+                                                <a href="/view-sub-part/{{ $item->part_id }}" title="View"
+                                                    class="px-1">
+                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/delete_part/' . $item->part_id) }}" title="Delete"
+                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/add_below_new_part', ['act_id' => $item->act_id, 'part_id' => $item->part_id, 'list_rank' => $item->part_rank]) }}"
+                                                    title="Add Next Part" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
+                                @if ($act_appendix)
+                                    @foreach ($act_appendix as $item)
+                                        <tr>
+                                            <td scope="row">@php echo $a++; @endphp</td>
+                                            <td class="text-capitalize">
+                                                @if ($item->maintype_id == 1)
+                                                    {!! $item->ChapterModel->chapter_title !!}
+                                                @elseif($item->maintype_id == 2)
+                                                    {!! $item->Partmodel->parts_title !!}
+                                                @elseif($item->maintype_id == 3)
+                                                    {!! $item->PriliminaryModel->priliminary_title !!}
+                                                @elseif($item->maintype_id == 4)
+                                                    {!! $item->Schedulemodel->schedule_title !!}
+                                                @elseif($item->maintype_id == 5)
+                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                @else
+                                                    null
+                                                @endif
+                                            </td>
+                                            <td class="text-capitalize">{{ $item->appendix_no }}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->appendix_title) !!}</td>
+                                            <td class="text-capitalize">{{ $item->updated_at }}</td>
+                                            <td class="text-capitalize d-flex justify-content-center">
+                                                <a href="/edit-appendix/{{ $item->appendix_id }}" title="Edit"
+                                                    class="px-1">
+                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                </a>
+                                                <a href="/view-sub-appendix/{{ $item->appendix_id }}" title="View"
+                                                    class="px-1">
+                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/delete_appendix/' . $item->appendix_id) }}"
+                                                    title="Delete" class="px-1"
+                                                    onclick="return confirm('Are you sure ?')">
+                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/add_below_new_appendix', ['act_id' => $item->act_id, 'appendix_id' => $item->appendix_id, 'appendix_rank' => $item->appendix_rank]) }}"
+                                                    title="Add Next Appendix" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
+                                @if ($act_order)
+                                    @foreach ($act_order as $item)
+                                        <tr>
+                                            <td scope="row">@php echo $a++; @endphp</td>
+                                            <td class="text-capitalize">
+                                                @if ($item->maintype_id == 1)
+                                                    {!! $item->ChapterModel->chapter_title !!}
+                                                @elseif($item->maintype_id == 2)
+                                                    {!! $item->Partmodel->parts_title !!}
+                                                @elseif($item->maintype_id == 3)
+                                                    {!! $item->PriliminaryModel->priliminary_title !!}
+                                                @elseif($item->maintype_id == 4)
+                                                    {!! $item->Schedulemodel->schedule_title !!}
+                                                @elseif($item->maintype_id == 5)
+                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                @else
+                                                    null
+                                                @endif
+                                            </td>
+                                            <td class="text-capitalize">{{ $item->order_no }}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->order_title) !!}</td>
+                                            <td class="text-capitalize">{{ $item->updated_at }}</td>
+                                            <td class="text-capitalize d-flex justify-content-center">
+                                                <a href="/edit-order/{{ $item->order_id }}" title="Edit"
+                                                    class="px-1">
+                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                </a>
+                                                <a href="/view-sub-order/{{ $item->order_id }}" title="View"
+                                                    class="px-1">
+                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/delete_order/' . $item->order_id) }}" title="Delete"
+                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/add_below_new_order', ['act_id' => $item->act_id, 'order_id' => $item->order_id, 'order_rank' => $item->order_rank]) }}"
+                                                    title="Add Next Order" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
+                                @if ($act_annexture)
+                                    @foreach ($act_annexture as $item)
+                                        <tr>
+                                            <td scope="row">@php echo $a++; @endphp</td>
+                                            <td class="text-capitalize">
+                                                @if ($item->maintype_id == 1)
+                                                    {!! $item->ChapterModel->chapter_title !!}
+                                                @elseif($item->maintype_id == 2)
+                                                    {!! $item->Partmodel->parts_title !!}
+                                                @elseif($item->maintype_id == 3)
+                                                    {!! $item->PriliminaryModel->priliminary_title !!}
+                                                @elseif($item->maintype_id == 4)
+                                                    {!! $item->Schedulemodel->schedule_title !!}
+                                                @elseif($item->maintype_id == 5)
+                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                @else
+                                                    null
+                                                @endif
+                                            </td>
+                                            <td class="text-capitalize">{{ $item->annexture_no }}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->annexture_title) !!}</td>
+                                            <td class="text-capitalize">{{ $item->updated_at }}</td>
+                                            <td class="text-capitalize d-flex justify-content-center">
+                                                <a href="/edit-annexture/{{ $item->annexture_id }}" title="Edit"
+                                                    class="px-1">
+                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                </a>
+                                                <a href="/view-sub-annexture/{{ $item->annexture_id }}" title="View"
+                                                    class="px-1">
+                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/delete_annexture/' . $item->annexture_id) }}"
+                                                    title="Delete" class="px-1"
+                                                    onclick="return confirm('Are you sure ?')">
+                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/add_below_new_annexture', ['act_id' => $item->act_id, 'annexture_id' => $item->annexture_id, 'annexture_rank' => $item->annexture_rank]) }}"
+                                                    title="Add Next Annexture" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
                             </tbody>
                         </table>
                     </div>
