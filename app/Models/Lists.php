@@ -17,6 +17,16 @@ class Lists extends Model
     {
         return $this->belongsTo(MainType::class, 'maintype_id', 'maintype_id');
     }
+     
+    public function Schedulemodel()
+    {
+        return $this->belongsTo(Schedule::class, 'schedule_id', 'schedule_id');
+    }
+
+    public function Appendicesmodel()
+    {
+        return $this->belongsTo(Appendices::class, 'appendices_id', 'appendices_id');
+    }
 
     public function Partmodel()
     {
@@ -27,7 +37,10 @@ class Lists extends Model
     {
         return $this->belongsTo(Chapter::class, 'chapter_id', 'chapter_id');
     }
-
+    public function PriliminaryModel()
+    {
+        return $this->belongsTo(Priliminary::class, 'priliminary_id', 'priliminary_id');
+    }
     public function footnoteModel()
     {
         return $this->hasMany(Footnote::class, 'list_id', 'list_id');
