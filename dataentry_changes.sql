@@ -50,6 +50,8 @@ ALTER TABLE `footnote` ADD `appendices_id` INT(11) NULL AFTER `schedule_id`;](do
 
 INSERT INTO `subtypes` (`subtypes_id`, `type`) VALUES (NULL, 'ORDER'), (NULL, 'ANNEXTURE');(done)
 
+ALTER TABLE `acts` ADD `enactment_date` DATE NULL DEFAULT NULL AFTER `act_date`, ADD `enforcement_date` DATE NULL DEFAULT NULL AFTER `enactment_date`;
+ALTER TABLE `acts` ADD `ministry` VARCHAR(1255) NULL AFTER `act_content`;
 
 -- 13/02/2024
 ALTER TABLE `section` ADD `appendices_id` INT(11) NULL DEFAULT NULL AFTER `maintype_id`, ADD `schedule_id` INT(11) NULL DEFAULT NULL AFTER `appendices_id`;

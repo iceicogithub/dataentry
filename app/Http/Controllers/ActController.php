@@ -1127,8 +1127,11 @@ class ActController extends Controller
 
             $act = Act::find($id);
             $act->act_title = $request->act_title;
+            $act->ministry = $request->ministry;
             $act->act_no = $request->act_no ?? null;
             $act->act_date = $request->act_date ?? null;
+            $act->enactment_date = $request->enactment_date ?? null;
+            $act->enforcement_date = $request->enforcement_date ?? null;
             $act->act_description = $request->act_description ?? null;
             $act->act_footnote_title = json_encode($request->act_footnote_title);
             $act->act_footnote_description = json_encode($request->act_footnote_description);
