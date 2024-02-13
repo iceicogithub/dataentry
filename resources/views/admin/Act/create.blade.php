@@ -604,7 +604,7 @@
                                                         style="display:none">
                                                         <div class="form-group form-default ruleTitleMain"
                                                             style="display: block">
-                                                            <label class="float-label">Order & Rules Title<span
+                                                            <label class="float-label">Rules Title<span
                                                                     class="text-danger">*</span></label>
                                                             <div class="d-flex ruleTitle my-1">
                                                                 <input type="text" name="rule_no[${chapterCount}][]"
@@ -1192,7 +1192,7 @@
                     });
 
                     // Update the input name attribute with the new chapter and section indexes
-                    clonedOrderTitle.find('input[name^="oder_title"]').each(function(
+                    clonedOrderTitle.find('input[name^="order_title"]').each(function(
                         index) {
                         $(this).attr('name', 'order_title[' + chapterCount + '][' + (
                             lastIndex + index) + ']');

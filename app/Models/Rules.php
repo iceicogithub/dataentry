@@ -10,7 +10,7 @@ class Rules extends Model
     use HasFactory;
     protected $primaryKey = 'rule_id';
     protected $table = 'rules';
-    protected $fillable = ['rule_no', 'rule_rank', 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id','schedule_id', 'rule_title', 'rule_content'];
+    protected $fillable = ['rule_no', 'rule_rank', 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id','schedule_id', 'rule_title', 'rule_content','appendices_id','priliminary_id'];
 
     public function MainTypeModel()
     {
