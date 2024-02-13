@@ -17,7 +17,15 @@ class Section extends Model
     {
         return $this->belongsTo(MainType::class, 'maintype_id', 'maintype_id');
     }
+    public function Schedulemodel()
+    {
+        return $this->belongsTo(Schedule::class, 'schedule_id', 'schedule_id');
+    }
 
+    public function Appendicesmodel()
+    {
+        return $this->belongsTo(Appendices::class, 'appendices_id', 'appendices_id');
+    }
     public function Partmodel()
     {
         return $this->belongsTo(Parts::class, 'parts_id', 'parts_id');
