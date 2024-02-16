@@ -49,4 +49,8 @@ class Lists extends Model
     {
         return $this->belongsTo(SubType::class, 'subtype_id');
     }
+    public function subListModel()
+    {
+        return $this->hasMany(SubLists::class, 'list_id', 'list_id');
+    }
 }

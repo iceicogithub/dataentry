@@ -67,3 +67,15 @@ order,
 annexture
 this above table would be added 
 ]    ](done)
+
+-- 16/02/2024
+ALTER TABLE `footnote` ADD `sub_regulation_id` INT(11) NULL DEFAULT NULL AFTER `regulation_no`;
+ALTER TABLE `footnote` ADD `list_id` INT(11) NULL DEFAULT NULL AFTER `sub_article_id`, ADD `list_no` VARCHAR(11) NULL DEFAULT NULL AFTER `list_id`, ADD `sub_list_id` INT(11) NULL DEFAULT NULL AFTER `list_no`;
+ALTER TABLE `footnote` ADD `part_id` INT(11) NULL DEFAULT NULL AFTER `sub_list_id`, ADD `part_no` VARCHAR(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL AFTER `part_id`, ADD `sub_part_id` INT(11) NULL DEFAULT NULL AFTER `part_no`, ADD `appendix_id` INT(11) NULL DEFAULT NULL AFTER `sub_part_id`, ADD `appendix_no` VARCHAR(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL AFTER `appendix_id`, ADD `sub_appendix_id` INT(11) NULL DEFAULT NULL AFTER `appendix_no`;
+[
+sub_lists,
+sub_part,
+sub_appendixs,
+sub_regulation,
+this above table would be added 
+]  
