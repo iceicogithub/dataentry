@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Act;
+use App\Models\Regulation;
+use App\Models\Appendices;
 use App\Models\ActSummary;
 use App\Models\Category;
 use App\Models\MainType;
 use App\Models\Parts;
 use App\Models\PartsType;
 use App\Models\SubSection;
+use App\Models\Priliminary;
+use App\Models\SubRegulation;
+use App\Models\Schedule;
 use App\Models\Footnote;
 use App\Models\Chapter;
-use App\Models\Regulation;
 use App\Models\Section;
 use App\Models\State;
 use App\Models\Status;
@@ -23,130 +27,449 @@ class RegulationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, $id)
-    {
-        $act_id = $id;
-        $act = Act::where('act_id', $act_id)->first();
-        $act_regulation = Regulation::where('act_id', $id)->with('MainTypeModel', 'Partmodel', 'ChapterModel')
-            ->orderBy('regulation_no', 'asc')->get();
-
-        return view('admin.regulations.index', compact('act_regulation', 'act_id', 'act'));
-    }
 
     public function edit_regulation($id)
     {
-        $regulations = Regulation::with('ChapterModel', 'Partmodel')->where('regulation_id', $id)->first();
-        $reg = Regulation::where('regulation_id', $id)->with('footnoteModel')->get();
-        // dd($reg);
-        // die();
-        return view('admin.regulations.edit', compact('regulations', 'reg'));
+        $regulation = Regulation::with('ChapterModel', 'Partmodel', 'Appendicesmodel', 'Schedulemodel', 'PriliminaryModel')->where('regulation_id', $id)->first();
+        $subregulation = Regulation::where('regulation_id', $id)
+            ->with([
+                'subRegulationModel',
+                'footnoteModel' => function ($query) {
+                    $query->whereNull('sub_regulation_id');
+                }
+            ])
+            ->get();
+
+        $sub_regulation_f = SubRegulation::where('regulation_id', $id)->with('footnoteModel')->get();
+
+        $count = 0;
+
+        if ($sub_regulation_f) {
+            foreach ($sub_regulation_f as $sub_regulation) {
+                $count += $sub_regulation->footnoteModel->count();
+            }
+        }
+
+
+
+        return view('admin.regulation.edit', compact('regulation', 'subregulation', 'sub_regulation_f', 'count'));
     }
 
     public function update(Request $request, $id)
     {
-        try {
-            // Check if section_id exists in the request
-            if (!$request->has('regulation_id')) {
-                return redirect()->route('edit-regulation', ['id' => $id])->withErrors(['error' => 'Regulation ID is missing']);
+        // dd($request);
+        // die();
+
+        // try {
+        if ($request->has('chapter_id')) {
+            $chapter = Chapter::find($request->chapter_id);
+
+            if ($chapter) {
+                $chapter->chapter_title = $request->chapter_title;
+                $chapter->update();
             }
+        }
+        if ($request->has('priliminary_id')) {
+            $priliminary = Priliminary::find($request->priliminary_id);
 
-            $regulations = Regulation::find($request->regulation_id);
-
-            // Check if the section is found
-            if (!$regulations) {
-                return redirect()->route('edit-regulation', ['id' => $id])->withErrors(['error' => 'Regulations not found']);
+            if ($priliminary) {
+                $priliminary->priliminary_title = $request->priliminary_title;
+                $priliminary->update();
             }
-            if ($regulations->regulation_no == $request->regulation_no) {
-                $regulations->regulation_content = $request->regulation_content ?? null;
-                $regulations->regulation_title = $request->regulation_title ?? null;
-                $regulations->regulation_no = $request->regulation_no ?? null;
-                $regulations->update();
-            } else {
-                $currentRegulationNo = $request->regulation_no;
+        }
+        if ($request->has('parts_id')) {
+            $part = Parts::find($request->parts_id);
 
-               
-
-                $regulations->regulation_content = $request->regulation_content ?? null;
-                $regulations->regulation_title = $request->regulation_title ?? null;
-                $regulations->regulation_no = $request->regulation_no ?? null;
-                $regulations->update();
+            if ($part) {
+                $part->parts_title = $request->parts_title;
+                $part->update();
             }
+        }
+        if ($request->has('schedule_id')) {
+            $schedule = Schedule::find($request->schedule_id);
 
-            // Store Footnotes
-            if ($request->has('footnote_title')) {
-                foreach ($request->footnote_title as $key => $item) {
+            if ($schedule) {
+                $schedule->schedule_title = $request->schedule_title;
+                $schedule->update();
+            }
+        }
+        if ($request->has('appendices_id')) {
+            $appendices = Appendices::find($request->appendices_id);
+
+            if ($appendices) {
+                $appendices->appendices_title = $request->appendices_title;
+                $appendices->update();
+            }
+        }
+
+
+        // Check if section_id exists in the request
+        if (!$request->has('regulation_id')) {
+            return redirect()->route('edit-regulation', ['id' => $id])->withErrors(['error' => 'Regulation ID is missing']);
+        }
+
+        $regulation = Regulation::find($request->regulation_id);
+
+        // Check if the section is found
+        if (!$regulation) {
+            return redirect()->route('edit-regulation', ['id' => $id])->withErrors(['error' => 'Regulation not found']);
+        }
+        if ($regulation) {
+
+            $regulation->regulation_content = $request->regulation_content ?? null;
+            $regulation->regulation_title = $request->regulation_title ?? null;
+            $regulation->regulation_no = $request->regulation_no ?? null;
+            $regulation->update();
+
+
+            if ($request->has('regulation_footnote_content')) {
+                foreach ($request->regulation_footnote_content as $key => $items) {
                     // Check if the key exists before using it
-                    if ($request->filled('footnote_id.' . $key)) {
-                        $foot = Footnote::find($request->footnote_id[$key]);
+                    foreach ($items as $kys => $item) {
+                        // Check if the sec_footnote_id exists at the specified index
+                        if (isset($request->regulation_footnote_id[$key][$kys])) {
+                            // Use first() instead of get() to get a single model instance
+                            $foot = Footnote::find($request->regulation_footnote_id[$key][$kys]);
 
-                        if ($foot) {
-                            $foot->footnote_title = $request->footnote_title[$key] ?? null;
-                            $foot->footnote_content = $request->footnote[$key] ?? null;
-                            $foot->update();
+                            if ($foot) {
+                                $foot->update([
+                                    'footnote_content' => $item ?? null,
+                                    'footnote_no' => $request->regulation_footnote_no[$key][$kys] ?? null,
+                                ]);
+                            }
+                        } else {
+                            // Create a new footnote
+                            $footnote = new Footnote();
+                            $footnote->regulation_id = $id ?? null;
+                            $footnote->regulation_no = $regulation->regulation_no ?? null;
+                            $footnote->act_id = $regulation->act_id ?? null;
+                            $footnote->chapter_id = $regulation->chapter_id ?? null;
+                            $footnote->parts_id = $regulation->parts_id ?? null;
+                            $footnote->priliminary_id = $regulation->priliminary_id ?? null;
+                            $footnote->schedule_id = $regulation->schedule_id ?? null;
+                            $footnote->appendices_id = $regulation->appendices_id ?? null;
+                            $footnote->footnote_content = $item ?? null;
+                            $footnote->save();
                         }
-                    } else {
-                        $footnote = new Footnote();
-                        $footnote->regulation_id = $id ?? null;
-                        $footnote->regulation_no = $regulations->regulation_no ?? null;
-                        $footnote->act_id = $regulations->act_id ?? null;
-                        $footnote->chapter_id = $regulations->chapter_id ?? null;
-                        $footnote->parts_id = $regulations->parts_id ?? null;
-                        $footnote->footnote_title = $request->footnote_title[$key] ?? null;
-                        $footnote->footnote_content = $request->footnote[$key] ?? null;
-                        $footnote->save();
                     }
                 }
             }
+        }
 
-            return redirect()->route('get_act_regulation', ['id' => $regulations->act_id])->with('success', 'Regulation updated successfully');
+        // Store Sub-Sections
+
+        if ($request->has('sub_regulation_no')) {
+            foreach ($request->sub_regulation_no as $key => $item) {
+                // Check if sub_section_id is present in the request
+                if ($request->filled('sub_regulation_id') && is_array($request->sub_regulation_id) && array_key_exists($key, $request->sub_regulation_id)) {
+
+                    $sub_regulation = SubRegulation::find($request->sub_regulation_id[$key]);
+
+                    // Check if $sub_section is found in the database and the IDs match
+                    if ($sub_regulation && $sub_regulation->sub_regulation_id == $request->sub_regulation_id[$key]) {
+                        $sub_regulation->sub_regulation_no = $item ?? null;
+                        $sub_regulation->sub_regulation_content = $request->sub_regulation_content[$key] ?? null;
+                        $sub_regulation->update();
+
+                        if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                            foreach ($request->sub_footnote_content[$key] as $kys => $item) {
+                                // Check if the sec_footnote_id exists at the specified index
+                                if (isset($request->sub_footnote_id[$key][$kys])) {
+                                    // Use first() instead of get() to get a single model instance
+                                    $foot = Footnote::find($request->sub_footnote_id[$key][$kys]);
+
+                                    if ($foot) {
+                                        $foot->update([
+                                            'footnote_content' => $item ?? null,
+                                        ]);
+                                    }
+                                } else {
+                                    // Create a new footnote only if sub_footnote_id does not exist
+                                    $footnote = new Footnote();
+                                    $footnote->sub_regulation_id = $sub_regulation->sub_regulation_id;
+                                    $footnote->regulation_id = $id ?? null;
+                                    $footnote->act_id = $regulation->act_id ?? null;
+                                    $footnote->chapter_id = $regulation->chapter_id ?? null;
+                                    $footnote->parts_id = $regulation->parts_id ?? null;
+                                    $footnote->priliminary_id = $regulation->priliminary_id ?? null;
+                                    $footnote->schedule_id = $regulation->schedule_id ?? null;
+                                    $footnote->appendices_id = $regulation->appendices_id ?? null;
+                                    $footnote->footnote_content = $item ?? null;
+                                    $footnote->save();
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    // Existing subsection not found, create a new one
+                    $subregulation = new SubRegulation();
+                    $subregulation->regulation_id = $id ?? null;
+                    $subregulation->sub_regulation_no = $item ?? null;
+                    $subregulation->regulation_no = $regulation->regulation_no ?? null;
+                    $subregulation->act_id = $regulation->act_id ?? null;
+                    $subregulation->chapter_id = $regulation->chapter_id ?? null;
+                    $subregulation->parts_id = $regulation->parts_id ?? null;
+                    $subregulation->priliminary_id = $regulation->priliminary_id ?? null;
+                    $subregulation->schedule_id = $regulation->schedule_id ?? null;
+                    $subregulation->appendices_id = $regulation->appendices_id ?? null;
+                    $subregulation->sub_regulation_content = $request->sub_regulation_content[$key] ?? null;
+                    $subregulation->save();
+
+                    if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                        foreach ($request->sub_footnote_content[$key] as $kys => $item) {
+                            // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
+                            if (isset($request->sub_footnote_content[$key][$kys])) {
+                                // Create a new footnote for the newly created subsection
+                                $footnote = new Footnote();
+                                $footnote->sub_regulation_id = $subregulation->sub_regulation_id;
+                                $footnote->regulation_id = $id ?? null;
+                                $footnote->act_id = $regulation->act_id ?? null;
+                                $footnote->chapter_id = $regulation->chapter_id ?? null;
+                                $footnote->parts_id = $regulation->parts_id ?? null;
+                                $footnote->priliminary_id = $regulation->priliminary_id ?? null;
+                                $footnote->schedule_id = $regulation->schedule_id ?? null;
+                                $footnote->appendices_id = $regulation->appendices_id ?? null;
+                                $footnote->footnote_content = $item ?? null;
+                                $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
+                                $footnote->save();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        return redirect()->route('get_act_section', ['id' => $regulation->act_id])->with('success', 'Regulation updated successfully');
+        // } catch (\Exception $e) {
+        //     \Log::error('Error updating Act: ' . $e->getMessage());
+        //     return redirect()->route('edit-regulation', ['id' => $id])->withErrors(['error' => 'Failed to update Regulation. Please try again.' . $e->getMessage()]);
+        // }
+    }
+
+    public function add_below_new_regulation(Request $request, $id, $regulation_id, $regulation_rank)
+    {
+
+        $regulation_rank = $regulation_rank;
+        $regulation = Regulation::with('ChapterModel', 'Partmodel', 'PriliminaryModel', 'Appendicesmodel', 'Schedulemodel')->where('act_id', $id)
+            ->where('regulation_id', $regulation_id)->first();
+
+        return view('admin.regulation.add_new', compact('regulation', 'regulation_rank'));
+    }
+
+    public function add_new_regulation(Request $request)
+    {
+        // dd($request);
+        // die();
+        // try {
+        if ($request->has('chapter_id')) {
+            $chapter = Chapter::find($request->chapter_id);
+
+            if ($chapter) {
+                $chapter->chapter_title = $request->chapter_title;
+                $chapter->update();
+            }
+        }
+        if ($request->has('priliminary_id')) {
+            $priliminary = Priliminary::find($request->priliminary_id);
+
+            if ($priliminary) {
+                $priliminary->priliminary_title = $request->priliminary_title;
+                $priliminary->update();
+            }
+        }
+        if ($request->has('parts_id')) {
+            $part = Parts::find($request->parts_id);
+
+            if ($part) {
+                $part->parts_title = $request->parts_title;
+                $part->update();
+            }
+        }
+        if ($request->has('schedule_id')) {
+            $schedule = Schedule::find($request->schedule_id);
+
+            if ($schedule) {
+                $schedule->schedule_title = $request->schedule_title;
+                $schedule->update();
+            }
+        }
+        if ($request->has('appendices_id')) {
+            $appendices = Appendices::find($request->appendices_id);
+
+            if ($appendices) {
+                $appendices->appendices_title = $request->appendices_title;
+                $appendices->update();
+            }
+        }
+
+
+        $id = $request->act_id;
+        $regulation_no = $request->regulation_no;
+        $regulation_rank = $request->regulation_rank;
+        $maintypeId = $request->maintype_id;
+
+        // Calculate the next section number
+        $nextRegulationNo = $regulation_no;
+        $nextRegulationRank = $regulation_rank + 0.01;
+
+
+
+        // Update the existing sections' section_no in the Section table
+        // Section::where('section_no', '>=', $nextSectionNo)
+        //     ->increment('section_no');
+
+        // Create the new section with the incremented section_no
+        $regulation = Regulation::create([
+            'regulation_rank' => $nextRegulationRank ?? 1,
+            'regulation_no' => $nextRegulationNo,
+            'act_id' => $request->act_id,
+            'maintype_id' => $maintypeId,
+            'chapter_id' => $request->chapter_id ?? null,
+            'priliminary_id' => $request->priliminary_id ?? null,
+            'parts_id' => $request->parts_id ?? null,
+            'schedule_id' => $request->schedule_id ?? null,
+            'appendices_id' => $request->appendices_id ?? null,
+            'subtypes_id' => $request->subtypes_id,
+            'regulation_title' => $request->regulation_title,
+            'regulation_content' => $request->regulation_content,
+        ]);
+
+        if ($request->has('regulation_footnote_content')) {
+            foreach ($request->regulation_footnote_content as $key => $item) {
+                // Check if the key exists before using it
+                if (isset($request->regulation_footnote_content[$key])) {
+                    // Create a new footnote
+                    $footnote = new Footnote();
+                    $footnote->regulation_id = $regulation->regulation_id ?? null;
+                    $footnote->act_id = $request->act_id ?? null;
+                    $footnote->chapter_id = $request->chapter_id ?? null;
+                    $footnote->priliminary_id = $request->priliminary_id ?? null;
+                    $footnote->parts_id = $request->parts_id ?? null;
+                    $footnote->schedule_id = $request->schedule_id ?? null;
+                    $footnote->appendices_id = $request->appendices_id ?? null;
+                    $footnote->footnote_content = $item ?? null;
+                    $footnote->save();
+                }
+            }
+        }
+
+        if ($request->has('sub_regulation_no')) {
+            foreach ($request->sub_regulation_no as $key => $item) {
+                // Existing subsection not found, create a new one
+                $sub_regulation = SubRegulation::create([
+                    'regulation_id' => $regulation->regulation_id,
+                    'sub_regulation_no' => $item ?? null,
+                    'regulation_no' => $nextRegulationNo,
+                    'act_id' => $request->act_id,
+                    'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                    'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
+                    'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
+                    'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
+                    'appendices_id' => $maintypeId == "5" ? $request->appendices_id : null,
+                    'sub_regulation_content' => $request->sub_regulation_content[$key] ?? null,
+                ]);
+
+                if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                    foreach ($request->sub_footnote_content[$key] as $kys => $item) {
+                        // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
+                        if (isset($request->sub_footnote_content[$key][$kys])) {
+                            // Create a new footnote for the newly created subsection
+                            $footnote = new Footnote();
+                            $footnote->sub_regulation_id = $sub_regulation->sub_regulation_id;
+                            $footnote->regulation_id = $regulation->regulation_id ?? null;
+                            $footnote->act_id = $request->act_id ?? null;
+                            $footnote->chapter_id = $request->chapter_id ?? null;
+                            $footnote->parts_id = $request->parts_id ?? null;
+                            $footnote->priliminary_id = $request->priliminary_id ?? null;
+                            $footnote->schedule_id = $request->schedule_id ?? null;
+                            $footnote->appendices_id = $request->appendices_id ?? null;
+                            $footnote->footnote_content = $item ?? null;
+                            $footnote->save();
+                        }
+                    }
+                }
+            }
+        }
+
+        return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Ayrticle created successfully');
+        // } catch (\Exception $e) {
+        //     \Log::error('Error creating Act: ' . $e->getMessage());
+
+        //     return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
+        // }
+    }
+
+    public function view_sub_regulation(Request $request, $id)
+    {
+        $regulation = Regulation::where('regulation_id', $id)->first();
+        $sub_regulation = SubRegulation::where('regulation_id', $id)->with('footnoteModel')->get();
+        return view('admin.regulation.view', compact('regulation', 'sub_regulation'));
+    }
+
+
+    public function destroy_sub_regulation(string $id)
+    {
+        try {
+            $subregulation = SubRegulation::find($id);
+
+            if (!$subregulation) {
+                return redirect()->back()->withErrors(['error' => 'Sub-Regulation not found.']);
+            }
+
+            Footnote::where('sub_regulation_id', $id)->delete();
+
+            $subregulation->delete();
+
+            return redirect()->back()->with('success', 'Sub-Regulation and related records deleted successfully.');
         } catch (\Exception $e) {
-            \Log::error('Error updating Act: ' . $e->getMessage());
-            return redirect()->route('edit-section', ['id' => $id])->withErrors(['error' => 'Failed to update Section. Please try again.' . $e->getMessage()]);
+            \Log::error('Error deleting Sub-Regulation: ' . $e->getMessage());
+
+            return redirect()->back()->withErrors(['error' => 'Failed to delete Sub-Regulation. Please try again.' . $e->getMessage()]);
         }
     }
 
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         try {
             $regulation = Regulation::find($id);
-    
+
             if (!$regulation) {
                 return redirect()->back()->withErrors(['error' => 'Regulation not found.']);
             }
-    
+
+            SubRegulation::where('Regulation_id', $id)->delete();
+            Footnote::where('regulation_id', $id)->delete();
+
             $regulation->delete();
-    
-            return redirect()->back()->with('success', 'Regulation deleted successfully.');
+
+            return redirect()->back()->with('success', 'Regulation and related records deleted successfully.');
         } catch (\Exception $e) {
             \Log::error('Error deleting regulation: ' . $e->getMessage());
-    
+
             return redirect()->back()->withErrors(['error' => 'Failed to delete regulation. Please try again.' . $e->getMessage()]);
         }
     }
+    public function delete_footnote(string $id)
+    {
+        try {
+            $footnote = Footnote::find($id);
+
+            if (!$footnote) {
+                return redirect()->back()->withErrors(['error' => 'Footnote not found.']);
+            }
+
+
+            $footnote->delete();
+
+            return redirect()->back()->with('success', 'Footnote deleted successfully.');
+        } catch (\Exception $e) {
+            \Log::error('Error deleting footnote: ' . $e->getMessage());
+
+            return redirect()->back()->withErrors(['error' => 'Failed to delete footnote. Please try again.' . $e->getMessage()]);
+        }
+    }
+
+
 }

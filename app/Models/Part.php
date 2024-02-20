@@ -50,6 +50,11 @@ class Part extends Model
         return $this->belongsTo(SubType::class, 'subtype_id');
     }
 
+    public function subPartModel()
+    {
+        return $this->hasMany(SubPart::class, 'part_id', 'part_id');
+    }
+
 }
 
 

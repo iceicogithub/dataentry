@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{ $article->act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="/get_act_section/{{ $part->act_id }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -21,7 +21,7 @@
     <div class="content mt-3">
         <div class="row">
             <div class="col-lg-12">
-                <form id="form" action="/update_all_article/{{ $article->article_id }}" method="post"
+                <form id="form" action="/update_all_part/{{ $part->part_id }}" method="post"
                     enctype="multipart/form-data" class="form form-horizontal">
                     @csrf
                     <!-- Your Blade View -->
@@ -41,12 +41,12 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <input type="hidden" name="article_id" value="{{ $article->article_id }}">
-                    <input type="hidden" name="chapter_id" value="{{ $article->chapter_id }}">
-                    <input type="hidden" name="parts_id" value="{{ $article->parts_id }}">
-                    <input type="hidden" name="priliminary_id" value="{{ $article->priliminary_id }}">
-                    <input type="hidden" name="schedule_id" value="{{ $article->schedule_id }}">
-                    <input type="hidden" name="appendices_id" value="{{ $article->appendices_id }}">
+                    <input type="hidden" name="part_id" value="{{ $part->part_id }}">
+                    <input type="hidden" name="chapter_id" value="{{ $part->chapter_id }}">
+                    <input type="hidden" name="parts_id" value="{{ $part->parts_id }}">
+                    <input type="hidden" name="priliminary_id" value="{{ $part->priliminary_id }}">
+                    <input type="hidden" name="schedule_id" value="{{ $part->schedule_id }}">
+                    <input type="hidden" name="appendices_id" value="{{ $part->appendices_id }}">
                     <div class="card p-5">
                         <div class="additional-section">
                             <div class="border col-md-12 p-3">
@@ -54,54 +54,53 @@
                                     <div class="form-group form-default col-md-12 px-0" id="sectionDiv">
 
                                         <div class="form-group form-default" style="display: block">
-                                            @if ($article->maintype_id == 1)
+                                            @if ($part->maintype_id == 1)
                                                 <label class="float-label font-weight-bold">Chapter :</label>
 
-                                                <textarea name="chapter_title" class="form-control mb-3 chapter_title" placeholder="Enter Chapter Title" id="c_title">{{ $article->ChapterModel->chapter_title }}</textarea>
-                                            @elseif($article->maintype_id == 2)
+                                                <textarea name="chapter_title" class="form-control mb-3 chapter_title" placeholder="Enter Chapter Title" id="c_title">{{ $part->ChapterModel->chapter_title }}</textarea>
+                                            @elseif($part->maintype_id == 2)
                                                 <label class="float-label font-weight-bold">Parts :</label>
 
-                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="p_title">{{ $article->Partmodel->parts_title }}</textarea>
-                                            @elseif($article->maintype_id == 3)
+                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="p_title">{{ $part->Partmodel->parts_title }}</textarea>
+                                            @elseif($part->maintype_id == 3)
                                                 <label class="float-label font-weight-bold">Priliminary :</label>
 
-                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="pr_title">{{ $article->Priliminarymodel->priliminary_title }}</textarea>
-                                            @elseif($article->maintype_id == 4)
+                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="pr_title">{{ $part->Priliminarymodel->priliminary_title }}</textarea>
+                                            @elseif($part->maintype_id == 4)
                                                 <label class="float-label font-weight-bold">Schedule :</label>
 
                                                 <textarea name="schedule_title" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title"
-                                                    id="s_title">{{ $article->Schedulemodel->schedule_title }}</textarea>
-                                            @elseif($article->maintype_id == 5)
+                                                    id="s_title">{{ $part->Schedulemodel->schedule_title }}</textarea>
+                                            @elseif($part->maintype_id == 5)
                                                 <label class="float-label font-weight-bold">Appendices :</label>
 
                                                 <textarea name="appendices_title" class="form-control mb-3 appendices_title" placeholder="Enter Appendices Title"
-                                                    id="a_title">{{ $article->Appendicesmodel->appendices_title }}</textarea>
+                                                    id="a_title">{{ $part->Appendicesmodel->appendices_title }}</textarea>
                                             @else
                                                 null
                                             @endif
                                         </div>
 
                                         <div class="form-group form-default" style="display: block">
-                                            <label class="float-label font-weight-bold">Article :</label>
+                                            <label class="float-label font-weight-bold">Part :</label>
 
-                                            <input type="text" name="article_no" class="form-control my-3"
-                                                style="width: 20%;" placeholder="Enter Article NO."
-                                                value="{{ $article->article_no }}">
+                                            <input type="text" name="part_no" class="form-control my-3" style="width: 20%;"
+                                                placeholder="Enter Part NO." value="{{ $part->part_no }}">
 
-                                            <textarea type="text" id="article_title" name="article_title"
-                                                class="form-control section-textarea ckeditor-replace section" placeholder="Enter Article Title">{{ $article->article_title }}</textarea>
+                                            <textarea type="text" id="part_title" name="part_title"
+                                                class="form-control section-textarea ckeditor-replace section" placeholder="Enter Part Title">{{ $part->part_title }}</textarea>
 
                                         </div>
 
                                         <div class="form-group form-default" style="display: block">
-                                            <label class="float-label">Article Description<span
+                                            <label class="float-label">Part Description<span
                                                     class="text-danger">*</span></label>
-                                            <textarea type="text" id="article" name="article_content"
-                                                class="form-control article-textarea ckeditor-replace article" placeholder="Enter Article">{{ $article->article_content }}</textarea>
+                                            <textarea type="text" id="part" name="part_content"
+                                                class="form-control part-textarea ckeditor-replace part" placeholder="Enter Part">{{ $part->part_content }}</textarea>
 
                                             <div class="footnote-addition-container">
-                                                @if ($subarticle->isNotEmpty())
-                                                    @foreach ($subarticle as $s => $art)
+                                                @if ($subpart->isNotEmpty())
+                                                    @foreach ($subpart as $s => $art)
                                                         @if ($art->footnoteModel)
                                                             @foreach ($art->footnoteModel as $f => $footnote)
                                                                 <div
@@ -125,10 +124,10 @@
                                                                     <div class="show-footnote" style="display: block">
                                                                         {{-- footnote for section --}}
                                                                         <input type="hidden"
-                                                                            name="article_footnote_id[{{ $s }}][{{ $f }}]"
+                                                                            name="part_footnote_id[{{ $s }}][{{ $f }}]"
                                                                             value="{{ $footnote->footnote_id }}">
 
-                                                                        <textarea type="text" name="article_footnote_content[{{ $s }}][{{ $f }}]"
+                                                                        <textarea type="text" name="part_footnote_content[{{ $s }}][{{ $f }}]"
                                                                             class="form-control ckeditor-replace footnote">{{ $footnote->footnote_content }}</textarea>
                                                                     </div>
                                                                 </div>
@@ -142,7 +141,7 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (Add footnote for article)
+                                                                (Add footnote for part)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-footnote">
@@ -157,12 +156,12 @@
                                                 @endif
 
                                             </div>
-                                            @if ($sub_article_f->count() > 0 || $count > 0)
+                                            @if ($sub_part_f->count() > 0 || $count > 0)
                                                 <div class="col-md-12 px-0 py-3">
                                                     <div class="float-right">
                                                         <span style="font-size: small;"
                                                             class="px-2 text-uppercase font-weight-bold">
-                                                            (for add and remove Sub-Article and
+                                                            (for add and remove Sub-Part and
                                                             Footnote)
                                                         </span>
                                                         <button type="button"
@@ -179,44 +178,44 @@
                                         </div>
 
 
-                                        @if ($sub_article_f->count() > 0 || $count > 0)
-                                            @foreach ($sub_article_f as $k => $subArticleItem)
+                                        @if ($sub_part_f->count() > 0 || $count > 0)
+                                            @foreach ($sub_part_f as $k => $subPartItem)
                                                 <div class="multi-addition-container col-md-12 px-0">
                                                     <div class="multi-addition">
                                                         {{-- @foreach ($subSectionItem->footnoteModel as $f => $footnoteItem) --}}
-                                                        <input type="hidden" name="sub_article_id[{{ $k }}]"
-                                                            value="{{ $subArticleItem->sub_article_id }}">
+                                                        <input type="hidden" name="sub_part_id[{{ $k }}]"
+                                                            value="{{ $subPartItem->sub_part_id }}">
                                                         <div class="border col-md-12 p-3">
                                                             <div
                                                                 class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                                                 <label class="float-label">
-                                                                    Add Sub-Article
+                                                                    Add Sub-Part
                                                                     <span class="pl-2">
                                                                         <button type="button"
-                                                                            class="btn btn-sm social facebook p-0 add-sub_article">
+                                                                            class="btn btn-sm social facebook p-0 add-sub_part">
                                                                             <i
-                                                                                class="fa {{ $subArticleItem->sub_article_no ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                                class="fa {{ $subPartrItem->sub_part_no ? 'fa-plus' : 'fa-minus' }}"></i>
                                                                         </button>
                                                                     </span>
                                                                 </label>
-                                                                <div class="show-sub_article">
+                                                                <div class="show-sub_part">
                                                                     <span class="d-flex">
                                                                         <input type="text"
-                                                                            name="sub_article_no[{{ $k }}]"
+                                                                            name="sub_part_no[{{ $k }}]"
                                                                             class="form-control mb-3"
-                                                                            value="{{ $subArticleItem->sub_article_no ?? '' }}"
-                                                                            placeholder="Enter Sub-Article No."
+                                                                            value="{{ $subPartItem->sub_part_no ?? '' }}"
+                                                                            placeholder="Enter Sub-Part No."
                                                                             style="width: 20%;"
                                                                             data-index="{{ $k }}"">
 
                                                                     </span>
-                                                                    <textarea type="text" name="sub_article_content[{{ $k }}]"
-                                                                        class="form-control ckeditor-replace sub_section">{{ $subArticleItem->sub_article_content ?? '' }}</textarea>
+                                                                    <textarea type="text" name="sub_part_content[{{ $k }}]"
+                                                                        class="form-control ckeditor-replace sub_section">{{ $subPartItem->sub_part_content ?? '' }}</textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        @if (count($subArticleItem->footnoteModel) > 0)
-                                                            @foreach ($subArticleItem->footnoteModel as $a => $footnoteItem)
+                                                        @if (count($subPartItem->footnoteModel) > 0)
+                                                            @foreach ($subPartItem->footnoteModel as $a => $footnoteItem)
                                                                 <input type="hidden"
                                                                     name="sub_footnote_id[{{ $k }}][{{ $a }}]"
                                                                     value="{{ $footnoteItem->footnote_id }}">
@@ -254,7 +253,7 @@
                                                                     <div class="float-right">
                                                                         <span style="font-size: small;"
                                                                             class="px-2 text-uppercase font-weight-bold">
-                                                                            (add Footnote for sub-article)
+                                                                            (add Footnote for sub-part)
                                                                         </span>
                                                                         <button type="button"
                                                                             class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -273,7 +272,7 @@
                                                             <div class="float-right">
                                                                 <span style="font-size: small;"
                                                                     class="px-2 text-uppercase font-weight-bold">
-                                                                    (for add and remove Sub-Article and
+                                                                    (for add and remove Sub-Part and
                                                                     Footnote)
                                                                 </span>
                                                                 <button type="button"
@@ -297,7 +296,7 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (for add and remove Sub-Article and
+                                                                (for add and remove Sub-Part and
                                                                 Footnote)
                                                             </span>
                                                             <button type="button"
@@ -348,7 +347,7 @@
             CKEDITOR.replace('state_amendment');
 
             // Initialize CKEditor for existing sections
-            $('.ckeditor-replace.sub_article').each(function() {
+            $('.ckeditor-replace.sub_part').each(function() {
                 CKEDITOR.replace($(this).attr('name'));
             });
 
@@ -357,14 +356,14 @@
                 CKEDITOR.replace($(this).attr('name'));
             });
 
-            $(document).on('click', '.add-sub_article', function() {
+            $(document).on('click', '.add-sub_part', function() {
                 var icon = $(this).find('i');
-                var article = $(this).closest('.form-default').find('.show-sub_article');
-                article.slideToggle();
+                var part = $(this).closest('.form-default').find('.show-sub_part');
+                part.slideToggle();
                 icon.toggleClass('fa-plus fa-minus');
 
                 // Initialize CKEditor for the new textarea
-                CKEDITOR.replace(article.find('.ckeditor-replace.sub_article')[0]);
+                CKEDITOR.replace(part.find('.ckeditor-replace.sub_part')[0]);
             });
 
             $(document).on('click', '.add-footnote', function() {
@@ -389,9 +388,9 @@
                 initializeCKEditor();
             });
 
-            let articleCounter = 1;
-            let sub_articleCounter = 0;
-            let subArticleIndex = 0;
+            let partCounter = 1;
+            let sub_partCounter = 0;
+            let subPartIndex = 0;
             let currentIndex;
 
             // for adding sub section and footnote
@@ -401,34 +400,34 @@
                 var clickedIndex = $(this).closest('.multi-addition').index();
 
                 // Find the maximum sectionCounterIndex among all elements
-                var maxArticleCounterIndex = 0;
+                var maxPartCounterIndex = 0;
 
                 $('.multi-addition').each(function() {
                     var index = parseInt($(this).find('[data-index]').data('index'));
-                    if (!isNaN(index) && index > maxArticleCounterIndex) {
-                        maxArticleCounterIndex = index;
+                    if (!isNaN(index) && index > maxPartCounterIndex) {
+                        maxPartCounterIndex = index;
                     }
                 });
 
                 // Calculate the new sectionCounterIndex based on the clicked index
-                var ArticleCounterIndex = Math.max(clickedIndex, maxArticleCounterIndex) + 1;
+                var PartCounterIndex = Math.max(clickedIndex, maxPartCounterIndex) + 1;
 
 
-                var newArticle = `
+                var newPart = `
                                 <div class="multi-addition">
                                     <div class="border col-md-12 p-3">
                                         <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                             <label class="float-label">
-                                            Add Sub-Article
+                                            Add Sub-Part
                                             <span class="pl-2">
-                                                <button type="button" class="btn btn-sm social facebook p-0 add-sub_article">
+                                                <button type="button" class="btn btn-sm social facebook p-0 add-sub_part">
                                                 <i class="fa fa-plus"></i>
                                                 </button>
                                             </span>
                                             </label>
-                                            <div class="show-sub_article" style="display: none">
-                                                <span class="d-flex"><input type="text" name="sub_article_no[${ArticleCounterIndex}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Article No." data-index="${ArticleCounterIndex}">  </span>
-                                                <textarea type="text" name="sub_article_content[${ArticleCounterIndex}]" class="form-control ckeditor-replace sub_article" placeholder="Enter Sub-Article Ttile"></textarea>
+                                            <div class="show-sub_part" style="display: none">
+                                                <span class="d-flex"><input type="text" name="sub_part_no[${PartCounterIndex}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Part No." data-index="${PartCounterIndex}">  </span>
+                                                <textarea type="text" name="sub_part_content[${PartCounterIndex}]" class="form-control ckeditor-replace sub_part" placeholder="Enter Sub-part Ttile"></textarea>
                                             </div>
                                         </div>
                                     
@@ -437,7 +436,7 @@
                                                                 <div class="float-right">
                                                                     <span style="font-size: small;"
                                                                         class="px-2 text-uppercase font-weight-bold">
-                                                                        (Add footnote for sub-article)
+                                                                        (Add footnote for sub-part)
                                                                     </span>
                                                                     <button type="button"
                                                                         class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -454,7 +453,7 @@
                                     <div class="col-md-12 px-0 py-3">
                                         <div class="float-right">
                                             <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                            ( for add and remove Sub-Article and Footnote )
+                                            ( for add and remove Sub-Part and Footnote )
                                             </span>
                                             <button type="button" class="btn btn-sm social facebook p-0 add-multi-addition">
                                             <i class="fa fa-plus"></i>
@@ -470,7 +469,7 @@
 
                 // $('.multi-addition-container').append(newSection);
                 var $clickedElement = $(this).closest('.multi-addition');
-                $clickedElement.after(newArticle);
+                $clickedElement.after(newPart);
 
 
 
@@ -480,15 +479,15 @@
                 // Update sub_section_no and sub_section_content names in all elements
                 $('.multi-addition').each(function(index) {
                     var newIndex = index + 1;
-                    $(this).find(`[name^="sub_article_no["]`).attr('name',
-                        `sub_article_no[${newIndex}]`);
-                    $(this).find(`[name^="sub_article_content["]`).attr('name',
-                        `sub_article_content[${newIndex}]`);
+                    $(this).find(`[name^="sub_part_no["]`).attr('name',
+                        `sub_part_no[${newIndex}]`);
+                    $(this).find(`[name^="sub_part_content["]`).attr('name',
+                        `sub_part_content[${newIndex}]`);
                     $(this).find('[data-index]').attr('data-index', newIndex);
                 });
 
-                articleCounter++;
-                sub_articleCounter = 0;
+                partCounter++;
+                sub_partCounter = 0;
 
             });
 
@@ -509,20 +508,20 @@
                 var multiAdditionContainer = $(this).closest('.multi-addition');
 
                 // Find the associated sub_section_no within the multi-addition container
-                var associatedSubArticleTitle = multiAdditionContainer.find('[name^="sub_article_no["]');
+                var associatedSubPartTitle = multiAdditionContainer.find('[name^="sub_part_no["]');
 
                 // Check if the associatedSubSectionTitle is found
-                if (associatedSubArticleTitle.length > 0) {
+                if (associatedSubPartTitle.length > 0) {
                     // Extract the index from the name attribute of the sub_section_no
-                    var articleIndexMatch = associatedSubArticleTitle.attr('name').match(/\[(\d*)\]/);
+                    var partIndexMatch = associatedSubPartTitle.attr('name').match(/\[(\d*)\]/);
 
                     // Set currentIndex to 0 if the index is empty
-                    var currentIndex = articleIndexMatch && articleIndexMatch[1] !== '' ?
-                        parseInt(articleIndexMatch[1], 10) : 0;
+                    var currentIndex = partIndexMatch && partIndexMatch[1] !== '' ?
+                        parseInt(partIndexMatch[1], 10) : 0;
 
-                    console.log('Current index of sub_article_no:', currentIndex);
+                    console.log('Current index of sub_part_no:', currentIndex);
 
-                    var newArticle = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote2-addition">
+                    var newPart = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote2-addition">
                             <label class="float-label">
                             Add Footnote
                             <span class="pl-2">
@@ -532,7 +531,7 @@
                             </span>
                             </label>
                             <div class="show-footnote" style="display: none">
-                                <textarea type="text" name="sub_footnote_content[${currentIndex}][${sub_articleCounter}]" class="form-control ckeditor-replace footnote"></textarea>
+                                <textarea type="text" name="sub_footnote_content[${currentIndex}][${sub_partCounter}]" class="form-control ckeditor-replace footnote"></textarea>
                             </div>
                           
                         </div>`;
@@ -540,7 +539,7 @@
                     // Find the footnote2-addition-container within the multi-addition container
                     var footnote2AdditionContainer = multiAdditionContainer.find(
                         '.footnote2-addition-container');
-                    footnote2AdditionContainer.append(newArticle);
+                    footnote2AdditionContainer.append(newPart);
 
                     // CKEDITOR.replace(footnote2AdditionContainer.find('.footnote2-addition:last').find(
                     //     '.ckeditor-replace')[0]);
@@ -549,10 +548,10 @@
                             0]);
                     }, 100); // Adjust the delay as needed
 
-                    subArticleIndex = sub_ArticleCounter;
-                    sub_ArticleCounter++;
+                    subPartIndex = sub_PartCounter;
+                    sub_PartCounter++;
                 } else {
-                    console.error('Associated sub_article_no not found.');
+                    console.error('Associated sub_part_no not found.');
                 }
             });
 
@@ -565,13 +564,13 @@
             // for section footnote 
             $(document).on('click', '.add-multi-footnote', function() {
 
-                var lastInputFoot = $('[data-footarticleindex]:last').data('footarticleindex');
-                var lastInputArticle = $('[data-articleindex]:last').data('articleindex');
+                var lastInputFoot = $('[data-footpartindex]:last').data('footpartindex');
+                var lastInputPart = $('[data-partindex]:last').data('partindex');
                 // console.log(lastInputFoot);
                 var footCounterIndex = parseInt(lastInputFoot) + 1;
                 // console.log(footCounterIndex);
 
-                var newArticle = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
+                var newPart = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
                                         <label class="float-label">
                                         Add Footnote
                                         <span class="pl-2">
@@ -581,7 +580,7 @@
                                         </span>
                                         </label>
                                         <div class="show-footnote" style="display: none">
-                                            <textarea type="text" name="article_footnote_content[${lastInputArticle}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
+                                            <textarea type="text" name="part_footnote_content[${lastInputPart}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                    
                                        
@@ -589,12 +588,12 @@
                                     
                                 `;
 
-                $('.footnote-addition-container').append(newArticle);
+                $('.footnote-addition-container').append(newPart);
 
                 CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[0]);
                 // CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[1]);
 
-                articleCounter++; // Increment the counter for the next section
+                partCounter++; // Increment the counter for the next section
             });
 
             $(document).on('click', '.remove-multi-footnote', function() {
