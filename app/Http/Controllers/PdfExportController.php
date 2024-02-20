@@ -46,7 +46,7 @@ class PdfExportController extends Controller
                 ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
                 ->orWhereIn('parts_id', $parts->pluck('parts_id'))
                 ->orWhereIn('priliminary_id', $priliminary->pluck('priliminary_id'))
-                ->with('subsectionModel', 'footnoteModel')
+                ->with('subsectionModel', 'footnoteModel','MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
                 ->get()
                 ->sortBy(function ($section) {
                     $mixstring = $section->section_no;
@@ -60,14 +60,14 @@ class PdfExportController extends Controller
                     } else {
                         // Handle the case where the regular expression doesn't match
                         // You can choose to return something specific or handle it in another way
-                        // return $mixstring; // Default behavior is to return the mixstring as is
+                        return $mixstring; // Default behavior is to return the mixstring as is
                     }
-                });
-
+                }, SORT_NATURAL);
+            
 
             $rule = Rules::where('act_id', $id)
                 ->whereIn('schedule_id', $schedule->pluck('schedule_id'))
-                ->with('footnoteModel','subruleModel')
+                ->with('footnoteModel','subruleModel','MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
                 ->get()
                 ->sortBy(function ($rule) {
                     $mixstring = $rule->rule_no;
@@ -81,9 +81,9 @@ class PdfExportController extends Controller
                     } else {
                         // Handle the case where the regular expression doesn't match
                         // You can choose to return something specific or handle it in another way
-                        // return $mixstring; // Default behavior is to return the mixstring as is
+                        return $mixstring; // Default behavior is to return the mixstring as is
                     }
-                });
+                }, SORT_NATURAL);
 
             $partstype = PartsType::all();
             $regulation = Regulation::where('act_id', $id)->whereIn('chapter_id', $chapter->pluck('chapter_id'))->get();
