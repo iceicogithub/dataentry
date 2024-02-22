@@ -181,7 +181,7 @@
                                                                             value="{{ $subRuleItem->sub_rule_no ?? '' }}"
                                                                             placeholder="Enter Sub-Rule No."
                                                                             style="width: 20%;"
-                                                                            data-index="{{ $k }}"">
+                                                                            data-index="{{ $k }}">
 
                                                                     </span>
                                                                     <textarea type="text" name="sub_rule_content[{{ $k }}]"

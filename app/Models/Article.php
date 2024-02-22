@@ -46,6 +46,10 @@ class Article extends Model
         return $this->hasMany(SubArticle::class, 'article_id', 'article_id');
     }
 
+    public function subtype()
+    {
+        return $this->belongsTo(SubType::class, 'subtype_id');
+    }
     public function footnoteModel()
     {
         return $this->hasMany(Footnote::class, 'article_id', 'article_id');

@@ -45,6 +45,11 @@ class Appendix extends Model
     {
         return $this->hasMany(Footnote::class, 'appendix_id', 'appendix_id');
     }
+
+    public function subAppendixModel()
+    {
+        return $this->hasMany(SubAppendix::class, 'appendix_id', 'appendix_id');
+    }
     public function subtype()
     {
         return $this->belongsTo(SubType::class, 'subtype_id');

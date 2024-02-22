@@ -45,6 +45,11 @@ class Annexture extends Model
     {
         return $this->hasMany(Footnote::class, 'annexture_id', 'annexture_id');
     }
+
+    public function subAnnextureModel()
+    {
+        return $this->hasMany(SubAnnexture::class, 'annexture_id', 'annexture_id');
+    }
     public function subtype()
     {
         return $this->belongsTo(SubType::class, 'subtype_id');

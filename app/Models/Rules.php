@@ -47,4 +47,8 @@ class Rules extends Model
     {
         return $this->hasMany(Footnote::class, 'rule_id', 'rule_id');
     }
+    public function subtype()
+    {
+        return $this->belongsTo(SubType::class, 'subtype_id');
+    }
 }

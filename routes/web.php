@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\ActController;
+use App\Http\Controllers\AnnextureController;
 use App\Http\Controllers\AppendixController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\ListController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PartController;
 use App\Http\Controllers\PdfExportController;
 use App\Http\Controllers\SectionController;
@@ -142,3 +144,23 @@ Route::get('/delete_appendix/{id}', [AppendixController::class, 'destroy']);
 Route::get('/view-sub-appendix/{id}', [AppendixController::class, 'view_sub_appendix'])->name('view_sub_appendix');
 Route::get('/delete_sub_appendix/{id}', [AppendixController::class, 'destroy_sub_appendix']);
 Route::get('/delete_footnote/{id}', [AppendixController::class, 'delete_footnote']);
+
+// Order
+Route::get('/edit-order/{id}', [OrderController::class, 'edit_order'])->name('edit_order');
+Route::post('/update_all_order/{id}', [OrderController::class, 'update']);
+Route::get('/add_below_new_order/{id}/{order_id}/{order_rank}', [OrderController::class, 'add_below_new_order'])->name('add_below_new_order');
+Route::post('/add_new_order', [OrderController::class, 'add_new_order']);
+Route::get('/delete_order/{id}', [OrderController::class, 'destroy']);
+Route::get('/view-sub-order/{id}', [OrderController::class, 'view_sub_order'])->name('view_sub_order');
+Route::get('/delete_sub_order/{id}', [OrderController::class, 'destroy_sub_order']);
+Route::get('/delete_footnote/{id}', [OrderController::class, 'delete_footnote']);
+
+// Annexture
+Route::get('/edit-annexture/{id}', [AnnextureController::class, 'edit_annexture'])->name('edit_annexture');
+Route::post('/update_all_annexture/{id}', [AnnextureController::class, 'update']);
+Route::get('/add_below_new_annexture/{id}/{annexture_id}/{annexture_rank}', [AnnextureController::class, 'add_below_new_annexture'])->name('add_below_new_annexture');
+Route::post('/add_new_annexture', [AnnextureController::class, 'add_new_annexture']);
+Route::get('/delete_annexture/{id}', [AnnextureController::class, 'destroy']);
+Route::get('/view-sub-annexture/{id}', [AnnextureController::class, 'view_sub_annexture'])->name('view_sub_annexture');
+Route::get('/delete_sub_annexture/{id}', [AnnextureController::class, 'destroy_sub_annexture']);
+Route::get('/delete_footnote/{id}', [AnnextureController::class, 'delete_footnote']);

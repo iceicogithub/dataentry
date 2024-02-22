@@ -206,7 +206,7 @@
                                                                             value="{{ $subRegulationItem->sub_regulation_no ?? '' }}"
                                                                             placeholder="Enter Sub-Regulation No."
                                                                             style="width: 20%;"
-                                                                            data-index="{{ $k }}"">
+                                                                            data-index="{{ $k }}">
 
                                                                     </span>
                                                                     <textarea type="text" name="sub_regulation_content[{{ $k }}]"

@@ -49,5 +49,9 @@ class Section extends Model
     {
         return $this->hasMany(Footnote::class, 'section_id', 'section_id');
     }
+    public function subtype()
+    {
+        return $this->belongsTo(SubType::class, 'subtype_id');
+    }
     
 }

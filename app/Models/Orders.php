@@ -40,7 +40,11 @@ class Orders extends Model
     {
         return $this->belongsTo(Priliminary::class, 'priliminary_id', 'priliminary_id');
     }
-
+    
+    public function subOrderModel()
+    {
+        return $this->hasMany(SubOrders::class, 'order_id', 'order_id');
+    }
     public function footnoteModel()
     {
         return $this->hasMany(Footnote::class, 'order_id', 'order_id');

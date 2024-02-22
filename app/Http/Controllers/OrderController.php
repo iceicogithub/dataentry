@@ -3,40 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appendices;
-use App\Models\Appendix;
 use App\Models\Chapter;
 use App\Models\Footnote;
+use App\Models\Orders;
 use App\Models\Parts;
 use App\Models\Priliminary;
 use App\Models\Schedule;
-use App\Models\SubAppendix;
+use App\Models\SubOrders;
 use Illuminate\Http\Request;
 
-class AppendixController extends Controller
+class OrderController extends Controller
 {
     
-    public function edit_appendix($id)
+    public function edit_order($id)
     {
-        $appendix = Appendix::with('ChapterModel', 'Partmodel','Appendicesmodel','Schedulemodel','PriliminaryModel')->where('appendix_id', $id)->first();
-        $subappendix = Appendix::where('appendix_id', $id)
-            ->with(['subAppendixModel', 'footnoteModel' => function ($query) {
-                $query->whereNull('sub_appendix_id');
+        $order = Orders::with('ChapterModel', 'Partmodel','Appendicesmodel','Schedulemodel','PriliminaryModel')->where('order_id', $id)->first();
+        $suborder = Orders::where('order_id', $id)
+            ->with(['subOrderModel', 'footnoteModel' => function ($query) {
+                $query->whereNull('sub_order_id');
             }])
             ->get();
 
-        $sub_appendix_f = SubAppendix::where('appendix_id', $id)->with('footnoteModel')->get();
+        $sub_order_f = SubOrders::where('order_id', $id)->with('footnoteModel')->get();
 
         $count = 0;
 
-        if ($sub_appendix_f) {
-            foreach ($sub_appendix_f as $sub_appendix) {
-                $count += $sub_appendix->footnoteModel->count();
+        if ($sub_order_f) {
+            foreach ($sub_order_f as $sub_order) {
+                $count += $sub_order->footnoteModel->count();
             }
         }
 
 
 
-        return view('admin.appendix.edit', compact('appendix', 'subappendix', 'sub_appendix_f', 'count'));
+        return view('admin.Orders.edit', compact('order', 'suborder', 'sub_order_f', 'count'));
     }
 
 
@@ -89,50 +89,50 @@ class AppendixController extends Controller
     
 
             // Check if section_id exists in the request
-            if (!$request->has('appendix_id')) {
-                return redirect()->route('edit-appendix', ['id' => $id])->withErrors(['error' => 'Appendix ID is missing']);
+            if (!$request->has('order_id')) {
+                return redirect()->route('edit-order', ['id' => $id])->withErrors(['error' => 'Order ID is missing']);
             }
 
-            $appendix = Appendix::find($request->appendix_id);
+            $order = Orders::find($request->order_id);
 
             // Check if the section is found
-            if (!$appendix) {
-                return redirect()->route('edit-appendix', ['id' => $id])->withErrors(['error' => 'Appendix not found']);
+            if (!$order) {
+                return redirect()->route('edit-order', ['id' => $id])->withErrors(['error' => 'Order not found']);
             }
-            if ($appendix) {
+            if ($order) {
 
-                $appendix->appendix_content = $request->appendix_content ?? null;
-                $appendix->appendix_title = $request->appendix_title ?? null;
-                $appendix->appendix_no = $request->appendix_no ?? null;
-                $appendix->update();
+                $order->order_content = $request->order_content ?? null;
+                $order->order_title = $request->order_title ?? null;
+                $order->order_no = $request->order_no ?? null;
+                $order->update();
 
 
-                if ($request->has('appendix_footnote_content')) {
-                    foreach ($request->appendix_footnote_content as $key => $items) {
+                if ($request->has('order_footnote_content')) {
+                    foreach ($request->order_footnote_content as $key => $items) {
                         // Check if the key exists before using it
                         foreach ($items as $kys => $item) {
                             // Check if the sec_footnote_id exists at the specified index
-                            if (isset($request->appendix_footnote_id[$key][$kys])) {
+                            if (isset($request->order_footnote_id[$key][$kys])) {
                                 // Use first() instead of get() to get a single model instance
-                                $foot = Footnote::find($request->appendix_footnote_id[$key][$kys]);
+                                $foot = Footnote::find($request->order_footnote_id[$key][$kys]);
 
                                 if ($foot) {
                                     $foot->update([
                                         'footnote_content' => $item ?? null,
-                                        'footnote_no' => $request->appendix_footnote_no[$key][$kys] ?? null,
+                                        'footnote_no' => $request->order_footnote_no[$key][$kys] ?? null,
                                     ]);
                                 }
                             } else {
                                 // Create a new footnote
                                 $footnote = new Footnote();
-                                $footnote->appendix_id = $id ?? null;
-                                $footnote->appendix_no = $appendix->appendix_no ?? null;
-                                $footnote->act_id = $appendix->act_id ?? null;
-                                $footnote->chapter_id = $appendix->chapter_id ?? null;
-                                $footnote->parts_id = $appendix->parts_id ?? null;
-                                $footnote->priliminary_id = $appendix->priliminary_id ?? null;
-                                $footnote->schedule_id = $appendix->schedule_id ?? null;
-                                $footnote->appendices_id = $appendix->appendices_id ?? null;
+                                $footnote->order_id = $id ?? null;
+                                $footnote->order_no = $order->order_no ?? null;
+                                $footnote->act_id = $order->act_id ?? null;
+                                $footnote->chapter_id = $order->chapter_id ?? null;
+                                $footnote->parts_id = $order->parts_id ?? null;
+                                $footnote->priliminary_id = $order->priliminary_id ?? null;
+                                $footnote->schedule_id = $order->schedule_id ?? null;
+                                $footnote->appendices_id = $order->appendices_id ?? null;
                                 $footnote->footnote_content = $item ?? null;
                                 $footnote->save();
                             }
@@ -143,18 +143,18 @@ class AppendixController extends Controller
 
             // Store Sub-Sections
 
-            if ($request->has('sub_appendix_no')) {
-                foreach ($request->sub_appendix_no as $key => $item) {
+            if ($request->has('sub_order_no')) {
+                foreach ($request->sub_order_no as $key => $item) {
                     // Check if sub_section_id is present in the request
-                    if ($request->filled('sub_appendix_id') && is_array($request->sub_appendix_id) && array_key_exists($key, $request->sub_appendix_id)) {
+                    if ($request->filled('sub_order_id') && is_array($request->sub_order_id) && array_key_exists($key, $request->sub_order_id)) {
 
-                        $sub_appendix = SubAppendix::find($request->sub_appendix_id[$key]);
+                        $sub_order = SubOrders::find($request->sub_order_id[$key]);
 
                         // Check if $sub_section is found in the database and the IDs match
-                        if ($sub_appendix && $sub_appendix->sub_appendix_id == $request->sub_appendix_id[$key]) {
-                            $sub_appendix->sub_appendix_no = $item ?? null;
-                            $sub_appendix->sub_appendix_content = $request->sub_appendix_content[$key] ?? null;
-                            $sub_appendix->update();
+                        if ($sub_order && $sub_order->sub_order_id == $request->sub_order_id[$key]) {
+                            $sub_order->sub_order_no = $item ?? null;
+                            $sub_order->sub_order_content = $request->sub_order_content[$key] ?? null;
+                            $sub_order->update();
 
                             if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
                                 foreach ($request->sub_footnote_content[$key] as $kys => $item) {
@@ -171,14 +171,14 @@ class AppendixController extends Controller
                                     } else {
                                         // Create a new footnote only if sub_footnote_id does not exist
                                         $footnote = new Footnote();
-                                        $footnote->sub_appendix_id = $sub_appendix->sub_appendix_id;
-                                        $footnote->appendix_id = $id ?? null;
-                                        $footnote->act_id = $appendix->act_id ?? null;
-                                        $footnote->chapter_id = $appendix->chapter_id ?? null;
-                                        $footnote->parts_id = $appendix->parts_id ?? null;
-                                        $footnote->priliminary_id = $appendix->priliminary_id ?? null;
-                                        $footnote->schedule_id = $appendix->schedule_id ?? null;
-                                        $footnote->appendices_id = $appendix->appendices_id ?? null;
+                                        $footnote->sub_order_id = $sub_order->sub_order_id;
+                                        $footnote->order_id = $id ?? null;
+                                        $footnote->act_id = $order->act_id ?? null;
+                                        $footnote->chapter_id = $order->chapter_id ?? null;
+                                        $footnote->parts_id = $order->parts_id ?? null;
+                                        $footnote->priliminary_id = $order->priliminary_id ?? null;
+                                        $footnote->schedule_id = $order->schedule_id ?? null;
+                                        $footnote->appendices_id = $order->appendices_id ?? null;
                                         $footnote->footnote_content = $item ?? null;
                                         $footnote->save();
                                     }
@@ -187,18 +187,18 @@ class AppendixController extends Controller
                         }
                     } else {
                         // Existing subsection not found, create a new one
-                        $subappendix = new SubAppendix();
-                        $subappendix->appendix_id = $id ?? null;
-                        $subappendix->sub_appendix_no = $item ?? null;
-                        $subappendix->appendix_no = $appendix->appendix_no ?? null;
-                        $subappendix->act_id = $appendix->act_id ?? null;
-                        $subappendix->chapter_id = $appendix->chapter_id ?? null;
-                        $subappendix->parts_id = $appendix->parts_id ?? null;
-                        $subappendix->priliminary_id = $appendix->priliminary_id ?? null;
-                        $subappendix->schedule_id = $appendix->schedule_id ?? null;
-                        $subappendix->appendices_id = $appendix->appendices_id ?? null;
-                        $subappendix->sub_appendix_content = $request->sub_appendix_content[$key] ?? null;
-                        $subappendix->save();
+                        $suborder = new SubOrders();
+                        $suborder->order_id = $id ?? null;
+                        $suborder->sub_order_no = $item ?? null;
+                        $suborder->order_no = $order->order_no ?? null;
+                        $suborder->act_id = $order->act_id ?? null;
+                        $suborder->chapter_id = $order->chapter_id ?? null;
+                        $suborder->parts_id = $order->parts_id ?? null;
+                        $suborder->priliminary_id = $order->priliminary_id ?? null;
+                        $suborder->schedule_id = $order->schedule_id ?? null;
+                        $suborder->appendices_id = $order->appendices_id ?? null;
+                        $suborder->sub_order_content = $request->sub_order_content[$key] ?? null;
+                        $suborder->save();
 
                         if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
                             foreach ($request->sub_footnote_content[$key] as $kys => $item) {
@@ -206,14 +206,14 @@ class AppendixController extends Controller
                                 if (isset($request->sub_footnote_content[$key][$kys])) {
                                     // Create a new footnote for the newly created subsection
                                     $footnote = new Footnote();
-                                    $footnote->sub_appendix_id = $subappendix->sub_appendix_id;
-                                    $footnote->appendix_id = $id ?? null;
-                                    $footnote->act_id = $appendix->act_id ?? null;
-                                    $footnote->chapter_id = $appendix->chapter_id ?? null;
-                                    $footnote->parts_id = $appendix->parts_id ?? null;
-                                    $footnote->priliminary_id = $appendix->priliminary_id ?? null;
-                                    $footnote->schedule_id = $appendix->schedule_id ?? null;
-                                    $footnote->appendices_id = $appendix->appendices_id ?? null;
+                                    $footnote->sub_order_id = $suborder->sub_order_id;
+                                    $footnote->order_id = $id ?? null;
+                                    $footnote->act_id = $order->act_id ?? null;
+                                    $footnote->chapter_id = $order->chapter_id ?? null;
+                                    $footnote->parts_id = $order->parts_id ?? null;
+                                    $footnote->priliminary_id = $order->priliminary_id ?? null;
+                                    $footnote->schedule_id = $order->schedule_id ?? null;
+                                    $footnote->appendices_id = $order->appendices_id ?? null;
                                     $footnote->footnote_content = $item ?? null;
                                     $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
                                     $footnote->save();
@@ -226,24 +226,24 @@ class AppendixController extends Controller
 
 
 
-            return redirect()->route('get_act_section', ['id' => $appendix->act_id])->with('success', 'Appendix updated successfully');
+            return redirect()->route('get_act_section', ['id' => $order->act_id])->with('success', 'Order updated successfully');
         // } catch (\Exception $e) {
         //     \Log::error('Error updating Act: ' . $e->getMessage());
-        //     return redirect()->route('edit-appendix', ['id' => $id])->withErrors(['error' => 'Failed to update Appendix. Please try again.' . $e->getMessage()]);
+        //     return redirect()->route('edit-order', ['id' => $id])->withErrors(['error' => 'Failed to update Orders. Please try again.' . $e->getMessage()]);
         // }
     }
 
-    public function add_below_new_appendix(Request $request, $id, $appendix_id, $appendix_rank)
+    public function add_below_new_order(Request $request, $id, $order_id, $order_rank)
     {
         
-        $appendix_rank = $appendix_rank;
-        $appendix = Appendix::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendicesmodel','Schedulemodel')->where('act_id', $id)
-            ->where('appendix_id', $appendix_id)->first();
+        $order_rank = $order_rank;
+        $order = Orders::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendicesmodel','Schedulemodel')->where('act_id', $id)
+            ->where('order_id', $order_id)->first();
 
-        return view('admin.appendix.add_new', compact('appendix', 'appendix_rank'));
+        return view('admin.Orders.add_new', compact('order', 'order_rank'));
     }
 
-    public function add_new_appendix(Request $request)
+    public function add_new_order(Request $request)
     {
         // dd($request);
         // die();
@@ -291,13 +291,13 @@ class AppendixController extends Controller
 
 
         $id = $request->act_id;
-        $appendix_no = $request->appendix_no;
-        $appendix_rank = $request->appendix_rank;
+        $order_no = $request->order_no;
+        $order_rank = $request->order_rank;
         $maintypeId = $request->maintype_id;
 
         // Calculate the next section number
-        $nextAppendixNo = $appendix_no;
-        $nextAppendixRank = $appendix_rank + 0.01;
+        $nextOrderNo = $order_no;
+        $nextOrderRank = $order_rank + 0.01;
 
 
 
@@ -306,9 +306,9 @@ class AppendixController extends Controller
         //     ->increment('section_no');
 
         // Create the new section with the incremented section_no
-        $appendix = Appendix::create([
-            'appendix_rank' => $nextAppendixRank ?? 1,
-            'appendix_no' => $nextAppendixNo,
+        $order = Orders::create([
+            'order_rank' => $nextOrderRank ?? 1,
+            'order_no' => $nextOrderNo,
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
             'chapter_id' => $request->chapter_id ?? null,
@@ -317,17 +317,17 @@ class AppendixController extends Controller
             'schedule_id' => $request->schedule_id ?? null,
             'appendices_id' => $request->appendices_id ?? null,
             'subtypes_id' => $request->subtypes_id,
-            'appendix_title' => $request->appendix_title,
-            'appendix_content' => $request->appendix_content,
+            'order_title' => $request->order_title,
+            'order_content' => $request->order_content,
         ]);
 
-        if ($request->has('appendix_footnote_content')) {
-            foreach ($request->appendix_footnote_content as $key => $item) {
+        if ($request->has('order_footnote_content')) {
+            foreach ($request->order_footnote_content as $key => $item) {
                 // Check if the key exists before using it
-                if (isset($request->appendix_footnote_content[$key])) {
+                if (isset($request->order_footnote_content[$key])) {
                     // Create a new footnote
                     $footnote = new Footnote();
-                    $footnote->appendix_id = $appendix->appendix_id ?? null;
+                    $footnote->order_id = $order->order_id ?? null;
                     $footnote->act_id = $request->act_id ?? null;
                     $footnote->chapter_id = $request->chapter_id ?? null;
                     $footnote->priliminary_id = $request->priliminary_id ?? null;
@@ -340,20 +340,20 @@ class AppendixController extends Controller
             }
         }
 
-        if ($request->has('sub_appendix_no')) {
-            foreach ($request->sub_appendix_no as $key => $item) {
+        if ($request->has('sub_order_no')) {
+            foreach ($request->sub_order_no as $key => $item) {
                 // Existing subsection not found, create a new one
-                $sub_appendix = SubAppendix::create([
-                    'appendix_id' => $appendix->appendix_id,
-                    'sub_appendix_no' => $item ?? null,
-                    'appendix_no' => $nextAppendixNo,
+                $sub_order = SubOrders::create([
+                    'order_id' => $order->order_id,
+                    'sub_order_no' => $item ?? null,
+                    'order_no' => $nextOrderNo,
                     'act_id' => $request->act_id,
                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                     'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                     'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
                     'appendices_id' => $maintypeId == "5" ? $request->appendices_id : null,
-                    'sub_appendix_content' => $request->sub_appendix_content[$key] ?? null,
+                    'sub_order_content' => $request->sub_order_content[$key] ?? null,
                 ]);
 
                 if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
@@ -362,8 +362,8 @@ class AppendixController extends Controller
                         if (isset($request->sub_footnote_content[$key][$kys])) {
                             // Create a new footnote for the newly created subsection
                             $footnote = new Footnote();
-                            $footnote->sub_appendix_id = $sub_appendix->sub_appendix_id;
-                            $footnote->appendix_id = $appendix->appendix_id ?? null;
+                            $footnote->sub_order_id = $sub_order->sub_order_id;
+                            $footnote->order_id = $order->order_id ?? null;
                             $footnote->act_id = $request->act_id ?? null;
                             $footnote->chapter_id = $request->chapter_id ?? null;
                             $footnote->parts_id = $request->parts_id ?? null;
@@ -387,53 +387,53 @@ class AppendixController extends Controller
     }
    
 
-    public function view_sub_appendix(Request $request,  $id)
+    public function view_sub_order(Request $request,  $id)
     {
-        $appendix = Appendix::where('appendix_id', $id)->first();
-        $sub_appendix = SubAppendix::where('appendix_id', $id)->with('footnoteModel')->get();
-        return view('admin.appendix.view', compact('appendix','sub_appendix'));
+        $order = Orders::where('order_id', $id)->first();
+        $sub_order = SubOrders::where('order_id', $id)->with('footnoteModel')->get();
+        return view('admin.Orders.view', compact('order','sub_order'));
     }
 
-    public function destroy_sub_appendix(string $id)
+    public function destroy_sub_order(string $id)
     {
         try {
-            $subappendix = SubAppendix::find($id);
+            $suborder = SubOrders::find($id);
 
-            if (!$subappendix) {
-                return redirect()->back()->withErrors(['error' => 'Sub-Appendix not found.']);
+            if (!$suborder) {
+                return redirect()->back()->withErrors(['error' => 'Sub-Order not found.']);
             }
             
-            Footnote::where('sub_appendix_id', $id)->delete();
+            Footnote::where('sub_order_id', $id)->delete();
 
-            $subappendix->delete();
+            $suborder->delete();
 
-            return redirect()->back()->with('success', 'Sub-Appendix and related records deleted successfully.');
+            return redirect()->back()->with('success', 'Sub-order and related records deleted successfully.');
         } catch (\Exception $e) {
-            \Log::error('Error deleting Sub-Appendix: ' . $e->getMessage());
+            \Log::error('Error deleting Sub-order: ' . $e->getMessage());
 
-            return redirect()->back()->withErrors(['error' => 'Failed to delete Sub-Appendix. Please try again.' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Failed to delete Sub-order. Please try again.' . $e->getMessage()]);
         }
     }
 
     public function destroy(string $id)
     {
         try {
-            $appendix = Appendix::find($id);
+            $order = Orders::find($id);
 
-            if (!$appendix) {
-                return redirect()->back()->withErrors(['error' => 'Appendix not found.']);
+            if (!$order) {
+                return redirect()->back()->withErrors(['error' => 'Order not found.']);
             }
             
-            SubAppendix::where('appendix_id', $id)->delete();
-            Footnote::where('appendix_id', $id)->delete();
+            SubOrders::where('order_id', $id)->delete();
+            Footnote::where('order_id', $id)->delete();
 
-            $appendix->delete();
+            $order->delete();
 
-            return redirect()->back()->with('success', 'Appendix and related records deleted successfully.');
+            return redirect()->back()->with('success', 'Order and related records deleted successfully.');
         } catch (\Exception $e) {
-            \Log::error('Error deleting appendix: ' . $e->getMessage());
+            \Log::error('Error deleting order: ' . $e->getMessage());
 
-            return redirect()->back()->withErrors(['error' => 'Failed to delete appendix. Please try again.' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Failed to delete order. Please try again.' . $e->getMessage()]);
         }
     }
     public function delete_footnote(string $id)
@@ -457,4 +457,3 @@ class AppendixController extends Controller
     }
 
 }
-
