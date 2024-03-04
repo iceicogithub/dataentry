@@ -79,3 +79,5 @@ sub_appendixs,
 sub_regulation,
 this above table would be added 
 ]  
+ADD SCHEDULE IN SUBTYPE
+ALTER TABLE `footnote` ADD `stschedule_id` INT(11) NULL DEFAULT NULL AFTER `sub_appendix_id`, ADD `stschedule_no` VARCHAR(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL AFTER `stschedule_id`, ADD `sub_stschedule_id` INT(11) NULL DEFAULT NULL AFTER `stschedule_no`;

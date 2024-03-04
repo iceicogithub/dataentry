@@ -72,7 +72,7 @@ class RulesController extends Controller
             // Create the new section with the incremented section_no
             $rule = Rules::create([
                 'rule_rank'    => $nextRuleRank ?? 1,
-                // 'rule_no'      => $nextRuleNo,
+                'rule_no'      => $request->rule_no ?? null,
                 'act_id'       => $request->act_id,
                 'maintype_id'  => $maintypeId,
                 'schedule_id'  => $request->schedule_id ?? null,
@@ -102,7 +102,7 @@ class RulesController extends Controller
                     $sub_rule = SubRules::create([
                         'rule_id' => $rule->rule_id,
                         'sub_rule_no' => $item ?? null,
-                        // 'rule_no' => $nextRuleNo,
+                        'rule_no' => $request->rule_no ?? null,
                         'act_id' => $request->act_id,
                         'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
                         'sub_rule_content' => $request->sub_rule_content[$key] ?? null,

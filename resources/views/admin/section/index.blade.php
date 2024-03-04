@@ -644,7 +644,50 @@
                                         </tr>
                                     @endforeach
                                 @endif
-
+                                @if ($act_stschedule)
+                                    @foreach ($act_stschedule as $item)
+                                        <tr>
+                                            <td scope="row">@php echo $a++; @endphp</td>
+                                            <td class="text-capitalize">
+                                                @if ($item->maintype_id == 1)
+                                                    {!! $item->ChapterModel->chapter_title !!}
+                                                @elseif($item->maintype_id == 2)
+                                                    {!! $item->Partmodel->parts_title !!}
+                                                @elseif($item->maintype_id == 3)
+                                                    {!! $item->PriliminaryModel->priliminary_title !!}
+                                                @elseif($item->maintype_id == 4)
+                                                    {!! $item->Schedulemodel->schedule_title !!}
+                                                @elseif($item->maintype_id == 5)
+                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                @else
+                                                    null
+                                                @endif
+                                            </td>
+                                            <td class="text-capitalize">{{ $item->stschedule_no }}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->stschedule_title) !!}</td>
+                                            <td class="text-capitalize">{{ $item->updated_at }}</td>
+                                            <td class="text-capitalize d-flex justify-content-center">
+                                                <a href="/edit-stschedule/{{ $item->stschedule_id }}" title="Edit"
+                                                    class="px-1">
+                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                </a>
+                                                <a href="/view-sub-stschedule/{{ $item->stschedule_id }}" title="View"
+                                                    class="px-1">
+                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/delete_stschedule/' . $item->stschedule_id) }}"
+                                                    title="Delete" class="px-1"
+                                                    onclick="return confirm('Are you sure ?')">
+                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('add_below_new_stschedule', ['act_id' => $item->act_id, 'stschedule_id' => $item->stschedule_id, 'stschedule_rank' => $item->stschedule_rank]) }}"
+                                                    title="Add Next Schedule" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -718,5 +761,5 @@
 
         });
     </script>
-
+    
 @endsection

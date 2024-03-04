@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appendices;
+use App\Models\Chapter;
 use App\Models\Footnote;
 use App\Models\Part;
+use App\Models\Parts;
+use App\Models\Priliminary;
+use App\Models\Schedule;
 use App\Models\SubPart;
 use Illuminate\Http\Request;
 
@@ -239,7 +244,7 @@ class PartController extends Controller
    {
        // dd($request);
        // die();
-       // try {
+       try {
        if ($request->has('chapter_id')) {
            $chapter = Chapter::find($request->chapter_id);
 
@@ -283,12 +288,12 @@ class PartController extends Controller
 
 
        $id = $request->act_id;
-       $part_no = $request->part_no;
+    //    $part_no = $request->part_no;
        $part_rank = $request->part_rank;
        $maintypeId = $request->maintype_id;
 
        // Calculate the next section number
-       $nextPartNo = $part_no;
+    //    $nextPartNo = $part_no;
        $nextPartRank = $part_rank + 0.01;
 
 
@@ -300,7 +305,7 @@ class PartController extends Controller
        // Create the new section with the incremented section_no
        $part = Part::create([
            'part_rank' => $nextPartRank ?? 1,
-           'part_no' => $nextPartNo,
+           'part_no' =>  $request->part_no ?? null,
            'act_id' => $request->act_id,
            'maintype_id' => $maintypeId,
            'chapter_id' => $request->chapter_id ?? null,
@@ -338,7 +343,7 @@ class PartController extends Controller
                $sub_part = SubPart::create([
                    'part_id' => $part->part_id,
                    'sub_part_no' => $item ?? null,
-                   'part_no' => $nextPartNo,
+                   'part_no' => $request->part_no ?? null,
                    'act_id' => $request->act_id,
                    'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                    'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
@@ -371,11 +376,11 @@ class PartController extends Controller
        }
 
        return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Ayrticle created successfully');
-       // } catch (\Exception $e) {
-       //     \Log::error('Error creating Act: ' . $e->getMessage());
+       } catch (\Exception $e) {
+           \Log::error('Error creating Act: ' . $e->getMessage());
 
-       //     return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
-       // }
+           return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
+       }
    }
 
    public function view_sub_part(Request $request,  $id)

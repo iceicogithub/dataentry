@@ -15,6 +15,14 @@ use App\Models\Orders;
 use App\Models\Part;
 use App\Models\Parts;
 use App\Models\PartsType;
+use App\Models\Stschedule;
+use App\Models\SubAnnexture;
+use App\Models\SubAppendix;
+use App\Models\SubArticle;
+use App\Models\SubLists;
+use App\Models\SubOrders;
+use App\Models\SubPart;
+use App\Models\SubRegulation;
 use App\Models\SubSection;
 use App\Models\Footnote;
 use App\Models\Chapter;
@@ -27,6 +35,7 @@ use App\Models\Section;
 use App\Models\State;
 use App\Models\Status;
 use App\Models\SubRules;
+use App\Models\SubStschedule;
 use App\Models\SubType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -56,18 +65,13 @@ class ActController extends Controller
             ->get()
             ->sortBy(function ($section) {
                 $mixstring = $section->section_no;
-
-                // Check if the regular expression matches
-                if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                    $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                    $alphabeticPart = strtolower($matches[2]);
-
-                    return $numericPart . $alphabeticPart;
-                } else {
-                    // Handle the case where the regular expression doesn't match
-                    // You can choose to return something specific or handle it in another way
-                    return $mixstring; // Default behavior is to return the mixstring as is
-                }
+        
+                // Extract only numeric and alphabetic parts, ignoring special characters
+                preg_match_all('/(\d+)|([a-zA-Z]+)/', $mixstring, $matches);
+                $numericPart = isset($matches[1][0]) ? str_pad($matches[1][0], 10, '0', STR_PAD_LEFT) : '';
+                $alphabeticPart = isset($matches[2][0]) ? strtolower($matches[2][0]) : '';
+        
+                return $numericPart . $alphabeticPart;
             }, SORT_NATURAL);
 
         $act_article = Article::where('act_id', $id)
@@ -77,16 +81,11 @@ class ActController extends Controller
                 $mixstring = $article->article_no;
 
                 // Check if the regular expression matches
-                if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                    $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                    $alphabeticPart = strtolower($matches[2]);
+                preg_match_all('/(\d+)|([a-zA-Z]+)/', $mixstring, $matches);
+                $numericPart = isset($matches[1][0]) ? str_pad($matches[1][0], 10, '0', STR_PAD_LEFT) : '';
+                $alphabeticPart = isset($matches[2][0]) ? strtolower($matches[2][0]) : '';
 
-                    return $numericPart . $alphabeticPart;
-                } else {
-                    // Handle the case where the regular expression doesn't match
-                    // You can choose to return something specific or handle it in another way
-                    return $mixstring; // Default behavior is to return the mixstring as is
-                }
+                return $numericPart . $alphabeticPart;
             }, SORT_NATURAL);
 
         $act_rule = Rules::where('act_id', $id)
@@ -95,17 +94,11 @@ class ActController extends Controller
             ->sortBy(function ($rule) {
                 $mixstring = $rule->rule_no;
 
-                // Check if the regular expression matches
-                if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                    $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                    $alphabeticPart = strtolower($matches[2]);
+                preg_match_all('/(\d+)|([a-zA-Z]+)/', $mixstring, $matches);
+                $numericPart = isset($matches[1][0]) ? str_pad($matches[1][0], 10, '0', STR_PAD_LEFT) : '';
+                $alphabeticPart = isset($matches[2][0]) ? strtolower($matches[2][0]) : '';
 
-                    return $numericPart . $alphabeticPart;
-                } else {
-                    // Handle the case where the regular expression doesn't match
-                    // You can choose to return something specific or handle it in another way
-                    return $mixstring; // Default behavior is to return the mixstring as is
-                }
+                return $numericPart . $alphabeticPart;
             }, SORT_NATURAL);
 
         $act_regulation = Regulation::where('act_id', $id)
@@ -114,17 +107,11 @@ class ActController extends Controller
             ->sortBy(function ($regulation) {
                 $mixstring = $regulation->regulation_no;
 
-                // Check if the regular expression matches
-                if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                    $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                    $alphabeticPart = strtolower($matches[2]);
+                preg_match_all('/(\d+)|([a-zA-Z]+)/', $mixstring, $matches);
+                $numericPart = isset($matches[1][0]) ? str_pad($matches[1][0], 10, '0', STR_PAD_LEFT) : '';
+                $alphabeticPart = isset($matches[2][0]) ? strtolower($matches[2][0]) : '';
 
-                    return $numericPart . $alphabeticPart;
-                } else {
-                    // Handle the case where the regular expression doesn't match
-                    // You can choose to return something specific or handle it in another way
-                    return $mixstring; // Default behavior is to return the mixstring as is
-                }
+                return $numericPart . $alphabeticPart;
             }, SORT_NATURAL);
 
         $act_list = Lists::where('act_id', $id)
@@ -133,17 +120,11 @@ class ActController extends Controller
             ->sortBy(function ($list) {
                 $mixstring = $list->list_no;
 
-                // Check if the regular expression matches
-                if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                    $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                    $alphabeticPart = strtolower($matches[2]);
+                preg_match_all('/(\d+)|([a-zA-Z]+)/', $mixstring, $matches);
+                $numericPart = isset($matches[1][0]) ? str_pad($matches[1][0], 10, '0', STR_PAD_LEFT) : '';
+                $alphabeticPart = isset($matches[2][0]) ? strtolower($matches[2][0]) : '';
 
-                    return $numericPart . $alphabeticPart;
-                } else {
-                    // Handle the case where the regular expression doesn't match
-                    // You can choose to return something specific or handle it in another way
-                    return $mixstring; // Default behavior is to return the mixstring as is
-                }
+                return $numericPart . $alphabeticPart;
             }, SORT_NATURAL);
 
         $act_part = Part::where('act_id', $id)
@@ -152,17 +133,11 @@ class ActController extends Controller
             ->sortBy(function ($part) {
                 $mixstring = $part->part_no;
 
-                // Check if the regular expression matches
-                if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                    $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                    $alphabeticPart = strtolower($matches[2]);
+                preg_match_all('/(\d+)|([a-zA-Z]+)/', $mixstring, $matches);
+                $numericPart = isset($matches[1][0]) ? str_pad($matches[1][0], 10, '0', STR_PAD_LEFT) : '';
+                $alphabeticPart = isset($matches[2][0]) ? strtolower($matches[2][0]) : '';
 
-                    return $numericPart . $alphabeticPart;
-                } else {
-                    // Handle the case where the regular expression doesn't match
-                    // You can choose to return something specific or handle it in another way
-                    return $mixstring; // Default behavior is to return the mixstring as is
-                }
+                return $numericPart . $alphabeticPart;
             }, SORT_NATURAL);
 
         $act_appendix = Appendix::where('act_id', $id)
@@ -171,17 +146,11 @@ class ActController extends Controller
             ->sortBy(function ($appendix) {
                 $mixstring = $appendix->appendix_no;
 
-                // Check if the regular expression matches
-                if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                    $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                    $alphabeticPart = strtolower($matches[2]);
+                preg_match_all('/(\d+)|([a-zA-Z]+)/', $mixstring, $matches);
+                $numericPart = isset($matches[1][0]) ? str_pad($matches[1][0], 10, '0', STR_PAD_LEFT) : '';
+                $alphabeticPart = isset($matches[2][0]) ? strtolower($matches[2][0]) : '';
 
-                    return $numericPart . $alphabeticPart;
-                } else {
-                    // Handle the case where the regular expression doesn't match
-                    // You can choose to return something specific or handle it in another way
-                    return $mixstring; // Default behavior is to return the mixstring as is
-                }
+                return $numericPart . $alphabeticPart;
             }, SORT_NATURAL);
 
         $act_order = Orders::where('act_id', $id)
@@ -189,18 +158,11 @@ class ActController extends Controller
             ->get()
             ->sortBy(function ($order) {
                 $mixstring = $order->order_no;
+                preg_match_all('/(\d+)|([a-zA-Z]+)/', $mixstring, $matches);
+                $numericPart = isset($matches[1][0]) ? str_pad($matches[1][0], 10, '0', STR_PAD_LEFT) : '';
+                $alphabeticPart = isset($matches[2][0]) ? strtolower($matches[2][0]) : '';
 
-                // Check if the regular expression matches
-                if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                    $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                    $alphabeticPart = strtolower($matches[2]);
-
-                    return $numericPart . $alphabeticPart;
-                } else {
-                    // Handle the case where the regular expression doesn't match
-                    // You can choose to return something specific or handle it in another way
-                    return $mixstring; // Default behavior is to return the mixstring as is
-                }
+                return $numericPart . $alphabeticPart;
             }, SORT_NATURAL);
 
         $act_annexture = Annexture::where('act_id', $id)
@@ -209,21 +171,30 @@ class ActController extends Controller
             ->sortBy(function ($annexture) {
                 $mixstring = $annexture->annexture_no;
 
-                // Check if the regular expression matches
-                if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                    $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                    $alphabeticPart = strtolower($matches[2]);
+                preg_match_all('/(\d+)|([a-zA-Z]+)/', $mixstring, $matches);
+                $numericPart = isset($matches[1][0]) ? str_pad($matches[1][0], 10, '0', STR_PAD_LEFT) : '';
+                $alphabeticPart = isset($matches[2][0]) ? strtolower($matches[2][0]) : '';
 
-                    return $numericPart . $alphabeticPart;
-                } else {
-                    // Handle the case where the regular expression doesn't match
-                    // You can choose to return something specific or handle it in another way
-                    return $mixstring; // Default behavior is to return the mixstring as is
-                }
+                return $numericPart . $alphabeticPart;
             }, SORT_NATURAL);
 
+        $act_stschedule = Stschedule::where('act_id', $id)
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+            ->get()
+            ->sortBy(function ($stschedule) {
+                $mixstring = $stschedule->stschedule_no;
 
-        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule', 'act_article', 'act_regulation', 'act_list', 'act_part', 'act_part', 'act_appendix', 'act_order', 'act_annexture'));
+                preg_match_all('/(\d+)|([a-zA-Z]+)/', $mixstring, $matches);
+                $numericPart = isset($matches[1][0]) ? str_pad($matches[1][0], 10, '0', STR_PAD_LEFT) : '';
+                $alphabeticPart = isset($matches[2][0]) ? strtolower($matches[2][0]) : '';
+
+                return $numericPart . $alphabeticPart;
+            }, SORT_NATURAL);
+
+            // dd($act_stschedule);
+            // die();
+
+        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule', 'act_article', 'act_regulation', 'act_list', 'act_part', 'act_part', 'act_appendix', 'act_stschedule', 'act_order', 'act_annexture'));
     }
 
     public function create(Request $request, $id)
@@ -426,6 +397,22 @@ class ActController extends Controller
                                 'annexture_title' => $annexturetitle,
                             ]);
                         }
+                    } elseif ($request->subtypes_id[$key] == 10) {
+
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
+                            $currentStscheduleNo = $request->stschedule_no[$key][$index];
+
+
+                            $stschedule = Stschedule::create([
+                                'stschedule_no' => $currentStscheduleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'chapter_id' => $chapt->chapter_id,
+                                'subtypes_id' => $subtypes_id,
+                                'stschedule_title' => $stscheduletitle,
+                            ]);
+                        }
                     }
                 } elseif ($maintypeId == "2") {
                     $parts = new Parts();
@@ -590,6 +577,23 @@ class ActController extends Controller
                                 'parts_id' => $parts->parts_id,
                                 'subtypes_id' => $subtypes_id,
                                 'annexture_title' => $annexturetitle,
+                            ]);
+                        }
+                    }
+                     elseif ($request->subtypes_id[$key] == 10) {
+
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
+                            $currentStscheduleNo = $request->stschedule_no[$key][$index];
+
+
+                            $stschedule = Stschedule::create([
+                                'stschedule_no' => $currentStscheduleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'stschedule_title' => $stscheduletitle,
                             ]);
                         }
                     }
@@ -758,6 +762,23 @@ class ActController extends Controller
                             ]);
                         }
                     }
+                     elseif ($request->subtypes_id[$key] == 10) {
+
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
+                            $currentStscheduleNo = $request->stschedule_no[$key][$index];
+
+
+                            $stschedule = Stschedule::create([
+                                'stschedule_no' => $currentStscheduleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'stschedule_title' => $stscheduletitle,
+                            ]);
+                        }
+                    }
                 } elseif ($maintypeId == "4") {
                     $schedule = new Schedule();
                     $schedule->act_id = $act->act_id ?? null;
@@ -920,6 +941,23 @@ class ActController extends Controller
                                 'schedule_id' => $schedule->schedule_id,
                                 'subtypes_id' => $subtypes_id,
                                 'annexture_title' => $annexturetitle,
+                            ]);
+                        }
+                    }
+                     elseif ($request->subtypes_id[$key] == 10) {
+
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
+                            $currentStscheduleNo = $request->stschedule_no[$key][$index];
+
+
+                            $stschedule = Stschedule::create([
+                                'stschedule_no' => $currentStscheduleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'stschedule_title' => $stscheduletitle,
                             ]);
                         }
                     }
@@ -1088,6 +1126,23 @@ class ActController extends Controller
                             ]);
                         }
                     }
+                     elseif ($request->subtypes_id[$key] == 10) {
+
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
+                            $currentStscheduleNo = $request->stschedule_no[$key][$index];
+
+
+                            $stschedule = Stschedule::create([
+                                'stschedule_no' => $currentStscheduleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendices_id' => $appendices->appendices_id,
+                                'subtypes_id' => $subtypes_id,
+                                'stschedule_title' => $stscheduletitle,
+                            ]);
+                        }
+                    }
                 } else {
                     dd("something went wrong - right now we are working only in chapter and parts");
                 }
@@ -1198,11 +1253,31 @@ class ActController extends Controller
             // Delete related records
             Chapter::where('act_id', $id)->delete();
             Parts::where('act_id', $id)->delete();
+            Schedule::where('act_id', $id)->delete();
+            Priliminary::where('act_id', $id)->delete();
+            Appendices::where('act_id', $id)->delete();
+
             Section::where('act_id', $id)->delete();
             Rules::where('act_id', $id)->delete();
             Regulation::where('act_id', $id)->delete();
+            Stschedule::where('act_id', $id)->delete();
+            Orders::where('act_id', $id)->delete();
+            Part::where('act_id', $id)->delete();
+            Lists::where('act_id', $id)->delete();
+            Annexture::where('act_id', $id)->delete();
+            Appendix::where('act_id', $id)->delete();
+            Article::where('act_id', $id)->delete();
+
             SubSection::where('act_id', $id)->delete();
             SubRules::where('act_id', $id)->delete();
+            SubRegulation::where('act_id', $id)->delete();
+            SubStschedule::where('act_id', $id)->delete();
+            SubOrders::where('act_id', $id)->delete();
+            SubPart::where('act_id', $id)->delete();
+            SubLists::where('act_id', $id)->delete();
+            SubAnnexture::where('act_id', $id)->delete();
+            SubAppendix::where('act_id', $id)->delete();
+            SubArticle::where('act_id', $id)->delete();
             Footnote::where('act_id', $id)->delete();
 
             $act->delete();

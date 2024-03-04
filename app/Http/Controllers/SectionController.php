@@ -31,7 +31,7 @@ class SectionController extends Controller
     {
         
         $section_rank = $section_rank;
-        $sections = Section::with('ChapterModel', 'Partmodel', 'PriliminaryModel')->where('act_id', $id)
+        $sections = Section::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Schedulemodel','Appendicesmodel')->where('act_id', $id)
             ->where('section_id', $section_id)->first();
 
         return view('admin.section.add_new', compact('sections', 'section_rank'));

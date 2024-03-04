@@ -371,6 +371,31 @@
                                                         </div>
                                                     </div>
 
+                                                    <div class="form-group form-default col-md-12 px-0" id="10Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default ScheduleTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Schedule Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex ScheduleTitle my-1">
+                                                                <input type="text" name="stschedule_no[][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Schedule NO.">
+                                                                <input type="text" name="stschedule_title[][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Schedule Title">
+                                                                <button type="button"
+                                                                    class="add-ScheduleTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-ScheduleTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -793,6 +818,31 @@
                                                                 </button>
                                                                 <button type="button"
                                                                     class="btn btn-sm social youtube p-0 remove-AnnextureTitle">
+                                                                    <i class="fa fa-minus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group form-default col-md-12 px-0" id="9Div"
+                                                        style="display:none">
+                                                        <div class="form-group form-default ScheduleTitleMain"
+                                                            style="display: block">
+                                                            <label class="float-label">Schedule Title<span
+                                                                    class="text-danger">*</span></label>
+                                                            <div class="d-flex ScheduleTitle my-1">
+                                                                <input type="text" name="stschedule_no[${chapterCount}][]"
+                                                                    class="form-control" style="width: 20%;"
+                                                                    placeholder="Enter Schedule NO.">
+                                                                <input type="text" name="stschedule_title[${chapterCount}][]"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Schedule Title">
+                                                                <button type="button"
+                                                                    class="add-ScheduleTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </button>
+                                                                <button type="button"
+                                                                    class="btn btn-sm social youtube p-0 remove-ScheduleTitle">
                                                                     <i class="fa fa-minus"></i>
                                                                 </button>
                                                             </div>
@@ -1247,6 +1297,47 @@
                         '.AnnextureTitle');
                     if (AnnextureTitles.length > 1) {
                         $(this).closest('.AnnextureTitle').remove();
+                    }
+                });
+
+                // for Schedule 
+                $(document).on('click', '.add-ScheduleTitle', function() {
+                    let ScheduleTitleMain = $(this).closest('.section-set').find(
+                        '.ScheduleTitleMain');
+                    let clonedScheduleTitle = ScheduleTitleMain.find('.ScheduleTitle:first')
+                        .clone(
+                            true);
+                    clonedScheduleTitle.find('input').val('');
+
+                    // Get the chapter count from the data attribute of the closest .section-set
+                    let chapterCount = parseInt($(this).closest('.section-set').data(
+                        'chapter-count')) || 0;
+
+                    // Increment the section index for the new section title
+                    let lastIndex = ScheduleTitleMain.find('.ScheduleTitle').length;
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedScheduleTitle.find('input[name^="stschedule_no"]').each(function(
+                        index) {
+                        $(this).attr('name', 'stschedule_no[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    // Update the input name attribute with the new chapter and section indexes
+                    clonedScheduleTitle.find('input[name^="stschedule_title"]').each(function(
+                        index) {
+                        $(this).attr('name', 'stschedule_title[' + chapterCount + '][' + (
+                            lastIndex + index) + ']');
+                    });
+
+                    ScheduleTitleMain.append(clonedScheduleTitle);
+                });
+
+                $(document).on('click', '.remove-ScheduleTitle', function() {
+                    let ScheduleTitles = $(this).closest('.ScheduleTitleMain').find(
+                        '.ScheduleTitle');
+                    if (ScheduleTitles.length > 1) {
+                        $(this).closest('.ScheduleTitle').remove();
                     }
                 });
 

@@ -262,7 +262,7 @@ class RegulationController extends Controller
     {
         // dd($request);
         // die();
-        // try {
+        try {
         if ($request->has('chapter_id')) {
             $chapter = Chapter::find($request->chapter_id);
 
@@ -306,12 +306,12 @@ class RegulationController extends Controller
 
 
         $id = $request->act_id;
-        $regulation_no = $request->regulation_no;
+        // $regulation_no = $request->regulation_no;
         $regulation_rank = $request->regulation_rank;
         $maintypeId = $request->maintype_id;
 
         // Calculate the next section number
-        $nextRegulationNo = $regulation_no;
+        // $nextRegulationNo = $regulation_no;
         $nextRegulationRank = $regulation_rank + 0.01;
 
 
@@ -323,7 +323,7 @@ class RegulationController extends Controller
         // Create the new section with the incremented section_no
         $regulation = Regulation::create([
             'regulation_rank' => $nextRegulationRank ?? 1,
-            'regulation_no' => $nextRegulationNo,
+            'regulation_no' => $request->regulation_no ?? null,
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
             'chapter_id' => $request->chapter_id ?? null,
@@ -361,7 +361,7 @@ class RegulationController extends Controller
                 $sub_regulation = SubRegulation::create([
                     'regulation_id' => $regulation->regulation_id,
                     'sub_regulation_no' => $item ?? null,
-                    'regulation_no' => $nextRegulationNo,
+                    'regulation_no' => $request->regulation_no ?? null,
                     'act_id' => $request->act_id,
                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
@@ -394,11 +394,11 @@ class RegulationController extends Controller
         }
 
         return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Ayrticle created successfully');
-        // } catch (\Exception $e) {
-        //     \Log::error('Error creating Act: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            \Log::error('Error creating Act: ' . $e->getMessage());
 
-        //     return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
-        // }
+            return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
+        }
     }
 
     public function view_sub_regulation(Request $request, $id)

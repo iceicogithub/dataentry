@@ -245,7 +245,7 @@ class ListController extends Controller
    {
        // dd($request);
        // die();
-       // try {
+       try {
        if ($request->has('chapter_id')) {
            $chapter = Chapter::find($request->chapter_id);
 
@@ -289,12 +289,12 @@ class ListController extends Controller
 
 
        $id = $request->act_id;
-       $list_no = $request->list_no;
+    //    $list_no = $request->list_no;
        $list_rank = $request->list_rank;
        $maintypeId = $request->maintype_id;
 
        // Calculate the next section number
-       $nextListNo = $list_no;
+    //    $nextListNo = $list_no;
        $nextListRank = $list_rank + 0.01;
 
 
@@ -306,7 +306,7 @@ class ListController extends Controller
        // Create the new section with the incremented section_no
        $list = Lists::create([
            'list_rank' => $nextListRank ?? 1,
-           'list_no' => $nextListNo,
+           'list_no' => $request->list_no ?? null,
            'act_id' => $request->act_id,
            'maintype_id' => $maintypeId,
            'chapter_id' => $request->chapter_id ?? null,
@@ -344,7 +344,7 @@ class ListController extends Controller
                $sub_list = SubLists::create([
                    'list_id' => $list->list_id,
                    'sub_list_no' => $item ?? null,
-                   'list_no' => $nextListNo,
+                   'list_no' => $request->list_no ?? null,
                    'act_id' => $request->act_id,
                    'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                    'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
@@ -377,11 +377,11 @@ class ListController extends Controller
        }
 
        return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Ayrticle created successfully');
-       // } catch (\Exception $e) {
-       //     \Log::error('Error creating Act: ' . $e->getMessage());
+       } catch (\Exception $e) {
+           \Log::error('Error creating Act: ' . $e->getMessage());
 
-       //     return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
-       // }
+           return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
+       }
    }
 
    public function view_sub_list(Request $request,  $id)

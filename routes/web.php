@@ -13,6 +13,7 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\RegulationController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\stscheduleController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -154,6 +155,16 @@ Route::get('/delete_order/{id}', [OrderController::class, 'destroy']);
 Route::get('/view-sub-order/{id}', [OrderController::class, 'view_sub_order'])->name('view_sub_order');
 Route::get('/delete_sub_order/{id}', [OrderController::class, 'destroy_sub_order']);
 Route::get('/delete_footnote/{id}', [OrderController::class, 'delete_footnote']);
+
+// Stschedule
+Route::get('/edit-stschedule/{id}', [stscheduleController::class, 'edit_stschedule'])->name('edit_stschedule');
+Route::post('/update_all_stschedule/{id}', [stscheduleController::class, 'update']);
+Route::get('/add_below_new_stschedule/{id}/{stschedule_id}/{stschedule_rank}', [stscheduleController::class, 'add_below_new_stschedule'])->name('add_below_new_stschedule');
+Route::post('/add_new_stschedule', [stscheduleController::class, 'add_new_stschedule']);
+Route::get('/delete_stschedule/{id}', [stscheduleController::class, 'destroy']);
+Route::get('/view-sub-stschedule/{id}', [stscheduleController::class, 'view_sub_stschedule'])->name('view_sub_stschedule');
+Route::get('/delete_sub_stschedule/{id}', [stscheduleController::class, 'destroy_sub_stschedule']);
+Route::get('/delete_footnote/{id}', [stscheduleController::class, 'delete_footnote']);
 
 // Annexture
 Route::get('/edit-annexture/{id}', [AnnextureController::class, 'edit_annexture'])->name('edit_annexture');
