@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Act;
+use App\Models\Appendix;
 use App\Models\Chapter;
 use App\Models\Category;
+use App\Models\Schedule;
 use App\Models\Section;
 use App\Models\SubSection;
 use App\Models\Footnote;
@@ -27,45 +29,65 @@ class SectionController extends Controller
         return view('admin.section.index', compact('status'));
     }
 
-    public function add_below_new_section(Request $request, $id, $section_id, $section_rank)
-    {
-        
-        $section_rank = $section_rank;
-        $sections = Section::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Schedulemodel','Appendicesmodel')->where('act_id', $id)
-            ->where('section_id', $section_id)->first();
+    public function add_below_new_section(Request $request, $id, $section_id)
+        {
+            $sections = Section::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Schedulemodel','Appendixmodel')
+                ->where('act_id', $id)
+                ->where('section_id', $section_id)
+                ->first();
 
-        return view('admin.section.add_new', compact('sections', 'section_rank'));
-    }
+            if (!$sections) {
+                // Handle the scenario where no sections are found
+                abort(404); // or redirect, or return a message
+            }
 
+            return view('admin.section.add_new', compact('sections'));
+        }
     public function add_new_section(Request $request)
     {
         // dd($request);
         // die();
         try {
-        if ($request->has('chapter_id')) {
-            $chapter = Chapter::find($request->chapter_id);
-
-            if ($chapter) {
-                $chapter->chapter_title = $request->chapter_title;
-                $chapter->update();
+            if ($request->has('chapter_id')) {
+                $chapter = Chapter::find($request->chapter_id);
+     
+                if ($chapter) {
+                    $chapter->chapter_title = $request->chapter_title;
+                    $chapter->update();
+                }
             }
-        }
-        if ($request->has('priliminary_id')) {
-            $priliminary = Priliminary::find($request->priliminary_id);
-
-            if ($priliminary) {
-                $priliminary->priliminary_title = $request->priliminary_title;
-                $priliminary->update();
+            if ($request->has('priliminary_id')) {
+                $priliminary = Priliminary::find($request->priliminary_id);
+     
+                if ($priliminary) {
+                    $priliminary->priliminary_title = $request->priliminary_title;
+                    $priliminary->update();
+                }
             }
-        }
-        if ($request->has('parts_id')) {
-            $part = Parts::find($request->parts_id);
-
-            if ($part) {
-                $part->parts_title = $request->parts_title;
-                $part->update();
+            if ($request->has('parts_id')) {
+                $part = Parts::find($request->parts_id);
+     
+                if ($part) {
+                    $part->parts_title = $request->parts_title;
+                    $part->update();
+                }
             }
-        }
+            if ($request->has('schedule_id')) {
+                $schedule = Schedule::find($request->schedule_id);
+     
+                if ($schedule) {
+                    $schedule->schedule_title = $request->schedule_title;
+                    $schedule->update();
+                }
+            }
+            if ($request->has('appendix_id')) {
+                $appendix = Appendix::find($request->appendix_id);
+     
+                if ($appendix) {
+                    $appendix->appendix_title = $request->appendix_title;
+                    $appendix->update();
+                }
+            }
 
 
         $id = $request->act_id;
@@ -92,6 +114,8 @@ class SectionController extends Controller
             'chapter_id' => $request->chapter_id ?? null,
             'priliminary_id' => $request->priliminary_id ?? null,
             'parts_id' => $request->parts_id ?? null,
+            'schedule_id' => $request->schedule_id ?? null,
+            'appendix_id' => $request->appendix_id ?? null,
             'subtypes_id' => $request->subtypes_id,
             'section_title' => $request->section_title,
             'section_content' => $request->section_content,
@@ -107,6 +131,9 @@ class SectionController extends Controller
                     $footnote->act_id = $request->act_id ?? null;
                     $footnote->chapter_id = $request->chapter_id ?? null;
                     $footnote->priliminary_id = $request->priliminary_id ?? null;
+                    $footnote->parts_id = $request->parts_id ?? null;
+                    $footnote->schedule_id = $request->schedule_id ?? null;
+                    $footnote->appendix_id = $request->appendix_id ?? null;
                     $footnote->parts_id = $request->parts_id ?? null;
                     $footnote->footnote_content = $item ?? null;
                     $footnote->save();
@@ -125,6 +152,8 @@ class SectionController extends Controller
                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                     'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
+                    'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
+                    'appendix_id' => $maintypeId == "5" ? $request->appendix_id : null,
                     'sub_section_content' => $request->sub_section_content[$key] ?? null,
                 ]);
 
@@ -140,6 +169,8 @@ class SectionController extends Controller
                             $footnote->chapter_id = $request->chapter_id ?? null;
                             $footnote->parts_id = $request->parts_id ?? null;
                             $footnote->priliminary_id = $request->priliminary_id ?? null;
+                            $footnote->schedule_id = $request->schedule_id ?? null;
+                            $footnote->appendix_id = $request->appendix_id ?? null;
                             $footnote->footnote_content = $item ?? null;
                             $footnote->save();
                         }
@@ -176,7 +207,7 @@ class SectionController extends Controller
 
     public function edit_section($id)
     {
-        $sections = Section::with('ChapterModel', 'Partmodel')->where('section_id', $id)->first();
+        $sections = Section::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel')->where('section_id', $id)->first();
         $subsec = Section::where('section_id', $id)
             ->with(['subsectionModel', 'footnoteModel' => function ($query) {
                 $query->whereNull('sub_section_id');
@@ -207,18 +238,42 @@ class SectionController extends Controller
         try {
             if ($request->has('chapter_id')) {
                 $chapter = Chapter::find($request->chapter_id);
-
+    
                 if ($chapter) {
                     $chapter->chapter_title = $request->chapter_title;
                     $chapter->update();
                 }
             }
+            if ($request->has('priliminary_id')) {
+                $priliminary = Priliminary::find($request->priliminary_id);
+    
+                if ($priliminary) {
+                    $priliminary->priliminary_title = $request->priliminary_title;
+                    $priliminary->update();
+                }
+            }
             if ($request->has('parts_id')) {
                 $part = Parts::find($request->parts_id);
-
+    
                 if ($part) {
                     $part->parts_title = $request->parts_title;
                     $part->update();
+                }
+            }
+            if ($request->has('schedule_id')) {
+                $schedule = Schedule::find($request->schedule_id);
+    
+                if ($schedule) {
+                    $schedule->schedule_title = $request->schedule_title;
+                    $schedule->update();
+                }
+            }
+            if ($request->has('appendix_id')) {
+                $appendix = Appendix::find($request->appendix_id);
+    
+                if ($appendix) {
+                    $appendix->appendix_title = $request->appendix_title;
+                    $appendix->update();
                 }
             }
 
@@ -262,8 +317,11 @@ class SectionController extends Controller
                                 $footnote->section_id = $id ?? null;
                                 $footnote->section_no = $sections->section_no ?? null;
                                 $footnote->act_id = $sections->act_id ?? null;
-                                $footnote->chapter_id = $sections->chapter_id ?? null;
-                                $footnote->parts_id = $sections->parts_id ?? null;
+                                $footnote->chapter_id = $part->chapter_id ?? null;
+                                $footnote->parts_id = $part->parts_id ?? null;
+                                $footnote->priliminary_id = $part->priliminary_id ?? null;
+                                $footnote->schedule_id = $part->schedule_id ?? null;
+                                $footnote->appendix_id = $part->appendix_id ?? null;
                                 $footnote->footnote_content = $item ?? null;
                                 $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
                                 $footnote->save();
@@ -306,8 +364,11 @@ class SectionController extends Controller
                                         $footnote->sub_section_id = $sub_section->sub_section_id;
                                         $footnote->section_id = $id ?? null;
                                         $footnote->act_id = $sections->act_id ?? null;
-                                        $footnote->chapter_id = $sections->chapter_id ?? null;
-                                        $footnote->parts_id = $sections->parts_id ?? null;
+                                        $footnote->chapter_id = $part->chapter_id ?? null;
+                                        $footnote->parts_id = $part->parts_id ?? null;
+                                        $footnote->priliminary_id = $part->priliminary_id ?? null;
+                                        $footnote->schedule_id = $part->schedule_id ?? null;
+                                        $footnote->appendix_id = $part->appendix_id ?? null;
                                         $footnote->footnote_content = $item ?? null;
                                         $footnote->save();
                                     }
@@ -321,8 +382,11 @@ class SectionController extends Controller
                         $subsec->sub_section_no = $item ?? null;
                         $subsec->section_no = $sections->section_no ?? null;
                         $subsec->act_id = $sections->act_id ?? null;
-                        $subsec->chapter_id = $sections->chapter_id ?? null;
-                        $subsec->parts_id = $sections->parts_id ?? null;
+                        $subsec->chapter_id = $part->chapter_id ?? null;
+                        $subsec->parts_id = $part->parts_id ?? null;
+                        $subsec->priliminary_id = $part->priliminary_id ?? null;
+                        $subsec->schedule_id = $part->schedule_id ?? null;
+                        $subsec->appendix_id = $part->appendix_id ?? null;
                         $subsec->sub_section_content = $request->sub_section_content[$key] ?? null;
                         $subsec->save();
 
@@ -335,8 +399,11 @@ class SectionController extends Controller
                                     $footnote->sub_section_id = $subsec->sub_section_id;
                                     $footnote->section_id = $id ?? null;
                                     $footnote->act_id = $sections->act_id ?? null;
-                                    $footnote->chapter_id = $sections->chapter_id ?? null;
-                                    $footnote->parts_id = $sections->parts_id ?? null;
+                                    $footnote->chapter_id = $part->chapter_id ?? null;
+                                    $footnote->parts_id = $part->parts_id ?? null;
+                                    $footnote->priliminary_id = $part->priliminary_id ?? null;
+                                    $footnote->schedule_id = $part->schedule_id ?? null;
+                                    $footnote->appendix_id = $part->appendix_id ?? null;
                                     $footnote->footnote_content = $item ?? null;
                                     $footnote->save();
                                 }

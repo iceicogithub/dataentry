@@ -38,7 +38,7 @@
                     @endif
                     <input type="hidden" name="maintype_id" value="{{ $list->maintype_id }}">
                     <input type="hidden" name="act_id" value="{{ $list->act_id }}">
-                    <input type="hidden" name="section_rank" value="{{ $list }}">
+                    {{-- <input type="hidden" name="section_rank" value="{{ $list }}"> --}}
                     @if ($list->chapter_id)
                         <input type="hidden" name="chapter_id" value="{{ $list->chapter_id }}">
                     @endif
@@ -51,8 +51,8 @@
                     @if ($list->schedule_id)
                         <input type="hidden" name="schedule_id" value="{{ $list->schedule_id }}">
                     @endif
-                    @if ($list->appendices_id)
-                        <input type="hidden" name="appendices_id" value="{{ $list->appendices_id }}">
+                    @if ($list->appendix_id)
+                        <input type="hidden" name="appendix_id" value="{{ $list->appendix_id }}">
                     @endif
                     
                     <div class="card p-5">
@@ -78,9 +78,9 @@
 
                                                 <textarea name="schedule_title" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title" id="s_title">{{ $list->Schedulemodel->schedule_title }}</textarea>
                                             @elseif($list->maintype_id == 5)
-                                                <label class="float-label font-weight-bold">Appendices :</label>
+                                                <label class="float-label font-weight-bold">Appendix :</label>
 
-                                                <textarea name="appendices_title" class="form-control mb-3 appendices_title" placeholder="Enter Appendices Title" id="a_title">{{ $list->Appendicesmodel->appendices_title }}</textarea>
+                                                <textarea name="appendix_title" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title" id="a_title">{{ $list->Appendixmodel->appendix_title }}</textarea>
                                             @else
                                                 null
                                             @endif

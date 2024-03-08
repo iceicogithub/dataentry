@@ -163,13 +163,13 @@
                                     use App\Models\Parts;
                                     use App\Models\Priliminary;
                                     use App\Models\Schedule;
-                                    use App\Models\Appendices;
+                                    use App\Models\Appendix;
 
                                     $chapter = Chapter::with('ChapterType')->where('act_id', $act_id)->first();
                                     $parts = Parts::with('PartsType')->where('act_id', $act_id)->first();
                                     $priliminary = Priliminary::with('PriliminaryType')->where('act_id', $act_id)->first();
                                     $schedule = Schedule::with('ScheduleType')->where('act_id', $act_id)->first();
-                                    $appendices = Appendices::with('AppendicesType')->where('act_id', $act_id)->first();
+                                    $appendix = Appendix::with('AppendixType')->where('act_id', $act_id)->first();
 
                                 @endphp
 
@@ -196,9 +196,9 @@
                                                 Schedule,
                                             @endif
                                         @endif
-                                        @if ($appendices && $appendices->maintype_id)
-                                            @if ($appendices->AppendicesType->maintype_id == '5')
-                                                Appendices,
+                                        @if ($appendix && $appendix->maintype_id)
+                                            @if ($appendix->AppendixType->maintype_id == '5')
+                                                Appendix,
                                             @endif
                                         @endif
 
@@ -214,8 +214,8 @@
                                                 Rule No. ,
                                             @endif
                                         @endif
-                                        @if ($appendices && $appendices->maintype_id)
-                                            @if ($appendices->AppendicesType->maintype_id == '5')
+                                        @if ($appendix && $appendix->maintype_id)
+                                            @if ($appendix->AppendixType->maintype_id == '5')
                                                 Article No. ,
                                             @endif
                                         @endif
@@ -232,8 +232,8 @@
                                                 Rule ,
                                             @endif
                                         @endif
-                                        @if ($appendices && $appendices->maintype_id)
-                                            @if ($appendices->AppendicesType->maintype_id == '5')
+                                        @if ($appendix && $appendix->maintype_id)
+                                            @if ($appendix->AppendixType->maintype_id == '5')
                                                 Article ,
                                             @endif
                                         @endif
@@ -261,7 +261,7 @@
                                                 @elseif($item->maintype_id == 4)
                                                     {!! $item->Schedulemodel->schedule_title !!}
                                                 @elseif($item->maintype_id == 5)
-                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                    {!! $item->Appendixmodel->appendix_title !!}
                                                 @else
                                                     null
                                                 @endif
@@ -283,7 +283,7 @@
                                                     onclick="return confirm('Are you sure ?')">
                                                     <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                                 </a>
-                                                <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_id' => $item->section_id, 'section_rank' => $item->section_rank]) }}"
+                                                <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_id' => $item->section_id]) }}"
                                                     title="Add Next Section" class="px-1">
                                                     <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                                 </a>
@@ -306,7 +306,7 @@
                                                 @elseif($item->maintype_id == 4)
                                                     {!! $item->Schedulemodel->schedule_title !!}
                                                 @elseif($item->maintype_id == 5)
-                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                    {!! $item->Appendixmodel->appendix_title !!}
                                                 @else
                                                     null
                                                 @endif
@@ -328,10 +328,14 @@
                                                     onclick="return confirm('Are you sure ?')">
                                                     <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                                 </a>
-                                                <a href="{{ url('/add_below_new_article', ['act_id' => $item->act_id, 'article_id' => $item->article_id, 'article_rank' => $item->article_rank]) }}"
+                                                {{-- <a href="{{ url('/add_below_new_article', ['act_id' => $item->act_id, 'article_id' => $item->article_id, 'article_rank' => $item->article_rank]) }}"
                                                     title="Add Next Article" class="px-1">
                                                     <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                                </a>
+                                                </a> --}}
+                                                <a href="{{ route('add_below_new_article', ['id' => $item->act_id, 'article_id' => $item->article_id]) }}"
+                                                    title="Add Next Article" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                 </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -351,7 +355,7 @@
                                                 @elseif($item->maintype_id == 4)
                                                     {!! $item->Schedulemodel->schedule_title !!}
                                                 @elseif($item->maintype_id == 5)
-                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                    {!! $item->Appendixmodel->appendix_title !!}
                                                 @else
                                                     null
                                                 @endif
@@ -371,7 +375,7 @@
                                                     class="px-1" onclick="return confirm('Are you sure ?')">
                                                     <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                                 </a>
-                                                <a href="{{ url('/add_below_new_rule', ['act_id' => $item->act_id, 'rule_id' => $item->rule_id, 'rule_rank' => $item->rule_rank]) }}"
+                                                <a href="{{ route('add_below_new_rule', ['id' => $item->act_id, 'rule_id' => $item->rule_id]) }}"
                                                     title="Add Next Rule" class="px-1">
                                                     <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                                 </a>
@@ -394,7 +398,7 @@
                                                 @elseif($item->maintype_id == 4)
                                                     {!! $item->Schedulemodel->schedule_title !!}
                                                 @elseif($item->maintype_id == 5)
-                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                    {!! $item->Appendixmodel->appendix_title !!}
                                                 @else
                                                     null
                                                 @endif
@@ -416,10 +420,14 @@
                                                     onclick="return confirm('Are you sure ?')">
                                                     <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                                 </a>
-                                                <a href="{{ url('/add_below_new_regulation', ['act_id' => $item->act_id, 'regulation_id' => $item->regulation_id, 'regulation_rank' => $item->regulation_rank]) }}"
+                                                {{-- <a href="{{ url('/add_below_new_regulation', ['act_id' => $item->act_id, 'regulation_id' => $item->regulation_id, 'regulation_rank' => $item->regulation_rank]) }}"
                                                     title="Add Next Regulation" class="px-1">
                                                     <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                                </a>
+                                                </a> --}}
+                                                <a href="{{ route('add_below_new_regulation', ['id' => $item->act_id, 'regulation_id' => $item->regulation_id]) }}"
+                                                    title="Add Next Regulation" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                 </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -439,7 +447,7 @@
                                                 @elseif($item->maintype_id == 4)
                                                     {!! $item->Schedulemodel->schedule_title !!}
                                                 @elseif($item->maintype_id == 5)
-                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                    {!! $item->Appendixmodel->appendix_title !!}
                                                 @else
                                                     null
                                                 @endif
@@ -459,10 +467,11 @@
                                                     class="px-1" onclick="return confirm('Are you sure ?')">
                                                     <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                                 </a>
-                                                <a href="{{ url('/add_below_new_list', ['act_id' => $item->act_id, 'list_id' => $item->list_id, 'list_rank' => $item->list_rank]) }}"
+                                                
+                                                <a href="{{ route('add_below_new_list', ['id' => $item->act_id, 'list_id' => $item->list_id]) }}"
                                                     title="Add Next List" class="px-1">
                                                     <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                                </a>
+                                                 </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -482,7 +491,7 @@
                                                 @elseif($item->maintype_id == 4)
                                                     {!! $item->Schedulemodel->schedule_title !!}
                                                 @elseif($item->maintype_id == 5)
-                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                    {!! $item->Appendixmodel->appendix_title !!}
                                                 @else
                                                     null
                                                 @endif
@@ -502,17 +511,21 @@
                                                     class="px-1" onclick="return confirm('Are you sure ?')">
                                                     <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                                 </a>
-                                                <a href="{{ url('/add_below_new_part', ['act_id' => $item->act_id, 'part_id' => $item->part_id, 'list_rank' => $item->part_rank]) }}"
+                                                {{-- <a href="{{ url('/add_below_new_part', ['act_id' => $item->act_id, 'part_id' => $item->part_id, 'part_rank' => $item->part_rank]) }}"
                                                     title="Add Next Part" class="px-1">
                                                     <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                                </a>
+                                                </a> --}}
+                                                <a href="{{ route('add_below_new_part', ['id' => $item->act_id, 'part_id' => $item->part_id]) }}"
+                                                    title="Add Next Part" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                 </a>
                                             </td>
                                         </tr>
                                     @endforeach
                                 @endif
 
-                                @if ($act_appendix)
-                                    @foreach ($act_appendix as $item)
+                                @if ($act_appendices)
+                                    @foreach ($act_appendices as $item)
                                         <tr>
                                             <td scope="row">@php echo $a++; @endphp</td>
                                             <td class="text-capitalize">
@@ -525,30 +538,30 @@
                                                 @elseif($item->maintype_id == 4)
                                                     {!! $item->Schedulemodel->schedule_title !!}
                                                 @elseif($item->maintype_id == 5)
-                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                    {!! $item->Appendixmodel->appendix_title !!}
                                                 @else
                                                     null
                                                 @endif
                                             </td>
-                                            <td class="text-capitalize">{{ $item->appendix_no }}</td>
-                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->appendix_title) !!}</td>
+                                            <td class="text-capitalize">{{ $item->appendices_no }}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->appendices_title) !!}</td>
                                             <td class="text-capitalize">{{ $item->updated_at }}</td>
                                             <td class="text-capitalize d-flex justify-content-center">
-                                                <a href="/edit-appendix/{{ $item->appendix_id }}" title="Edit"
+                                                <a href="/edit-appendices/{{ $item->appendices_id }}" title="Edit"
                                                     class="px-1">
                                                     <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                                 </a>
-                                                <a href="/view-sub-appendix/{{ $item->appendix_id }}" title="View"
+                                                <a href="/view-sub-appendices/{{ $item->appendices_id }}" title="View"
                                                     class="px-1">
                                                     <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
                                                 </a>
-                                                <a href="{{ url('/delete_appendix/' . $item->appendix_id) }}"
+                                                <a href="{{ url('/delete_appendices/' . $item->appendices_id) }}"
                                                     title="Delete" class="px-1"
                                                     onclick="return confirm('Are you sure ?')">
                                                     <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                                 </a>
-                                                <a href="{{ url('/add_below_new_appendix', ['act_id' => $item->act_id, 'appendix_id' => $item->appendix_id, 'appendix_rank' => $item->appendix_rank]) }}"
-                                                    title="Add Next Appendix" class="px-1">
+                                                <a href="{{ route('add_below_new_appendices', ['id' => $item->act_id, 'appendices_id' => $item->appendices_id]) }}"
+                                                    title="Add Next Appendices" class="px-1">
                                                     <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                                 </a>
                                             </td>
@@ -570,7 +583,7 @@
                                                 @elseif($item->maintype_id == 4)
                                                     {!! $item->Schedulemodel->schedule_title !!}
                                                 @elseif($item->maintype_id == 5)
-                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                    {!! $item->Appendixmodel->appendix_title !!}
                                                 @else
                                                     null
                                                 @endif
@@ -591,7 +604,7 @@
                                                     class="px-1" onclick="return confirm('Are you sure ?')">
                                                     <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                                 </a>
-                                                <a href="{{ url('/add_below_new_order', ['act_id' => $item->act_id, 'order_id' => $item->order_id, 'order_rank' => $item->order_rank]) }}"
+                                                <a href="{{ route('add_below_new_order', ['id' => $item->act_id, 'order_id' => $item->order_id]) }}"
                                                     title="Add Next Order" class="px-1">
                                                     <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                                 </a>
@@ -600,8 +613,8 @@
                                     @endforeach
                                 @endif
 
-                                @if ($act_annexture)
-                                    @foreach ($act_annexture as $item)
+                                @if ($act_annexure)
+                                    @foreach ($act_annexure as $item)
                                         <tr>
                                             <td scope="row">@php echo $a++; @endphp</td>
                                             <td class="text-capitalize">
@@ -614,30 +627,30 @@
                                                 @elseif($item->maintype_id == 4)
                                                     {!! $item->Schedulemodel->schedule_title !!}
                                                 @elseif($item->maintype_id == 5)
-                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                    {!! $item->Appendixmodel->appendix_title !!}
                                                 @else
                                                     null
                                                 @endif
                                             </td>
-                                            <td class="text-capitalize">{{ $item->annexture_no }}</td>
-                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->annexture_title) !!}</td>
+                                            <td class="text-capitalize">{{ $item->annexure_no }}</td>
+                                            <td class="text-capitalize">{!! preg_replace('/[0-9\[\]\.]/', '', $item->annexure_title) !!}</td>
                                             <td class="text-capitalize">{{ $item->updated_at }}</td>
                                             <td class="text-capitalize d-flex justify-content-center">
-                                                <a href="/edit-annexture/{{ $item->annexture_id }}" title="Edit"
+                                                <a href="/edit-annexure/{{ $item->annexure_id }}" title="Edit"
                                                     class="px-1">
                                                     <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                                 </a>
-                                                <a href="/view-sub-annexture/{{ $item->annexture_id }}" title="View"
+                                                <a href="/view-sub-annexure/{{ $item->annexure_id }}" title="View"
                                                     class="px-1">
                                                     <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
                                                 </a>
-                                                <a href="{{ url('/delete_annexture/' . $item->annexture_id) }}"
+                                                <a href="{{ url('/delete_annexure/' . $item->annexure_id) }}"
                                                     title="Delete" class="px-1"
                                                     onclick="return confirm('Are you sure ?')">
                                                     <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                                 </a>
-                                                <a href="{{ url('/add_below_new_annexture', ['act_id' => $item->act_id, 'annexture_id' => $item->annexture_id, 'annexture_rank' => $item->annexture_rank]) }}"
-                                                    title="Add Next Annexture" class="px-1">
+                                                <a href="{{ route('add_below_new_annexure', ['id' => $item->act_id, 'annexure_id' => $item->annexure_id]) }}"
+                                                    title="Add Next Annexure" class="px-1">
                                                     <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                                 </a>
                                             </td>
@@ -658,7 +671,7 @@
                                                 @elseif($item->maintype_id == 4)
                                                     {!! $item->Schedulemodel->schedule_title !!}
                                                 @elseif($item->maintype_id == 5)
-                                                    {!! $item->Appendicesmodel->appendices_title !!}
+                                                    {!! $item->Appendixmodel->appendix_title !!}
                                                 @else
                                                     null
                                                 @endif
@@ -680,7 +693,7 @@
                                                     onclick="return confirm('Are you sure ?')">
                                                     <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                                 </a>
-                                                <a href="{{ url('add_below_new_stschedule', ['act_id' => $item->act_id, 'stschedule_id' => $item->stschedule_id, 'stschedule_rank' => $item->stschedule_rank]) }}"
+                                                <a href="{{ route('add_below_new_stschedule', ['id' => $item->act_id, 'stschedule_id' => $item->stschedule_id]) }}"
                                                     title="Add Next Schedule" class="px-1">
                                                     <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                                 </a>

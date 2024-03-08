@@ -2,44 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Annexture;
-use App\Models\Appendices;
+use App\Models\Annexure;
+use App\Models\Appendix;
 use App\Models\Chapter;
 use App\Models\Footnote;
 use App\Models\Parts;
 use App\Models\Priliminary;
 use App\Models\Schedule;
-use App\Models\SubAnnexture;
+use App\Models\SubAnnexure;
 use Illuminate\Http\Request;
 
-class AnnextureController extends Controller
+class AnnexureController extends Controller
 {
 
-    public function edit_annexture($id)
+    public function edit_annexure($id)
     {
-        $annexture = Annexture::with('ChapterModel', 'Partmodel', 'Appendicesmodel', 'Schedulemodel', 'PriliminaryModel')->where('annexture_id', $id)->first();
-        $subannexture = Annexture::where('annexture_id', $id)
+        $annexure = Annexure::with('ChapterModel', 'Partmodel', 'Appendixmodel', 'Schedulemodel', 'PriliminaryModel')->where('annexure_id', $id)->first();
+        $subannexure = Annexure::where('annexure_id', $id)
             ->with([
-                'subAnnextureModel',
+                'subAnnexureModel',
                 'footnoteModel' => function ($query) {
-                    $query->whereNull('sub_annexture_id');
+                    $query->whereNull('sub_annexure_id');
                 }
             ])
             ->get();
 
-        $sub_annexture_f = SubAnnexture::where('annexture_id', $id)->with('footnoteModel')->get();
+        $sub_annexure_f = SubAnnexure::where('annexure_id', $id)->with('footnoteModel')->get();
 
         $count = 0;
 
-        if ($sub_annexture_f) {
-            foreach ($sub_annexture_f as $sub_annexture) {
-                $count += $sub_annexture->footnoteModel->count();
+        if ($sub_annexure_f) {
+            foreach ($sub_annexure_f as $sub_annexure) {
+                $count += $sub_annexure->footnoteModel->count();
             }
         }
 
 
 
-        return view('admin.annexture.edit', compact('annexture', 'subannexture', 'sub_annexture_f', 'count'));
+        return view('admin.annexure.edit', compact('annexure', 'subannexure', 'sub_annexure_f', 'count'));
     }
 
 
@@ -81,61 +81,61 @@ class AnnextureController extends Controller
                 $schedule->update();
             }
         }
-        if ($request->has('appendices_id')) {
-            $appendices = Appendices::find($request->appendices_id);
+        if ($request->has('appendix_id')) {
+            $appendix = Appendix::find($request->appendix_id);
 
-            if ($appendices) {
-                $appendices->appendices_title = $request->appendices_title;
-                $appendices->update();
+            if ($appendix) {
+                $appendix->appendix_title = $request->appendix_title;
+                $appendix->update();
             }
         }
 
 
         // Check if section_id exists in the request
-        if (!$request->has('annexture_id')) {
-            return redirect()->route('edit-annexture', ['id' => $id])->withErrors(['error' => 'Annexture ID is missing']);
+        if (!$request->has('annexure_id')) {
+            return redirect()->route('edit-annexure', ['id' => $id])->withErrors(['error' => 'Annexure ID is missing']);
         }
 
-        $annexture = Annexture::find($request->annexture_id);
+        $annexure = Annexure::find($request->annexure_id);
 
         // Check if the section is found
-        if (!$annexture) {
-            return redirect()->route('edit-annexture', ['id' => $id])->withErrors(['error' => 'Annexture not found']);
+        if (!$annexure) {
+            return redirect()->route('edit-annexure', ['id' => $id])->withErrors(['error' => 'Annexure not found']);
         }
-        if ($annexture) {
+        if ($annexure) {
 
-            $annexture->annexture_content = $request->annexture_content ?? null;
-            $annexture->annexture_title = $request->annexture_title ?? null;
-            $annexture->annexture_no = $request->annexture_no ?? null;
-            $annexture->update();
+            $annexure->annexure_content = $request->annexure_content ?? null;
+            $annexure->annexure_title = $request->annexure_title ?? null;
+            $annexure->annexure_no = $request->annexure_no ?? null;
+            $annexure->update();
 
 
-            if ($request->has('annexture_footnote_content')) {
-                foreach ($request->annexture_footnote_content as $key => $items) {
+            if ($request->has('annexure_footnote_content')) {
+                foreach ($request->annexure_footnote_content as $key => $items) {
                     // Check if the key exists before using it
                     foreach ($items as $kys => $item) {
                         // Check if the sec_footnote_id exists at the specified index
-                        if (isset($request->annexture_footnote_id[$key][$kys])) {
+                        if (isset($request->annexure_footnote_id[$key][$kys])) {
                             // Use first() instead of get() to get a single model instance
-                            $foot = Footnote::find($request->annexture_footnote_id[$key][$kys]);
+                            $foot = Footnote::find($request->annexure_footnote_id[$key][$kys]);
 
                             if ($foot) {
                                 $foot->update([
                                     'footnote_content' => $item ?? null,
-                                    'footnote_no' => $request->annexture_footnote_no[$key][$kys] ?? null,
+                                    'footnote_no' => $request->annexure_footnote_no[$key][$kys] ?? null,
                                 ]);
                             }
                         } else {
                             // Create a new footnote
                             $footnote = new Footnote();
-                            $footnote->annexture_id = $id ?? null;
-                            $footnote->annexture_no = $annexture->annexture_no ?? null;
-                            $footnote->act_id = $annexture->act_id ?? null;
-                            $footnote->chapter_id = $annexture->chapter_id ?? null;
-                            $footnote->parts_id = $annexture->parts_id ?? null;
-                            $footnote->priliminary_id = $annexture->priliminary_id ?? null;
-                            $footnote->schedule_id = $annexture->schedule_id ?? null;
-                            $footnote->appendices_id = $annexture->appendices_id ?? null;
+                            $footnote->annexure_id = $id ?? null;
+                            $footnote->annexure_no = $annexure->annexure_no ?? null;
+                            $footnote->act_id = $annexure->act_id ?? null;
+                            $footnote->chapter_id = $annexure->chapter_id ?? null;
+                            $footnote->parts_id = $annexure->parts_id ?? null;
+                            $footnote->priliminary_id = $annexure->priliminary_id ?? null;
+                            $footnote->schedule_id = $annexure->schedule_id ?? null;
+                            $footnote->appendix_id = $annexure->appendix_id ?? null;
                             $footnote->footnote_content = $item ?? null;
                             $footnote->save();
                         }
@@ -146,18 +146,18 @@ class AnnextureController extends Controller
 
         // Store Sub-Sections
 
-        if ($request->has('sub_annexture_no')) {
-            foreach ($request->sub_annexture_no as $key => $item) {
+        if ($request->has('sub_annexure_no')) {
+            foreach ($request->sub_annexure_no as $key => $item) {
                 // Check if sub_section_id is present in the request
-                if ($request->filled('sub_annexture_id') && is_array($request->sub_annexture_id) && array_key_exists($key, $request->sub_annexture_id)) {
+                if ($request->filled('sub_annexure_id') && is_array($request->sub_annexure_id) && array_key_exists($key, $request->sub_annexure_id)) {
 
-                    $sub_annexture = SubAnnexture::find($request->sub_annexture_id[$key]);
+                    $sub_annexure = SubAnnexure::find($request->sub_annexure_id[$key]);
 
                     // Check if $sub_section is found in the database and the IDs match
-                    if ($sub_annexture && $sub_annexture->sub_annexture_id == $request->sub_annexture_id[$key]) {
-                        $sub_annexture->sub_annexture_no = $item ?? null;
-                        $sub_annexture->sub_annexture_content = $request->sub_annexture_content[$key] ?? null;
-                        $sub_annexture->update();
+                    if ($sub_annexure && $sub_annexure->sub_annexure_id == $request->sub_annexure_id[$key]) {
+                        $sub_annexure->sub_annexure_no = $item ?? null;
+                        $sub_annexure->sub_annexure_content = $request->sub_annexure_content[$key] ?? null;
+                        $sub_annexure->update();
 
                         if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
                             foreach ($request->sub_footnote_content[$key] as $kys => $item) {
@@ -174,14 +174,14 @@ class AnnextureController extends Controller
                                 } else {
                                     // Create a new footnote only if sub_footnote_id does not exist
                                     $footnote = new Footnote();
-                                    $footnote->sub_annexture_id = $sub_annexture->sub_annexture_id;
-                                    $footnote->annexture_id = $id ?? null;
-                                    $footnote->act_id = $annexture->act_id ?? null;
-                                    $footnote->chapter_id = $annexture->chapter_id ?? null;
-                                    $footnote->parts_id = $annexture->parts_id ?? null;
-                                    $footnote->priliminary_id = $annexture->priliminary_id ?? null;
-                                    $footnote->schedule_id = $annexture->schedule_id ?? null;
-                                    $footnote->appendices_id = $annexture->appendices_id ?? null;
+                                    $footnote->sub_annexure_id = $sub_annexure->sub_annexure_id;
+                                    $footnote->annexure_id = $id ?? null;
+                                    $footnote->act_id = $annexure->act_id ?? null;
+                                    $footnote->chapter_id = $annexure->chapter_id ?? null;
+                                    $footnote->parts_id = $annexure->parts_id ?? null;
+                                    $footnote->priliminary_id = $annexure->priliminary_id ?? null;
+                                    $footnote->schedule_id = $annexure->schedule_id ?? null;
+                                    $footnote->appendix_id = $annexure->appendix_id ?? null;
                                     $footnote->footnote_content = $item ?? null;
                                     $footnote->save();
                                 }
@@ -190,18 +190,18 @@ class AnnextureController extends Controller
                     }
                 } else {
                     // Existing subsection not found, create a new one
-                    $subannexture = new SubAnnexture();
-                    $subannexture->annexture_id = $id ?? null;
-                    $subannexture->sub_annexture_no = $item ?? null;
-                    $subannexture->annexture_no = $annexture->annexture_no ?? null;
-                    $subannexture->act_id = $annexture->act_id ?? null;
-                    $subannexture->chapter_id = $annexture->chapter_id ?? null;
-                    $subannexture->parts_id = $annexture->parts_id ?? null;
-                    $subannexture->priliminary_id = $annexture->priliminary_id ?? null;
-                    $subannexture->schedule_id = $annexture->schedule_id ?? null;
-                    $subannexture->appendices_id = $annexture->appendices_id ?? null;
-                    $subannexture->sub_annexture_content = $request->sub_annexture_content[$key] ?? null;
-                    $subannexture->save();
+                    $subannexure = new SubAnnexure();
+                    $subannexure->annexure_id = $id ?? null;
+                    $subannexure->sub_annexure_no = $item ?? null;
+                    $subannexure->annexure_no = $annexure->annexure_no ?? null;
+                    $subannexure->act_id = $annexure->act_id ?? null;
+                    $subannexure->chapter_id = $annexure->chapter_id ?? null;
+                    $subannexure->parts_id = $annexure->parts_id ?? null;
+                    $subannexure->priliminary_id = $annexure->priliminary_id ?? null;
+                    $subannexure->schedule_id = $annexure->schedule_id ?? null;
+                    $subannexure->appendix_id = $annexure->appendix_id ?? null;
+                    $subannexure->sub_annexure_content = $request->sub_annexure_content[$key] ?? null;
+                    $subannexure->save();
 
                     if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
                         foreach ($request->sub_footnote_content[$key] as $kys => $item) {
@@ -209,14 +209,14 @@ class AnnextureController extends Controller
                             if (isset($request->sub_footnote_content[$key][$kys])) {
                                 // Create a new footnote for the newly created subsection
                                 $footnote = new Footnote();
-                                $footnote->sub_annexture_id = $subannexture->sub_annexture_id;
-                                $footnote->annexture_id = $id ?? null;
-                                $footnote->act_id = $annexture->act_id ?? null;
-                                $footnote->chapter_id = $annexture->chapter_id ?? null;
-                                $footnote->parts_id = $annexture->parts_id ?? null;
-                                $footnote->priliminary_id = $annexture->priliminary_id ?? null;
-                                $footnote->schedule_id = $annexture->schedule_id ?? null;
-                                $footnote->appendices_id = $annexture->appendices_id ?? null;
+                                $footnote->sub_annexure_id = $subannexure->sub_annexure_id;
+                                $footnote->annexure_id = $id ?? null;
+                                $footnote->act_id = $annexure->act_id ?? null;
+                                $footnote->chapter_id = $annexure->chapter_id ?? null;
+                                $footnote->parts_id = $annexure->parts_id ?? null;
+                                $footnote->priliminary_id = $annexure->priliminary_id ?? null;
+                                $footnote->schedule_id = $annexure->schedule_id ?? null;
+                                $footnote->appendix_id = $annexure->appendix_id ?? null;
                                 $footnote->footnote_content = $item ?? null;
                                 $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
                                 $footnote->save();
@@ -229,24 +229,24 @@ class AnnextureController extends Controller
 
 
 
-        return redirect()->route('get_act_section', ['id' => $annexture->act_id])->with('success', 'Annexture updated successfully');
+        return redirect()->route('get_act_section', ['id' => $annexure->act_id])->with('success', 'Annexure updated successfully');
         // } catch (\Exception $e) {
         //     \Log::error('Error updating Act: ' . $e->getMessage());
-        //     return redirect()->route('edit-annexture', ['id' => $id])->withErrors(['error' => 'Failed to update Annexture. Please try again.' . $e->getMessage()]);
+        //     return redirect()->route('edit-annexure', ['id' => $id])->withErrors(['error' => 'Failed to update Annexure. Please try again.' . $e->getMessage()]);
         // }
     }
 
-    public function add_below_new_annexture(Request $request, $id, $annexture_id, $annexture_rank)
+    public function add_below_new_annexure(Request $request, $id, $annexure_id)
     {
 
-        $annexture_rank = $annexture_rank;
-        $annexture = Annexture::with('ChapterModel', 'Partmodel', 'PriliminaryModel', 'Appendicesmodel', 'Schedulemodel')->where('act_id', $id)
-            ->where('annexture_id', $annexture_id)->first();
+        // $annexure_rank = $annexure_rank;
+        $annexure = Annexure::with('ChapterModel', 'Partmodel', 'PriliminaryModel', 'Appendixmodel', 'Schedulemodel')->where('act_id', $id)
+            ->where('annexure_id', $annexure_id)->first();
 
-        return view('admin.annexture.add_new', compact('annexture', 'annexture_rank'));
+        return view('admin.annexure.add_new', compact('annexure'));
     }
 
-    public function add_new_annexture(Request $request)
+    public function add_new_annexure(Request $request)
     {
         // dd($request);
         // die();
@@ -283,24 +283,24 @@ class AnnextureController extends Controller
                 $schedule->update();
             }
         }
-        if ($request->has('appendices_id')) {
-            $appendices = Appendices::find($request->appendices_id);
+        if ($request->has('appendix_id')) {
+            $appendix = Appendix::find($request->appendix_id);
 
-            if ($appendices) {
-                $appendices->appendices_title = $request->appendices_title;
-                $appendices->update();
+            if ($appendix) {
+                $appendix->appendix_title = $request->appendix_title;
+                $appendix->update();
             }
         }
 
 
         $id = $request->act_id;
-        // $annexture_no = $request->annexture_no;
-        $annexture_rank = $request->annexture_rank;
+        // $annexure_no = $request->annexure_no;
+        $annexure_rank = $request->annexure_rank;
         $maintypeId = $request->maintype_id;
 
         // Calculate the next section number
-        // $nextAnnextureNo = $annexture_no;
-        $nextAnnextureRank = $annexture_rank + 0.01;
+        // $nextAnnexureNo = $annexure_no;
+        $nextAnnexureRank = $annexure_rank + 0.01;
 
 
 
@@ -309,54 +309,54 @@ class AnnextureController extends Controller
         //     ->increment('section_no');
 
         // Create the new section with the incremented section_no
-        $annexture = Annexture::create([
-            'annexture_rank' => $nextAnnextureRank ?? 1,
-            'annexture_no' => $request->annexture_no ?? null,
+        $annexure = Annexure::create([
+            'annexure_rank' => $nextAnnexureRank ?? 1,
+            'annexure_no' => $request->annexure_no ?? null,
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
             'chapter_id' => $request->chapter_id ?? null,
             'priliminary_id' => $request->priliminary_id ?? null,
             'parts_id' => $request->parts_id ?? null,
             'schedule_id' => $request->schedule_id ?? null,
-            'appendices_id' => $request->appendices_id ?? null,
+            'appendix_id' => $request->appendix_id ?? null,
             'subtypes_id' => $request->subtypes_id,
-            'annexture_title' => $request->annexture_title,
-            'annexture_content' => $request->annexture_content,
+            'annexure_title' => $request->annexure_title,
+            'annexure_content' => $request->annexure_content,
         ]);
 
-        if ($request->has('annexture_footnote_content')) {
-            foreach ($request->annexture_footnote_content as $key => $item) {
+        if ($request->has('annexure_footnote_content')) {
+            foreach ($request->annexure_footnote_content as $key => $item) {
                 // Check if the key exists before using it
-                if (isset($request->annexture_footnote_content[$key])) {
+                if (isset($request->annexure_footnote_content[$key])) {
                     // Create a new footnote
                     $footnote = new Footnote();
-                    $footnote->annexture_id = $annexture->annexture_id ?? null;
+                    $footnote->annexure_id = $annexure->annexure_id ?? null;
                     $footnote->act_id = $request->act_id ?? null;
                     $footnote->chapter_id = $request->chapter_id ?? null;
                     $footnote->priliminary_id = $request->priliminary_id ?? null;
                     $footnote->parts_id = $request->parts_id ?? null;
                     $footnote->schedule_id = $request->schedule_id ?? null;
-                    $footnote->appendices_id = $request->appendices_id ?? null;
+                    $footnote->appendix_id = $request->appendix_id ?? null;
                     $footnote->footnote_content = $item ?? null;
                     $footnote->save();
                 }
             }
         }
 
-        if ($request->has('sub_annexture_no')) {
-            foreach ($request->sub_annexture_no as $key => $item) {
+        if ($request->has('sub_annexure_no')) {
+            foreach ($request->sub_annexure_no as $key => $item) {
                 // Existing subsection not found, create a new one
-                $sub_annexture = SubAnnexture::create([
-                    'annexture_id' => $annexture->annexture_id,
-                    'sub_annexture_no' => $item ?? null,
-                    'annexture_no' =>  $request->annexture_no ?? null,
+                $sub_annexure = SubAnnexure::create([
+                    'annexure_id' => $annexure->annexure_id,
+                    'sub_annexure_no' => $item ?? null,
+                    'annexure_no' =>  $request->annexure_no ?? null,
                     'act_id' => $request->act_id,
                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                     'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                     'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
-                    'appendices_id' => $maintypeId == "5" ? $request->appendices_id : null,
-                    'sub_annexture_content' => $request->sub_annexture_content[$key] ?? null,
+                    'appendix_id' => $maintypeId == "5" ? $request->appendix_id : null,
+                    'sub_annexure_content' => $request->sub_annexure_content[$key] ?? null,
                 ]);
 
                 if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
@@ -365,14 +365,14 @@ class AnnextureController extends Controller
                         if (isset($request->sub_footnote_content[$key][$kys])) {
                             // Create a new footnote for the newly created subsection
                             $footnote = new Footnote();
-                            $footnote->sub_annexture_id = $sub_annexture->sub_annexture_id;
-                            $footnote->annexture_id = $annexture->annexture_id ?? null;
+                            $footnote->sub_annexure_id = $sub_annexure->sub_annexure_id;
+                            $footnote->annexure_id = $annexure->annexure_id ?? null;
                             $footnote->act_id = $request->act_id ?? null;
                             $footnote->chapter_id = $request->chapter_id ?? null;
                             $footnote->parts_id = $request->parts_id ?? null;
                             $footnote->priliminary_id = $request->priliminary_id ?? null;
                             $footnote->schedule_id = $request->schedule_id ?? null;
-                            $footnote->appendices_id = $request->appendices_id ?? null;
+                            $footnote->appendix_id = $request->appendix_id ?? null;
                             $footnote->footnote_content = $item ?? null;
                             $footnote->save();
                         }
@@ -390,53 +390,53 @@ class AnnextureController extends Controller
     }
 
 
-    public function view_sub_annexture(Request $request, $id)
+    public function view_sub_annexure(Request $request, $id)
     {
-        $annexture = Annexture::where('annexture_id', $id)->first();
-        $sub_annexture = SubAnnexture::where('annexture_id', $id)->with('footnoteModel')->get();
-        return view('admin.annexture.view', compact('annexture', 'sub_annexture'));
+        $annexure = Annexure::where('annexure_id', $id)->first();
+        $sub_annexure = SubAnnexure::where('annexure_id', $id)->with('footnoteModel')->get();
+        return view('admin.annexure.view', compact('annexure', 'sub_annexure'));
     }
 
-    public function destroy_sub_annexture(string $id)
+    public function destroy_sub_annexure(string $id)
     {
         try {
-            $subannexture = SubAnnexture::find($id);
+            $subannexure = SubAnnexure::find($id);
 
-            if (!$subannexture) {
-                return redirect()->back()->withErrors(['error' => 'Sub-Annexture not found.']);
+            if (!$subannexure) {
+                return redirect()->back()->withErrors(['error' => 'Sub-Annexure not found.']);
             }
 
-            Footnote::where('sub_annexture_id', $id)->delete();
+            Footnote::where('sub_annexure_id', $id)->delete();
 
-            $subannexture->delete();
+            $subannexure->delete();
 
-            return redirect()->back()->with('success', 'Sub-Annexture and related records deleted successfully.');
+            return redirect()->back()->with('success', 'Sub-Annexure and related records deleted successfully.');
         } catch (\Exception $e) {
-            \Log::error('Error deleting Sub-Annexture: ' . $e->getMessage());
+            \Log::error('Error deleting Sub-Annexure: ' . $e->getMessage());
 
-            return redirect()->back()->withErrors(['error' => 'Failed to delete Sub-Annexture. Please try again.' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Failed to delete Sub-Annexure. Please try again.' . $e->getMessage()]);
         }
     }
 
     public function destroy(string $id)
     {
         try {
-            $annexture = Annexture::find($id);
+            $annexure = Annexure::find($id);
 
-            if (!$annexture) {
-                return redirect()->back()->withErrors(['error' => 'Annexture not found.']);
+            if (!$annexure) {
+                return redirect()->back()->withErrors(['error' => 'Annexure not found.']);
             }
 
-            SubAnnexture::where('annexture_id', $id)->delete();
-            Footnote::where('annexture_id', $id)->delete();
+            SubAnnexure::where('annexure_id', $id)->delete();
+            Footnote::where('annexure_id', $id)->delete();
 
-            $annexture->delete();
+            $annexure->delete();
 
-            return redirect()->back()->with('success', 'Annexture and related records deleted successfully.');
+            return redirect()->back()->with('success', 'Annexure and related records deleted successfully.');
         } catch (\Exception $e) {
-            \Log::error('Error deleting annexture: ' . $e->getMessage());
+            \Log::error('Error deleting annexure: ' . $e->getMessage());
 
-            return redirect()->back()->withErrors(['error' => 'Failed to delete annexture. Please try again.' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Failed to delete annexure. Please try again.' . $e->getMessage()]);
         }
     }
     public function delete_footnote(string $id)

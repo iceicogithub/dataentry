@@ -46,7 +46,7 @@
                     <input type="hidden" name="parts_id" value="{{ $order->parts_id }}">
                     <input type="hidden" name="priliminary_id" value="{{ $order->priliminary_id }}">
                     <input type="hidden" name="schedule_id" value="{{ $order->schedule_id }}">
-                    <input type="hidden" name="appendices_id" value="{{ $order->appendices_id }}">
+                    <input type="hidden" name="Appendix_id" value="{{ $order->appendix_id }}">
                     <div class="card p-5">
                         <div class="additional-section">
                             <div class="border col-md-12 p-3">
@@ -72,10 +72,10 @@
                                                 <textarea name="schedule_title" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title"
                                                     id="s_title">{{ $order->Schedulemodel->schedule_title }}</textarea>
                                             @elseif($order->maintype_id == 5)
-                                                <label class="float-label font-weight-bold">Appendices :</label>
+                                                <label class="float-label font-weight-bold">Appendix :</label>
 
-                                                <textarea name="appendices_title" class="form-control mb-3 appendices_title" placeholder="Enter Appendices Title"
-                                                    id="a_title">{{ $order->Appendicesmodel->appendices_title }}</textarea>
+                                                <textarea name="appendix_title" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title"
+                                                    id="a_title">{{ $order->Appendixmodel->appendix_title }}</textarea>
                                             @else
                                                 null
                                             @endif

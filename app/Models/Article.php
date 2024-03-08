@@ -10,7 +10,7 @@ class Article extends Model
     use HasFactory;
     protected $primaryKey = 'article_id';
     protected $table = 'articles';
-    protected $fillable = ['article_rank','article_no','act_id','maintype_id','appendices_id','schedule_id', 'chapter_id', 'subtypes_id', 'parts_id','priliminary_id', 'article_title', 'article_content'];
+    protected $fillable = ['article_rank','article_no','act_id','maintype_id','appendix_id','schedule_id', 'chapter_id', 'subtypes_id', 'parts_id','priliminary_id', 'article_title', 'article_content'];
 
     public function MainTypeModel()
     {
@@ -22,9 +22,9 @@ class Article extends Model
         return $this->belongsTo(Schedule::class, 'schedule_id', 'schedule_id');
     }
 
-    public function Appendicesmodel()
+    public function Appendixmodel()
     {
-        return $this->belongsTo(Appendices::class, 'appendices_id', 'appendices_id');
+        return $this->belongsTo(Appendix::class, 'appendix_id', 'appendix_id');
     }
 
     public function Partmodel()

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appendices;
+use App\Models\Appendix;
 use App\Models\Chapter;
 use App\Models\Footnote;
 use App\Models\Orders;
@@ -17,7 +17,7 @@ class OrderController extends Controller
     
     public function edit_order($id)
     {
-        $order = Orders::with('ChapterModel', 'Partmodel','Appendicesmodel','Schedulemodel','PriliminaryModel')->where('order_id', $id)->first();
+        $order = Orders::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel')->where('order_id', $id)->first();
         $suborder = Orders::where('order_id', $id)
             ->with(['subOrderModel', 'footnoteModel' => function ($query) {
                 $query->whereNull('sub_order_id');
@@ -78,12 +78,12 @@ class OrderController extends Controller
                     $schedule->update();
                 }
             }
-            if ($request->has('appendices_id')) {
-                $appendices = Appendices::find($request->appendices_id);
+            if ($request->has('appendix_id')) {
+                $appendix = Appendix::find($request->appendix_id);
     
-                if ($appendices) {
-                    $appendices->appendices_title = $request->appendices_title;
-                    $appendices->update();
+                if ($appendix) {
+                    $appendix->appendix_title = $request->appendix_title;
+                    $appendix->update();
                 }
             }
     
@@ -132,7 +132,7 @@ class OrderController extends Controller
                                 $footnote->parts_id = $order->parts_id ?? null;
                                 $footnote->priliminary_id = $order->priliminary_id ?? null;
                                 $footnote->schedule_id = $order->schedule_id ?? null;
-                                $footnote->appendices_id = $order->appendices_id ?? null;
+                                $footnote->appendix_id = $order->appendix_id ?? null;
                                 $footnote->footnote_content = $item ?? null;
                                 $footnote->save();
                             }
@@ -178,7 +178,7 @@ class OrderController extends Controller
                                         $footnote->parts_id = $order->parts_id ?? null;
                                         $footnote->priliminary_id = $order->priliminary_id ?? null;
                                         $footnote->schedule_id = $order->schedule_id ?? null;
-                                        $footnote->appendices_id = $order->appendices_id ?? null;
+                                        $footnote->appendix_id = $order->appendix_id ?? null;
                                         $footnote->footnote_content = $item ?? null;
                                         $footnote->save();
                                     }
@@ -196,7 +196,7 @@ class OrderController extends Controller
                         $suborder->parts_id = $order->parts_id ?? null;
                         $suborder->priliminary_id = $order->priliminary_id ?? null;
                         $suborder->schedule_id = $order->schedule_id ?? null;
-                        $suborder->appendices_id = $order->appendices_id ?? null;
+                        $suborder->appendix_id = $order->appendix_id ?? null;
                         $suborder->sub_order_content = $request->sub_order_content[$key] ?? null;
                         $suborder->save();
 
@@ -213,7 +213,7 @@ class OrderController extends Controller
                                     $footnote->parts_id = $order->parts_id ?? null;
                                     $footnote->priliminary_id = $order->priliminary_id ?? null;
                                     $footnote->schedule_id = $order->schedule_id ?? null;
-                                    $footnote->appendices_id = $order->appendices_id ?? null;
+                                    $footnote->appendix_id = $order->appendix_id ?? null;
                                     $footnote->footnote_content = $item ?? null;
                                     $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
                                     $footnote->save();
@@ -233,14 +233,14 @@ class OrderController extends Controller
         // }
     }
 
-    public function add_below_new_order(Request $request, $id, $order_id, $order_rank)
+    public function add_below_new_order(Request $request, $id, $order_id)
     {
         
-        $order_rank = $order_rank;
-        $order = Orders::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendicesmodel','Schedulemodel')->where('act_id', $id)
+        // $order_rank = $order_rank;
+        $order = Orders::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel')->where('act_id', $id)
             ->where('order_id', $order_id)->first();
 
-        return view('admin.Orders.add_new', compact('order', 'order_rank'));
+        return view('admin.Orders.add_new', compact('order'));
     }
 
     public function add_new_order(Request $request)
@@ -280,12 +280,12 @@ class OrderController extends Controller
                 $schedule->update();
             }
         }
-        if ($request->has('appendices_id')) {
-            $appendices = Appendices::find($request->appendices_id);
+        if ($request->has('appendix_id')) {
+            $appendix = Appendix::find($request->appendix_id);
 
-            if ($appendices) {
-                $appendices->appendices_title = $request->appendices_title;
-                $appendices->update();
+            if ($appendix) {
+                $appendix->appendix_title = $request->appendix_title;
+                $appendix->update();
             }
         }
 
@@ -315,7 +315,7 @@ class OrderController extends Controller
             'priliminary_id' => $request->priliminary_id ?? null,
             'parts_id' => $request->parts_id ?? null,
             'schedule_id' => $request->schedule_id ?? null,
-            'appendices_id' => $request->appendices_id ?? null,
+            'appendix_id' => $request->appendix_id ?? null,
             'subtypes_id' => $request->subtypes_id,
             'order_title' => $request->order_title,
             'order_content' => $request->order_content,
@@ -333,7 +333,7 @@ class OrderController extends Controller
                     $footnote->priliminary_id = $request->priliminary_id ?? null;
                     $footnote->parts_id = $request->parts_id ?? null;
                     $footnote->schedule_id = $request->schedule_id ?? null;
-                    $footnote->appendices_id = $request->appendices_id ?? null;
+                    $footnote->appendix_id = $request->appendix_id ?? null;
                     $footnote->footnote_content = $item ?? null;
                     $footnote->save();
                 }
@@ -352,7 +352,7 @@ class OrderController extends Controller
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                     'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                     'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
-                    'appendices_id' => $maintypeId == "5" ? $request->appendices_id : null,
+                    'appendix_id' => $maintypeId == "5" ? $request->appendix_id : null,
                     'sub_order_content' => $request->sub_order_content[$key] ?? null,
                 ]);
 
@@ -369,7 +369,7 @@ class OrderController extends Controller
                             $footnote->parts_id = $request->parts_id ?? null;
                             $footnote->priliminary_id = $request->priliminary_id ?? null;
                             $footnote->schedule_id = $request->schedule_id ?? null;
-                            $footnote->appendices_id = $request->appendices_id ?? null;
+                            $footnote->appendix_id = $request->appendix_id ?? null;
                             $footnote->footnote_content = $item ?? null;
                             $footnote->save();
                         }
@@ -378,7 +378,7 @@ class OrderController extends Controller
             }
         }
 
-        return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Ayrticle created successfully');
+        return redirect()->route('get_act_section', ['id' =>$order->act_id])->with('success', 'Ayrticle created successfully');
         } catch (\Exception $e) {
             \Log::error('Error creating Act: ' . $e->getMessage());
 

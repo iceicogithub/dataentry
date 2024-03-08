@@ -11,7 +11,7 @@ class Section extends Model
     
     protected $primaryKey = 'section_id';
     protected $table = 'section';
-    protected $fillable = ['section_rank','section_no','act_id','maintype_id', 'chapter_id', 'subtypes_id', 'parts_id','priliminary_id', 'section_title', 'section_content','appendices_id','schedule_id'];
+    protected $fillable = ['section_rank','section_no','act_id','maintype_id', 'chapter_id', 'subtypes_id', 'parts_id','priliminary_id', 'section_title', 'section_content','appendix_id','schedule_id'];
 
     public function MainTypeModel()
     {
@@ -22,9 +22,9 @@ class Section extends Model
         return $this->belongsTo(Schedule::class, 'schedule_id', 'schedule_id');
     }
 
-    public function Appendicesmodel()
+    public function Appendixmodel()
     {
-        return $this->belongsTo(Appendices::class, 'appendices_id', 'appendices_id');
+        return $this->belongsTo(Appendix::class, 'appendix_id', 'appendix_id');
     }
     public function Partmodel()
     {

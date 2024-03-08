@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appendices;
+use App\Models\Appendix;
 use App\Models\Chapter;
 use App\Models\Footnote;
 use App\Models\Part;
@@ -13,9 +13,11 @@ use App\Models\SubPart;
 use Illuminate\Http\Request;
 
 class PartController extends Controller
-{public function edit_part($id)
+{
+    
+    public function edit_part($id)
     {
-       $part = Part::with('ChapterModel', 'Partmodel','Appendicesmodel','Schedulemodel','PriliminaryModel')->where('part_id', $id)->first();
+       $part = Part::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel')->where('part_id', $id)->first();
        $subpart = Part::where('part_id', $id)
            ->with(['subPartModel', 'footnoteModel' => function ($query) {
                $query->whereNull('sub_part_id');
@@ -75,12 +77,12 @@ class PartController extends Controller
                    $schedule->update();
                }
            }
-           if ($request->has('appendices_id')) {
-               $appendices = Appendices::find($request->appendices_id);
+           if ($request->has('appendix_id')) {
+               $appendix = Appendix::find($request->appendix_id);
    
-               if ($appendices) {
-                   $appendices->appendices_title = $request->appendices_title;
-                   $appendices->update();
+               if ($appendix) {
+                   $appendix->appendix_title = $request->appendix_title;
+                   $appendix->update();
                }
            }
    
@@ -129,7 +131,7 @@ class PartController extends Controller
                                $footnote->parts_id = $part->parts_id ?? null;
                                $footnote->priliminary_id = $part->priliminary_id ?? null;
                                $footnote->schedule_id = $part->schedule_id ?? null;
-                               $footnote->appendices_id = $part->appendices_id ?? null;
+                               $footnote->appendix_id = $part->appendix_id ?? null;
                                $footnote->footnote_content = $item ?? null;
                                $footnote->save();
                            }
@@ -175,7 +177,7 @@ class PartController extends Controller
                                        $footnote->parts_id = $part->parts_id ?? null;
                                        $footnote->priliminary_id = $part->priliminary_id ?? null;
                                        $footnote->schedule_id = $part->schedule_id ?? null;
-                                       $footnote->appendices_id = $part->appendices_id ?? null;
+                                       $footnote->appendix_id = $part->appendix_id ?? null;
                                        $footnote->footnote_content = $item ?? null;
                                        $footnote->save();
                                    }
@@ -193,7 +195,7 @@ class PartController extends Controller
                        $subpart->parts_id = $part->parts_id ?? null;
                        $subpart->priliminary_id = $part->priliminary_id ?? null;
                        $subpart->schedule_id = $part->schedule_id ?? null;
-                       $subpart->appendices_id = $part->appendices_id ?? null;
+                       $subpart->appendix_id = $part->appendix_id ?? null;
                        $subpart->sub_part_content = $request->sub_part_content[$key] ?? null;
                        $subpart->save();
 
@@ -210,7 +212,7 @@ class PartController extends Controller
                                    $footnote->parts_id = $part->parts_id ?? null;
                                    $footnote->priliminary_id = $part->priliminary_id ?? null;
                                    $footnote->schedule_id = $part->schedule_id ?? null;
-                                   $footnote->appendices_id = $part->appendices_id ?? null;
+                                   $footnote->appendix_id = $part->appendix_id ?? null;
                                    $footnote->footnote_content = $item ?? null;
                                    $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
                                    $footnote->save();
@@ -230,14 +232,13 @@ class PartController extends Controller
        // }
    }
 
-   public function add_below_new_part(Request $request, $id, $part_id, $part_rank)
+   public function add_below_new_part(Request $request, $id, $part_id)
    {
        
-       $part_rank = $part_rank;
-       $part = Part::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendicesmodel','Schedulemodel')->where('act_id', $id)
+       $part = Part::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel')->where('act_id', $id)
            ->where('part_id', $part_id)->first();
 
-       return view('admin.part.add_new', compact('part', 'part_rank'));
+       return view('admin.part.add_new', compact('part'));
    }
 
    public function add_new_part(Request $request)
@@ -277,12 +278,12 @@ class PartController extends Controller
                $schedule->update();
            }
        }
-       if ($request->has('appendices_id')) {
-           $appendices = Appendices::find($request->appendices_id);
+       if ($request->has('appendix_id')) {
+           $appendix = Appendix::find($request->appendix_id);
 
-           if ($appendices) {
-               $appendices->appendices_title = $request->appendices_title;
-               $appendices->update();
+           if ($appendix) {
+               $appendix->appendix_title = $request->appendix_title;
+               $appendix->update();
            }
        }
 
@@ -312,7 +313,7 @@ class PartController extends Controller
            'priliminary_id' => $request->priliminary_id ?? null,
            'parts_id' => $request->parts_id ?? null,
            'schedule_id' => $request->schedule_id ?? null,
-           'appendices_id' => $request->appendices_id ?? null,
+           'appendix_id' => $request->appendix_id ?? null,
            'subtypes_id' => $request->subtypes_id,
            'part_title' => $request->part_title,
            'part_content' => $request->part_content,
@@ -330,7 +331,7 @@ class PartController extends Controller
                    $footnote->priliminary_id = $request->priliminary_id ?? null;
                    $footnote->parts_id = $request->parts_id ?? null;
                    $footnote->schedule_id = $request->schedule_id ?? null;
-                   $footnote->appendices_id = $request->appendices_id ?? null;
+                   $footnote->appendix_id = $request->appendix_id ?? null;
                    $footnote->footnote_content = $item ?? null;
                    $footnote->save();
                }
@@ -349,7 +350,7 @@ class PartController extends Controller
                    'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                    'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                    'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
-                   'appendices_id' => $maintypeId == "5" ? $request->appendices_id : null,
+                   'appendix_id' => $maintypeId == "5" ? $request->appendix_id : null,
                    'sub_part_content' => $request->sub_part_content[$key] ?? null,
                ]);
 
@@ -366,7 +367,7 @@ class PartController extends Controller
                            $footnote->parts_id = $request->parts_id ?? null;
                            $footnote->priliminary_id = $request->priliminary_id ?? null;
                            $footnote->schedule_id = $request->schedule_id ?? null;
-                           $footnote->appendices_id = $request->appendices_id ?? null;
+                           $footnote->appendix_id = $request->appendix_id ?? null;
                            $footnote->footnote_content = $item ?? null;
                            $footnote->save();
                        }
@@ -375,7 +376,7 @@ class PartController extends Controller
            }
        }
 
-       return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Ayrticle created successfully');
+       return redirect()->route('get_act_section', ['id' =>$part->act_id])->with('success', 'Ayrticle created successfully');
        } catch (\Exception $e) {
            \Log::error('Error creating Act: ' . $e->getMessage());
 
@@ -451,5 +452,5 @@ class PartController extends Controller
 
            return redirect()->back()->withErrors(['error' => 'Failed to delete footnote. Please try again.' . $e->getMessage()]);
        }
-   }//
+   }
 }

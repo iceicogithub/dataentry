@@ -108,7 +108,7 @@
                                                             class="text-danger">*</span></label>
                                                     <textarea name="parts_title[]" class="form-control mb-3 parts_title" placeholder="Enter Part Title" id="parts_title"></textarea>
                                                 </div>
-
+                                                 {{-- for Priliminary --}}
                                                 <div id="priliminarySection" class="priliminarySection"
                                                     style="display: none">
                                                     <label class="float-label"> Priliminary <span
@@ -125,11 +125,11 @@
                                                     id="schedule_title"></textarea>
                                             </div>
                                             {{-- for appendix --}}
-                                            <div id="appendicesSection" class="appendicesSection" style="display: none">
-                                                <label class="float-label"> Appendices <span
+                                            <div id="appendixSection" class="appendixSection" style="display: none">
+                                                <label class="float-label"> Appendix <span
                                                         class="text-danger">*</span></label>
-                                                <textarea name="appendices_title[]" class="form-control mb-3 appendices_title" placeholder="Enter Appendices Title"
-                                                    id="appendices_title"></textarea>
+                                                <textarea name="appendix_title[]" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title"
+                                                    id="appendix_title"></textarea>
                                             </div>
                                         </div>
                                         <div class="additional-section">
@@ -299,23 +299,23 @@
 
                                                     <div class="form-group form-default col-md-12 px-0" id="7Div"
                                                         style="display:none">
-                                                        <div class="form-group form-default AppendixTitleMain"
+                                                        <div class="form-group form-default AppendicesTitleMain"
                                                             style="display: block">
-                                                            <label class="float-label">Appendix Title<span
+                                                            <label class="float-label">Appendices Title<span
                                                                     class="text-danger">*</span></label>
-                                                            <div class="d-flex AppendixTitle my-1">
-                                                                <input type="text" name="appendix_no[][]"
+                                                            <div class="d-flex AppendicesTitle my-1">
+                                                                <input type="text" name="appendices_no[][]"
                                                                     class="form-control" style="width: 20%;"
-                                                                    placeholder="Enter Appendix NO.">
-                                                                <input type="text" name="appendix_title[][]"
+                                                                    placeholder="Enter Appendices NO.">
+                                                                <input type="text" name="appendices_title[][]"
                                                                     class="form-control"
-                                                                    placeholder="Enter Appendix Title">
+                                                                    placeholder="Enter Appendices Title">
                                                                 <button type="button"
-                                                                    class="add-AppendixTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    class="add-AppendicesTitle btn btn-sm facebook mx-2 p-0 social">
                                                                     <i class="fa fa-plus"></i>
                                                                 </button>
                                                                 <button type="button"
-                                                                    class="btn btn-sm social youtube p-0 remove-AppendixTitle">
+                                                                    class="btn btn-sm social youtube p-0 remove-AppendicesTitle">
                                                                     <i class="fa fa-minus"></i>
                                                                 </button>
                                                             </div>
@@ -348,23 +348,23 @@
 
                                                     <div class="form-group form-default col-md-12 px-0" id="9Div"
                                                         style="display:none">
-                                                        <div class="form-group form-default AnnextureTitleMain"
+                                                        <div class="form-group form-default AnnexureTitleMain"
                                                             style="display: block">
-                                                            <label class="float-label">Annexture Title<span
+                                                            <label class="float-label">Annexure Title<span
                                                                     class="text-danger">*</span></label>
-                                                            <div class="d-flex AnnextureTitle my-1">
-                                                                <input type="text" name="annexture_no[][]"
+                                                            <div class="d-flex AnnexureTitle my-1">
+                                                                <input type="text" name="annexure_no[][]"
                                                                     class="form-control" style="width: 20%;"
-                                                                    placeholder="Enter Annexture NO.">
-                                                                <input type="text" name="annexture_title[][]"
+                                                                    placeholder="Enter Annexure NO.">
+                                                                <input type="text" name="annexure_title[][]"
                                                                     class="form-control"
-                                                                    placeholder="Enter Annexture Title">
+                                                                    placeholder="Enter Annexure Title">
                                                                 <button type="button"
-                                                                    class="add-AnnextureTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    class="add-AnnexureTitle btn btn-sm facebook mx-2 p-0 social">
                                                                     <i class="fa fa-plus"></i>
                                                                 </button>
                                                                 <button type="button"
-                                                                    class="btn btn-sm social youtube p-0 remove-AnnextureTitle">
+                                                                    class="btn btn-sm social youtube p-0 remove-AnnexureTitle">
                                                                     <i class="fa fa-minus"></i>
                                                                 </button>
                                                             </div>
@@ -461,7 +461,7 @@
             CKEDITOR.replace('parts_title');
             CKEDITOR.replace('priliminary_title');
             CKEDITOR.replace('schedule_title');
-            CKEDITOR.replace('appendices_title');
+            CKEDITOR.replace('appendix_title');
 
             // for category type
             $(document).on('change', '.category', function() {
@@ -489,13 +489,13 @@
                 var partSection = sectionContainer.find('.partSection');
                 var priliminarySection = sectionContainer.find('.priliminarySection');
                 var scheduleSection = sectionContainer.find('.scheduleSection');
-                var appendicesSection = sectionContainer.find('.appendicesSection');
+                var appendixSection = sectionContainer.find('.appendixSection');
 
                 chapterSection.hide();
                 partSection.hide();
                 priliminarySection.hide();
                 scheduleSection.hide();
-                appendicesSection.hide();
+                appendixSection.hide();
 
                 if (selectedValue == '1') {
                     chapterSection.show();
@@ -506,7 +506,7 @@
                 } else if (selectedValue == '4') {
                     scheduleSection.show();
                 } else if (selectedValue == '5') {
-                    appendicesSection.show();
+                    appendixSection.show();
                 }
             });
 
@@ -574,11 +574,11 @@
                                                     <textarea name="schedule_title[]" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title" id="schedule_title"></textarea>  
                                                 </div>
                                                 {{-- for appendix --}}
-                                                <div id="appendicesSection" class="appendicesSection" style="display: none">
-                                                    <label class="float-label"> Appendices <span
+                                                <div id="appendixSection" class="appendixSection" style="display: none">
+                                                    <label class="float-label"> Appendix <span
                                                             class="text-danger">*</span></label>
-                                                    <textarea name="appendices_title[]" class="form-control mb-3 appendices_title" placeholder="Enter Appendices Title"
-                                                        id="appendices_title"></textarea>
+                                                    <textarea name="appendix_title[]" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title"
+                                                        id="appendix_title"></textarea>
                                                 </div>
 
                                             </div>
@@ -751,23 +751,23 @@
 
                                                     <div class="form-group form-default col-md-12 px-0" id="7Div"
                                                         style="display:none">
-                                                        <div class="form-group form-default AppendixTitleMain"
+                                                        <div class="form-group form-default AppendicesTitleMain"
                                                             style="display: block">
-                                                            <label class="float-label">Appendix Title<span
+                                                            <label class="float-label">Appendices Title<span
                                                                     class="text-danger">*</span></label>
-                                                            <div class="d-flex AppendixTitle my-1">
-                                                                <input type="text" name="appendix_no[${chapterCount}][]"
+                                                            <div class="d-flex AppendicesTitle my-1">
+                                                                <input type="text" name="appendices_no[${chapterCount}][]"
                                                                     class="form-control" style="width: 20%;"
-                                                                    placeholder="Enter Appendix NO.">
-                                                                <input type="text" name="appendix_title[${chapterCount}][]"
+                                                                    placeholder="Enter Appendices NO.">
+                                                                <input type="text" name="appendices_title[${chapterCount}][]"
                                                                     class="form-control"
-                                                                    placeholder="Enter Appendix Title">
+                                                                    placeholder="Enter Appendices Title">
                                                                 <button type="button"
-                                                                    class="add-AppendixTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    class="add-AppendicesTitle btn btn-sm facebook mx-2 p-0 social">
                                                                     <i class="fa fa-plus"></i>
                                                                 </button>
                                                                 <button type="button"
-                                                                    class="btn btn-sm social youtube p-0 remove-AppendixTitle">
+                                                                    class="btn btn-sm social youtube p-0 remove-AppendicesTitle">
                                                                     <i class="fa fa-minus"></i>
                                                                 </button>
                                                             </div>
@@ -801,23 +801,23 @@
 
                                                     <div class="form-group form-default col-md-12 px-0" id="9Div"
                                                         style="display:none">
-                                                        <div class="form-group form-default AnnextureTitleMain"
+                                                        <div class="form-group form-default AnnexureTitleMain"
                                                             style="display: block">
-                                                            <label class="float-label">Annexture Title<span
+                                                            <label class="float-label">Annexure Title<span
                                                                     class="text-danger">*</span></label>
-                                                            <div class="d-flex AnnextureTitle my-1">
-                                                                <input type="text" name="annexture_no[${chapterCount}][]"
+                                                            <div class="d-flex AnnexureTitle my-1">
+                                                                <input type="text" name="annexure_no[${chapterCount}][]"
                                                                     class="form-control" style="width: 20%;"
-                                                                    placeholder="Enter Annexture NO.">
-                                                                <input type="text" name="annexture_title[${chapterCount}][]"
+                                                                    placeholder="Enter Annexure NO.">
+                                                                <input type="text" name="annexure_title[${chapterCount}][]"
                                                                     class="form-control"
-                                                                    placeholder="Enter Annexture Title">
+                                                                    placeholder="Enter Annexure Title">
                                                                 <button type="button"
-                                                                    class="add-AnnextureTitle btn btn-sm facebook mx-2 p-0 social">
+                                                                    class="add-AnnexureTitle btn btn-sm facebook mx-2 p-0 social">
                                                                     <i class="fa fa-plus"></i>
                                                                 </button>
                                                                 <button type="button"
-                                                                    class="btn btn-sm social youtube p-0 remove-AnnextureTitle">
+                                                                    class="btn btn-sm social youtube p-0 remove-AnnexureTitle">
                                                                     <i class="fa fa-minus"></i>
                                                                 </button>
                                                             </div>
@@ -912,7 +912,7 @@
                     CKEDITOR.replace($('.section-set:last').find('.parts_title')[0]);
                     CKEDITOR.replace($('.section-set:last').find('.priliminary_title')[0]);
                     CKEDITOR.replace($('.section-set:last').find('.schedule_title')[0]);
-                    CKEDITOR.replace($('.section-set:last').find('.appendices_title')[0]);
+                    CKEDITOR.replace($('.section-set:last').find('.appendix_title')[0]);
 
                     // Increment sectionCounter if needed
                     sectionCounter++;
@@ -1177,44 +1177,44 @@
                     }
                 });
 
-                // for Appendix 
-                $(document).on('click', '.add-AppendixTitle', function() {
-                    let AppendixTitleMain = $(this).closest('.section-set').find(
-                        '.AppendixTitleMain');
-                    let clonedAppendixTitle = AppendixTitleMain.find('.AppendixTitle:first')
+                // for Appendices 
+                $(document).on('click', '.add-AppendicesTitle', function() {
+                    let AppendicesTitleMain = $(this).closest('.section-set').find(
+                        '.AppendicesTitleMain');
+                    let clonedAppendicesTitle = AppendicesTitleMain.find('.AppendicesTitle:first')
                         .clone(
                             true);
-                    clonedAppendixTitle.find('input').val('');
+                    clonedAppendicesTitle.find('input').val('');
 
                     // Get the chapter count from the data attribute of the closest .section-set
                     let chapterCount = parseInt($(this).closest('.section-set').data(
                         'chapter-count')) || 0;
 
                     // Increment the section index for the new section title
-                    let lastIndex = AppendixTitleMain.find('.AppendixTitle').length;
+                    let lastIndex = AppendicesTitleMain.find('.AppendicesTitle').length;
 
                     // Update the input name attribute with the new chapter and section indexes
-                    clonedAppendixTitle.find('input[name^="appendix_no"]').each(function(
+                    clonedAppendicesTitle.find('input[name^="appendices_no"]').each(function(
                         index) {
-                        $(this).attr('name', 'appendix_no[' + chapterCount + '][' + (
+                        $(this).attr('name', 'appendices_no[' + chapterCount + '][' + (
                             lastIndex + index) + ']');
                     });
 
                     // Update the input name attribute with the new chapter and section indexes
-                    clonedAppendixTitle.find('input[name^="appendix_title"]').each(function(
+                    clonedAppendicesTitle.find('input[name^="appendices_title"]').each(function(
                         index) {
-                        $(this).attr('name', 'appendix_title[' + chapterCount + '][' + (
+                        $(this).attr('name', 'appendices_title[' + chapterCount + '][' + (
                             lastIndex + index) + ']');
                     });
 
-                    AppendixTitleMain.append(clonedAppendixTitle);
+                    AppendicesTitleMain.append(clonedAppendicesTitle);
                 });
 
-                $(document).on('click', '.remove-AppendixTitle', function() {
-                    let AppendixTitles = $(this).closest('.AppendixTitleMain').find(
-                        '.AppendixTitle');
-                    if (AppendixTitles.length > 1) {
-                        $(this).closest('.AppendixTitle').remove();
+                $(document).on('click', '.remove-AppendicesTitle', function() {
+                    let AppendicesTitles = $(this).closest('.AppendicesTitleMain').find(
+                        '.AppendicesTitle');
+                    if (AppendicesTitles.length > 1) {
+                        $(this).closest('.AppendicesTitle').remove();
                     }
                 });
 
@@ -1259,44 +1259,44 @@
                     }
                 });
 
-                // for Annexture 
-                $(document).on('click', '.add-AnnextureTitle', function() {
-                    let AnnextureTitleMain = $(this).closest('.section-set').find(
-                        '.AnnextureTitleMain');
-                    let clonedAnnextureTitle = AnnextureTitleMain.find('.AnnextureTitle:first')
+                // for Annexure 
+                $(document).on('click', '.add-AnnexureTitle', function() {
+                    let AnnexureTitleMain = $(this).closest('.section-set').find(
+                        '.AnnexureTitleMain');
+                    let clonedAnnexureTitle = AnnexureTitleMain.find('.AnnexureTitle:first')
                         .clone(
                             true);
-                    clonedAnnextureTitle.find('input').val('');
+                    clonedAnnexureTitle.find('input').val('');
 
                     // Get the chapter count from the data attribute of the closest .section-set
                     let chapterCount = parseInt($(this).closest('.section-set').data(
                         'chapter-count')) || 0;
 
                     // Increment the section index for the new section title
-                    let lastIndex = AnnextureTitleMain.find('.AnnextureTitle').length;
+                    let lastIndex = AnnexureTitleMain.find('.AnnexureTitle').length;
 
                     // Update the input name attribute with the new chapter and section indexes
-                    clonedAnnextureTitle.find('input[name^="annexture_no"]').each(function(
+                    clonedAnnexureTitle.find('input[name^="annexure_no"]').each(function(
                         index) {
-                        $(this).attr('name', 'annexture_no[' + chapterCount + '][' + (
+                        $(this).attr('name', 'annexure_no[' + chapterCount + '][' + (
                             lastIndex + index) + ']');
                     });
 
                     // Update the input name attribute with the new chapter and section indexes
-                    clonedAnnextureTitle.find('input[name^="annexture_title"]').each(function(
+                    clonedAnnexureTitle.find('input[name^="annexure_title"]').each(function(
                         index) {
-                        $(this).attr('name', 'annexture_title[' + chapterCount + '][' + (
+                        $(this).attr('name', 'annexure_title[' + chapterCount + '][' + (
                             lastIndex + index) + ']');
                     });
 
-                    AnnextureTitleMain.append(clonedAnnextureTitle);
+                    AnnexureTitleMain.append(clonedAnnexureTitle);
                 });
 
-                $(document).on('click', '.remove-AnnextureTitle', function() {
-                    let AnnextureTitles = $(this).closest('.AnnextureTitleMain').find(
-                        '.AnnextureTitle');
-                    if (AnnextureTitles.length > 1) {
-                        $(this).closest('.AnnextureTitle').remove();
+                $(document).on('click', '.remove-AnnexureTitle', function() {
+                    let AnnexureTitles = $(this).closest('.AnnexureTitleMain').find(
+                        '.AnnexureTitle');
+                    if (AnnexureTitles.length > 1) {
+                        $(this).closest('.AnnexureTitle').remove();
                     }
                 });
 

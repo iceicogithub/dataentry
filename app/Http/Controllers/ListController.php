@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appendices;
+use App\Models\Appendix;
 use App\Models\Chapter;
 use App\Models\Footnote;
 use App\Models\Lists;
@@ -16,7 +16,7 @@ class ListController extends Controller
 {
     public function edit_list($id)
     {
-       $list = Lists::with('ChapterModel', 'Partmodel','Appendicesmodel','Schedulemodel','PriliminaryModel')->where('list_id', $id)->first();
+       $list = Lists::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel')->where('list_id', $id)->first();
        $sublist = Lists::where('list_id', $id)
            ->with(['subListModel', 'footnoteModel' => function ($query) {
                $query->whereNull('sub_list_id');
@@ -76,12 +76,12 @@ class ListController extends Controller
                    $schedule->update();
                }
            }
-           if ($request->has('appendices_id')) {
-               $appendices = Appendices::find($request->appendices_id);
+           if ($request->has('appendix_id')) {
+               $appendix = Appendix::find($request->appendix_id);
    
-               if ($appendices) {
-                   $appendices->appendices_title = $request->appendices_title;
-                   $appendices->update();
+               if ($appendix) {
+                   $appendix->appendix_title = $request->appendix_title;
+                   $appendix->update();
                }
            }
    
@@ -130,7 +130,7 @@ class ListController extends Controller
                                $footnote->parts_id = $list->parts_id ?? null;
                                $footnote->priliminary_id = $list->priliminary_id ?? null;
                                $footnote->schedule_id = $list->schedule_id ?? null;
-                               $footnote->appendices_id = $list->appendices_id ?? null;
+                               $footnote->appendix_id = $list->appendix_id ?? null;
                                $footnote->footnote_content = $item ?? null;
                                $footnote->save();
                            }
@@ -176,7 +176,7 @@ class ListController extends Controller
                                        $footnote->parts_id = $list->parts_id ?? null;
                                        $footnote->priliminary_id = $list->priliminary_id ?? null;
                                        $footnote->schedule_id = $list->schedule_id ?? null;
-                                       $footnote->appendices_id = $list->appendices_id ?? null;
+                                       $footnote->appendix_id = $list->appendix_id ?? null;
                                        $footnote->footnote_content = $item ?? null;
                                        $footnote->save();
                                    }
@@ -194,7 +194,7 @@ class ListController extends Controller
                        $sublist->parts_id = $list->parts_id ?? null;
                        $sublist->priliminary_id = $list->priliminary_id ?? null;
                        $sublist->schedule_id = $list->schedule_id ?? null;
-                       $sublist->appendices_id = $list->appendices_id ?? null;
+                       $sublist->appendix_id = $list->appendix_id ?? null;
                        $sublist->sub_list_content = $request->sub_list_content[$key] ?? null;
                        $sublist->save();
 
@@ -211,7 +211,7 @@ class ListController extends Controller
                                    $footnote->parts_id = $list->parts_id ?? null;
                                    $footnote->priliminary_id = $list->priliminary_id ?? null;
                                    $footnote->schedule_id = $list->schedule_id ?? null;
-                                   $footnote->appendices_id = $list->appendices_id ?? null;
+                                   $footnote->appendix_id = $list->appendix_id ?? null;
                                    $footnote->footnote_content = $item ?? null;
                                    $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
                                    $footnote->save();
@@ -231,14 +231,14 @@ class ListController extends Controller
        // }
    }
 
-   public function add_below_new_list(Request $request, $id, $list_id, $list_rank)
+   public function add_below_new_list(Request $request, $id, $list_id)
    {
        
-       $list_rank = $list_rank;
-       $list = Lists::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendicesmodel','Schedulemodel')->where('act_id', $id)
+    //    $list_rank = $list_rank;
+       $list = Lists::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel')->where('act_id', $id)
            ->where('list_id', $list_id)->first();
 
-       return view('admin.list.add_new', compact('list', 'list_rank'));
+       return view('admin.list.add_new', compact('list'));
    }
 
    public function add_new_list(Request $request)
@@ -278,12 +278,12 @@ class ListController extends Controller
                $schedule->update();
            }
        }
-       if ($request->has('appendices_id')) {
-           $appendices = Appendices::find($request->appendices_id);
+       if ($request->has('appendix_id')) {
+           $appendix = Appendix::find($request->appendix_id);
 
-           if ($appendices) {
-               $appendices->appendices_title = $request->appendices_title;
-               $appendices->update();
+           if ($appendix) {
+               $appendix->appendix_title = $request->appendix_title;
+               $appendix->update();
            }
        }
 
@@ -313,7 +313,7 @@ class ListController extends Controller
            'priliminary_id' => $request->priliminary_id ?? null,
            'parts_id' => $request->parts_id ?? null,
            'schedule_id' => $request->schedule_id ?? null,
-           'appendices_id' => $request->appendices_id ?? null,
+           'appendix_id' => $request->appendix_id ?? null,
            'subtypes_id' => $request->subtypes_id,
            'list_title' => $request->list_title,
            'list_content' => $request->list_content,
@@ -331,7 +331,7 @@ class ListController extends Controller
                    $footnote->priliminary_id = $request->priliminary_id ?? null;
                    $footnote->parts_id = $request->parts_id ?? null;
                    $footnote->schedule_id = $request->schedule_id ?? null;
-                   $footnote->appendices_id = $request->appendices_id ?? null;
+                   $footnote->appendix_id = $request->appendix_id ?? null;
                    $footnote->footnote_content = $item ?? null;
                    $footnote->save();
                }
@@ -350,7 +350,7 @@ class ListController extends Controller
                    'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                    'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                    'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
-                   'appendices_id' => $maintypeId == "5" ? $request->appendices_id : null,
+                   'appendix_id' => $maintypeId == "5" ? $request->appendix_id : null,
                    'sub_list_content' => $request->sub_list_content[$key] ?? null,
                ]);
 
@@ -367,7 +367,7 @@ class ListController extends Controller
                            $footnote->parts_id = $request->parts_id ?? null;
                            $footnote->priliminary_id = $request->priliminary_id ?? null;
                            $footnote->schedule_id = $request->schedule_id ?? null;
-                           $footnote->appendices_id = $request->appendices_id ?? null;
+                           $footnote->appendix_id = $request->appendix_id ?? null;
                            $footnote->footnote_content = $item ?? null;
                            $footnote->save();
                        }

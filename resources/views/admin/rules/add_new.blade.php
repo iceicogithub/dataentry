@@ -38,21 +38,56 @@
                     @endif
                     <input type="hidden" name="maintype_id" value="{{ $rule->maintype_id }}">
                     <input type="hidden" name="act_id" value="{{ $rule->act_id }}">
-                    <input type="hidden" name="rule_rank" value="{{ $rule_rank }}">
+                    {{-- <input type="hidden" name="rule_rank" value="{{ $rule_rank }}"> --}}
                     <input type="hidden" name="rule_id" value="{{ $rule->rule_id }}">
+                     
+
+
+
+                    @if ($rule->chapter_id)
+                    <input type="hidden" name="chapter_id" value="{{ $rule->chapter_id }}">
+                @endif
+                @if ($rule->parts_id)
+                    <input type="hidden" name="parts_id" value="{{ $rule->parts_id }}">
+                @endif
+                @if ($rule->priliminary_id)
+                    <input type="hidden" name="priliminary_id" value="{{ $rule->priliminary_id }}">
+                @endif
+                @if ($rule->schedule_id)
                     <input type="hidden" name="schedule_id" value="{{ $rule->schedule_id }}">
+                @endif
+                @if ($rule->appendix_id)
+                    <input type="hidden" name="appendix_id" value="{{ $rule->appendix_id }}">
+                @endif
                     <div class="card p-5">
                         <div class="additional-section">
                             <div class="border col-md-12 p-3">
                                 <div class="form-group form-default col-md-12 px-0" id="sectionDiv">
 
                                     <div class="form-group form-default" style="display: block">
-                                        @if ($rule->maintype_id == 4)
-                                            <label class="float-label font-weight-bold">Schedule :</label>
+                                        @if ($rule->maintype_id == 1)
+                                                <label class="float-label font-weight-bold">Chapter :</label>
 
-                                            <textarea name="schedule_title" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title"
-                                                id="s_title">{{ $rule->ScheduleModel->schedule_title }}</textarea>
-                                        @endif
+                                                <textarea name="chapter_title" class="form-control mb-3 chapter_title" placeholder="Enter Chapter Title" id="c_title">{{ $rule->ChapterModel->chapter_title }}</textarea>
+                                            @elseif($rule->maintype_id == 2)
+                                                <label class="float-label font-weight-bold">Parts :</label>
+
+                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="part_title">{{ $rule->Partmodel->parts_title }}</textarea>
+                                            @elseif($rule->maintype_id == 3)
+                                                <label class="float-label font-weight-bold">Priliminary :</label>
+
+                                                <textarea name="priliminary_title" class="form-control mb-3 priliminary_title" placeholder="Enter Priliminary Title" id="p_title">{{ $rule->Priliminarymodel->priliminary_title }}</textarea>
+                                            @elseif($rule->maintype_id == 4)
+                                                <label class="float-label font-weight-bold">Schedule :</label>
+
+                                                <textarea name="schedule_title" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title" id="s_title">{{ $rule->Schedulemodel->schedule_title }}</textarea>
+                                            @elseif($rule->maintype_id == 5)
+                                                <label class="float-label font-weight-bold">Appendix :</label>
+
+                                                <textarea name="appendix_title" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title" id="a_title">{{ $rule->Appendixmodel->appendix_title }}</textarea>
+                                            @else
+                                                null
+                                            @endif
                                     </div>
 
                                     <div class="form-group form-default" style="display: block">
