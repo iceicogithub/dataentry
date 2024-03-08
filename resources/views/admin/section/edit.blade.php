@@ -43,6 +43,9 @@
                     <input type="hidden" name="section_id" value="{{ $sections->section_id }}">
                     <input type="hidden" name="chapter_id" value="{{ $sections->chapter_id }}">
                     <input type="hidden" name="parts_id" value="{{ $sections->parts_id }}">
+                    <input type="hidden" name="schedule_id" value="{{ $sections->schedule_id }}">
+                    <input type="hidden" name="priliminary_id" value="{{ $sections->priliminary_id }}">
+                    <input type="hidden" name="appendix_id" value="{{ $sections->appendix_id }}">
                     <div class="card p-5">
                         <div class="additional-section">
                             <div class="border col-md-12 p-3">
@@ -51,20 +54,30 @@
 
                                         <div class="form-group form-default" style="display: block">
                                             @if ($sections->maintype_id == 1)
-                                                <label class="float-label font-weight-bold">Chapter :</label>
+                                            <label class="float-label font-weight-bold">Chapter :</label>
 
-                                                <textarea name="chapter_title" class="form-control mb-3 chapter_title" placeholder="Enter Chapter Title" id="c_title">{{ $sections->ChapterModel->chapter_title }}</textarea>
-                                            @elseif($sections->maintype_id == 2)
-                                                <label class="float-label font-weight-bold">Parts :</label>
+                                            <textarea name="chapter_title" class="form-control mb-3 chapter_title" placeholder="Enter Chapter Title" id="c_title">{{ $sections->ChapterModel->chapter_title }}</textarea>
+                                        @elseif($sections->maintype_id == 2)
+                                            <label class="float-label font-weight-bold">Parts :</label>
 
-                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="p_title">{{ $sections->Partmodel->parts_title }}</textarea>
-                                            @elseif($sections->maintype_id == 3)
-                                                <label class="float-label font-weight-bold">Priliminary :</label>
+                                            <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="p_title">{{ $sections->Partmodel->parts_title }}</textarea>
+                                        @elseif($sections->maintype_id == 3)
+                                            <label class="float-label font-weight-bold">Priliminary :</label>
 
-                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="p_title">{{ $sections->Priliminarymodel->priliminary_title }}</textarea>
-                                            @else
-                                                Appendices
-                                            @endif
+                                            <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="pr_title">{{ $sections->Priliminarymodel->priliminary_title }}</textarea>
+                                        @elseif($sections->maintype_id == 4)
+                                            <label class="float-label font-weight-bold">Schedule :</label>
+
+                                            <textarea name="schedule_title" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title"
+                                                id="s_title">{{ $sections->Schedulemodel->schedule_title }}</textarea>
+                                        @elseif($sections->maintype_id == 5)
+                                            <label class="float-label font-weight-bold">Appendix :</label>
+
+                                            <textarea name="appendix_title" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title"
+                                                id="a_title">{{ $sections->Appendixmodel->appendix_title }}</textarea>
+                                        @else
+                                            null
+                                        @endif
                                         </div>
 
                                         <div class="form-group form-default" style="display: block">

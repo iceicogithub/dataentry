@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{ $appendix->act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="/get_act_section/{{ $annexure->act_id }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -21,7 +21,7 @@
     <div class="content mt-3">
         <div class="row">
             <div class="col-lg-12">
-                <form id="form" action="/update_all_appendix/{{ $appendix->appendix_id }}" method="post"
+                <form id="form" action="/update_all_annexure/{{ $annexure->annexure_id }}" method="post"
                     enctype="multipart/form-data" class="form form-horizontal">
                     @csrf
                     <!-- Your Blade View -->
@@ -41,12 +41,12 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <input type="hidden" name="appendix_id" value="{{ $appendix->appendix_id }}">
-                    <input type="hidden" name="chapter_id" value="{{ $appendix->chapter_id }}">
-                    <input type="hidden" name="parts_id" value="{{ $appendix->parts_id }}">
-                    <input type="hidden" name="priliminary_id" value="{{ $appendix->priliminary_id }}">
-                    <input type="hidden" name="schedule_id" value="{{ $appendix->schedule_id }}">
-                    <input type="hidden" name="appendices_id" value="{{ $appendix->appendices_id }}">
+                    <input type="hidden" name="annexure_id" value="{{ $annexure->annexure_id }}">
+                    <input type="hidden" name="chapter_id" value="{{ $annexure->chapter_id }}">
+                    <input type="hidden" name="parts_id" value="{{ $annexure->parts_id }}">
+                    <input type="hidden" name="priliminary_id" value="{{ $annexure->priliminary_id }}">
+                    <input type="hidden" name="schedule_id" value="{{ $annexure->schedule_id }}">
+                    <input type="hidden" name="appendix_id" value="{{ $annexure->appendix_id }}">
                     <div class="card p-5">
                         <div class="additional-section">
                             <div class="border col-md-12 p-3">
@@ -54,54 +54,54 @@
                                     <div class="form-group form-default col-md-12 px-0" id="sectionDiv">
 
                                         <div class="form-group form-default" style="display: block">
-                                            @if ($appendix->maintype_id == 1)
+                                            @if ($annexure->maintype_id == 1)
                                                 <label class="float-label font-weight-bold">Chapter :</label>
 
-                                                <textarea name="chapter_title" class="form-control mb-3 chapter_title" placeholder="Enter Chapter Title" id="c_title">{{ $appendix->ChapterModel->chapter_title }}</textarea>
-                                            @elseif($appendix->maintype_id == 2)
+                                                <textarea name="chapter_title" class="form-control mb-3 chapter_title" placeholder="Enter Chapter Title" id="c_title">{{ $annexure->ChapterModel->chapter_title }}</textarea>
+                                            @elseif($annexure->maintype_id == 2)
                                                 <label class="float-label font-weight-bold">Parts :</label>
 
-                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="p_title">{{ $appendix->Partmodel->parts_title }}</textarea>
-                                            @elseif($appendix->maintype_id == 3)
+                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="p_title">{{ $annexure->Partmodel->parts_title }}</textarea>
+                                            @elseif($annexure->maintype_id == 3)
                                                 <label class="float-label font-weight-bold">Priliminary :</label>
 
-                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="pr_title">{{ $appendix->Priliminarymodel->priliminary_title }}</textarea>
-                                            @elseif($appendix->maintype_id == 4)
+                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="pr_title">{{ $annexure->Priliminarymodel->priliminary_title }}</textarea>
+                                            @elseif($annexure->maintype_id == 4)
                                                 <label class="float-label font-weight-bold">Schedule :</label>
 
                                                 <textarea name="schedule_title" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title"
-                                                    id="s_title">{{ $appendix->Schedulemodel->schedule_title }}</textarea>
-                                            @elseif($appendix->maintype_id == 5)
-                                                <label class="float-label font-weight-bold">Appendices :</label>
+                                                    id="s_title">{{ $annexure->Schedulemodel->schedule_title }}</textarea>
+                                            @elseif($annexure->maintype_id == 5)
+                                                <label class="float-label font-weight-bold">Appendix :</label>
 
-                                                <textarea name="appendices_title" class="form-control mb-3 appendices_title" placeholder="Enter Appendices Title"
-                                                    id="a_title">{{ $appendix->Appendicesmodel->appendices_title }}</textarea>
+                                                <textarea name="appendix_title" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title"
+                                                    id="a_title">{{ $annexure->Appendixmodel->appendix_title }}</textarea>
                                             @else
                                                 null
                                             @endif
                                         </div>
 
                                         <div class="form-group form-default" style="display: block">
-                                            <label class="float-label font-weight-bold">Appendix :</label>
+                                            <label class="float-label font-weight-bold">Annexure :</label>
 
-                                            <input type="text" name="appendix_no" class="form-control my-3"
-                                                style="width: 20%;" placeholder="Enter Appendix NO."
-                                                value="{{ $appendix->appendix_no }}">
+                                            <input type="text" name="annexure_no" class="form-control my-3"
+                                                style="width: 20%;" placeholder="Enter Annexure NO."
+                                                value="{{ $annexure->annexure_no }}">
 
-                                            <textarea type="text" id="appendix_title" name="appendix_title"
-                                                class="form-control section-textarea ckeditor-replace section" placeholder="Enter Appendix Title">{{ $appendix->appendix_title }}</textarea>
+                                            <textarea type="text" id="annexure_title" name="annexure_title"
+                                                class="form-control section-textarea ckeditor-replace section" placeholder="Enter Annexure Title">{{ $annexure->annexure_title }}</textarea>
 
                                         </div>
 
                                         <div class="form-group form-default" style="display: block">
-                                            <label class="float-label">Appendix Description<span
+                                            <label class="float-label">Annexure Description<span
                                                     class="text-danger">*</span></label>
-                                            <textarea type="text" id="appendix" name="appendix_content"
-                                                class="form-control appendix-textarea ckeditor-replace appendix" placeholder="Enter Appendix">{{ $appendix->appendix_content }}</textarea>
+                                            <textarea type="text" id="annexure" name="annexure_content"
+                                                class="form-control annexure-textarea ckeditor-replace annexure" placeholder="Enter Annexure">{{ $annexure->annexure_content }}</textarea>
 
                                             <div class="footnote-addition-container">
-                                                @if ($subappendix->isNotEmpty())
-                                                    @foreach ($subappendix as $s => $art)
+                                                @if ($subannexure->isNotEmpty())
+                                                    @foreach ($subannexure as $s => $art)
                                                         @if ($art->footnoteModel)
                                                             @foreach ($art->footnoteModel as $f => $footnote)
                                                                 <div
@@ -125,10 +125,10 @@
                                                                     <div class="show-footnote" style="display: block">
                                                                         {{-- footnote for section --}}
                                                                         <input type="hidden"
-                                                                            name="appendix_footnote_id[{{ $s }}][{{ $f }}]"
+                                                                            name="annexure_footnote_id[{{ $s }}][{{ $f }}]"
                                                                             value="{{ $footnote->footnote_id }}">
 
-                                                                        <textarea type="text" name="appendix_footnote_content[{{ $s }}][{{ $f }}]"
+                                                                        <textarea type="text" name="annexure_footnote_content[{{ $s }}][{{ $f }}]"
                                                                             class="form-control ckeditor-replace footnote">{{ $footnote->footnote_content }}</textarea>
                                                                     </div>
                                                                 </div>
@@ -142,7 +142,7 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (Add footnote for appendix)
+                                                                (Add footnote for annexure)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-footnote">
@@ -157,12 +157,12 @@
                                                 @endif
 
                                             </div>
-                                            @if ($sub_appendix_f->count() > 0 || $count > 0)
+                                            @if ($sub_annexure_f->count() > 0 || $count > 0)
                                                 <div class="col-md-12 px-0 py-3">
                                                     <div class="float-right">
                                                         <span style="font-size: small;"
                                                             class="px-2 text-uppercase font-weight-bold">
-                                                            (for add and remove Sub-Appendix and
+                                                            (for add and remove Sub-Annexure and
                                                             Footnote)
                                                         </span>
                                                         <button type="button"
@@ -179,44 +179,44 @@
                                         </div>
 
 
-                                        @if ($sub_appendix_f->count() > 0 || $count > 0)
-                                            @foreach ($sub_appendix_f as $k => $subAppendixItem)
+                                        @if ($sub_annexure_f->count() > 0 || $count > 0)
+                                            @foreach ($sub_annexure_f as $k => $subAnnexureItem)
                                                 <div class="multi-addition-container col-md-12 px-0">
                                                     <div class="multi-addition">
                                                         {{-- @foreach ($subSectionItem->footnoteModel as $f => $footnoteItem) --}}
-                                                        <input type="hidden" name="sub_appendix_id[{{ $k }}]"
-                                                            value="{{ $subAppendixItem->sub_appendix_id }}">
+                                                        <input type="hidden" name="sub_annexure_id[{{ $k }}]"
+                                                            value="{{ $subAnnexureItem->sub_annexure_id }}">
                                                         <div class="border col-md-12 p-3">
                                                             <div
                                                                 class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                                                 <label class="float-label">
-                                                                    Add Sub-Appendix
+                                                                    Add Sub-Annexure
                                                                     <span class="pl-2">
                                                                         <button type="button"
-                                                                            class="btn btn-sm social facebook p-0 add-sub_appendix">
+                                                                            class="btn btn-sm social facebook p-0 add-sub_annexure">
                                                                             <i
-                                                                                class="fa {{ $subAppendixItem->sub_appendix_no ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                                class="fa {{ $subAnnexureItem->sub_annexure_no ? 'fa-plus' : 'fa-minus' }}"></i>
                                                                         </button>
                                                                     </span>
                                                                 </label>
-                                                                <div class="show-sub_appendix">
+                                                                <div class="show-sub_annexure">
                                                                     <span class="d-flex">
                                                                         <input type="text"
-                                                                            name="sub_appendix_no[{{ $k }}]"
+                                                                            name="sub_annexure_no[{{ $k }}]"
                                                                             class="form-control mb-3"
-                                                                            value="{{ $subAppendixItem->sub_appendix_no ?? '' }}"
-                                                                            placeholder="Enter Sub-Appendix No."
+                                                                            value="{{ $subAnnexureItem->sub_annexure_no ?? '' }}"
+                                                                            placeholder="Enter Sub-Annexure No."
                                                                             style="width: 20%;"
                                                                             data-index="{{ $k }}">
 
                                                                     </span>
-                                                                    <textarea type="text" name="sub_appendix_content[{{ $k }}]"
-                                                                        class="form-control ckeditor-replace sub_section">{{ $subAppendixItem->sub_appendix_content ?? '' }}</textarea>
+                                                                    <textarea type="text" name="sub_annexure_content[{{ $k }}]"
+                                                                        class="form-control ckeditor-replace sub_section">{{ $subAnnexureItem->sub_annexure_content ?? '' }}</textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        @if (count($subAppendixItem->footnoteModel) > 0)
-                                                            @foreach ($subAppendixItem->footnoteModel as $a => $footnoteItem)
+                                                        @if (count($subAnnexureItem->footnoteModel) > 0)
+                                                            @foreach ($subAnnexureItem->footnoteModel as $a => $footnoteItem)
                                                                 <input type="hidden"
                                                                     name="sub_footnote_id[{{ $k }}][{{ $a }}]"
                                                                     value="{{ $footnoteItem->footnote_id }}">
@@ -254,7 +254,7 @@
                                                                     <div class="float-right">
                                                                         <span style="font-size: small;"
                                                                             class="px-2 text-uppercase font-weight-bold">
-                                                                            (add Footnote for sub-appendix)
+                                                                            (add Footnote for sub-annexure)
                                                                         </span>
                                                                         <button type="button"
                                                                             class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -273,7 +273,7 @@
                                                             <div class="float-right">
                                                                 <span style="font-size: small;"
                                                                     class="px-2 text-uppercase font-weight-bold">
-                                                                    (for add and remove Sub-Appendix and
+                                                                    (for add and remove Sub-Annexure and
                                                                     Footnote)
                                                                 </span>
                                                                 <button type="button"
@@ -297,7 +297,7 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (for add and remove Sub-Appendix and
+                                                                (for add and remove Sub-Annexure and
                                                                 Footnote)
                                                             </span>
                                                             <button type="button"
@@ -348,7 +348,7 @@
             CKEDITOR.replace('state_amendment');
 
             // Initialize CKEditor for existing sections
-            $('.ckeditor-replace.sub_appendix').each(function() {
+            $('.ckeditor-replace.sub_annexure').each(function() {
                 CKEDITOR.replace($(this).attr('name'));
             });
 
@@ -357,14 +357,14 @@
                 CKEDITOR.replace($(this).attr('name'));
             });
 
-            $(document).on('click', '.add-sub_appendix', function() {
+            $(document).on('click', '.add-sub_annexure', function() {
                 var icon = $(this).find('i');
-                var appendix = $(this).closest('.form-default').find('.show-sub_appendix');
-                appendix.slideToggle();
+                var annexure = $(this).closest('.form-default').find('.show-sub_annexure');
+                annexure.slideToggle();
                 icon.toggleClass('fa-plus fa-minus');
 
                 // Initialize CKEditor for the new textarea
-                CKEDITOR.replace(appendix.find('.ckeditor-replace.sub_appendix')[0]);
+                CKEDITOR.replace(annexure.find('.ckeditor-replace.sub_annexure')[0]);
             });
 
             $(document).on('click', '.add-footnote', function() {
@@ -389,9 +389,9 @@
                 initializeCKEditor();
             });
 
-            let appendixCounter = 1;
-            let sub_appendixCounter = 0;
-            let subAppendixIndex = 0;
+            let annexureCounter = 1;
+            let sub_annexureCounter = 0;
+            let subAnnexureIndex = 0;
             let currentIndex;
 
             // for adding sub section and footnote
@@ -401,34 +401,34 @@
                 var clickedIndex = $(this).closest('.multi-addition').index();
 
                 // Find the maximum sectionCounterIndex among all elements
-                var maxAppendixCounterIndex = 0;
+                var maxAnnexureCounterIndex = 0;
 
                 $('.multi-addition').each(function() {
                     var index = parseInt($(this).find('[data-index]').data('index'));
-                    if (!isNaN(index) && index > maxAppendixCounterIndex) {
-                        maxAppendixCounterIndex = index;
+                    if (!isNaN(index) && index > maxAnnexureCounterIndex) {
+                        maxAnnexureCounterIndex = index;
                     }
                 });
 
                 // Calculate the new sectionCounterIndex based on the clicked index
-                var AppendixCounterIndex = Math.max(clickedIndex, maxAppendixCounterIndex) + 1;
+                var AnnexureCounterIndex = Math.max(clickedIndex, maxAnnexureCounterIndex) + 1;
 
 
-                var newAppendix = `
+                var newAnnexure = `
                                 <div class="multi-addition">
                                     <div class="border col-md-12 p-3">
                                         <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                             <label class="float-label">
-                                            Add Sub-Appendix
+                                            Add Sub-Annexure
                                             <span class="pl-2">
-                                                <button type="button" class="btn btn-sm social facebook p-0 add-sub_appendix">
+                                                <button type="button" class="btn btn-sm social facebook p-0 add-sub_annexure">
                                                 <i class="fa fa-plus"></i>
                                                 </button>
                                             </span>
                                             </label>
-                                            <div class="show-sub_appendix" style="display: none">
-                                                <span class="d-flex"><input type="text" name="sub_appendix_no[${AppendixCounterIndex}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Appendix No." data-index="${AppendixCounterIndex}">  </span>
-                                                <textarea type="text" name="sub_appendix_content[${AppendixCounterIndex}]" class="form-control ckeditor-replace sub_appendix" placeholder="Enter Sub-Appendix Ttile"></textarea>
+                                            <div class="show-sub_annexure" style="display: none">
+                                                <span class="d-flex"><input type="text" name="sub_annexure_no[${AnnexureCounterIndex}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Annexure No." data-index="${AnnexureCounterIndex}">  </span>
+                                                <textarea type="text" name="sub_annexure_content[${AnnexureCounterIndex}]" class="form-control ckeditor-replace sub_annexure" placeholder="Enter Sub-Annexure Ttile"></textarea>
                                             </div>
                                         </div>
                                     
@@ -437,7 +437,7 @@
                                                                 <div class="float-right">
                                                                     <span style="font-size: small;"
                                                                         class="px-2 text-uppercase font-weight-bold">
-                                                                        (Add footnote for sub-appendix)
+                                                                        (Add footnote for sub-Annexure)
                                                                     </span>
                                                                     <button type="button"
                                                                         class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -454,7 +454,7 @@
                                     <div class="col-md-12 px-0 py-3">
                                         <div class="float-right">
                                             <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                            ( for add and remove Sub-Appendix and Footnote )
+                                            ( for add and remove Sub-Annexure and Footnote )
                                             </span>
                                             <button type="button" class="btn btn-sm social facebook p-0 add-multi-addition">
                                             <i class="fa fa-plus"></i>
@@ -470,7 +470,7 @@
 
                 // $('.multi-addition-container').append(newSection);
                 var $clickedElement = $(this).closest('.multi-addition');
-                $clickedElement.after(newAppendix);
+                $clickedElement.after(newAnnexure);
 
 
 
@@ -480,15 +480,15 @@
                 // Update sub_section_no and sub_section_content names in all elements
                 $('.multi-addition').each(function(index) {
                     var newIndex = index + 1;
-                    $(this).find(`[name^="sub_appendix_no["]`).attr('name',
-                        `sub_appendix_no[${newIndex}]`);
-                    $(this).find(`[name^="sub_appendix_content["]`).attr('name',
-                        `sub_appendix_content[${newIndex}]`);
+                    $(this).find(`[name^="sub_annexure_no["]`).attr('name',
+                        `sub_annexure_no[${newIndex}]`);
+                    $(this).find(`[name^="sub_annexure_content["]`).attr('name',
+                        `sub_annexure_content[${newIndex}]`);
                     $(this).find('[data-index]').attr('data-index', newIndex);
                 });
 
-                appendixCounter++;
-                sub_appendixCounter = 0;
+                annexureCounter++;
+                sub_annexureCounter = 0;
 
             });
 
@@ -509,20 +509,20 @@
                 var multiAdditionContainer = $(this).closest('.multi-addition');
 
                 // Find the associated sub_section_no within the multi-addition container
-                var associatedSubAppendixTitle = multiAdditionContainer.find('[name^="sub_appendix_no["]');
+                var associatedSubAnnexureTitle = multiAdditionContainer.find('[name^="sub_annexure_no["]');
 
                 // Check if the associatedSubSectionTitle is found
-                if (associatedSubAppendixTitle.length > 0) {
+                if (associatedSubAnnexureTitle.length > 0) {
                     // Extract the index from the name attribute of the sub_section_no
-                    var appendixIndexMatch = associatedSubAppendixTitle.attr('name').match(/\[(\d*)\]/);
+                    var annexureIndexMatch = associatedSubAnnexureTitle.attr('name').match(/\[(\d*)\]/);
 
                     // Set currentIndex to 0 if the index is empty
-                    var currentIndex = appendixIndexMatch && appendixIndexMatch[1] !== '' ?
-                        parseInt(appendixIndexMatch[1], 10) : 0;
+                    var currentIndex = annexureIndexMatch && annexureIndexMatch[1] !== '' ?
+                        parseInt(annexureIndexMatch[1], 10) : 0;
 
-                    console.log('Current index of sub_appendix_no:', currentIndex);
+                    console.log('Current index of sub_annexure_no:', currentIndex);
 
-                    var newAppendix = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote2-addition">
+                    var newAnnexure = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote2-addition">
                             <label class="float-label">
                             Add Footnote
                             <span class="pl-2">
@@ -532,7 +532,7 @@
                             </span>
                             </label>
                             <div class="show-footnote" style="display: none">
-                                <textarea type="text" name="sub_footnote_content[${currentIndex}][${sub_appendixCounter}]" class="form-control ckeditor-replace footnote"></textarea>
+                                <textarea type="text" name="sub_footnote_content[${currentIndex}][${sub_annexureCounter}]" class="form-control ckeditor-replace footnote"></textarea>
                             </div>
                           
                         </div>`;
@@ -540,7 +540,7 @@
                     // Find the footnote2-addition-container within the multi-addition container
                     var footnote2AdditionContainer = multiAdditionContainer.find(
                         '.footnote2-addition-container');
-                    footnote2AdditionContainer.append(newAppendix);
+                    footnote2AdditionContainer.append(newAnnexure);
 
                     // CKEDITOR.replace(footnote2AdditionContainer.find('.footnote2-addition:last').find(
                     //     '.ckeditor-replace')[0]);
@@ -549,10 +549,10 @@
                             0]);
                     }, 100); // Adjust the delay as needed
 
-                    subAppendixIndex = sub_AppendixCounter;
-                    sub_AppendixCounter++;
+                    subAnnexureIndex = sub_AnnexureCounter;
+                    sub_AnnexureCounter++;
                 } else {
-                    console.error('Associated sub_appendix_no not found.');
+                    console.error('Associated sub_annexure_no not found.');
                 }
             });
 
@@ -565,13 +565,13 @@
             // for section footnote 
             $(document).on('click', '.add-multi-footnote', function() {
 
-                var lastInputFoot = $('[data-footappendixindex]:last').data('footappendixindex');
-                var lastInputAppendix = $('[data-appendixindex]:last').data('appendixindex');
+                var lastInputFoot = $('[data-footannexureindex]:last').data('footannexureindex');
+                var lastInputAnnexure = $('[data-annexureindex]:last').data('annexureindex');
                 // console.log(lastInputFoot);
                 var footCounterIndex = parseInt(lastInputFoot) + 1;
                 // console.log(footCounterIndex);
 
-                var newAppendix = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
+                var newAnnexure = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
                                         <label class="float-label">
                                         Add Footnote
                                         <span class="pl-2">
@@ -581,7 +581,7 @@
                                         </span>
                                         </label>
                                         <div class="show-footnote" style="display: none">
-                                            <textarea type="text" name="appendix_footnote_content[${lastInputAppendix}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
+                                            <textarea type="text" name="annexure_footnote_content[${lastInputAnnexure}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                    
                                        
@@ -589,12 +589,12 @@
                                     
                                 `;
 
-                $('.footnote-addition-container').append(newAppendix);
+                $('.footnote-addition-container').append(newAnnexure);
 
                 CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[0]);
                 // CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[1]);
 
-                appendixCounter++; // Increment the counter for the next section
+                annexureCounter++; // Increment the counter for the next section
             });
 
             $(document).on('click', '.remove-multi-footnote', function() {

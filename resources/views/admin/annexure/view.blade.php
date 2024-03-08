@@ -4,7 +4,7 @@
         <div class="col-sm-8">
             <div class="page-header float-left">
                 <div class="page-title">
-                    <h1>Appendix : {{ $appendix->section_title }}</h1>
+                    <h1>Annexure : {{ $annexure->section_title }}</h1>
                 </div>
             </div>
         </div>
@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{$appendix->act_id}}"><button class="btn btn-danger">Back</button></a>
+                        <a href="/get_act_section/{{$annexure->act_id}}"><button class="btn btn-danger">Back</button></a>
                     </ol>
 
                 </div>
@@ -48,15 +48,15 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-title">Arrangement of Sub-AppendixS</strong>
+                        <strong class="card-title">Arrangement of Sub-Annexures</strong>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered text-center" id="myTable">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">Sr.No</th>
-                                    <th scope="col">Sub-Appendix No.</th>
-                                    <th scope="col">Sub-Appendix</th>
+                                    <th scope="col">Sub-Annexure No.</th>
+                                    <th scope="col">Sub-Annexure</th>
                                     <th scope="col">Date of changes</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -65,14 +65,14 @@
                                 @php
                                     $a = 1;
                                 @endphp
-                                @foreach ($sub_appendix as $item)
+                                @foreach ($sub_annexure as $item)
                                     <tr>
                                         <td scope="row">@php echo $a++; @endphp</td>
-                                        <td class="text-capitalize">{{ $item->sub_appendix_no }}</td>
-                                        <td class="text-capitalize">{!! $item->sub_appendix_content !!}</td>
+                                        <td class="text-capitalize">{{ $item->sub_annexure_no }}</td>
+                                        <td class="text-capitalize">{!! $item->sub_annexure_content !!}</td>
                                         <td class="text-capitalize">{{ $item->updated_at }}</td>
                                         <td class="text-capitalize d-flex justify-content-center">
-                                            <a href="{{ url('/delete_sub_appendix/' . $item->sub_appendix_id) }}" title="Delete"
+                                            <a href="{{ url('/delete_sub_annexure/' . $item->sub_annexure_id) }}" title="Delete"
                                                 class="px-1" onclick="return confirm('Are you sure ?')">
                                                 <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                             </a>

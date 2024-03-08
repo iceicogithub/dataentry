@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Act;
 use App\Models\ActSummary;
-use App\Models\Annexture;
+use App\Models\Annexure;
 use App\Models\Appendices;
 use App\Models\Appendix;
 use App\Models\Article;
@@ -16,8 +16,8 @@ use App\Models\Part;
 use App\Models\Parts;
 use App\Models\PartsType;
 use App\Models\Stschedule;
-use App\Models\SubAnnexture;
-use App\Models\SubAppendix;
+use App\Models\SubAnnexure;
+use App\Models\SubAppendices;
 use App\Models\SubArticle;
 use App\Models\SubLists;
 use App\Models\SubOrders;
@@ -61,7 +61,7 @@ class ActController extends Controller
         }
 
         $act_section = Section::where('act_id', $id)
-            ->with('MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
             ->get()
             ->sortBy(function ($section) {
                 $mixstring = $section->section_no;
@@ -75,7 +75,7 @@ class ActController extends Controller
             }, SORT_NATURAL);
 
         $act_article = Article::where('act_id', $id)
-            ->with('MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
             ->get()
             ->sortBy(function ($article) {
                 $mixstring = $article->article_no;
@@ -89,7 +89,7 @@ class ActController extends Controller
             }, SORT_NATURAL);
 
         $act_rule = Rules::where('act_id', $id)
-            ->with('MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
             ->get()
             ->sortBy(function ($rule) {
                 $mixstring = $rule->rule_no;
@@ -102,7 +102,7 @@ class ActController extends Controller
             }, SORT_NATURAL);
 
         $act_regulation = Regulation::where('act_id', $id)
-            ->with('MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
             ->get()
             ->sortBy(function ($regulation) {
                 $mixstring = $regulation->regulation_no;
@@ -115,7 +115,7 @@ class ActController extends Controller
             }, SORT_NATURAL);
 
         $act_list = Lists::where('act_id', $id)
-            ->with('MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
             ->get()
             ->sortBy(function ($list) {
                 $mixstring = $list->list_no;
@@ -128,7 +128,7 @@ class ActController extends Controller
             }, SORT_NATURAL);
 
         $act_part = Part::where('act_id', $id)
-            ->with('MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
             ->get()
             ->sortBy(function ($part) {
                 $mixstring = $part->part_no;
@@ -140,11 +140,11 @@ class ActController extends Controller
                 return $numericPart . $alphabeticPart;
             }, SORT_NATURAL);
 
-        $act_appendix = Appendix::where('act_id', $id)
-            ->with('MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+        $act_appendices = Appendices::where('act_id', $id)
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
             ->get()
-            ->sortBy(function ($appendix) {
-                $mixstring = $appendix->appendix_no;
+            ->sortBy(function ($appendices) {
+                $mixstring = $appendices->appendices_no;
 
                 preg_match_all('/(\d+)|([a-zA-Z]+)/', $mixstring, $matches);
                 $numericPart = isset($matches[1][0]) ? str_pad($matches[1][0], 10, '0', STR_PAD_LEFT) : '';
@@ -154,7 +154,7 @@ class ActController extends Controller
             }, SORT_NATURAL);
 
         $act_order = Orders::where('act_id', $id)
-            ->with('MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
             ->get()
             ->sortBy(function ($order) {
                 $mixstring = $order->order_no;
@@ -165,11 +165,11 @@ class ActController extends Controller
                 return $numericPart . $alphabeticPart;
             }, SORT_NATURAL);
 
-        $act_annexture = Annexture::where('act_id', $id)
-            ->with('MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+        $act_annexure = Annexure::where('act_id', $id)
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
             ->get()
-            ->sortBy(function ($annexture) {
-                $mixstring = $annexture->annexture_no;
+            ->sortBy(function ($annexure) {
+                $mixstring = $annexure->annexure_no;
 
                 preg_match_all('/(\d+)|([a-zA-Z]+)/', $mixstring, $matches);
                 $numericPart = isset($matches[1][0]) ? str_pad($matches[1][0], 10, '0', STR_PAD_LEFT) : '';
@@ -179,7 +179,7 @@ class ActController extends Controller
             }, SORT_NATURAL);
 
         $act_stschedule = Stschedule::where('act_id', $id)
-            ->with('MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
             ->get()
             ->sortBy(function ($stschedule) {
                 $mixstring = $stschedule->stschedule_no;
@@ -194,7 +194,7 @@ class ActController extends Controller
             // dd($act_stschedule);
             // die();
 
-        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule', 'act_article', 'act_regulation', 'act_list', 'act_part', 'act_part', 'act_appendix', 'act_stschedule', 'act_order', 'act_annexture'));
+        return view('admin.section.index', compact('act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule', 'act_article', 'act_regulation', 'act_list', 'act_part', 'act_appendices', 'act_stschedule', 'act_order', 'act_annexure'));
     }
 
     public function create(Request $request, $id)
@@ -352,17 +352,17 @@ class ActController extends Controller
                     } elseif ($request->subtypes_id[$key] == 7) {
 
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
-                        foreach ($request->appendix_title[$key] as $index => $appendixtitle) {
-                            $currentAppendixNo = $request->appendix_no[$key][$index];
+                        foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
+                            $currentAppendicesNo = $request->appendices_no[$key][$index];
 
 
-                            $appendix = Appendix::create([
-                                'appendix_no' => $currentAppendixNo,
+                            $appendices = Appendices::create([
+                                'appendices_no' => $currentAppendicesNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
                                 'chapter_id' => $chapt->chapter_id,
                                 'subtypes_id' => $subtypes_id,
-                                'appendix_title' => $appendixtitle,
+                                'appendices_title' => $appendicestitle,
                             ]);
                         }
                     } elseif ($request->subtypes_id[$key] == 8) {
@@ -384,17 +384,17 @@ class ActController extends Controller
                     } elseif ($request->subtypes_id[$key] == 9) {
 
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
-                        foreach ($request->annexture_title[$key] as $index => $annexturetitle) {
-                            $currentAnnextureNo = $request->annexture_no[$key][$index];
+                        foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
+                            $currentAnnexureNo = $request->annexure_no[$key][$index];
 
 
-                            $annexture = Annexture::create([
-                                'annexture_no' => $currentAnnextureNo,
+                            $annexure = Annexure::create([
+                                'annexure_no' => $currentAnnexureNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
                                 'chapter_id' => $chapt->chapter_id,
                                 'subtypes_id' => $subtypes_id,
-                                'annexture_title' => $annexturetitle,
+                                'annexure_title' => $annexuretitle,
                             ]);
                         }
                     } elseif ($request->subtypes_id[$key] == 10) {
@@ -534,17 +534,17 @@ class ActController extends Controller
                     } elseif ($request->subtypes_id[$key] == 7) {
 
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
-                        foreach ($request->appendix_title[$key] as $index => $appendixtitle) {
-                            $currentAppendixNo = $request->appendix_no[$key][$index];
+                        foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
+                            $currentAppendicesNo = $request->appendices_no[$key][$index];
 
 
-                            $appendix = Appendix::create([
-                                'appendix_no' => $currentAppendixNo,
+                            $appendices = Appendices::create([
+                                'appendices_no' => $currentAppendicesNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
                                 'parts_id' => $parts->parts_id,
                                 'subtypes_id' => $subtypes_id,
-                                'appendix_title' => $appendixtitle,
+                                'appendices_title' => $appendicestitle,
                             ]);
                         }
                     } elseif ($request->subtypes_id[$key] == 8) {
@@ -566,17 +566,17 @@ class ActController extends Controller
                     } elseif ($request->subtypes_id[$key] == 9) {
 
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
-                        foreach ($request->annexture_title[$key] as $index => $annexturetitle) {
-                            $currentAnnextureNo = $request->annexture_no[$key][$index];
+                        foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
+                            $currentAnnexureNo = $request->annexure_no[$key][$index];
 
 
-                            $annexture = Annexture::create([
-                                'annexture_no' => $currentAnnextureNo,
+                            $annexure = Annexure::create([
+                                'annexure_no' => $currentAnnexureNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
                                 'parts_id' => $parts->parts_id,
                                 'subtypes_id' => $subtypes_id,
-                                'annexture_title' => $annexturetitle,
+                                'annexure_title' => $annexuretitle,
                             ]);
                         }
                     }
@@ -716,17 +716,17 @@ class ActController extends Controller
                     } elseif ($request->subtypes_id[$key] == 7) {
 
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
-                        foreach ($request->appendix_title[$key] as $index => $appendixtitle) {
-                            $currentAppendixNo = $request->appendix_no[$key][$index];
+                        foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
+                            $currentAppendicesNo = $request->appendices_no[$key][$index];
 
 
-                            $appendix = Appendix::create([
-                                'appendix_no' => $currentAppendixNo,
+                            $appendices = Appendices::create([
+                                'appendices_no' => $currentAppendicesNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
                                 'priliminary_id' => $priliminary->priliminary_id,
                                 'subtypes_id' => $subtypes_id,
-                                'appendix_title' => $appendixtitle,
+                                'appendices_title' => $appendicestitle,
                             ]);
                         }
                     } elseif ($request->subtypes_id[$key] == 8) {
@@ -748,17 +748,17 @@ class ActController extends Controller
                     } elseif ($request->subtypes_id[$key] == 9) {
 
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
-                        foreach ($request->annexture_title[$key] as $index => $annexturetitle) {
-                            $currentAnnextureNo = $request->annexture_no[$key][$index];
+                        foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
+                            $currentAnnexureNo = $request->annexure_no[$key][$index];
 
 
-                            $annexture = Annexture::create([
-                                'annexture_no' => $currentAnnextureNo,
+                            $annexure = Annexure::create([
+                                'annexure_no' => $currentAnnexureNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
                                 'priliminary_id' => $priliminary->priliminary_id,
                                 'subtypes_id' => $subtypes_id,
-                                'annexture_title' => $annexturetitle,
+                                'annexure_title' => $annexuretitle,
                             ]);
                         }
                     }
@@ -898,17 +898,17 @@ class ActController extends Controller
                     } elseif ($request->subtypes_id[$key] == 7) {
 
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
-                        foreach ($request->appendix_title[$key] as $index => $appendixtitle) {
-                            $currentAppendixNo = $request->appendix_no[$key][$index];
+                        foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
+                            $currentAppendicesNo = $request->appendices_no[$key][$index];
 
 
-                            $appendix = Appendix::create([
-                                'appendix_no' => $currentAppendixNo,
+                            $appendices = Appendices::create([
+                                'appendices_no' => $currentAppendicesNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
                                 'schedule_id' => $schedule->schedule_id,
                                 'subtypes_id' => $subtypes_id,
-                                'appendix_title' => $appendixtitle,
+                                'appendices_title' => $appendicestitle,
                             ]);
                         }
                     } elseif ($request->subtypes_id[$key] == 8) {
@@ -930,17 +930,17 @@ class ActController extends Controller
                     } elseif ($request->subtypes_id[$key] == 9) {
 
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
-                        foreach ($request->annexture_title[$key] as $index => $annexturetitle) {
-                            $currentAnnextureNo = $request->annexture_no[$key][$index];
+                        foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
+                            $currentAnnexureNo = $request->annexure_no[$key][$index];
 
 
-                            $annexture = Annexture::create([
-                                'annexture_no' => $currentAnnextureNo,
+                            $annexure = Annexure::create([
+                                'annexure_no' => $currentAnnexureNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
                                 'schedule_id' => $schedule->schedule_id,
                                 'subtypes_id' => $subtypes_id,
-                                'annexture_title' => $annexturetitle,
+                                'annexure_title' => $annexuretitle,
                             ]);
                         }
                     }
@@ -962,11 +962,11 @@ class ActController extends Controller
                         }
                     }
                 } elseif ($maintypeId == "5") {
-                    $appendices = new Appendices();
-                    $appendices->act_id = $act->act_id ?? null;
-                    $appendices->maintype_id = $maintypeId;
-                    $appendices->appendices_title = $request->appendices_title[$key] ?? null;
-                    $appendices->save();
+                    $appendix = new Appendix();
+                    $appendix->act_id = $act->act_id ?? null;
+                    $appendix->maintype_id = $maintypeId;
+                    $appendix->appendix_title = $request->appendix_title[$key] ?? null;
+                    $appendix->save();
 
                     if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
@@ -987,7 +987,7 @@ class ActController extends Controller
                                     'section_no' => $currentSectionNo,
                                     'act_id' => $act->act_id,
                                     'maintype_id' => $maintypeId,
-                                    'appendices_id' => $appendices->appendices_id,
+                                    'appendix_id' => $appendix->appendix_id,
                                     'subtypes_id' => $subtypes_id,
                                     'section_title' => $sectiontitle,
                                 ]);
@@ -1002,7 +1002,7 @@ class ActController extends Controller
                                 'article_no' => $currentArticleNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
-                                'appendices_id' => $appendices->appendices_id,
+                                'appendix_id' => $appendix->appendix_id,
                                 'subtypes_id' => $subtypes_id,
                                 'article_title' => $articletitle,
                             ]);
@@ -1016,7 +1016,7 @@ class ActController extends Controller
                                 'rule_no' => $currentRuleNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
-                                'appendices_id' => $appendices->appendices_id,
+                                'appendix_id' => $appendix->appendix_id,
                                 'subtypes_id' => $subtypes_id,
                                 'rule_title' => $ruletitle,
                             ]);
@@ -1032,7 +1032,7 @@ class ActController extends Controller
                                 'regulation_no' => $currentRegulationNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
-                                'appendices_id' => $appendices->appendices_id,
+                                'appendix_id' => $appendix->appendix_id,
                                 'subtypes_id' => $subtypes_id,
                                 'regulation_title' => $regulationtitle,
                             ]);
@@ -1056,7 +1056,7 @@ class ActController extends Controller
                                 'list_no' => $currentListNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
-                                'appendices_id' => $appendices->appendices_id,
+                                'appendix_id' => $appendix->appendix_id,
                                 'subtypes_id' => $subtypes_id,
                                 'list_title' => $listtitle,
                             ]);
@@ -1072,7 +1072,7 @@ class ActController extends Controller
                                 'part_no' => $currentPartNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
-                                'appendices_id' => $appendices->appendices_id,
+                                'appendix_id' => $appendix->appendix_id,
                                 'subtypes_id' => $subtypes_id,
                                 'part_title' => $parttitle,
                             ]);
@@ -1080,17 +1080,17 @@ class ActController extends Controller
                     } elseif ($request->subtypes_id[$key] == 7) {
 
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
-                        foreach ($request->appendix_title[$key] as $index => $appendixtitle) {
-                            $currentAppendixNo = $request->appendix_no[$key][$index];
+                        foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
+                            $currentAppendicesNo = $request->appendices_no[$key][$index];
 
 
-                            $appendix = Appendix::create([
-                                'appendix_no' => $currentAppendixNo,
+                            $appendices = Appendices::create([
+                                'appendices_no' => $currentAppendicesNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
-                                'appendices_id' => $appendices->appendices_id,
+                                'appendix_id' => $appendix->appendix_id,
                                 'subtypes_id' => $subtypes_id,
-                                'appendix_title' => $appendixtitle,
+                                'appendices_title' => $appendicestitle,
                             ]);
                         }
                     } elseif ($request->subtypes_id[$key] == 8) {
@@ -1104,7 +1104,7 @@ class ActController extends Controller
                                 'order_no' => $currentOrderNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
-                                'appendices_id' => $appendices->appendices_id,
+                                'appendix_id' => $appendix->appendix_id,
                                 'subtypes_id' => $subtypes_id,
                                 'order_title' => $ordertitle,
                             ]);
@@ -1112,17 +1112,17 @@ class ActController extends Controller
                     } elseif ($request->subtypes_id[$key] == 9) {
 
                         $subtypes_id = $request->subtypes_id[$key] ?? null;
-                        foreach ($request->annexture_title[$key] as $index => $annexturetitle) {
-                            $currentAnnextureNo = $request->annexture_no[$key][$index];
+                        foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
+                            $currentAnnexureNo = $request->annexure_no[$key][$index];
 
 
-                            $annexture = Annexture::create([
-                                'annexture_no' => $currentAnnextureNo,
+                            $annexure = Annexure::create([
+                                'annexure_no' => $currentAnnexureNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
-                                'appendices_id' => $appendices->appendices_id,
+                                'appendix_id' => $appendix->appendix_id,
                                 'subtypes_id' => $subtypes_id,
-                                'annexture_title' => $annexturetitle,
+                                'annexure_title' => $annexuretitle,
                             ]);
                         }
                     }
@@ -1137,7 +1137,7 @@ class ActController extends Controller
                                 'stschedule_no' => $currentStscheduleNo,
                                 'act_id' => $act->act_id,
                                 'maintype_id' => $maintypeId,
-                                'appendices_id' => $appendices->appendices_id,
+                                'appendix_id' => $appendix->appendix_id,
                                 'subtypes_id' => $subtypes_id,
                                 'stschedule_title' => $stscheduletitle,
                             ]);
@@ -1255,7 +1255,7 @@ class ActController extends Controller
             Parts::where('act_id', $id)->delete();
             Schedule::where('act_id', $id)->delete();
             Priliminary::where('act_id', $id)->delete();
-            Appendices::where('act_id', $id)->delete();
+            Appendix::where('act_id', $id)->delete();
 
             Section::where('act_id', $id)->delete();
             Rules::where('act_id', $id)->delete();
@@ -1264,8 +1264,8 @@ class ActController extends Controller
             Orders::where('act_id', $id)->delete();
             Part::where('act_id', $id)->delete();
             Lists::where('act_id', $id)->delete();
-            Annexture::where('act_id', $id)->delete();
-            Appendix::where('act_id', $id)->delete();
+            Annexure::where('act_id', $id)->delete();
+            Appendices::where('act_id', $id)->delete();
             Article::where('act_id', $id)->delete();
 
             SubSection::where('act_id', $id)->delete();
@@ -1275,8 +1275,8 @@ class ActController extends Controller
             SubOrders::where('act_id', $id)->delete();
             SubPart::where('act_id', $id)->delete();
             SubLists::where('act_id', $id)->delete();
-            SubAnnexture::where('act_id', $id)->delete();
-            SubAppendix::where('act_id', $id)->delete();
+            SubAnnexure::where('act_id', $id)->delete();
+            SubAppendices::where('act_id', $id)->delete();
             SubArticle::where('act_id', $id)->delete();
             Footnote::where('act_id', $id)->delete();
 

@@ -38,7 +38,7 @@
                     @endif
                     <input type="hidden" name="maintype_id" value="{{ $article->maintype_id }}">
                     <input type="hidden" name="act_id" value="{{ $article->act_id }}">
-                    <input type="hidden" name="section_rank" value="{{ $article_rank }}">
+                    {{-- <input type="hidden" name="section_rank" value="{{ $article_rank }}"> --}}
                     @if ($article->chapter_id)
                         <input type="hidden" name="chapter_id" value="{{ $article->chapter_id }}">
                     @endif
@@ -51,8 +51,8 @@
                     @if ($article->schedule_id)
                         <input type="hidden" name="schedule_id" value="{{ $article->schedule_id }}">
                     @endif
-                    @if ($article->appendices_id)
-                        <input type="hidden" name="appendices_id" value="{{ $article->appendices_id }}">
+                    @if ($article->appendix_id)
+                        <input type="hidden" name="appendix_id" value="{{ $article->appendix_id }}">
                     @endif
                     
                     <div class="card p-5">
@@ -78,9 +78,9 @@
 
                                                 <textarea name="schedule_title" class="form-control mb-3 schedule_title" placeholder="Enter Schedule Title" id="s_title">{{ $article->Schedulemodel->schedule_title }}</textarea>
                                             @elseif($article->maintype_id == 5)
-                                                <label class="float-label font-weight-bold">Appendices :</label>
+                                                <label class="float-label font-weight-bold">Appendix :</label>
 
-                                                <textarea name="appendices_title" class="form-control mb-3 appendices_title" placeholder="Enter Appendices Title" id="a_title">{{ $article->Appendicesmodel->appendices_title }}</textarea>
+                                                <textarea name="appendix_title" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title" id="a_title">{{ $article->Appendixmodel->appendix_title }}</textarea>
                                             @else
                                                 null
                                             @endif

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Act;
 use App\Models\Regulation;
-use App\Models\Appendices;
+use App\Models\Appendix;
 use App\Models\ActSummary;
 use App\Models\Category;
 use App\Models\MainType;
@@ -30,7 +30,7 @@ class RegulationController extends Controller
 
     public function edit_regulation($id)
     {
-        $regulation = Regulation::with('ChapterModel', 'Partmodel', 'Appendicesmodel', 'Schedulemodel', 'PriliminaryModel')->where('regulation_id', $id)->first();
+        $regulation = Regulation::with('ChapterModel', 'Partmodel', 'Appendixmodel', 'Schedulemodel', 'PriliminaryModel')->where('regulation_id', $id)->first();
         $subregulation = Regulation::where('regulation_id', $id)
             ->with([
                 'subRegulationModel',
@@ -93,15 +93,15 @@ class RegulationController extends Controller
                 $schedule->update();
             }
         }
-        if ($request->has('appendices_id')) {
-            $appendices = Appendices::find($request->appendices_id);
-
-            if ($appendices) {
-                $appendices->appendices_title = $request->appendices_title;
-                $appendices->update();
+        
+        if ($request->has('appendix_id')) {
+            $appendix = Appendix::find($request->appendix_id);
+ 
+            if ($appendix) {
+                $appendix->appendix_title = $request->appendix_title;
+                $appendix->update();
             }
         }
-
 
         // Check if section_id exists in the request
         if (!$request->has('regulation_id')) {
@@ -147,7 +147,7 @@ class RegulationController extends Controller
                             $footnote->parts_id = $regulation->parts_id ?? null;
                             $footnote->priliminary_id = $regulation->priliminary_id ?? null;
                             $footnote->schedule_id = $regulation->schedule_id ?? null;
-                            $footnote->appendices_id = $regulation->appendices_id ?? null;
+                            $footnote->appendix_id = $regulation->appendix_id ?? null;
                             $footnote->footnote_content = $item ?? null;
                             $footnote->save();
                         }
@@ -193,7 +193,7 @@ class RegulationController extends Controller
                                     $footnote->parts_id = $regulation->parts_id ?? null;
                                     $footnote->priliminary_id = $regulation->priliminary_id ?? null;
                                     $footnote->schedule_id = $regulation->schedule_id ?? null;
-                                    $footnote->appendices_id = $regulation->appendices_id ?? null;
+                                    $footnote->appendix_id = $regulation->appendix_id ?? null;
                                     $footnote->footnote_content = $item ?? null;
                                     $footnote->save();
                                 }
@@ -211,7 +211,7 @@ class RegulationController extends Controller
                     $subregulation->parts_id = $regulation->parts_id ?? null;
                     $subregulation->priliminary_id = $regulation->priliminary_id ?? null;
                     $subregulation->schedule_id = $regulation->schedule_id ?? null;
-                    $subregulation->appendices_id = $regulation->appendices_id ?? null;
+                    $subregulation->appendix_id = $regulation->appendix_id ?? null;
                     $subregulation->sub_regulation_content = $request->sub_regulation_content[$key] ?? null;
                     $subregulation->save();
 
@@ -228,7 +228,7 @@ class RegulationController extends Controller
                                 $footnote->parts_id = $regulation->parts_id ?? null;
                                 $footnote->priliminary_id = $regulation->priliminary_id ?? null;
                                 $footnote->schedule_id = $regulation->schedule_id ?? null;
-                                $footnote->appendices_id = $regulation->appendices_id ?? null;
+                                $footnote->appendix_id = $regulation->appendix_id ?? null;
                                 $footnote->footnote_content = $item ?? null;
                                 $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
                                 $footnote->save();
@@ -248,14 +248,14 @@ class RegulationController extends Controller
         // }
     }
 
-    public function add_below_new_regulation(Request $request, $id, $regulation_id, $regulation_rank)
+    public function add_below_new_regulation(Request $request, $id, $regulation_id)
     {
 
-        $regulation_rank = $regulation_rank;
-        $regulation = Regulation::with('ChapterModel', 'Partmodel', 'PriliminaryModel', 'Appendicesmodel', 'Schedulemodel')->where('act_id', $id)
+        // $regulation_rank = $regulation_rank;
+        $regulation = Regulation::with('ChapterModel', 'Partmodel', 'PriliminaryModel', 'Appendixmodel', 'Schedulemodel')->where('act_id', $id)
             ->where('regulation_id', $regulation_id)->first();
 
-        return view('admin.regulation.add_new', compact('regulation', 'regulation_rank'));
+        return view('admin.regulation.add_new', compact('regulation'));
     }
 
     public function add_new_regulation(Request $request)
@@ -295,12 +295,12 @@ class RegulationController extends Controller
                 $schedule->update();
             }
         }
-        if ($request->has('appendices_id')) {
-            $appendices = Appendices::find($request->appendices_id);
-
-            if ($appendices) {
-                $appendices->appendices_title = $request->appendices_title;
-                $appendices->update();
+        if ($request->has('appendix_id')) {
+            $appendix = Appendix::find($request->appendix_id);
+ 
+            if ($appendix) {
+                $appendix->appendix_title = $request->appendix_title;
+                $appendix->update();
             }
         }
 
@@ -330,7 +330,7 @@ class RegulationController extends Controller
             'priliminary_id' => $request->priliminary_id ?? null,
             'parts_id' => $request->parts_id ?? null,
             'schedule_id' => $request->schedule_id ?? null,
-            'appendices_id' => $request->appendices_id ?? null,
+            'appendix_id' => $request->appendix_id ?? null,
             'subtypes_id' => $request->subtypes_id,
             'regulation_title' => $request->regulation_title,
             'regulation_content' => $request->regulation_content,
@@ -348,7 +348,7 @@ class RegulationController extends Controller
                     $footnote->priliminary_id = $request->priliminary_id ?? null;
                     $footnote->parts_id = $request->parts_id ?? null;
                     $footnote->schedule_id = $request->schedule_id ?? null;
-                    $footnote->appendices_id = $request->appendices_id ?? null;
+                    $footnote->appendix_id = $request->appendix_id ?? null;
                     $footnote->footnote_content = $item ?? null;
                     $footnote->save();
                 }
@@ -367,7 +367,7 @@ class RegulationController extends Controller
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                     'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                     'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
-                    'appendices_id' => $maintypeId == "5" ? $request->appendices_id : null,
+                    'appendix_id' => $maintypeId == "5" ? $request->appendix_id : null,
                     'sub_regulation_content' => $request->sub_regulation_content[$key] ?? null,
                 ]);
 
@@ -384,7 +384,7 @@ class RegulationController extends Controller
                             $footnote->parts_id = $request->parts_id ?? null;
                             $footnote->priliminary_id = $request->priliminary_id ?? null;
                             $footnote->schedule_id = $request->schedule_id ?? null;
-                            $footnote->appendices_id = $request->appendices_id ?? null;
+                            $footnote->appendix_id = $request->appendix_id ?? null;
                             $footnote->footnote_content = $item ?? null;
                             $footnote->save();
                         }

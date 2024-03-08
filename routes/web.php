@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\ActController;
-use App\Http\Controllers\AnnextureController;
-use App\Http\Controllers\AppendixController;
+use App\Http\Controllers\AnnexureController;
+use App\Http\Controllers\AppendicesController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\ListController;
@@ -76,7 +76,7 @@ Route::get('/view-sub-section/{id}', [SectionController::class, 'view_sub_sectio
 Route::post('/update_all_section/{id}', [SectionController::class, 'update']);
 Route::get('/delete_sub_section/{id}', [SectionController::class, 'destroy_sub_section']);
 Route::get('/delete_section/{id}', [SectionController::class, 'destroy']);
-Route::get('/add_below_new_section/{id}/{section_id}/{section_rank}', [SectionController::class, 'add_below_new_section'])->name('add_below_new_section');
+Route::get('/add_below_new_section/{id}/{section_id}', [SectionController::class, 'add_below_new_section'])->name('add_below_new_section');
 Route::post('/add_new_section', [SectionController::class, 'add_new_section']);
 
 // chapter 
@@ -89,7 +89,7 @@ Route::get('/export-pdf/{id}', [PdfExportController::class, 'exportToPdf'])->nam
 // rules 
 Route::get('/edit-rule/{id}', [RulesController::class, 'edit_rule'])->name('edit-rule');
 Route::post('/update_all_rule/{id}', [RulesController::class, 'update']);
-Route::get('/add_below_new_rule/{id}/{rule_id}/{rule_rank}', [RulesController::class, 'add_below_new_rule'])->name('add_below_new_rule');
+Route::get('/add_below_new_rule/{id}/{rule_id}', [RulesController::class, 'add_below_new_rule'])->name('add_below_new_rule');
 Route::post('/add_new_rule', [RulesController::class, 'add_new_rule']);
 Route::get('/delete_rule/{id}', [RulesController::class, 'destroy']);
 Route::get('/view-sub-rule/{id}', [RulesController::class, 'view_sub_rule'])->name('view_sub_rule');
@@ -98,7 +98,7 @@ Route::get('/delete_sub_rule/{id}', [RulesController::class, 'destroy_sub_rule']
 // article 
 Route::get('/edit-article/{id}', [ArticleController::class, 'edit_article'])->name('edit-article');
 Route::post('/update_all_article/{id}', [ArticleController::class, 'update']);
-Route::get('/add_below_new_article/{id}/{article_id}/{article_rank}', [ArticleController::class, 'add_below_new_article'])->name('add_below_new_article');
+Route::get('/add_below_new_article/{id}/{article_id}}', [ArticleController::class, 'add_below_new_article'])->name('add_below_new_article');
 Route::post('/add_new_article', [ArticleController::class, 'add_new_article']);
 Route::get('/delete_article/{id}', [ArticleController::class, 'destroy']);
 Route::get('/view-sub-article/{id}', [ArticleController::class, 'view_sub_article'])->name('view_sub_article');
@@ -108,7 +108,7 @@ Route::get('/delete_footnote/{id}', [ArticleController::class, 'delete_footnote'
 // regulation 
 Route::get('/edit-regulation/{id}', [RegulationController::class, 'edit_regulation'])->name('edit_regulation');
 Route::post('/update_all_regulation/{id}', [RegulationController::class, 'update']);
-Route::get('/add_below_new_regulation/{id}/{regulation_id}/{regulation_rank}', [RegulationController::class, 'add_below_new_regulation'])->name('add_below_new_regulation');
+Route::get('/add_below_new_regulation/{id}/{regulation_id}}', [RegulationController::class, 'add_below_new_regulation'])->name('add_below_new_regulation');
 Route::post('/add_new_regulation', [RegulationController::class, 'add_new_regulation']);
 Route::get('/delete_regulation/{id}', [RegulationController::class, 'destroy']);
 Route::get('/view-sub-regulation/{id}', [RegulationController::class, 'view_sub_regulation'])->name('view_sub_regulation');
@@ -118,7 +118,7 @@ Route::get('/delete_footnote/{id}', [RegulationController::class, 'delete_footno
 // list 
 Route::get('/edit-list/{id}', [ListController::class, 'edit_list'])->name('edit_list');
 Route::post('/update_all_list/{id}', [ListController::class, 'update']);
-Route::get('/add_below_new_list/{id}/{list_id}/{list_rank}', [ListController::class, 'add_below_new_list'])->name('add_below_new_list');
+Route::get('/add_below_new_list/{id}/{list_id}', [ListController::class, 'add_below_new_list'])->name('add_below_new_list');
 Route::post('/add_new_list', [ListController::class, 'add_new_list']);
 Route::get('/delete_list/{id}', [ListController::class, 'destroy']);
 Route::get('/view-sub-list/{id}', [ListController::class, 'view_sub_list'])->name('view_sub_list');
@@ -129,27 +129,27 @@ Route::get('/delete_footnote/{id}', [ListController::class, 'delete_footnote']);
 // part 
 Route::get('/edit-part/{id}', [PartController::class, 'edit_part'])->name('edit_part');
 Route::post('/update_all_part/{id}', [PartController::class, 'update']);
-Route::get('/add_below_new_part/{id}/{part_id}/{part_rank}', [PartController::class, 'add_below_new_part'])->name('add_below_new_part');
+Route::get('/add_below_new_part/{id}/{part_id}', [PartController::class, 'add_below_new_part'])->name('add_below_new_part');
 Route::post('/add_new_part', [PartController::class, 'add_new_part']);
 Route::get('/delete_part/{id}', [PartController::class, 'destroy']);
 Route::get('/view-sub-part/{id}', [PartController::class, 'view_sub_part'])->name('view_sub_part');
 Route::get('/delete_sub_part/{id}', [PartController::class, 'destroy_sub_part']);
 Route::get('/delete_footnote/{id}', [PartController::class, 'delete_footnote']);
 
-// Appendix
-Route::get('/edit-appendix/{id}', [AppendixController::class, 'edit_appendix'])->name('edit_appendix');
-Route::post('/update_all_appendix/{id}', [AppendixController::class, 'update']);
-Route::get('/add_below_new_appendix/{id}/{appendix_id}/{appendix_rank}', [AppendixController::class, 'add_below_new_appendix'])->name('add_below_new_appendix');
-Route::post('/add_new_appendix', [AppendixController::class, 'add_new_appendix']);
-Route::get('/delete_appendix/{id}', [AppendixController::class, 'destroy']);
-Route::get('/view-sub-appendix/{id}', [AppendixController::class, 'view_sub_appendix'])->name('view_sub_appendix');
-Route::get('/delete_sub_appendix/{id}', [AppendixController::class, 'destroy_sub_appendix']);
-Route::get('/delete_footnote/{id}', [AppendixController::class, 'delete_footnote']);
+// Appendices
+Route::get('/edit-appendices/{id}', [AppendicesController::class, 'edit_appendices'])->name('edit_appendices');
+Route::post('/update_all_appendices/{id}', [AppendicesController::class, 'update']);
+Route::get('/add_below_new_appendices/{id}/{appendices_id}', [AppendicesController::class, 'add_below_new_appendices'])->name('add_below_new_appendices');
+Route::post('/add_new_appendices', [AppendicesController::class, 'add_new_appendices']);
+Route::get('/delete_appendices/{id}', [AppendicesController::class, 'destroy']);
+Route::get('/view-sub-appendices/{id}', [AppendicesController::class, 'view_sub_appendices'])->name('view_sub_appendices');
+Route::get('/delete_sub_appendices/{id}', [AppendicesController::class, 'destroy_sub_appendices']);
+Route::get('/delete_footnote/{id}', [AppendicesController::class, 'delete_footnote']);
 
 // Order
 Route::get('/edit-order/{id}', [OrderController::class, 'edit_order'])->name('edit_order');
 Route::post('/update_all_order/{id}', [OrderController::class, 'update']);
-Route::get('/add_below_new_order/{id}/{order_id}/{order_rank}', [OrderController::class, 'add_below_new_order'])->name('add_below_new_order');
+Route::get('/add_below_new_order/{id}/{order_id}', [OrderController::class, 'add_below_new_order'])->name('add_below_new_order');
 Route::post('/add_new_order', [OrderController::class, 'add_new_order']);
 Route::get('/delete_order/{id}', [OrderController::class, 'destroy']);
 Route::get('/view-sub-order/{id}', [OrderController::class, 'view_sub_order'])->name('view_sub_order');
@@ -159,19 +159,19 @@ Route::get('/delete_footnote/{id}', [OrderController::class, 'delete_footnote'])
 // Stschedule
 Route::get('/edit-stschedule/{id}', [stscheduleController::class, 'edit_stschedule'])->name('edit_stschedule');
 Route::post('/update_all_stschedule/{id}', [stscheduleController::class, 'update']);
-Route::get('/add_below_new_stschedule/{id}/{stschedule_id}/{stschedule_rank}', [stscheduleController::class, 'add_below_new_stschedule'])->name('add_below_new_stschedule');
+Route::get('/add_below_new_stschedule/{id}/{stschedule_id}', [stscheduleController::class, 'add_below_new_stschedule'])->name('add_below_new_stschedule');
 Route::post('/add_new_stschedule', [stscheduleController::class, 'add_new_stschedule']);
 Route::get('/delete_stschedule/{id}', [stscheduleController::class, 'destroy']);
 Route::get('/view-sub-stschedule/{id}', [stscheduleController::class, 'view_sub_stschedule'])->name('view_sub_stschedule');
 Route::get('/delete_sub_stschedule/{id}', [stscheduleController::class, 'destroy_sub_stschedule']);
 Route::get('/delete_footnote/{id}', [stscheduleController::class, 'delete_footnote']);
 
-// Annexture
-Route::get('/edit-annexture/{id}', [AnnextureController::class, 'edit_annexture'])->name('edit_annexture');
-Route::post('/update_all_annexture/{id}', [AnnextureController::class, 'update']);
-Route::get('/add_below_new_annexture/{id}/{annexture_id}/{annexture_rank}', [AnnextureController::class, 'add_below_new_annexture'])->name('add_below_new_annexture');
-Route::post('/add_new_annexture', [AnnextureController::class, 'add_new_annexture']);
-Route::get('/delete_annexture/{id}', [AnnextureController::class, 'destroy']);
-Route::get('/view-sub-annexture/{id}', [AnnextureController::class, 'view_sub_annexture'])->name('view_sub_annexture');
-Route::get('/delete_sub_annexture/{id}', [AnnextureController::class, 'destroy_sub_annexture']);
-Route::get('/delete_footnote/{id}', [AnnextureController::class, 'delete_footnote']);
+// Annexure
+Route::get('/edit-annexure/{id}', [AnnexureController::class, 'edit_annexure'])->name('edit_annexure');
+Route::post('/update_all_annexure/{id}', [AnnexureController::class, 'update']);
+Route::get('/add_below_new_annexure/{id}/{annexure_id}', [AnnexureController::class, 'add_below_new_annexure'])->name('add_below_new_annexure');
+Route::post('/add_new_annexure', [AnnexureController::class, 'add_new_annexure']);
+Route::get('/delete_annexure/{id}', [AnnexureController::class, 'destroy']);
+Route::get('/view-sub-annexure/{id}', [AnnexureController::class, 'view_sub_annexure'])->name('view_sub_annexure');
+Route::get('/delete_sub_annexure/{id}', [AnnexureController::class, 'destroy_sub_annexure']);
+Route::get('/delete_footnote/{id}', [AnnexureController::class, 'delete_footnote']);

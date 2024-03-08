@@ -10,7 +10,7 @@ class Part extends Model
     use HasFactory;
     protected $primaryKey = 'part_id';
     protected $table = 'part';
-    protected $fillable = ['part_no','part_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'part_title', 'part_content' ,'appendices_id','schedule_id','priliminary_id'];
+    protected $fillable = ['part_no','part_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'part_title', 'part_content' ,'appendix_id','schedule_id','priliminary_id'];
 
     public function MainTypeModel()
     {
@@ -22,9 +22,9 @@ class Part extends Model
         return $this->belongsTo(Schedule::class, 'schedule_id', 'schedule_id');
     }
 
-    public function Appendicesmodel()
+    public function Appendixmodel()
     {
-        return $this->belongsTo(Appendices::class, 'appendices_id', 'appendices_id');
+        return $this->belongsTo(Appendix::class, 'appendix_id', 'appendix_id');
     }
 
     public function Partmodel()

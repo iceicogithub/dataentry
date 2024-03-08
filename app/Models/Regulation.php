@@ -10,7 +10,7 @@ class Regulation extends Model
     use HasFactory;
     protected $primaryKey = 'regulation_id';
     protected $table = 'regulations';
-    protected $fillable = ['regulation_no','regulation_rank','act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'regulation_title', 'regulation_content','appendices_id','schedule_id','priliminary_id'];
+    protected $fillable = ['regulation_no','regulation_rank','act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'regulation_title', 'regulation_content','appendix_id','schedule_id','priliminary_id'];
 
     public function MainTypeModel()
     {
@@ -21,9 +21,9 @@ class Regulation extends Model
     {
         return $this->belongsTo(Schedule::class, 'schedule_id', 'schedule_id');
     }
-    public function Appendicesmodel()
+    public function Appendixmodel()
     {
-        return $this->belongsTo(Appendices::class, 'appendices_id', 'appendices_id');
+        return $this->belongsTo(Appendix::class, 'appendix_id', 'appendix_id');
     }
     public function Partmodel()
     {

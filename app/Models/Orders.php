@@ -10,7 +10,7 @@ class Orders extends Model
     use HasFactory;
     protected $primaryKey = 'order_id';
     protected $table = 'orders';
-    protected $fillable = ['order_no', 'order_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'order_title', 'order_content','appendices_id','schedule_id','priliminary_id'];
+    protected $fillable = ['order_no', 'order_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'order_title', 'order_content','appendix_id','schedule_id','priliminary_id'];
 
     public function MainTypeModel()
     {
@@ -22,9 +22,9 @@ class Orders extends Model
         return $this->belongsTo(Schedule::class, 'schedule_id', 'schedule_id');
     }
 
-    public function Appendicesmodel()
+    public function Appendixmodel()
     {
-        return $this->belongsTo(Appendices::class, 'appendices_id', 'appendices_id');
+        return $this->belongsTo(Appendix::class, 'aappendix_id', 'appendix_id');
     }
 
     public function Partmodel()

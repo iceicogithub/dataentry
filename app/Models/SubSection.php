@@ -10,7 +10,7 @@ class SubSection extends Model
     use HasFactory;
     protected $primaryKey = 'sub_section_id';
     protected $table = 'sub_section';
-    protected $fillable = ['sub_section_no', 'section_id', 'section_no', 'act_id', 'chapter_id', 'parts_id','priliminary_id', 'sub_section_title', 'sub_section_content'];
+    protected $fillable = ['sub_section_no', 'section_id', 'section_no', 'act_id','appendix_id','schedule_id', 'chapter_id', 'parts_id','priliminary_id', 'sub_section_title', 'sub_section_content'];
 
     public function footnoteModel()
     {

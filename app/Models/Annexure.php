@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Annexture extends Model
+class Annexure extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'annexture_id';
-    protected $table = 'annexture';
-    protected $fillable = ['annexture_no', 'annexture_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'annexture_title', 'annexture_content' ,'appendices_id','schedule_id','priliminary_id'];
+    protected $primaryKey = 'annexure_id';
+    protected $table = 'annexure';
+    protected $fillable = ['annexure_no', 'annexure_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'annexure_title', 'annexure_content' ,'appendix_id','schedule_id','priliminary_id'];
 
     public function MainTypeModel()
     {
@@ -23,9 +23,9 @@ class Annexture extends Model
         return $this->belongsTo(Schedule::class, 'schedule_id', 'schedule_id');
     }
 
-    public function Appendicesmodel()
+    public function Appendixmodel()
     {
-        return $this->belongsTo(Appendices::class, 'appendices_id', 'appendices_id');
+        return $this->belongsTo(Appendix::class, 'appendix_id', 'appendix_id');
     }
 
     public function Partmodel()
@@ -43,12 +43,12 @@ class Annexture extends Model
     }
     public function footnoteModel()
     {
-        return $this->hasMany(Footnote::class, 'annexture_id', 'annexture_id');
+        return $this->hasMany(Footnote::class, 'annexure_id', 'annexure_id');
     }
 
-    public function subAnnextureModel()
+    public function subAnnexureModel()
     {
-        return $this->hasMany(SubAnnexture::class, 'annexture_id', 'annexture_id');
+        return $this->hasMany(SubAnnexure::class, 'annexure_id', 'annexure_id');
     }
     public function subtype()
     {
