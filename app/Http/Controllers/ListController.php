@@ -6,6 +6,7 @@ use App\Models\Appendix;
 use App\Models\Chapter;
 use App\Models\Footnote;
 use App\Models\Lists;
+use App\Models\MainOrder;
 use App\Models\Parts;
 use App\Models\Priliminary;
 use App\Models\Schedule;
@@ -16,7 +17,7 @@ class ListController extends Controller
 {
     public function edit_list($id)
     {
-       $list = Lists::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel')->where('list_id', $id)->first();
+       $list = Lists::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel','MainOrderModel')->where('list_id', $id)->first();
        $sublist = Lists::where('list_id', $id)
            ->with(['subListModel', 'footnoteModel' => function ($query) {
                $query->whereNull('sub_list_id');
@@ -84,6 +85,14 @@ class ListController extends Controller
                    $appendix->update();
                }
            }
+           if ($request->has('main_order_id')) {
+            $main_order = MainOrder::find($request->main_order_id);
+
+            if ($main_order) {
+                $main_order->main_order_title = $request->main_order_title;
+                $main_order->update();
+            }
+        }
    
 
            // Check if section_id exists in the request
@@ -127,6 +136,7 @@ class ListController extends Controller
                                $footnote->list_no = $list->list_no ?? null;
                                $footnote->act_id = $list->act_id ?? null;
                                $footnote->chapter_id = $list->chapter_id ?? null;
+                               $footnote->main_order_id = $list->main_order_id ?? null;
                                $footnote->parts_id = $list->parts_id ?? null;
                                $footnote->priliminary_id = $list->priliminary_id ?? null;
                                $footnote->schedule_id = $list->schedule_id ?? null;
@@ -173,6 +183,7 @@ class ListController extends Controller
                                        $footnote->list_id = $id ?? null;
                                        $footnote->act_id = $list->act_id ?? null;
                                        $footnote->chapter_id = $list->chapter_id ?? null;
+                                       $footnote->main_order_id = $list->main_order_id ?? null;
                                        $footnote->parts_id = $list->parts_id ?? null;
                                        $footnote->priliminary_id = $list->priliminary_id ?? null;
                                        $footnote->schedule_id = $list->schedule_id ?? null;
@@ -191,6 +202,7 @@ class ListController extends Controller
                        $sublist->list_no = $list->list_no ?? null;
                        $sublist->act_id = $list->act_id ?? null;
                        $sublist->chapter_id = $list->chapter_id ?? null;
+                       $sublist->main_order_id = $list->main_order_id ?? null;
                        $sublist->parts_id = $list->parts_id ?? null;
                        $sublist->priliminary_id = $list->priliminary_id ?? null;
                        $sublist->schedule_id = $list->schedule_id ?? null;
@@ -208,6 +220,7 @@ class ListController extends Controller
                                    $footnote->list_id = $id ?? null;
                                    $footnote->act_id = $list->act_id ?? null;
                                    $footnote->chapter_id = $list->chapter_id ?? null;
+                                   $footnote->main_order_id = $list->main_order_id ?? null;
                                    $footnote->parts_id = $list->parts_id ?? null;
                                    $footnote->priliminary_id = $list->priliminary_id ?? null;
                                    $footnote->schedule_id = $list->schedule_id ?? null;
@@ -235,7 +248,7 @@ class ListController extends Controller
    {
        
     //    $list_rank = $list_rank;
-       $list = Lists::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel')->where('act_id', $id)
+       $list = Lists::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel','MainOrderModel')->where('act_id', $id)
            ->where('list_id', $list_id)->first();
 
        return view('admin.list.add_new', compact('list'));
@@ -286,6 +299,14 @@ class ListController extends Controller
                $appendix->update();
            }
        }
+       if ($request->has('main_order_id')) {
+        $main_order = MainOrder::find($request->main_order_id);
+
+        if ($main_order) {
+            $main_order->main_order_title = $request->main_order_title;
+            $main_order->update();
+        }
+       }
 
 
        $id = $request->act_id;
@@ -310,6 +331,7 @@ class ListController extends Controller
            'act_id' => $request->act_id,
            'maintype_id' => $maintypeId,
            'chapter_id' => $request->chapter_id ?? null,
+           'main_order_id' => $request->main_order_id ?? null,
            'priliminary_id' => $request->priliminary_id ?? null,
            'parts_id' => $request->parts_id ?? null,
            'schedule_id' => $request->schedule_id ?? null,
@@ -328,6 +350,7 @@ class ListController extends Controller
                    $footnote->list_id = $list->list_id ?? null;
                    $footnote->act_id = $request->act_id ?? null;
                    $footnote->chapter_id = $request->chapter_id ?? null;
+                   $footnote->main_order_id = $request->main_order_id ?? null;
                    $footnote->priliminary_id = $request->priliminary_id ?? null;
                    $footnote->parts_id = $request->parts_id ?? null;
                    $footnote->schedule_id = $request->schedule_id ?? null;
@@ -347,6 +370,7 @@ class ListController extends Controller
                    'list_no' => $request->list_no ?? null,
                    'act_id' => $request->act_id,
                    'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                   'main_order_id' => $maintypeId == "6" ? $request->main_order_id : null,
                    'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                    'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                    'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
@@ -364,6 +388,7 @@ class ListController extends Controller
                            $footnote->list_id = $list->list_id ?? null;
                            $footnote->act_id = $request->act_id ?? null;
                            $footnote->chapter_id = $request->chapter_id ?? null;
+                           $footnote->main_order_id = $request->main_order_id ?? null;
                            $footnote->parts_id = $request->parts_id ?? null;
                            $footnote->priliminary_id = $request->priliminary_id ?? null;
                            $footnote->schedule_id = $request->schedule_id ?? null;

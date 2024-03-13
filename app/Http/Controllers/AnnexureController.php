@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Annexure;
 use App\Models\Appendix;
 use App\Models\Chapter;
+use App\Models\MainOrder;
 use App\Models\Footnote;
 use App\Models\Parts;
 use App\Models\Priliminary;
@@ -17,7 +18,7 @@ class AnnexureController extends Controller
 
     public function edit_annexure($id)
     {
-        $annexure = Annexure::with('ChapterModel', 'Partmodel', 'Appendixmodel', 'Schedulemodel', 'PriliminaryModel')->where('annexure_id', $id)->first();
+        $annexure = Annexure::with('ChapterModel', 'Partmodel', 'Appendixmodel', 'Schedulemodel', 'PriliminaryModel','MainOrderModel')->where('annexure_id', $id)->first();
         $subannexure = Annexure::where('annexure_id', $id)
             ->with([
                 'subAnnexureModel',
@@ -89,6 +90,14 @@ class AnnexureController extends Controller
                 $appendix->update();
             }
         }
+        if ($request->has('main_order_id')) {
+            $main_order = MainOrder::find($request->main_order_id);
+
+            if ($main_order) {
+                $main_order->main_order_title = $request->main_order_title;
+                $main_order->update();
+            }
+        }
 
 
         // Check if section_id exists in the request
@@ -132,6 +141,7 @@ class AnnexureController extends Controller
                             $footnote->annexure_no = $annexure->annexure_no ?? null;
                             $footnote->act_id = $annexure->act_id ?? null;
                             $footnote->chapter_id = $annexure->chapter_id ?? null;
+                            $footnote->main_order_id = $annexure->main_order_id ?? null;
                             $footnote->parts_id = $annexure->parts_id ?? null;
                             $footnote->priliminary_id = $annexure->priliminary_id ?? null;
                             $footnote->schedule_id = $annexure->schedule_id ?? null;
@@ -178,6 +188,7 @@ class AnnexureController extends Controller
                                     $footnote->annexure_id = $id ?? null;
                                     $footnote->act_id = $annexure->act_id ?? null;
                                     $footnote->chapter_id = $annexure->chapter_id ?? null;
+                                    $footnote->main_order_id = $annexure->main_order_id ?? null;
                                     $footnote->parts_id = $annexure->parts_id ?? null;
                                     $footnote->priliminary_id = $annexure->priliminary_id ?? null;
                                     $footnote->schedule_id = $annexure->schedule_id ?? null;
@@ -196,6 +207,7 @@ class AnnexureController extends Controller
                     $subannexure->annexure_no = $annexure->annexure_no ?? null;
                     $subannexure->act_id = $annexure->act_id ?? null;
                     $subannexure->chapter_id = $annexure->chapter_id ?? null;
+                    $subannexure->main_order_id = $annexure->main_order_id ?? null;
                     $subannexure->parts_id = $annexure->parts_id ?? null;
                     $subannexure->priliminary_id = $annexure->priliminary_id ?? null;
                     $subannexure->schedule_id = $annexure->schedule_id ?? null;
@@ -213,6 +225,7 @@ class AnnexureController extends Controller
                                 $footnote->annexure_id = $id ?? null;
                                 $footnote->act_id = $annexure->act_id ?? null;
                                 $footnote->chapter_id = $annexure->chapter_id ?? null;
+                                $footnote->main_order_id = $annexure->main_order_id ?? null;
                                 $footnote->parts_id = $annexure->parts_id ?? null;
                                 $footnote->priliminary_id = $annexure->priliminary_id ?? null;
                                 $footnote->schedule_id = $annexure->schedule_id ?? null;
@@ -240,7 +253,7 @@ class AnnexureController extends Controller
     {
 
         // $annexure_rank = $annexure_rank;
-        $annexure = Annexure::with('ChapterModel', 'Partmodel', 'PriliminaryModel', 'Appendixmodel', 'Schedulemodel')->where('act_id', $id)
+        $annexure = Annexure::with('ChapterModel', 'Partmodel', 'PriliminaryModel', 'Appendixmodel', 'Schedulemodel','MainOrderModel')->where('act_id', $id)
             ->where('annexure_id', $annexure_id)->first();
 
         return view('admin.annexure.add_new', compact('annexure'));
@@ -291,6 +304,14 @@ class AnnexureController extends Controller
                 $appendix->update();
             }
         }
+        if ($request->has('main_order_id')) {
+            $main_order = MainOrder::find($request->main_order_id);
+
+            if ($main_order) {
+                $main_order->main_order_title = $request->main_order_title;
+                $main_order->update();
+            }
+        }
 
 
         $id = $request->act_id;
@@ -315,6 +336,7 @@ class AnnexureController extends Controller
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
             'chapter_id' => $request->chapter_id ?? null,
+            'main_order_id' => $request->main_order_id ?? null,
             'priliminary_id' => $request->priliminary_id ?? null,
             'parts_id' => $request->parts_id ?? null,
             'schedule_id' => $request->schedule_id ?? null,
@@ -333,6 +355,7 @@ class AnnexureController extends Controller
                     $footnote->annexure_id = $annexure->annexure_id ?? null;
                     $footnote->act_id = $request->act_id ?? null;
                     $footnote->chapter_id = $request->chapter_id ?? null;
+                    $footnote->main_order_id = $request->main_order_id ?? null;
                     $footnote->priliminary_id = $request->priliminary_id ?? null;
                     $footnote->parts_id = $request->parts_id ?? null;
                     $footnote->schedule_id = $request->schedule_id ?? null;
@@ -352,6 +375,7 @@ class AnnexureController extends Controller
                     'annexure_no' =>  $request->annexure_no ?? null,
                     'act_id' => $request->act_id,
                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                    'main_order_id' => $maintypeId == "6" ? $request->main_order_id : null,
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                     'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                     'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
@@ -369,6 +393,7 @@ class AnnexureController extends Controller
                             $footnote->annexure_id = $annexure->annexure_id ?? null;
                             $footnote->act_id = $request->act_id ?? null;
                             $footnote->chapter_id = $request->chapter_id ?? null;
+                            $footnote->main_order_id = $request->main_order_id ?? null;
                             $footnote->parts_id = $request->parts_id ?? null;
                             $footnote->priliminary_id = $request->priliminary_id ?? null;
                             $footnote->schedule_id = $request->schedule_id ?? null;
