@@ -46,7 +46,7 @@ class PdfExportController extends Controller
                 ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
                 ->orWhereIn('parts_id', $parts->pluck('parts_id'))
                 ->orWhereIn('priliminary_id', $priliminary->pluck('priliminary_id'))
-                ->with('subsectionModel', 'footnoteModel','MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+                ->with('subsectionModel', 'footnoteModel','MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
                 ->get()
                 ->sortBy(function ($section) {
                     $mixstring = $section->section_no;
@@ -67,7 +67,7 @@ class PdfExportController extends Controller
 
             $rule = Rules::where('act_id', $id)
                 ->whereIn('schedule_id', $schedule->pluck('schedule_id'))
-                ->with('footnoteModel','subruleModel','MainTypeModel', 'Schedulemodel', 'Appendicesmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
+                ->with('footnoteModel','subruleModel','MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel')
                 ->get()
                 ->sortBy(function ($rule) {
                     $mixstring = $rule->rule_no;
@@ -98,6 +98,7 @@ class PdfExportController extends Controller
                 'priliminary' => $priliminary,
                 'schedule' => $schedule,
                 'parts' => $parts,
+                'appendix' => $appendix,
                 'partstype' => $partstype,
                 'subType' => $subType,
                 'section' => $section,
