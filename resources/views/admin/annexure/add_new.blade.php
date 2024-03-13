@@ -36,6 +36,8 @@
                             {{ session('error') }}
                         </div>
                     @endif
+                    <input type="hidden" name="click_annexure_rank" value="{{ $annexure->annexure_rank }}">
+                    <input type="hidden" name="serial_no" value="{{ $annexure->serial_no }}">
                     <input type="hidden" name="maintype_id" value="{{ $annexure->maintype_id }}">
                     <input type="hidden" name="act_id" value="{{ $annexure->act_id }}">
                     {{-- <input type="hidden" name="annexure_rank" value="{{ $annexure_rank }}"> --}}

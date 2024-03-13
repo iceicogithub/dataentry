@@ -316,7 +316,8 @@ class ListController extends Controller
 
        // Calculate the next section number
     //    $nextListNo = $list_no;
-       $nextListRank = $list_rank + 0.01;
+       $oldListRank = $request->click_list_rank;
+       $nextListRank = $oldListRank + 0.01;
 
 
 
@@ -326,7 +327,7 @@ class ListController extends Controller
 
        // Create the new section with the incremented section_no
        $list = Lists::create([
-           'list_rank' => $nextListRank ?? 1,
+           'list_rank' => $nextListRank,
            'list_no' => $request->list_no ?? null,
            'act_id' => $request->act_id,
            'maintype_id' => $maintypeId,
@@ -339,6 +340,8 @@ class ListController extends Controller
            'subtypes_id' => $request->subtypes_id,
            'list_title' => $request->list_title,
            'list_content' => $request->list_content,
+           'is_append' => 1,
+           'serial_no' => $request->serial_no
        ]);
 
        if ($request->has('list_footnote_content')) {

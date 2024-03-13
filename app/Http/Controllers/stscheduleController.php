@@ -318,7 +318,8 @@ class stscheduleController extends Controller
 
         // Calculate the next section number
         // $nextStscheduleNo = $stschedule_no;
-        $nextStscheduleRank = $stschedule_rank + 0.01;
+        $oldStscheduleRank = $request->click_stschedule_rank;
+        $nextStscheduleRank = $oldStscheduleRank + 0.01;
 
 
 
@@ -328,7 +329,7 @@ class stscheduleController extends Controller
 
         // Create the new section with the incremented section_no
         $stschedule = Stschedule::create([
-            'stschedule_rank' => $nextStscheduleRank ?? 1,
+            'stschedule_rank' => $nextStscheduleRank,
             'stschedule_no' => $request->stschedule_no ?? null,
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
@@ -341,6 +342,9 @@ class stscheduleController extends Controller
             'subtypes_id' => $request->subtypes_id,
             'stschedule_title' => $request->stschedule_title,
             'stschedule_content' => $request->stschedule_content,
+            'is_append' => 1,
+            'serial_no' =>$request->serial_no,
+        
         ]);
 
         if ($request->has('stschedule_footnote_content')) {

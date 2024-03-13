@@ -321,7 +321,8 @@ class AppendicesController extends Controller
 
         // Calculate the next section number
         // $nextAppendicesNo = $appendices_no;
-        $nextAppendicesRank = $appendices_rank + 0.01;
+        $oldAppendicesRank = $request->click_appendices_rank;
+        $nextAppendicesRank = $oldAppendicesRank + 0.01;
 
 
 
@@ -331,7 +332,7 @@ class AppendicesController extends Controller
 
         // Create the new section with the incremented section_no
         $appendices = Appendices::create([
-            'appendices_rank' => $nextAppendicesRank ?? 1,
+            'appendices_rank' => $nextAppendicesRank,
             'appendices_no' =>$request->appendices_no ?? null,
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
@@ -344,6 +345,9 @@ class AppendicesController extends Controller
             'subtypes_id' => $request->subtypes_id,
             'appendices_title' => $request->appendices_title,
             'appendices_content' => $request->appendices_content,
+            'is_append' => 1,
+            'serial_no' => $request->serial_no,
+
         ]);
 
         if ($request->has('appendices_footnote_content')) {

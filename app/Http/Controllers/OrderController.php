@@ -318,7 +318,8 @@ class OrderController extends Controller
 
         // Calculate the next section number
         // $nextOrderNo = $order_no;
-        $nextOrderRank = $order_rank + 0.01;
+        $oldOrderRank = $request->click_order_rank;
+        $nextOrderRank = $oldOrderRank + 0.01;
 
 
 
@@ -328,7 +329,7 @@ class OrderController extends Controller
 
         // Create the new section with the incremented section_no
         $order = Orders::create([
-            'order_rank' => $nextOrderRank ?? 1,
+            'order_rank' => $nextOrderRank,
             'order_no' => $request->order_no ?? null,
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
@@ -341,6 +342,8 @@ class OrderController extends Controller
             'subtypes_id' => $request->subtypes_id,
             'order_title' => $request->order_title,
             'order_content' => $request->order_content,
+            'is_append' => 1,
+            'serial_no' => $request->serial_no,
         ]);
 
         if ($request->has('order_footnote_content')) {

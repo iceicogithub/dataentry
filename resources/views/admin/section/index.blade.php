@@ -300,9 +300,9 @@
                                     @elseif($item->regulation_title)
                                         {!!$item->regulation_title!!}
                                     @elseif($item->list_title)
-                                        { !! $item->list_title !!}
+                                        {{  $item->list_title }}
                                     @elseif($item->part_title)
-                                        { !!$item->part_title !!}
+                                        {{ $item->part_title }}
                                     @elseif($item->appendices_title)
                                         {!! $item->appendices_title!!}
                                     @elseif($item->order_title)
