@@ -11,7 +11,7 @@ class Appendices extends Model
 
     protected $primaryKey = 'appendices_id';
     protected $table = 'appendices';
-    protected $fillable = ['appendices_no','appendices_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'appendices_title', 'appendices_content' ,'appendix_id','schedule_id','priliminary_id'];
+    protected $fillable = ['appendices_no','appendices_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'appendices_title', 'appendices_content' ,'appendix_id','schedule_id','priliminary_id','is_append', 'serial_no'];
 
     public function MainTypeModel()
     {

@@ -11,7 +11,7 @@ class Lists extends Model
 
     protected $primaryKey = 'list_id';
     protected $table = 'lists';
-    protected $fillable = ['list_no', 'list_rank' ,'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'list_title', 'list_content','appendix_id','schedule_id','priliminary_id'];
+    protected $fillable = ['list_no', 'list_rank' ,'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'list_title', 'list_content','appendix_id','schedule_id','priliminary_id','is_append', 'serial_no'];
 
     public function MainTypeModel()
     {

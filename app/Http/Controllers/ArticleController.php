@@ -301,7 +301,8 @@ class ArticleController extends Controller
 
         // Calculate the next section number
         // $nextArticleNo = $article_no;
-        $nextArticleRank = $article_rank + 0.01;
+        $oldArticleRank = $request->click_article_rank;
+        $nextArticleRank = $oldArticleRank + 0.01;
 
 
 
@@ -311,7 +312,7 @@ class ArticleController extends Controller
 
         // Create the new section with the incremented section_no
         $article = Article::create([
-            'article_rank' => $nextArticleRank ?? 1,
+            'article_rank' => $nextArticleRank,
             'article_no' => $request->article_no ?? null, 
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
@@ -323,6 +324,7 @@ class ArticleController extends Controller
             'subtypes_id' => $request->subtypes_id,
             'article_title' => $request->article_title,
             'article_content' => $request->article_content,
+            'serial_no' => $request->serial_no,
         ]);
 
         if ($request->has('article_footnote_content')) {

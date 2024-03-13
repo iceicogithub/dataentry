@@ -10,7 +10,7 @@ class Orders extends Model
     use HasFactory;
     protected $primaryKey = 'order_id';
     protected $table = 'orders';
-    protected $fillable = ['order_no', 'order_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'order_title', 'order_content','appendix_id','schedule_id','priliminary_id'];
+    protected $fillable = ['order_no', 'order_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'order_title', 'order_content','appendix_id','schedule_id','priliminary_id','is_append', 'serial_no'];
 
     public function MainTypeModel()
     {

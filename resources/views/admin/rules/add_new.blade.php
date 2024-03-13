@@ -36,6 +36,8 @@
                             {{ session('error') }}
                         </div>
                     @endif
+                    <input type="hidden" name="click_section_rank" value="{{ $rule->rule_rank }}">
+                    <input type="hidden" name="serial_no" value="{{ $rule->serial_no }}">
                     <input type="hidden" name="maintype_id" value="{{ $rule->maintype_id }}">
                     <input type="hidden" name="act_id" value="{{ $rule->act_id }}">
                     {{-- <input type="hidden" name="rule_rank" value="{{ $rule_rank }}"> --}}

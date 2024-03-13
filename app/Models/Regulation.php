@@ -10,7 +10,7 @@ class Regulation extends Model
     use HasFactory;
     protected $primaryKey = 'regulation_id';
     protected $table = 'regulations';
-    protected $fillable = ['regulation_no','regulation_rank','act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'regulation_title', 'regulation_content','appendix_id','schedule_id','priliminary_id'];
+    protected $fillable = ['regulation_no','regulation_rank','act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'regulation_title', 'regulation_content','appendix_id','schedule_id','priliminary_id','is_append', 'serial_no'];
 
     public function MainTypeModel()
     {

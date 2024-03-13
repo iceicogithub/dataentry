@@ -10,7 +10,7 @@ class Part extends Model
     use HasFactory;
     protected $primaryKey = 'part_id';
     protected $table = 'part';
-    protected $fillable = ['part_no','part_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'part_title', 'part_content' ,'appendix_id','schedule_id','priliminary_id'];
+    protected $fillable = ['part_no','part_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'part_title', 'part_content' ,'appendix_id','schedule_id','priliminary_id','is_append', 'serial_no'];
 
     public function MainTypeModel()
     {
