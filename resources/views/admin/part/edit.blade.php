@@ -47,6 +47,7 @@
                     <input type="hidden" name="priliminary_id" value="{{ $part->priliminary_id }}">
                     <input type="hidden" name="schedule_id" value="{{ $part->schedule_id }}">
                     <input type="hidden" name="appendix_id" value="{{ $part->appendix_id }}">
+                    <input type="hidden" name="main_order_id" value="{{ $part->main_order_id }}">
                     <div class="card p-5">
                         <div class="additional-section">
                             <div class="border col-md-12 p-3">
@@ -76,6 +77,11 @@
 
                                                 <textarea name="appendix_title" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title"
                                                     id="a_title">{{ $part->Appendixmodel->appendix_title }}</textarea>
+                                            @elseif($part->maintype_id == 6)
+                                                <label class="float-label font-weight-bold">Order :</label>
+
+                                                <textarea name="main_order_title" class="form-control mb-3 main_order_title" placeholder="Enter Order Title"
+                                                    id="m_title">{{ $part->MainOrderModel->main_order_title }}</textarea>
                                             @else
                                                 null
                                             @endif
@@ -343,6 +349,7 @@
             CKEDITOR.replace('pr_title');
             CKEDITOR.replace('s_title');
             CKEDITOR.replace('a_title');
+            CKEDITOR.replace('m_title');
             CKEDITOR.replace('section');
             CKEDITOR.replace('state_amendment');
 

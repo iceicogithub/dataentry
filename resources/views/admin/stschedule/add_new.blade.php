@@ -56,6 +56,9 @@
                     @if ($stschedule->appendix_id)
                         <input type="hidden" name="appendix_id" value="{{ $stschedule->appendix_id }}">
                     @endif
+                    @if ($stschedule->main_order_id)
+                        <input type="hidden" name="main_order_id" value="{{ $stschedule->main_order_id }}">
+                    @endif
                     
                     <div class="card p-5">
                         <div class="additional-section">
@@ -83,6 +86,10 @@
                                                 <label class="float-label font-weight-bold">Appendix :</label>
 
                                                 <textarea name="appendix_title" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title" id="a_title">{{ $stschedule->Appendixmodel->appendix_title }}</textarea>
+                                            @elseif($stschedule->maintype_id == 6)
+                                                <label class="float-label font-weight-bold">Order :</label>
+
+                                                <textarea name="main_order_title" class="form-control mb-3 main_order_title" placeholder="Enter Order Title" id="m_title">{{ $stschedule->MainOrderModel->main_order_title }}</textarea>
                                             @else
                                                 null
                                             @endif
@@ -177,6 +184,7 @@
             CKEDITOR.replace('p_title');
             CKEDITOR.replace('s_title');
             CKEDITOR.replace('a_title');
+            CKEDITOR.replace('m_title');
             CKEDITOR.replace('stschedule');
             CKEDITOR.replace('state_amendment');
 

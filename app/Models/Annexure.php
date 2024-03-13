@@ -11,7 +11,7 @@ class Annexure extends Model
 
     protected $primaryKey = 'annexure_id';
     protected $table = 'annexure';
-    protected $fillable = ['annexure_no', 'annexure_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'annexure_title', 'annexure_content' ,'appendix_id','schedule_id','priliminary_id','is_append', 'serial_no'];
+    protected $fillable = ['annexure_no', 'annexure_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'annexure_title', 'annexure_content' ,'appendix_id','schedule_id','priliminary_id','main_order_id','is_append', 'serial_no'];
 
     public function MainTypeModel()
     {
@@ -40,6 +40,10 @@ class Annexure extends Model
     public function PriliminaryModel()
     {
         return $this->belongsTo(Priliminary::class, 'priliminary_id', 'priliminary_id');
+    }
+    public function MainOrderModel()
+    {
+        return $this->belongsTo(MainOrder::class, 'main_order_id', 'main_order_id');
     }
     public function footnoteModel()
     {

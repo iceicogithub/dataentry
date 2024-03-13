@@ -61,6 +61,9 @@
                 @if ($rule->appendix_id)
                     <input type="hidden" name="appendix_id" value="{{ $rule->appendix_id }}">
                 @endif
+                @if ($rule->main_order_id)
+                    <input type="hidden" name="main_order_id" value="{{ $rule->main_order_id }}">
+                @endif
                     <div class="card p-5">
                         <div class="additional-section">
                             <div class="border col-md-12 p-3">
@@ -87,6 +90,10 @@
                                                 <label class="float-label font-weight-bold">Appendix :</label>
 
                                                 <textarea name="appendix_title" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title" id="a_title">{{ $rule->Appendixmodel->appendix_title }}</textarea>
+                                            @elseif($rule->maintype_id == 6)
+                                                <label class="float-label font-weight-bold">Order :</label>
+
+                                                <textarea name="main_order_title" class="form-control mb-3 main_order_title" placeholder="Enter Order Title" id="m_title">{{ $rule->MainOrderModel->main_order_title }}</textarea>
                                             @else
                                                 null
                                             @endif
@@ -182,6 +189,10 @@
         $(document).ready(function() {
             CKEDITOR.replace('s_title');
             CKEDITOR.replace('rule');
+            CKEDITOR.replace('p_title');
+            CKEDITOR.replace('s_title');
+            CKEDITOR.replace('a_title');
+            CKEDITOR.replace('m_title');
             CKEDITOR.replace('state_amendment');
 
             // Initialize CKEditor for existing sections
