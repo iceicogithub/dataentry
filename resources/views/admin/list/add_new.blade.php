@@ -36,6 +36,8 @@
                             {{ session('error') }}
                         </div>
                     @endif
+                    <input type="hidden" name="click_list_rank" value="{{ $list->list_rank }}">
+                    <input type="hidden" name="serial_no" value="{{ $list->serial_no }}">
                     <input type="hidden" name="maintype_id" value="{{ $list->maintype_id }}">
                     <input type="hidden" name="act_id" value="{{ $list->act_id }}">
                     {{-- <input type="hidden" name="section_rank" value="{{ $list }}"> --}}

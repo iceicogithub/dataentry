@@ -312,7 +312,8 @@ class RegulationController extends Controller
 
         // Calculate the next section number
         // $nextRegulationNo = $regulation_no;
-        $nextRegulationRank = $regulation_rank + 0.01;
+        $oldRegulationRank = $request->click_regulation_rank;
+        $nextRegulationRank = $oldRegulationRank + 0.01;
 
 
 
@@ -322,7 +323,7 @@ class RegulationController extends Controller
 
         // Create the new section with the incremented section_no
         $regulation = Regulation::create([
-            'regulation_rank' => $nextRegulationRank ?? 1,
+            'regulation_rank' => $nextRegulationRank,
             'regulation_no' => $request->regulation_no ?? null,
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
@@ -334,6 +335,8 @@ class RegulationController extends Controller
             'subtypes_id' => $request->subtypes_id,
             'regulation_title' => $request->regulation_title,
             'regulation_content' => $request->regulation_content,
+            'is_append' => 1,
+            'serial_no' => $request->serial_no
         ]);
 
         if ($request->has('regulation_footnote_content')) {

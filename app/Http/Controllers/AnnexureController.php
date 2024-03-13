@@ -300,7 +300,8 @@ class AnnexureController extends Controller
 
         // Calculate the next section number
         // $nextAnnexureNo = $annexure_no;
-        $nextAnnexureRank = $annexure_rank + 0.01;
+        $oldAnnexureRank = $request->click_annexure_rank;
+        $nextAnnexureRank = $oldAnnexureRank + 0.01;
 
 
 
@@ -310,7 +311,7 @@ class AnnexureController extends Controller
 
         // Create the new section with the incremented section_no
         $annexure = Annexure::create([
-            'annexure_rank' => $nextAnnexureRank ?? 1,
+            'annexure_rank' => $nextAnnexureRank,
             'annexure_no' => $request->annexure_no ?? null,
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
@@ -322,6 +323,8 @@ class AnnexureController extends Controller
             'subtypes_id' => $request->subtypes_id,
             'annexure_title' => $request->annexure_title,
             'annexure_content' => $request->annexure_content,
+            'is_append'=> 1,
+            'serial_no' => $request->serial_no,
         ]);
 
         if ($request->has('annexure_footnote_content')) {

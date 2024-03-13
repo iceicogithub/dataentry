@@ -295,7 +295,8 @@ class PartController extends Controller
 
        // Calculate the next section number
     //    $nextPartNo = $part_no;
-       $nextPartRank = $part_rank + 0.01;
+       $oldPartRank = $request->click_part_rank;
+       $nextPartRank = $oldPartRank + 0.01;
 
 
 
@@ -305,7 +306,7 @@ class PartController extends Controller
 
        // Create the new section with the incremented section_no
        $part = Part::create([
-           'part_rank' => $nextPartRank ?? 1,
+           'part_rank' => $nextPartRank,
            'part_no' =>  $request->part_no ?? null,
            'act_id' => $request->act_id,
            'maintype_id' => $maintypeId,
@@ -317,6 +318,8 @@ class PartController extends Controller
            'subtypes_id' => $request->subtypes_id,
            'part_title' => $request->part_title,
            'part_content' => $request->part_content,
+           'is_append' => 1,
+           'serial_no'=> $request->serial_no,
        ]);
 
        if ($request->has('part_footnote_content')) {
