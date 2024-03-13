@@ -26,8 +26,8 @@ use App\Models\Appendix;
 use App\Models\SubAppendix;
 use App\Models\Orders;
 use App\Models\SubOrders;
-use App\Models\Annexture;
-use App\Models\SubAnnexture;
+use App\Models\Annexure;
+use App\Models\SubAnnexure;
 use App\Models\Stschedule;
 use App\Models\SubStschedule;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
@@ -70,7 +70,8 @@ class MainActController extends Controller
             $part = Parts::where('act_id', $id)->get();
             $priliminarys = Priliminary::where('act_id', $id)->get();
             $schedules = Schedule::where('act_id', $id)->get();
-            $Appendices = Appendices::where('act_id', $id)->get();
+            $Appendix = Appendix::where('act_id', $id)->get();
+         
           
 
             $sections = Section::where('act_id', $id)
@@ -78,8 +79,8 @@ class MainActController extends Controller
                 ->orWhereIn('parts_id', $part->pluck('part_id'))
                 ->orWhereIn('priliminary_id', $priliminarys->pluck('priliminary_id'))
                 ->orWhereIn('schedule_id', $schedules->pluck('schedule_id'))
-                ->orWhereIn('appendices_id', $Appendices->pluck('appendices_id'))
-                ->with('subsectionModel', 'footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendicesmodel')
+                ->orWhereIn('appendix_id', $Appendix->pluck('appendix_id'))
+                ->with('subsectionModel', 'footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendixmodel')
                 ->get()
                 ->sortBy(function ($section) {
                     $mixstring = $section->section_no;
@@ -101,8 +102,8 @@ class MainActController extends Controller
                     ->orWhereIn('parts_id', $part->pluck('part_id'))
                     ->orWhereIn('priliminary_id', $priliminarys->pluck('priliminary_id'))
                     ->orWhereIn('schedule_id', $schedules->pluck('schedule_id'))
-                    ->orWhereIn('appendices_id', $Appendices->pluck('appendices_id'))
-                    ->with('subArticleModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendicesmodel')
+                    ->orWhereIn('appendix_id', $Appendix->pluck('appendix_id'))
+                    ->with('subArticleModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendixmodel')
                     ->get()
                     ->sortBy(function ($article) {
                         $mixstring = $article->article_no;
@@ -124,8 +125,8 @@ class MainActController extends Controller
                 ->orWhereIn('parts_id', $part->pluck('part_id'))
                 ->orWhereIn('priliminary_id', $priliminarys->pluck('priliminary_id'))
                 ->orWhereIn('schedule_id', $schedules->pluck('schedule_id'))
-                ->orWhereIn('appendices_id', $Appendices->pluck('appendices_id'))
-                ->with('subruleModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendicesmodel')
+                ->orWhereIn('appendix_id', $Appendix->pluck('appendix_id'))
+                ->with('subruleModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendixmodel')
                 ->get()
                 ->sortBy(function ($rule) {
                 $mixstring = $rule->rule_no;
@@ -147,8 +148,8 @@ class MainActController extends Controller
                 ->orWhereIn('parts_id', $part->pluck('part_id'))
                 ->orWhereIn('priliminary_id', $priliminarys->pluck('priliminary_id'))
                 ->orWhereIn('schedule_id', $schedules->pluck('schedule_id'))
-                ->orWhereIn('appendices_id', $Appendices->pluck('appendices_id'))
-                ->with('subRegulationModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendicesmodel')
+                ->orWhereIn('appendix_id', $Appendix->pluck('appendix_id'))
+                ->with('subRegulationModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendixmodel')
                 ->get()
                 ->sortBy(function ($regulation) {
                 $mixstring = $regulation->regulation_no;
@@ -171,8 +172,8 @@ class MainActController extends Controller
                 ->orWhereIn('parts_id', $part->pluck('part_id'))
                 ->orWhereIn('priliminary_id', $priliminarys->pluck('priliminary_id'))
                 ->orWhereIn('schedule_id', $schedules->pluck('schedule_id'))
-                ->orWhereIn('appendices_id', $Appendices->pluck('appendices_id'))
-                ->with('subListModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendicesmodel')
+                ->orWhereIn('appendix_id', $Appendix->pluck('appendix_id'))
+                ->with('subListModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendixmodel')
                 ->get()
                 ->sortBy(function ($list) {
                 $mixstring = $list->list_no;
@@ -194,8 +195,8 @@ class MainActController extends Controller
                 ->orWhereIn('parts_id', $part->pluck('part_id'))
                 ->orWhereIn('priliminary_id', $priliminarys->pluck('priliminary_id'))
                 ->orWhereIn('schedule_id', $schedules->pluck('schedule_id'))
-                ->orWhereIn('appendices_id', $Appendices->pluck('appendices_id'))
-                ->with('subPartModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendicesmodel')
+                ->orWhereIn('appendix_id', $Appendix->pluck('appendix_id'))
+                ->with('subPartModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendixmodel')
                 ->get()
                 ->sortBy(function ($partsub) {
                 $mixstring = $partsub->part_no;
@@ -212,13 +213,13 @@ class MainActController extends Controller
                 }
             }, SORT_NATURAL);
 
-            $Appendixs = Appendix::where('act_id', $id)
+            $Appendices = Appendices::where('act_id', $id)
                 ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
                 ->orWhereIn('parts_id', $part->pluck('part_id'))
                 ->orWhereIn('priliminary_id', $priliminarys->pluck('priliminary_id'))
                 ->orWhereIn('schedule_id', $schedules->pluck('schedule_id'))
-                ->orWhereIn('appendices_id', $Appendices->pluck('appendices_id'))
-                ->with('subAppendixModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendicesmodel')
+                ->orWhereIn('appendix_id', $Appendix->pluck('appendix_id'))
+                ->with('subAppendicesModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendixmodel')
                 ->get()
                 ->sortBy(function ($Appendix) {
                     $mixstring = $Appendix->appendix_no;
@@ -240,8 +241,8 @@ class MainActController extends Controller
                 ->orWhereIn('parts_id', $part->pluck('part_id'))
                 ->orWhereIn('priliminary_id', $priliminarys->pluck('priliminary_id'))
                 ->orWhereIn('schedule_id', $schedules->pluck('schedule_id'))
-                ->orWhereIn('appendices_id', $Appendices->pluck('appendices_id'))
-                ->with('subOrderModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendicesmodel')
+                ->orWhereIn('appendix_id', $Appendix->pluck('appendix_id'))
+                ->with('subOrderModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendixmodel')
                 ->get()
                 ->sortBy(function ($Order) {
                 $mixstring = $Order->order_no;
@@ -258,16 +259,16 @@ class MainActController extends Controller
                 }
             }, SORT_NATURAL);
 
-            $Annextures = Annexture::where('act_id', $id)
+            $Annexures = Annexure::where('act_id', $id)
                 ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
                 ->orWhereIn('parts_id', $part->pluck('part_id'))
                 ->orWhereIn('priliminary_id', $priliminarys->pluck('priliminary_id'))
                 ->orWhereIn('schedule_id', $schedules->pluck('schedule_id'))
-                ->orWhereIn('appendices_id', $Appendices->pluck('appendices_id'))
-                ->with('subAnnextureModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendicesmodel')
+                ->orWhereIn('appendix_id', $Appendix->pluck('appendix_id'))
+                ->with('subAnnextureModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendixmodel')
                 ->get()
-                ->sortBy(function ($Annexture) {
-                $mixstring = $Annexture->annexture_no;
+                ->sortBy(function ($Annexure) {
+                $mixstring = $Annexure->annexure_no;
 
                 // Check if the regular expression matches
                 if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
@@ -287,8 +288,8 @@ class MainActController extends Controller
                 ->orWhereIn('parts_id', $part->pluck('part_id'))
                 ->orWhereIn('priliminary_id', $priliminarys->pluck('priliminary_id'))
                 ->orWhereIn('schedule_id', $schedules->pluck('schedule_id'))
-                ->orWhereIn('appendices_id', $Appendices->pluck('appendices_id'))
-                ->with('subStscheduleModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendicesmodel')
+                ->orWhereIn('appendix_id', $Appendix->pluck('appendix_id'))
+                ->with('subStscheduleModel','footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendixmodel')
                 ->get()
                 ->sortBy(function ($Stschedule) {
                 $mixstring = $Stschedule->stschedule_no;
@@ -473,28 +474,28 @@ class MainActController extends Controller
                     }
                 }
 
-                foreach ($Appendixs as $index => $Appendix) {
-                    if ($Appendix->chapter_id == $item->chapter_id) {
-                        $subAppendixList = [];
+                foreach ($Appendices as $index => $Appendice) {
+                    if ($Appendice->chapter_id == $item->chapter_id) {
+                        $subAppendiceList = [];
 
-                        foreach ($Appendix->subAppendixModel as $subAppendix) {
-                            if ($subAppendix->chapter_id == $item->chapter_id) {
-                                $subAppendixList[] = '<div style="display:flex!important;"><div>' . $subAppendix->sub_appendix_no . '</div><div>' . $subAppendix->sub_appendix_content . '</div></div>';
+                        foreach ($Appendice->subAppendicesModel as $subAppendice) {
+                            if ($subAppendice->chapter_id == $item->chapter_id) {
+                                $subAppendiceList[] = '<div style="display:flex!important;"><div>' . $subAppendice->sub_appendices_no . '</div><div>' . $subAppendice->sub_appendices_content . '</div></div>';
                             }
                         }
 
                         $footnoteList = [];
 
-                        foreach ($Appendix->footnoteModel as $footnote) {
+                        foreach ($Appendice->footnoteModel as $footnote) {
                             if ($footnote->chapter_id == $item->chapter_id) {
                                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
                             }
                         }
 
-                        $subAppendixString = implode('', $subAppendixList);
+                        $subAppendiceString = implode('', $subAppendiceList);
                         $footnoteString = implode('', $footnoteList);
 
-                        $chapterSections[] = '<div id="' . $Appendix->appendix_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Appendix->appendix_no . '</h4><h4 class="font-weight-bold mb-3">' . $Appendix->appendix_title . '</h4></div></br><div>' . $Appendix->appendix_content . '</div><div>' . $subAppendixString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        $chapterSections[] = '<div id="' . $Appendice->appendices_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Appendice->appendices_no . '</h4><h4 class="font-weight-bold mb-3">' . $Appendice->appendices_title . '</h4></div></br><div>' . $Appendice->appendices_content . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                     }
                 }
 
@@ -523,28 +524,28 @@ class MainActController extends Controller
                     }
                 }
 
-                foreach ($Annextures as $index => $Annexture) {
-                    if ($Annexture->chapter_id == $item->chapter_id) {
-                        $subAnnextureList = [];
+                foreach ($Annexures as $index => $Annexure) {
+                    if ($Annexure->chapter_id == $item->chapter_id) {
+                        $subAnnexureList = [];
 
-                        foreach ($Annexture->subAnnextureModel as $subAnnexture) {
-                            if ($subAnnexture->chapter_id == $item->chapter_id) {
-                                $subAnnextureList[] = '<div style="display:flex!important;"><div>' . $subAnnexture->sub_annexture_no . '</div><div>' . $subAnnexture->sub_annexture_content . '</div></div>';
+                        foreach ($Annexure->subAnnexureModel as $subAnnexure) {
+                            if ($subAnnexure->chapter_id == $item->chapter_id) {
+                                $subAnnexureList[] = '<div style="display:flex!important;"><div>' . $subAnnexure->sub_annexure_no . '</div><div>' . $subAnnexure->sub_annexure_content . '</div></div>';
                             }
                         }
 
                         $footnoteList = [];
 
-                        foreach ($Annexture->footnoteModel as $footnote) {
+                        foreach ($Annexure->footnoteModel as $footnote) {
                             if ($footnote->chapter_id == $item->chapter_id) {
                                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
                             }
                         }
 
-                        $subAnnextureString = implode('', $subAnnextureList);
+                        $subAnnexureString = implode('', $subAnnexureList);
                         $footnoteString = implode('', $footnoteList);
 
-                        $chapterSections[] = '<div id="' . $Annexture->annexture_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Annexture->annexture_no . '</h4><h4 class="font-weight-bold mb-3">' . $Annexture->annexture_title . '</h4></div></br><div>' . $Annexture->annexture_content . '</div><div>' . $subAnnextureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        $chapterSections[] = '<div id="' . $Annexure->annexure_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Annexture->annexure_no . '</h4><h4 class="font-weight-bold mb-3">' . $Annexure->annexure_title . '</h4></div></br><div>' . $Annexure->annexure_content . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                     }
                 }
 
@@ -587,231 +588,231 @@ class MainActController extends Controller
             foreach ($part as $item) {
                 $partSections = [];
 
-                // foreach ($sections as $index => $section) {
-                //     if ($section->parts_id == $item->parts_id) {
-                //         $subSectionsList = [];
+                foreach ($sections as $index => $section) {
+                    if ($section->parts_id == $item->parts_id) {
+                        $subSectionsList = [];
 
-                //         foreach ($section->subsectionModel as $subsection) {
-                //             if ($subsection->parts_id == $item->parts_id) {
-                //                 $subSectionsList[] = '<div style="display:flex!important;"><div>' . $subsection->sub_section_no . '</div><div>' . $subsection->sub_section_content . '</div ></div>';
-                //             }
-                //         }
+                        foreach ($section->subsectionModel as $subsection) {
+                            if ($subsection->parts_id == $item->parts_id) {
+                                $subSectionsList[] = '<div style="display:flex!important;"><div>' . $subsection->sub_section_no . '</div><div>' . $subsection->sub_section_content . '</div ></div>';
+                            }
+                        }
 
-                //         $footnoteList = [];
+                        $footnoteList = [];
 
-                //         foreach ($section->footnoteModel as $footnote) {
-                //             if ($footnote->parts_id == $item->parts_id) {
-                //                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
-                //             }
-                //         }
+                        foreach ($section->footnoteModel as $footnote) {
+                            if ($footnote->parts_id == $item->parts_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
 
-                //         $subSectionString = implode('', $subSectionsList);
-                //         $footnoteString = implode('', $footnoteList);
+                        $subSectionString = implode('', $subSectionsList);
+                        $footnoteString = implode('', $footnoteList);
 
-                //         $partSections[] = '<div id="' . $section->section_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $section->section_no . '</h4><h4 class="font-weight-bold mb-3">' . $section->section_title . '</h4></div><div>' . $section->section_content . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                //     }
-                // }
+                        $partSections[] = '<div id="' . $section->section_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $section->section_no . '</h4><h4 class="font-weight-bold mb-3">' . $section->section_title . '</h4></div><div>' . $section->section_content . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
 
                 
-                // foreach ($articles as $index => $article) {
-                //     if ($article->parts_id == $item->parts_id) {
-                //         $subArticleList = [];
+                foreach ($articles as $index => $article) {
+                    if ($article->parts_id == $item->parts_id) {
+                        $subArticleList = [];
 
-                //         foreach ($article->subArticleModel as $subarticle) {
-                //             if ($subarticle->parts_id == $item->parts_id) {
-                //                 $subArticleList[] = '<div style="display:flex!important;"><div>' . $subarticle->sub_article_no . '</div><div>' . $subarticle->sub_article_content . '</div></div>';
-                //             }
-                //         }
+                        foreach ($article->subArticleModel as $subarticle) {
+                            if ($subarticle->parts_id == $item->parts_id) {
+                                $subArticleList[] = '<div style="display:flex!important;"><div>' . $subarticle->sub_article_no . '</div><div>' . $subarticle->sub_article_content . '</div></div>';
+                            }
+                        }
 
-                //         $footnoteList = [];
+                        $footnoteList = [];
 
-                //         foreach ($article->footnoteModel as $footnote) {
-                //             if ($footnote->parts_id == $item->parts_id) {
-                //                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
-                //             }
-                //         }
+                        foreach ($article->footnoteModel as $footnote) {
+                            if ($footnote->parts_id == $item->parts_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
 
-                //         $subArticleString = implode('', $subArticleList);
-                //         $footnoteString = implode('', $footnoteList);
+                        $subArticleString = implode('', $subArticleList);
+                        $footnoteString = implode('', $footnoteList);
 
-                //         $partSections[] = '<div id="' . $article->article_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $article->article_no . '</h4><h4 class="font-weight-bold mb-3">' . $article->article_title . '</h4></div></br><div>' . $article->article_content . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                //     }
-                // }
+                        $partSections[] = '<div id="' . $article->article_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $article->article_no . '</h4><h4 class="font-weight-bold mb-3">' . $article->article_title . '</h4></div></br><div>' . $article->article_content . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
              
-                // foreach ($rules as $index => $rule) {
-                //     if ($rule->parts_id == $item->parts_id) {
-                //         $subRuleList = [];
+                foreach ($rules as $index => $rule) {
+                    if ($rule->parts_id == $item->parts_id) {
+                        $subRuleList = [];
 
-                //         foreach ($rule->subruleModel as $subrule) {
-                //             if ($subrule->parts_id == $item->parts_id) {
-                //                 $subRuleList[] = '<div style="display:flex!important;"><div>' . $subrule->sub_rule_no . '</div><div>' . $subarticle->sub_rule_content . '</div></div>';
-                //             }
-                //         }
+                        foreach ($rule->subruleModel as $subrule) {
+                            if ($subrule->parts_id == $item->parts_id) {
+                                $subRuleList[] = '<div style="display:flex!important;"><div>' . $subrule->sub_rule_no . '</div><div>' . $subarticle->sub_rule_content . '</div></div>';
+                            }
+                        }
 
-                //         $footnoteList = [];
+                        $footnoteList = [];
 
-                //         foreach ($rule->footnoteModel as $footnote) {
-                //             if ($footnote->parts_id == $item->parts_id) {
-                //                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
-                //             }
-                //         }
+                        foreach ($rule->footnoteModel as $footnote) {
+                            if ($footnote->parts_id == $item->parts_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
 
-                //         $subRuleString = implode('', $subRuleList);
-                //         $footnoteString = implode('', $footnoteList);
+                        $subRuleString = implode('', $subRuleList);
+                        $footnoteString = implode('', $footnoteList);
 
-                //         $partSections[] = '<div id="' . $rule->rule_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $rule->rule_no . '</h4><h4 class="font-weight-bold mb-3">' . $rule->rule_title . '</h4></div></br><div>' . $rule->rule_content . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                //     }
-                // }
+                        $partSections[] = '<div id="' . $rule->rule_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $rule->rule_no . '</h4><h4 class="font-weight-bold mb-3">' . $rule->rule_title . '</h4></div></br><div>' . $rule->rule_content . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
 
-                // foreach ($regulations as $index => $regulation) {
-                //     if ($regulation->parts_id == $item->parts_id) {
-                //         $subRegulationList = [];
+                foreach ($regulations as $index => $regulation) {
+                    if ($regulation->parts_id == $item->parts_id) {
+                        $subRegulationList = [];
 
-                //         foreach ($regulation->subRegulationModel as $subRegulation) {
-                //             if ($subRegulation->parts_id == $item->parts_id) {
-                //                 $subRegulationList[] = '<div style="display:flex!important;"><div>' . $subRegulation->sub_regulation_no . '</div><div>' . $subRegulation->sub_regulation_content . '</div></div>';
-                //             }
-                //         }
+                        foreach ($regulation->subRegulationModel as $subRegulation) {
+                            if ($subRegulation->parts_id == $item->parts_id) {
+                                $subRegulationList[] = '<div style="display:flex!important;"><div>' . $subRegulation->sub_regulation_no . '</div><div>' . $subRegulation->sub_regulation_content . '</div></div>';
+                            }
+                        }
 
-                //         $footnoteList = [];
+                        $footnoteList = [];
 
-                //         foreach ($regulation->footnoteModel as $footnote) {
-                //             if ($footnote->parts_id == $item->parts_id) {
-                //                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
-                //             }
-                //         }
+                        foreach ($regulation->footnoteModel as $footnote) {
+                            if ($footnote->parts_id == $item->parts_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
 
-                //         $subRegulationString = implode('', $subRegulationList);
-                //         $footnoteString = implode('', $footnoteList);
+                        $subRegulationString = implode('', $subRegulationList);
+                        $footnoteString = implode('', $footnoteList);
 
-                //         $partSections[] = '<div id="' . $regulation->regulation_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $regulation->regulation_no . '</h4><h4 class="font-weight-bold mb-3">' . $regulation->regulation_title . '</h4></div></br><div>' . $regulation->regulation_content . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                //     }
-                // }
+                        $partSections[] = '<div id="' . $regulation->regulation_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $regulation->regulation_no . '</h4><h4 class="font-weight-bold mb-3">' . $regulation->regulation_title . '</h4></div></br><div>' . $regulation->regulation_content . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
 
-                // foreach ($lists as $index => $list) {
-                //     if ($list->parts_id == $item->parts_id) {
-                //         $subListList = [];
+                foreach ($lists as $index => $list) {
+                    if ($list->parts_id == $item->parts_id) {
+                        $subListList = [];
 
-                //         foreach ($list->subListModel as $subList) {
-                //             if ($subList->parts_id == $item->parts_id) {
-                //                 $subListList[] = '<div style="display:flex!important;"><div>' . $subList->sub_list_no . '</div><div>' . $subList->sub_list_content . '</div></div>';
-                //             }
-                //         }
+                        foreach ($list->subListModel as $subList) {
+                            if ($subList->parts_id == $item->parts_id) {
+                                $subListList[] = '<div style="display:flex!important;"><div>' . $subList->sub_list_no . '</div><div>' . $subList->sub_list_content . '</div></div>';
+                            }
+                        }
 
-                //         $footnoteList = [];
+                        $footnoteList = [];
 
-                //         foreach ($list->footnoteModel as $footnote) {
-                //             if ($footnote->parts_id == $item->parts_id) {
-                //                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
-                //             }
-                //         }
+                        foreach ($list->footnoteModel as $footnote) {
+                            if ($footnote->parts_id == $item->parts_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
 
-                //         $subListString = implode('', $subListList);
-                //         $footnoteString = implode('', $footnoteList);
+                        $subListString = implode('', $subListList);
+                        $footnoteString = implode('', $footnoteList);
 
-                //         $partSections[] = '<div id="' . $list->list_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $list->list_no . '</h4><h4 class="font-weight-bold mb-3">' . $list->list_title . '</h4></div></br><div>' . $list->list_content . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                //     }
-                // }
+                        $partSections[] = '<div id="' . $list->list_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $list->list_no . '</h4><h4 class="font-weight-bold mb-3">' . $list->list_title . '</h4></div></br><div>' . $list->list_content . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
 
-                // foreach ($partsubs as $index => $partsub) {
-                //     if ($partsub->parts_id == $item->parts_id) {
-                //         $subPartList = [];
+                foreach ($partsubs as $index => $partsub) {
+                    if ($partsub->parts_id == $item->parts_id) {
+                        $subPartList = [];
 
-                //         foreach ($partsub->subPartModel as $subPartsOfPart) {
-                //             if ($subPartsOfPart->parts_id == $item->parts_id) {
-                //                 $subPartList[] = '<div style="display:flex!important;"><div>' . $subPartsOfPart->sub_part_no . '</div><div>' . $subPartsOfPart->sub_part_content . '</div></div>';
-                //             }
-                //         }
+                        foreach ($partsub->subPartModel as $subPartsOfPart) {
+                            if ($subPartsOfPart->parts_id == $item->parts_id) {
+                                $subPartList[] = '<div style="display:flex!important;"><div>' . $subPartsOfPart->sub_part_no . '</div><div>' . $subPartsOfPart->sub_part_content . '</div></div>';
+                            }
+                        }
 
-                //         $footnoteList = [];
+                        $footnoteList = [];
 
-                //         foreach ($partsub->footnoteModel as $footnote) {
-                //             if ($footnote->parts_id == $item->parts_id) {
-                //                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
-                //             }
-                //         }
+                        foreach ($partsub->footnoteModel as $footnote) {
+                            if ($footnote->parts_id == $item->parts_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
 
-                //         $subPartString = implode('', $subPartList);
-                //         $footnoteString = implode('', $footnoteList);
+                        $subPartString = implode('', $subPartList);
+                        $footnoteString = implode('', $footnoteList);
 
-                //         $partSections[] = '<div id="' . $partsub->part_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $partsub->part_no . '</h4><h4 class="font-weight-bold mb-3">' . $partsub->part_title . '</h4></div></br><div>' . $partsub->part_content . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                //     }
-                // }
+                        $partSections[] = '<div id="' . $partsub->part_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $partsub->part_no . '</h4><h4 class="font-weight-bold mb-3">' . $partsub->part_title . '</h4></div></br><div>' . $partsub->part_content . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
 
-                // foreach ($Appendixs as $index => $Appendix) {
-                //     if ($Appendix->parts_id == $item->parts_id) {
-                //         $subAppendixList = [];
+                foreach ($Appendices as $index => $Appendice) {
+                    if ($Appendice->parts_id == $item->parts_id) {
+                        $subAppendiceList = [];
 
-                //         foreach ($Appendix->subAppendixModel as $subAppendix) {
-                //             if ($subAppendix->parts_id == $item->parts_id) {
-                //                 $subAppendixList[] = '<div style="display:flex!important;"><div>' . $subAppendix->sub_appendix_no . '</div><div>' . $subAppendix->sub_appendix_content . '</div></div>';
-                //             }
-                //         }
+                        foreach ($Appendice->subAppendicesModel as $subAppendice) {
+                            if ($subAppendice->parts_id == $item->parts_id) {
+                                $subAppendiceList[] = '<div style="display:flex!important;"><div>' . $subAppendice->sub_appendices_no . '</div><div>' . $subAppendice->sub_appendices_content . '</div></div>';
+                            }
+                        }
 
-                //         $footnoteList = [];
+                        $footnoteList = [];
 
-                //         foreach ($Appendix->footnoteModel as $footnote) {
-                //             if ($footnote->parts_id == $item->parts_id) {
-                //                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
-                //             }
-                //         }
+                        foreach ($Appendice->footnoteModel as $footnote) {
+                            if ($footnote->parts_id == $item->parts_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
 
-                //         $subAppendixString = implode('', $subAppendixList);
-                //         $footnoteString = implode('', $footnoteList);
+                        $subAppendiceString = implode('', $subAppendiceList);
+                        $footnoteString = implode('', $footnoteList);
 
-                //         $partSections[] = '<div id="' . $Appendix->appendix_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Appendix->appendix_no . '</h4><h4 class="font-weight-bold mb-3">' . $Appendix->appendix_title . '</h4></div></br><div>' . $Appendix->appendix_content . '</div><div>' . $subAppendixString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                //     }
-                // }
+                        $partSections[] = '<div id="' . $Appendice->appendices_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Appendice->appendices_no . '</h4><h4 class="font-weight-bold mb-3">' . $Appendice->appendices_title . '</h4></div></br><div>' . $Appendice->appendices_content . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
 
-                // foreach ($Orders as $index => $Order) {
-                //     if ($Order->parts_id == $item->parts_id) {
-                //         $subOrderList = [];
+                foreach ($Orders as $index => $Order) {
+                    if ($Order->parts_id == $item->parts_id) {
+                        $subOrderList = [];
 
-                //         foreach ($Order->subOrderModel as $subOrder) {
-                //             if ($subOrder->parts_id == $item->parts_id) {
-                //                 $subOrderList[] = '<div style="display:flex!important;"><div>' . $subOrder->sub_order_no . '</div><div>' . $subOrder->sub_order_content . '</div></div>';
-                //             }
-                //         }
+                        foreach ($Order->subOrderModel as $subOrder) {
+                            if ($subOrder->parts_id == $item->parts_id) {
+                                $subOrderList[] = '<div style="display:flex!important;"><div>' . $subOrder->sub_order_no . '</div><div>' . $subOrder->sub_order_content . '</div></div>';
+                            }
+                        }
 
-                //         $footnoteList = [];
+                        $footnoteList = [];
 
-                //         foreach ($Order->footnoteModel as $footnote) {
-                //             if ($footnote->parts_id == $item->parts_id) {
-                //                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
-                //             }
-                //         }
+                        foreach ($Order->footnoteModel as $footnote) {
+                            if ($footnote->parts_id == $item->parts_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
 
-                //         $subOrderString = implode('', $subOrderList);
-                //         $footnoteString = implode('', $footnoteList);
+                        $subOrderString = implode('', $subOrderList);
+                        $footnoteString = implode('', $footnoteList);
 
-                //         $partSections[] = '<div id="' . $Order->order_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Order->order_no . '</h4><h4 class="font-weight-bold mb-3">' . $Order->order_title . '</h4></div></br><div>' . $Order->order_content . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                //     }
-                // }
+                        $partSections[] = '<div id="' . $Order->order_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Order->order_no . '</h4><h4 class="font-weight-bold mb-3">' . $Order->order_title . '</h4></div></br><div>' . $Order->order_content . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
 
-                // foreach ($Annextures as $index => $Annexture) {
-                //     if ($Annexture->parts_id == $item->parts_id) {
-                //         $subAnnextureList = [];
+                foreach ($Annexures as $index => $Annexure) {
+                    if ($Annexure->parts_id == $item->parts_id) {
+                        $subAnnexureList = [];
 
-                //         foreach ($Annexture->subAnnextureModel as $subAnnexture) {
-                //             if ($subAnnexture->parts_id == $item->parts_id) {
-                //                 $subAnnextureList[] = '<div style="display:flex!important;"><div>' . $subAnnexture->sub_annexture_no . '</div><div>' . $subAnnexture->sub_annexture_content . '</div></div>';
-                //             }
-                //         }
+                        foreach ($Annexure->subAnnexureModel as $subAnnexure) {
+                            if ($subAnnexure->parts_id == $item->parts_id) {
+                                $subAnnexureList[] = '<div style="display:flex!important;"><div>' . $subAnnexure->sub_annexure_no . '</div><div>' . $subAnnexure->sub_annexure_content . '</div></div>';
+                            }
+                        }
 
-                //         $footnoteList = [];
+                        $footnoteList = [];
 
-                //         foreach ($Annexture->footnoteModel as $footnote) {
-                //             if ($footnote->parts_id == $item->parts_id) {
-                //                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
-                //             }
-                //         }
+                        foreach ($Annexure->footnoteModel as $footnote) {
+                            if ($footnote->parts_id == $item->parts_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
 
-                //         $subAnnextureString = implode('', $subAnnextureList);
-                //         $footnoteString = implode('', $footnoteList);
+                        $subAnnexureString = implode('', $subAnnexureList);
+                        $footnoteString = implode('', $footnoteList);
 
-                //         $partSections[] = '<div id="' . $Annexture->annexture_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Annexture->annexture_no . '</h4><h4 class="font-weight-bold mb-3">' . $Annexture->annexture_title . '</h4></div></br><div>' . $Annexture->annexture_content . '</div><div>' . $subAnnextureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                //     }
-                // }
+                        $partSections[] = '<div id="' . $Annexure->annexure_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Annexture->annexure_no . '</h4><h4 class="font-weight-bold mb-3">' . $Annexure->annexure_title . '</h4></div></br><div>' . $Annexure->annexure_content . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
     
                 foreach ($Stschedules as $index => $Stschedule) {
                     if ($Stschedule->parts_id == $item->parts_id) {
@@ -1001,28 +1002,28 @@ class MainActController extends Controller
                     }
                 }
 
-                foreach ($Appendixs as $index => $Appendix) {
-                    if ($Appendix->priliminary_id == $item->priliminary_id) {
-                        $subAppendixList = [];
+                foreach ($Appendices as $index => $Appendice) {
+                    if ($Appendice->priliminary_id == $item->priliminary_id) {
+                        $subAppendiceList = [];
 
-                        foreach ($Appendix->subAppendixModel as $subAppendix) {
-                            if ($subAppendix->priliminary_id == $item->priliminary_id) {
-                                $subAppendixList[] = '<div style="display:flex!important;"><div>' . $subAppendix->sub_appendix_no . '</div><div>' . $subAppendix->sub_appendix_content . '</div></div>';
+                        foreach ($Appendice->subAppendicesModel as $subAppendice) {
+                            if ($subAppendice->priliminary_id == $item->priliminary_id) {
+                                $subAppendiceList[] = '<div style="display:flex!important;"><div>' . $subAppendice->sub_appendices_no . '</div><div>' . $subAppendice->sub_appendices_content . '</div></div>';
                             }
                         }
 
                         $footnoteList = [];
 
-                        foreach ($Appendix->footnoteModel as $footnote) {
+                        foreach ($Appendice->footnoteModel as $footnote) {
                             if ($footnote->priliminary_id == $item->priliminary_id) {
                                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
                             }
                         }
 
-                        $subAppendixString = implode('', $subAppendixList);
+                        $subAppendiceString = implode('', $subAppendiceList);
                         $footnoteString = implode('', $footnoteList);
 
-                        $priliminarySections[] = '<div id="' . $Appendix->appendix_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Appendix->appendix_no . '</h4><h4 class="font-weight-bold mb-3">' . $Appendix->appendix_title . '</h4></div></br><div>' . $Appendix->appendix_content . '</div><div>' . $subAppendixString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        $priliminarySections[] = '<div id="' . $Appendice->appendices_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Appendice->appendices_no . '</h4><h4 class="font-weight-bold mb-3">' . $Appendice->appendices_title . '</h4></div></br><div>' . $Appendice->appendices_content . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                     }
                 }
 
@@ -1051,28 +1052,28 @@ class MainActController extends Controller
                     }
                 }
 
-                foreach ($Annextures as $index => $Annexture) {
-                    if ($Annexture->priliminary_id == $item->priliminary_id) {
-                        $subAnnextureList = [];
+                foreach ($Annexures as $index => $Annexure) {
+                    if ($Annexure->priliminary_id == $item->priliminary_id) {
+                        $subAnnexureList = [];
 
-                        foreach ($Annexture->subAnnextureModel as $subAnnexture) {
-                            if ($subAnnexture->priliminary_id == $item->priliminary_id) {
-                                $subAnnextureList[] = '<div style="display:flex!important;"><div>' . $subAnnexture->sub_annexture_no . '</div><div>' . $subAnnexture->sub_annexture_content . '</div></div>';
+                        foreach ($Annexure->subAnnexureModel as $subAnnexure) {
+                            if ($subAnnexure->priliminary_id == $item->priliminary_id) {
+                                $subAnnexureList[] = '<div style="display:flex!important;"><div>' . $subAnnexure->sub_annexure_no . '</div><div>' . $subAnnexure->sub_annexure_content . '</div></div>';
                             }
                         }
 
                         $footnoteList = [];
 
-                        foreach ($Annexture->footnoteModel as $footnote) {
+                        foreach ($Annexure->footnoteModel as $footnote) {
                             if ($footnote->priliminary_id == $item->priliminary_id) {
                                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
                             }
                         }
 
-                        $subAnnextureString = implode('', $subAnnextureList);
+                        $subAnnexureString = implode('', $subAnnexureList);
                         $footnoteString = implode('', $footnoteList);
 
-                        $priliminarySections[] = '<div id="' . $Annexture->annexture_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Annexture->annexture_no . '</h4><h4 class="font-weight-bold mb-3">' . $Annexture->annexture_title . '</h4></div></br><div>' . $Annexture->annexture_content . '</div><div>' . $subAnnextureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        $priliminarySections[] = '<div id="' . $Annexure->annexure_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Annexture->annexure_no . '</h4><h4 class="font-weight-bold mb-3">' . $Annexure->annexure_title . '</h4></div></br><div>' . $Annexure->annexure_content . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                     }
                 }
 
@@ -1264,28 +1265,28 @@ class MainActController extends Controller
                     }
                 }
 
-                foreach ($Appendixs as $index => $Appendix) {
-                    if ($Appendix->schedule_id == $item->schedule_id) {
-                        $subAppendixList = [];
+                foreach ($Appendices as $index => $Appendice) {
+                    if ($Appendice->schedule_id == $item->schedule_id) {
+                        $subAppendiceList = [];
 
-                        foreach ($Appendix->subAppendixModel as $subAppendix) {
-                            if ($subAppendix->schedule_id == $item->schedule_id) {
-                                $subAppendixList[] = '<div style="display:flex!important;"><div>' . $subAppendix->sub_appendix_no . '</div><div>' . $subAppendix->sub_appendix_content . '</div></div>';
+                        foreach ($Appendice->subAppendicesModel as $subAppendice) {
+                            if ($subAppendice->schedule_id == $item->schedule_id) {
+                                $subAppendiceList[] = '<div style="display:flex!important;"><div>' . $subAppendice->sub_appendices_no . '</div><div>' . $subAppendice->sub_appendices_content . '</div></div>';
                             }
                         }
 
                         $footnoteList = [];
 
-                        foreach ($Appendix->footnoteModel as $footnote) {
+                        foreach ($Appendice->footnoteModel as $footnote) {
                             if ($footnote->schedule_id == $item->schedule_id) {
                                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
                             }
                         }
 
-                        $subAppendixString = implode('', $subAppendixList);
+                        $subAppendiceString = implode('', $subAppendiceList);
                         $footnoteString = implode('', $footnoteList);
 
-                        $scheduleSections[] = '<div id="' . $Appendix->appendix_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Appendix->appendix_no . '</h4><h4 class="font-weight-bold mb-3">' . $Appendix->appendix_title . '</h4></div></br><div>' . $Appendix->appendix_content . '</div><div>' . $subAppendixString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        $scheduleSections[] = '<div id="' . $Appendice->appendices_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Appendice->appendices_no . '</h4><h4 class="font-weight-bold mb-3">' . $Appendice->appendices_title . '</h4></div></br><div>' . $Appendice->appendices_content . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                     }
                 }
 
@@ -1320,7 +1321,7 @@ class MainActController extends Controller
 
                         foreach ($Annexure->subAnnexureModel as $subAnnexure) {
                             if ($subAnnexure->schedule_id == $item->schedule_id) {
-                                $subAnnextureList[] = '<div style="display:flex!important;"><div>' . $subAnnexure->sub_annexure_no . '</div><div>' . $subAnnexure->sub_annexure_content . '</div></div>';
+                                $subAnnexureList[] = '<div style="display:flex!important;"><div>' . $subAnnexure->sub_annexure_no . '</div><div>' . $subAnnexure->sub_annexure_content . '</div></div>';
                             }
                         }
 
@@ -1371,23 +1372,23 @@ class MainActController extends Controller
             }
 
 
-            $AppendiceList = [];
+            $AppendixList = [];
 
-            foreach ($Appendices as $item) {
-                $appendiceSections = [];
+            foreach ($Appendixs as $item) {
+                $appendixSections = [];
 
                 foreach ($sections as $index => $section) {
-                    if ($section->appendices_id == $item->appendices_id) {
+                    if ($section->appendix_id == $item->appendix_id) {
                         $subSectionsList = [];
                         foreach ($section->subsectionModel as $subsection) {
-                            if ($subsection->appendices_id == $item->appendices_id) {
+                            if ($subsection->appendix_id == $item->appendix_id) {
                                 $subSectionsList[] = '<div style="display:flex!important;"><div>' . $subsection->sub_section_no . '</div><div>' . $subsection->sub_section_content . '</div></div>';
                             }
                         }
 
                         $footnoteList = [];
                         foreach ($section->footnoteModel as $footnote) {
-                            if ($footnote->appendices_id == $item->appendices_id) {
+                            if ($footnote->appendix_id == $item->appendix_id) {
                                 $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
                             }
                         }
@@ -1395,13 +1396,238 @@ class MainActController extends Controller
                         $subSectionString = implode('', $subSectionsList);
                         $footnoteString = implode('', $footnoteList);
 
-                        $appendiceSections[] = '<div id="' . $section->section_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $section->section_no . '</h4><h4 class="font-weight-bold mb-3">' . $section->section_title . '</h4></div></br><div>' . $section->section_content . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        $appendixSections[] = '<div id="' . $section->section_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $section->section_no . '</h4><h4 class="font-weight-bold mb-3">' . $section->section_title . '</h4></div></br><div>' . $section->section_content . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                     }
                 }
 
-                $sectionString = implode('', $appendiceSections);
+                foreach ($articles as $index => $article) {
+                    if ($article->appendix_id == $item->appendix_id) {
+                        $subArticleList = [];
 
-                $AppendiceList[] = '<h2 style="text-align:center!important;" id=""><strong>' . $item->appendices_title . '</strong></h2>' . $sectionString;
+                        foreach ($article->subArticleModel as $subarticle) {
+                            if ($subarticle->appendix_id == $item->appendix_id) {
+                                $subArticleList[] = '<div style="display:flex!important;"><div>' . $subarticle->sub_article_no . '</div><div>' . $subarticle->sub_article_content . '</div></div>';
+                            }
+                        }
+
+                        $footnoteList = [];
+
+                        foreach ($article->footnoteModel as $footnote) {
+                            if ($footnote->appendix_id == $item->appendix_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
+
+                        $subArticleString = implode('', $subArticleList);
+                        $footnoteString = implode('', $footnoteList);
+
+                        $appendixSections[] = '<div id="' . $article->article_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $article->article_no . '</h4><h4 class="font-weight-bold mb-3">' . $article->article_title . '</h4></div></br><div>' . $article->article_content . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
+             
+                foreach ($rules as $index => $rule) {
+                    if ($rule->appendix_id == $item->appendix_id) {
+                        $subRuleList = [];
+
+                        foreach ($rule->subruleModel as $subrule) {
+                            if ($subrule->appendix_id == $item->appendix_id) {
+                                $subRuleList[] = '<div style="display:flex!important;"><div>' . $subrule->sub_rule_no . '</div><div>' . $subarticle->sub_rule_content . '</div></div>';
+                            }
+                        }
+
+                        $footnoteList = [];
+
+                        foreach ($rule->footnoteModel as $footnote) {
+                            if ($footnote->appendix_id == $item->appendix_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
+
+                        $subRuleString = implode('', $subRuleList);
+                        $footnoteString = implode('', $footnoteList);
+
+                        $appendixSections[] = '<div id="' . $rule->rule_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $rule->rule_no . '</h4><h4 class="font-weight-bold mb-3">' . $rule->rule_title . '</h4></div></br><div>' . $rule->rule_content . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
+
+                foreach ($regulations as $index => $regulation) {
+                    if ($regulation->appendix_id == $item->appendix_id) {
+                        $subRegulationList = [];
+
+                        foreach ($regulation->subRegulationModel as $subRegulation) {
+                            if ($subRegulation->appendix_id == $item->appendix_id) {
+                                $subRegulationList[] = '<div style="display:flex!important;"><div>' . $subRegulation->sub_regulation_no . '</div><div>' . $subRegulation->sub_regulation_content . '</div></div>';
+                            }
+                        }
+
+                        $footnoteList = [];
+
+                        foreach ($regulation->footnoteModel as $footnote) {
+                            if ($footnote->appendix_id == $item->appendix_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
+
+                        $subRegulationString = implode('', $subRegulationList);
+                        $footnoteString = implode('', $footnoteList);
+
+                        $appendixSections[] = '<div id="' . $regulation->regulation_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $regulation->regulation_no . '</h4><h4 class="font-weight-bold mb-3">' . $regulation->regulation_title . '</h4></div></br><div>' . $regulation->regulation_content . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
+
+                foreach ($lists as $index => $list) {
+                    if ($list->appendix_id == $item->appendix_id) {
+                        $subListList = [];
+
+                        foreach ($list->subListModel as $subList) {
+                            if ($subList->appendix_id == $item->appendix_id) {
+                                $subListList[] = '<div style="display:flex!important;"><div>' . $subList->sub_list_no . '</div><div>' . $subList->sub_list_content . '</div></div>';
+                            }
+                        }
+
+                        $footnoteList = [];
+
+                        foreach ($list->footnoteModel as $footnote) {
+                            if ($footnote->appendix_id == $item->appendix_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
+
+                        $subListString = implode('', $subListList);
+                        $footnoteString = implode('', $footnoteList);
+
+                        $appendixSections[] = '<div id="' . $list->list_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $list->list_no . '</h4><h4 class="font-weight-bold mb-3">' . $list->list_title . '</h4></div></br><div>' . $list->list_content . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
+
+                foreach ($partsubs as $index => $partsub) {
+                    if ($partsub->appendix_id == $item->appendix_id) {
+                        $subPartList = [];
+
+                        foreach ($partsub->subPartModel as $subPartsOfPart) {
+                            if ($subPartsOfPart->appendix_id == $item->appendix_id) {
+                                $subPartList[] = '<div style="display:flex!important;"><div>' . $subPartsOfPart->sub_part_no . '</div><div>' . $subPartsOfPart->sub_part_content . '</div></div>';
+                            }
+                        }
+
+                        $footnoteList = [];
+
+                        foreach ($partsub->footnoteModel as $footnote) {
+                            if ($footnote->appendix_id == $item->appendix_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
+
+                        $subPartString = implode('', $subPartList);
+                        $footnoteString = implode('', $footnoteList);
+
+                        $appendixSections[] = '<div id="' . $partsub->part_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $partsub->part_no . '</h4><h4 class="font-weight-bold mb-3">' . $partsub->part_title . '</h4></div></br><div>' . $partsub->part_content . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
+
+                foreach ($Appendices as $index => $Appendice) {
+                    if ($Appendice->appendix_id == $item->appendix_id) {
+                        $subAppendiceList = [];
+
+                        foreach ($Appendice->subAppendicesModel as $subAppendice) {
+                            if ($subAppendice->appendix_id == $item->appendix_id) {
+                                $subAppendiceList[] = '<div style="display:flex!important;"><div>' . $subAppendice->sub_appendices_no . '</div><div>' . $subAppendice->sub_appendices_content . '</div></div>';
+                            }
+                        }
+
+                        $footnoteList = [];
+
+                        foreach ($Appendice->footnoteModel as $footnote) {
+                            if ($footnote->appendix_id == $item->appendix_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
+
+                        $subAppendiceString = implode('', $subAppendiceList);
+                        $footnoteString = implode('', $footnoteList);
+
+                        $appendixSections[] = '<div id="' . $Appendice->appendices_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Appendice->appendices_no . '</h4><h4 class="font-weight-bold mb-3">' . $Appendice->appendices_title . '</h4></div></br><div>' . $Appendice->appendices_content . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
+
+                foreach ($Orders as $index => $Order) {
+                    if ($Order->appendix_id == $item->appendix_id) {
+                        $subOrderList = [];
+
+                        foreach ($Order->subOrderModel as $subOrder) {
+                            if ($subOrder->appendix_id == $item->appendix_id) {
+                                $subOrderList[] = '<div style="display:flex!important;"><div>' . $subOrder->sub_order_no . '</div><div>' . $subOrder->sub_order_content . '</div></div>';
+                            }
+                        }
+
+                        $footnoteList = [];
+
+                        foreach ($Order->footnoteModel as $footnote) {
+                            if ($footnote->appendix_id == $item->appendix_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
+
+                        $subOrderString = implode('', $subOrderList);
+                        $footnoteString = implode('', $footnoteList);
+
+                        $appendixSections[] = '<div id="' . $Order->order_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Order->order_no . '</h4><h4 class="font-weight-bold mb-3">' . $Order->order_title . '</h4></div></br><div>' . $Order->order_content . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
+
+                foreach ($Annexures as $index => $Annexure) {
+                    if ($Annexure->appendix_id == $item->appendix_id) {
+                        $subAnnexureList = [];
+
+                        foreach ($Annexure->subAnnexureModel as $subAnnexure) {
+                            if ($subAnnexure->appendix_id == $item->appendix_id) {
+                                $subAnnexureList[] = '<div style="display:flex!important;"><div>' . $subAnnexure->sub_annexure_no . '</div><div>' . $subAnnexure->sub_annexure_content . '</div></div>';
+                            }
+                        }
+
+                        $footnoteList = [];
+
+                        foreach ($Annexure->footnoteModel as $footnote) {
+                            if ($footnote->appendix_id == $item->appendix_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
+
+                        $subAnnexureString = implode('', $subAnnexureList);
+                        $footnoteString = implode('', $footnoteList);
+
+                        $appendixSections[] = '<div id="' . $Annexure->annexure_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Annexure->annexture_no . '</h4><h4 class="font-weight-bold mb-3">' . $Annexure->annexure_title . '</h4></div></br><div>' . $Annexure->annexure_content . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
+
+                foreach ($Stschedules as $index => $Stschedule) {
+                    if ($Stschedule->appendix_id == $item->appendix_id) {
+                        $subStscheduleList = [];
+
+                        foreach ($Stschedule->subStscheduleModel as $subStschedule) {
+                            if ($subStschedule->appendix_id == $item->appendix_id) {
+                                $subStscheduleList[] = '<div style="display:flex!important;"><div>' . $subStschedule->sub_stschedule_no . '</div><div>' . $subStschedule->sub_stschedule_content . '</div></div>';
+                            }
+                        }
+
+                        $footnoteList = [];
+
+                        foreach ($Stschedule->footnoteModel as $footnote) {
+                            if ($footnote->appendix_id == $item->appendix_id) {
+                                $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                            }
+                        }
+
+                        $subStscheduleString = implode('', $subStscheduleList);
+                        $footnoteString = implode('', $footnoteList);
+
+                        $appendixSections[] = '<div id="' . $Stschedule->stschedule_id . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $Stschedule->stschedule_no . '</h4><h4 class="font-weight-bold mb-3">' . $Stschedule->stschedule_title . '</h4></div></br><div>' . $Stschedule->stschedule_content . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    }
+                }
+
+                $sectionString = implode('', $appendixSections);
+
+                $AppendixList[] = '<h2 style="text-align:center!important;" id=""><strong>' . $item->appendix_title . '</strong></h2>' . $sectionString;
             }
 
 
@@ -1414,6 +1640,26 @@ class MainActController extends Controller
                 $chapterData = [
                     'ChapterId' => $chapt->chapter_id,
                     'Name' => $chapt->chapter_title,
+                    'SubString' => [] // Array to store sections for the current chapter
+                ];
+            
+                foreach ($sections as $section) {
+                    if ($chapt->chapter_id == $section->chapter_id) {
+                        $chapterData['SubString'][] = [
+                            'SectionId' => $section->section_id,
+                            'SectionNo' => $section->section_no,
+                            'SectionName' => $section->section_title,
+                        ];
+                    }
+                }
+            
+                $sideBarList[] = $chapterData;
+            }
+
+            foreach ($part as $value) {
+                $partData = [
+                    'ChapterId' => $value->chapter_id,
+                    'Name' => $value->chapter_title,
                     'Sections' => [] // Array to store sections for the current chapter
                 ];
             

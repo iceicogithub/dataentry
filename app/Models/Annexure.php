@@ -11,7 +11,7 @@ class Annexure extends Model
 
     protected $primaryKey = 'annexure_id';
     protected $table = 'annexure';
-    protected $fillable = ['annexure_no', 'annexure_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'annexure_title', 'annexure_content' ,'appendix_id','schedule_id','priliminary_id'];
+    protected $fillable = ['annexure_no', 'annexure_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'annexure_title', 'annexure_content' ,'appendix_id','schedule_id','priliminary_id','is_append', 'serial_no'];
 
     public function MainTypeModel()
     {

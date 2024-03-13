@@ -97,7 +97,8 @@ class SectionController extends Controller
 
         // Calculate the next section number
         // $nextSectionNo = $sec_no;
-        $nextSectionRank = $sec_rank + 0.01;
+        $oldSectionRank = $request->click_section_rank;
+        $nextSectionRank = $oldSectionRank + 0.01;
 
 
 
@@ -105,9 +106,14 @@ class SectionController extends Controller
         // Section::where('section_no', '>=', $nextSectionNo)
         //     ->increment('section_no');
 
+        // $click_section_no = $request->click_section_no;
+        // $newsection = $request->section_no;
+
+      
+
         // Create the new section with the incremented section_no
         $section = Section::create([
-            'section_rank' => $nextSectionRank ?? 1,
+            'section_rank' => $nextSectionRank,
             'section_no' => $request->section_no ?? null,
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
@@ -119,6 +125,8 @@ class SectionController extends Controller
             'subtypes_id' => $request->subtypes_id,
             'section_title' => $request->section_title,
             'section_content' => $request->section_content,
+            'is_append' => 1,
+            'serial_no' =>$request->serial_no
         ]);
 
         if ($request->has('sec_footnote_content')) {

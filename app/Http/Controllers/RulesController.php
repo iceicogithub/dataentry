@@ -297,7 +297,8 @@ class RulesController extends Controller
 
             // Calculate the next section number
             // $nextRuleNo = $rule_no;
-            $nextRuleRank = $rule_rank + 0.01;
+            $oldSectionRank = $request->click_section_rank;
+            $nextRuleRank = $oldSectionRank + 0.01;
             // dd($nextRuleRank);
             // die();
 
@@ -309,7 +310,7 @@ class RulesController extends Controller
 
             // Create the new section with the incremented section_no
             $rule = Rules::create([
-                'rule_rank'    => $nextRuleRank ?? 1,
+                'rule_rank'    => $nextRuleRank,
                 'rule_no'      => $request->rule_no ?? null,
                 'act_id'       => $request->act_id,
                 'maintype_id'  => $maintypeId,
@@ -321,6 +322,7 @@ class RulesController extends Controller
                 'subtypes_id'  => $request->subtypes_id,
                 'rule_title'   => $request->rule_title,
                 'rule_content' => $request->rule_content,
+                'serial_no'=>$request->serial_no
             ]);
 
             if ($request->has('rule_footnote_content')) {

@@ -10,7 +10,7 @@ class Article extends Model
     use HasFactory;
     protected $primaryKey = 'article_id';
     protected $table = 'articles';
-    protected $fillable = ['article_rank','article_no','act_id','maintype_id','appendix_id','schedule_id', 'chapter_id', 'subtypes_id', 'parts_id','priliminary_id', 'article_title', 'article_content'];
+    protected $fillable = ['article_rank','article_no','act_id','maintype_id','appendix_id','schedule_id', 'chapter_id', 'subtypes_id', 'parts_id','priliminary_id', 'article_title', 'article_content','is_append','serial_no'];
 
     public function MainTypeModel()
     {

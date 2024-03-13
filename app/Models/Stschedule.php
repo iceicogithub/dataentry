@@ -10,7 +10,7 @@ class Stschedule extends Model
     use HasFactory;
     protected $primaryKey = 'stschedule_id';
     protected $table = 'stschedule';
-    protected $fillable = ['stschedule_rank','stschedule_no','act_id','maintype_id','appendix_id','schedule_id', 'chapter_id', 'subtypes_id', 'parts_id','priliminary_id', 'stschedule_title', 'stschedule_content'];
+    protected $fillable = ['stschedule_rank','stschedule_no','act_id','maintype_id','appendix_id','schedule_id', 'chapter_id', 'subtypes_id', 'parts_id','priliminary_id', 'stschedule_title', 'stschedule_content','is_append', 'serial_no'];
 
     public function MainTypeModel()
     {

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Act extends Model
 {
     use HasFactory;
@@ -19,4 +20,43 @@ class Act extends Model
     {
         return $this->belongsTo(State::class, 'state_id');
     }
+
+    public function sectionAct(){
+        return $this->hasMany(Section::class, 'act_id', 'act_id');
+    }
+
+    public function articleAct(){
+        return $this->hasMany(Article::class, 'act_id', 'act_id');
+    }
+
+    public function ruleAct(){
+        return $this->hasMany(Rules::class, 'act_id', 'act_id');
+    }
+
+    public function regulationAct(){
+        return $this->hasMany(Regulation::class, 'act_id', 'act_id');
+    }
+
+    public function listAct(){
+        return $this->hasMany(Lists::class, 'act_id', 'act_id');
+    }
+
+    public function partAct(){
+        return $this->hasMany(Part::class, 'act_id', 'act_id');
+    }
+    public function appendiceAct(){
+        return $this->hasMany(Appendices::class, 'act_id', 'act_id');
+    }
+    public function orderAct(){
+        return $this->hasMany(Orders::class, 'act_id', 'act_id');
+    }
+    public function annexureAct(){
+        return $this->hasMany(Annexure::class, 'act_id', 'act_id');
+    }
+
+    public function scheduleAct(){
+        return $this->hasMany(Stschedule::class, 'act_id', 'act_id');
+    }
+
+
 }
