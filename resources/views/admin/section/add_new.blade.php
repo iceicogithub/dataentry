@@ -56,6 +56,9 @@
                     @if ($sections->appendix_id)
                         <input type="hidden" name="appendix_id" value="{{ $sections->appendix_id }}">
                     @endif
+                    @if ($sections->main_order_id)
+                        <input type="hidden" name="main_order_id" value="{{ $sections->main_order_id }}">
+                    @endif
                     <div class="card p-5">
                         <div class="additional-section">
                             <div class="border col-md-12 p-3">
@@ -84,6 +87,10 @@
                                                 <label class="float-label font-weight-bold">Appendix :</label>
 
                                                 <textarea name="appendix_title" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title" id="a_title">{{ $sections->Appendixmodel->appendix_title }}</textarea>>
+                                            @elseif($sections->maintype_id == 6)
+                                                <label class="float-label font-weight-bold">Order :</label>
+
+                                                <textarea name="appendix_title" class="form-control mb-3 main_order_title" placeholder="Enter Order Title" id="m_title">{{ $sections->MainOrderModel->main_order_title }}</textarea>>
                                             @else
                                                 null
                                             @endif
@@ -182,6 +189,7 @@
             CKEDITOR.replace('c_title');
             CKEDITOR.replace('part_title');
             CKEDITOR.replace('p_title');
+            CKEDITOR.replace('m_title');
             CKEDITOR.replace('section');
             CKEDITOR.replace('state_amendment');
 

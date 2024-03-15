@@ -131,6 +131,13 @@
                                                 <textarea name="appendix_title[]" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title"
                                                     id="appendix_title"></textarea>
                                             </div>
+                                             {{-- for MainOrder --}}
+                                             <div id="mainOrderSection" class="mainOrderSection">
+                                                <label class="float-label"> Order <span
+                                                        class="text-danger">*</span></label>
+                                                <textarea name="main_order_title[]" class="form-control mb-3 main_order_title" placeholder="Enter Order Title"
+                                                    id="main_order_title"></textarea>
+                                            </div>
                                         </div>
                                         <div class="additional-section">
                                             <div class="border col-md-12 p-3">
@@ -462,6 +469,7 @@
             CKEDITOR.replace('priliminary_title');
             CKEDITOR.replace('schedule_title');
             CKEDITOR.replace('appendix_title');
+            CKEDITOR.replace('main_order_title');
 
             // for category type
             $(document).on('change', '.category', function() {
@@ -490,12 +498,14 @@
                 var priliminarySection = sectionContainer.find('.priliminarySection');
                 var scheduleSection = sectionContainer.find('.scheduleSection');
                 var appendixSection = sectionContainer.find('.appendixSection');
+                var mainOrderSection = sectionContainer.find('.mainOrderSection');
 
                 chapterSection.hide();
                 partSection.hide();
                 priliminarySection.hide();
                 scheduleSection.hide();
                 appendixSection.hide();
+                mainOrderSection.hide();
 
                 if (selectedValue == '1') {
                     chapterSection.show();
@@ -507,6 +517,8 @@
                     scheduleSection.show();
                 } else if (selectedValue == '5') {
                     appendixSection.show();
+                } else if (selectedValue == '6') {
+                    mainOrderSection.show();
                 }
             });
 
@@ -579,6 +591,13 @@
                                                             class="text-danger">*</span></label>
                                                     <textarea name="appendix_title[]" class="form-control mb-3 appendix_title" placeholder="Enter Appendix Title"
                                                         id="appendix_title"></textarea>
+                                                </div>
+                                                {{-- for mainOrder --}}
+                                                <div id="mainOrderSection" class="mainOrderSection" style="display: none">
+                                                    <label class="float-label"> Order <span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea name="main_order_title[]" class="form-control mb-3 main_order_title" placeholder="Enter Order Title"
+                                                        id="main_order_title"></textarea>
                                                 </div>
 
                                             </div>
@@ -913,6 +932,7 @@
                     CKEDITOR.replace($('.section-set:last').find('.priliminary_title')[0]);
                     CKEDITOR.replace($('.section-set:last').find('.schedule_title')[0]);
                     CKEDITOR.replace($('.section-set:last').find('.appendix_title')[0]);
+                    CKEDITOR.replace($('.section-set:last').find('.main_order_title')[0]);
 
                     // Increment sectionCounter if needed
                     sectionCounter++;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appendix;
 use App\Models\Chapter;
 use App\Models\Footnote;
+use App\Models\MainOrder;
 use App\Models\Rules;
 use App\Models\Parts;
 use App\Models\Priliminary;
@@ -17,7 +18,7 @@ class RulesController extends Controller
     
     public function edit_rule($id)
     {
-        $rule = Rules::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel')->where('rule_id', $id)->first();
+        $rule = Rules::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel','MainOrderModel')->where('rule_id', $id)->first();
         $subrule = Rules::where('rule_id', $id)
             ->with(['subruleModel', 'footnoteModel' => function ($query) {
                 $query->whereNull('sub_rule_id');
@@ -85,6 +86,14 @@ class RulesController extends Controller
                     $appendix->update();
                 }
             }
+            if ($request->has('main_order_id')) {
+                $main_order = MainOrder::find($request->main_order_id);
+    
+                if ($main_order) {
+                    $main_order->main_order_title = $request->main_order_title;
+                    $main_order->update();
+                }
+            }
 
         // Check if section_id exists in the request
         if (!$request->has('rule_id')) {
@@ -127,6 +136,7 @@ class RulesController extends Controller
                             $footnote->rule_no = $rules->rule_no ?? null;
                             $footnote->act_id = $part->act_id ?? null;
                             $footnote->chapter_id = $part->chapter_id ?? null;
+                            $footnote->main_order_id = $part->main_order_id ?? null;
                             $footnote->parts_id = $part->parts_id ?? null;
                             $footnote->priliminary_id = $part->priliminary_id ?? null;
                             $footnote->schedule_id = $part->schedule_id ?? null;
@@ -174,6 +184,7 @@ class RulesController extends Controller
                                     $footnote->rule_id = $id ?? null;
                                     $footnote->act_id = $part->act_id ?? null;
                                     $footnote->chapter_id = $part->chapter_id ?? null;
+                                    $footnote->main_order_id = $part->main_order_id ?? null;
                                     $footnote->parts_id = $part->parts_id ?? null;
                                     $footnote->priliminary_id = $part->priliminary_id ?? null;
                                     $footnote->schedule_id = $part->schedule_id ?? null;
@@ -193,6 +204,7 @@ class RulesController extends Controller
                     $subrule->rule_no = $rules->rule_no ?? null;
                     $subrule->act_id = $part->act_id ?? null;
                     $subrule->chapter_id = $part->chapter_id ?? null;
+                    $subrule->main_order_id = $part->main_order_id ?? null;
                     $subrule->parts_id = $part->parts_id ?? null;
                     $subrule->priliminary_id = $part->priliminary_id ?? null;
                     $subrule->schedule_id = $part->schedule_id ?? null;
@@ -210,6 +222,7 @@ class RulesController extends Controller
                                 $footnote->rule_id = $id ?? null;
                                 $footnote->act_id = $part->act_id ?? null;
                                 $footnote->chapter_id = $part->chapter_id ?? null;
+                                $footnote->main_order_id = $part->main_order_id ?? null;
                                 $footnote->parts_id = $part->parts_id ?? null;
                                 $footnote->priliminary_id = $part->priliminary_id ?? null;
                                 $footnote->schedule_id = $part->schedule_id ?? null;
@@ -236,7 +249,7 @@ class RulesController extends Controller
     {
        
         // $rule_rank = $rule_rank;
-        $rule = Rules::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel')->where('act_id', $id)
+        $rule = Rules::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel','MainOrderModel')->where('act_id', $id)
             ->where('rule_id', $rule_id)->first();
 
         return view('admin.rules.add_new', compact('rule'));
@@ -287,6 +300,14 @@ class RulesController extends Controller
                     $appendix->update();
                 }
             }
+            if ($request->has('main_order_id')) {
+                $main_order = MainOrder::find($request->main_order_id);
+    
+                if ($main_order) {
+                    $main_order->main_order_title = $request->main_order_title;
+                    $main_order->update();
+                }
+            }
      
 
 
@@ -315,6 +336,7 @@ class RulesController extends Controller
                 'act_id'       => $request->act_id,
                 'maintype_id'  => $maintypeId,
                 'chapter_id' => $request->chapter_id ?? null,
+                'main_order_id' => $request->main_order_id ?? null,
                 'priliminary_id' => $request->priliminary_id ?? null,
                 'parts_id' => $request->parts_id ?? null,
                 'schedule_id' => $request->schedule_id ?? null,
@@ -334,6 +356,7 @@ class RulesController extends Controller
                         $footnote->section_id = $rule->rule_id ?? null;
                         $footnote->act_id = $request->act_id ?? null;
                         $footnote->chapter_id = $request->chapter_id ?? null;
+                        $footnote->main_order_id = $request->main_order_id ?? null;
                         $footnote->priliminary_id = $request->priliminary_id ?? null;
                         $footnote->parts_id = $request->parts_id ?? null;
                         $footnote->schedule_id = $request->schedule_id ?? null;
@@ -353,6 +376,7 @@ class RulesController extends Controller
                         'rule_no' => $request->rule_no ?? null,
                         'act_id' => $request->act_id,
                         'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                        'main_order_id' => $maintypeId == "6" ? $request->main_order_id : null,
                         'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                         'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                         'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
@@ -370,6 +394,7 @@ class RulesController extends Controller
                                 $footnote->rule_id = $rule->rule_id ?? null;
                                 $footnote->act_id = $request->act_id ?? null;
                                 $footnote->chapter_id = $request->chapter_id ?? null;
+                                $footnote->main_order_id = $request->main_order_id ?? null;
                                 $footnote->parts_id = $request->parts_id ?? null;
                                 $footnote->priliminary_id = $request->priliminary_id ?? null;
                                 $footnote->schedule_id = $request->schedule_id ?? null;

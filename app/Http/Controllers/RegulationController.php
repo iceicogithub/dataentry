@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MainOrder;
 use Illuminate\Http\Request;
 use App\Models\Act;
 use App\Models\Regulation;
@@ -30,7 +31,7 @@ class RegulationController extends Controller
 
     public function edit_regulation($id)
     {
-        $regulation = Regulation::with('ChapterModel', 'Partmodel', 'Appendixmodel', 'Schedulemodel', 'PriliminaryModel')->where('regulation_id', $id)->first();
+        $regulation = Regulation::with('ChapterModel', 'Partmodel', 'Appendixmodel', 'Schedulemodel', 'PriliminaryModel','MainOrderModel')->where('regulation_id', $id)->first();
         $subregulation = Regulation::where('regulation_id', $id)
             ->with([
                 'subRegulationModel',
@@ -102,6 +103,14 @@ class RegulationController extends Controller
                 $appendix->update();
             }
         }
+        if ($request->has('main_order_id')) {
+            $main_order = MainOrder::find($request->main_order_id);
+
+            if ($main_order) {
+                $main_order->main_order_title = $request->main_order_title;
+                $main_order->update();
+            }
+        }
 
         // Check if section_id exists in the request
         if (!$request->has('regulation_id')) {
@@ -144,6 +153,7 @@ class RegulationController extends Controller
                             $footnote->regulation_no = $regulation->regulation_no ?? null;
                             $footnote->act_id = $regulation->act_id ?? null;
                             $footnote->chapter_id = $regulation->chapter_id ?? null;
+                            $footnote->main_order_id = $regulation->main_order_id ?? null;
                             $footnote->parts_id = $regulation->parts_id ?? null;
                             $footnote->priliminary_id = $regulation->priliminary_id ?? null;
                             $footnote->schedule_id = $regulation->schedule_id ?? null;
@@ -190,6 +200,7 @@ class RegulationController extends Controller
                                     $footnote->regulation_id = $id ?? null;
                                     $footnote->act_id = $regulation->act_id ?? null;
                                     $footnote->chapter_id = $regulation->chapter_id ?? null;
+                                    $footnote->main_order_id = $regulation->main_order_id ?? null;
                                     $footnote->parts_id = $regulation->parts_id ?? null;
                                     $footnote->priliminary_id = $regulation->priliminary_id ?? null;
                                     $footnote->schedule_id = $regulation->schedule_id ?? null;
@@ -208,6 +219,7 @@ class RegulationController extends Controller
                     $subregulation->regulation_no = $regulation->regulation_no ?? null;
                     $subregulation->act_id = $regulation->act_id ?? null;
                     $subregulation->chapter_id = $regulation->chapter_id ?? null;
+                    $subregulation->main_order_id = $regulation->main_order_id ?? null;
                     $subregulation->parts_id = $regulation->parts_id ?? null;
                     $subregulation->priliminary_id = $regulation->priliminary_id ?? null;
                     $subregulation->schedule_id = $regulation->schedule_id ?? null;
@@ -225,6 +237,7 @@ class RegulationController extends Controller
                                 $footnote->regulation_id = $id ?? null;
                                 $footnote->act_id = $regulation->act_id ?? null;
                                 $footnote->chapter_id = $regulation->chapter_id ?? null;
+                                $footnote->main_order_id = $regulation->main_order_id ?? null;
                                 $footnote->parts_id = $regulation->parts_id ?? null;
                                 $footnote->priliminary_id = $regulation->priliminary_id ?? null;
                                 $footnote->schedule_id = $regulation->schedule_id ?? null;
@@ -252,7 +265,7 @@ class RegulationController extends Controller
     {
 
         // $regulation_rank = $regulation_rank;
-        $regulation = Regulation::with('ChapterModel', 'Partmodel', 'PriliminaryModel', 'Appendixmodel', 'Schedulemodel')->where('act_id', $id)
+        $regulation = Regulation::with('ChapterModel', 'Partmodel', 'PriliminaryModel', 'Appendixmodel', 'Schedulemodel','MainOrderModel')->where('act_id', $id)
             ->where('regulation_id', $regulation_id)->first();
 
         return view('admin.regulation.add_new', compact('regulation'));
@@ -303,6 +316,14 @@ class RegulationController extends Controller
                 $appendix->update();
             }
         }
+        if ($request->has('main_order_id')) {
+            $main_order = MainOrder::find($request->main_order_id);
+
+            if ($main_order) {
+                $main_order->main_order_title = $request->main_order_title;
+                $main_order->update();
+            }
+        }
 
 
         $id = $request->act_id;
@@ -328,6 +349,7 @@ class RegulationController extends Controller
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
             'chapter_id' => $request->chapter_id ?? null,
+            'main_order_id' => $request->main_order_id ?? null,
             'priliminary_id' => $request->priliminary_id ?? null,
             'parts_id' => $request->parts_id ?? null,
             'schedule_id' => $request->schedule_id ?? null,
@@ -348,6 +370,7 @@ class RegulationController extends Controller
                     $footnote->regulation_id = $regulation->regulation_id ?? null;
                     $footnote->act_id = $request->act_id ?? null;
                     $footnote->chapter_id = $request->chapter_id ?? null;
+                    $footnote->main_order_id = $request->main_order_id ?? null;
                     $footnote->priliminary_id = $request->priliminary_id ?? null;
                     $footnote->parts_id = $request->parts_id ?? null;
                     $footnote->schedule_id = $request->schedule_id ?? null;
@@ -367,6 +390,7 @@ class RegulationController extends Controller
                     'regulation_no' => $request->regulation_no ?? null,
                     'act_id' => $request->act_id,
                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                    'main_order_id' => $maintypeId == "6" ? $request->main_order_id : null,
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                     'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                     'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
@@ -384,6 +408,7 @@ class RegulationController extends Controller
                             $footnote->regulation_id = $regulation->regulation_id ?? null;
                             $footnote->act_id = $request->act_id ?? null;
                             $footnote->chapter_id = $request->chapter_id ?? null;
+                            $footnote->main_order_id = $request->main_order_id ?? null;
                             $footnote->parts_id = $request->parts_id ?? null;
                             $footnote->priliminary_id = $request->priliminary_id ?? null;
                             $footnote->schedule_id = $request->schedule_id ?? null;

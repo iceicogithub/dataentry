@@ -6,6 +6,7 @@ use App\Models\Act;
 use App\Models\Appendix;
 use App\Models\Chapter;
 use App\Models\Category;
+use App\Models\MainOrder;
 use App\Models\Schedule;
 use App\Models\Section;
 use App\Models\SubSection;
@@ -31,7 +32,7 @@ class SectionController extends Controller
 
     public function add_below_new_section(Request $request, $id, $section_id)
         {
-            $sections = Section::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Schedulemodel','Appendixmodel')
+            $sections = Section::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Schedulemodel','Appendixmodel','MainOrderModel')
                 ->where('act_id', $id)
                 ->where('section_id', $section_id)
                 ->first();
@@ -88,6 +89,14 @@ class SectionController extends Controller
                     $appendix->update();
                 }
             }
+            if ($request->has('main_order_id')) {
+                $main_order = MainOrder::find($request->main_order_id);
+    
+                if ($main_order) {
+                    $main_order->main_order_title = $request->main_order_title;
+                    $main_order->update();
+                }
+            }
 
 
         $id = $request->act_id;
@@ -118,6 +127,7 @@ class SectionController extends Controller
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
             'chapter_id' => $request->chapter_id ?? null,
+            'main_order_id' => $request->main_order_id ?? null,
             'priliminary_id' => $request->priliminary_id ?? null,
             'parts_id' => $request->parts_id ?? null,
             'schedule_id' => $request->schedule_id ?? null,
@@ -138,6 +148,7 @@ class SectionController extends Controller
                     $footnote->section_id = $section->section_id ?? null;
                     $footnote->act_id = $request->act_id ?? null;
                     $footnote->chapter_id = $request->chapter_id ?? null;
+                    $footnote->main_order_id = $request->main_order_id ?? null;
                     $footnote->priliminary_id = $request->priliminary_id ?? null;
                     $footnote->parts_id = $request->parts_id ?? null;
                     $footnote->schedule_id = $request->schedule_id ?? null;
@@ -158,6 +169,7 @@ class SectionController extends Controller
                     'section_no' => $request->section_no ?? null,
                     'act_id' => $request->act_id,
                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                    'main_order_id' => $maintypeId == "6" ? $request->main_order_id : null,
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                     'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                     'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
@@ -175,6 +187,7 @@ class SectionController extends Controller
                             $footnote->section_id = $section->section_id ?? null;
                             $footnote->act_id = $request->act_id ?? null;
                             $footnote->chapter_id = $request->chapter_id ?? null;
+                            $footnote->main_order_id = $request->main_order_id ?? null;
                             $footnote->parts_id = $request->parts_id ?? null;
                             $footnote->priliminary_id = $request->priliminary_id ?? null;
                             $footnote->schedule_id = $request->schedule_id ?? null;
@@ -215,7 +228,7 @@ class SectionController extends Controller
 
     public function edit_section($id)
     {
-        $sections = Section::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel')->where('section_id', $id)->first();
+        $sections = Section::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel','MainOrderModel')->where('section_id', $id)->first();
         $subsec = Section::where('section_id', $id)
             ->with(['subsectionModel', 'footnoteModel' => function ($query) {
                 $query->whereNull('sub_section_id');
@@ -284,6 +297,14 @@ class SectionController extends Controller
                     $appendix->update();
                 }
             }
+            if ($request->has('main_order_id')) {
+                $main_order = MainOrder::find($request->main_order_id);
+    
+                if ($main_order) {
+                    $main_order->main_order_title = $request->main_order_title;
+                    $main_order->update();
+                }
+            }
 
             // Check if section_id exists in the request
             if (!$request->has('section_id')) {
@@ -326,6 +347,7 @@ class SectionController extends Controller
                                 $footnote->section_no = $sections->section_no ?? null;
                                 $footnote->act_id = $sections->act_id ?? null;
                                 $footnote->chapter_id = $part->chapter_id ?? null;
+                                $footnote->main_order_id = $part->main_order_id ?? null;
                                 $footnote->parts_id = $part->parts_id ?? null;
                                 $footnote->priliminary_id = $part->priliminary_id ?? null;
                                 $footnote->schedule_id = $part->schedule_id ?? null;
@@ -373,6 +395,7 @@ class SectionController extends Controller
                                         $footnote->section_id = $id ?? null;
                                         $footnote->act_id = $sections->act_id ?? null;
                                         $footnote->chapter_id = $part->chapter_id ?? null;
+                                        $footnote->main_order_id = $part->main_order_id ?? null;
                                         $footnote->parts_id = $part->parts_id ?? null;
                                         $footnote->priliminary_id = $part->priliminary_id ?? null;
                                         $footnote->schedule_id = $part->schedule_id ?? null;
@@ -391,6 +414,7 @@ class SectionController extends Controller
                         $subsec->section_no = $sections->section_no ?? null;
                         $subsec->act_id = $sections->act_id ?? null;
                         $subsec->chapter_id = $part->chapter_id ?? null;
+                        $subsec->main_order_id = $part->main_order_id ?? null;
                         $subsec->parts_id = $part->parts_id ?? null;
                         $subsec->priliminary_id = $part->priliminary_id ?? null;
                         $subsec->schedule_id = $part->schedule_id ?? null;
@@ -408,6 +432,7 @@ class SectionController extends Controller
                                     $footnote->section_id = $id ?? null;
                                     $footnote->act_id = $sections->act_id ?? null;
                                     $footnote->chapter_id = $part->chapter_id ?? null;
+                                    $footnote->main_order_id = $part->main_order_id ?? null;
                                     $footnote->parts_id = $part->parts_id ?? null;
                                     $footnote->priliminary_id = $part->priliminary_id ?? null;
                                     $footnote->schedule_id = $part->schedule_id ?? null;

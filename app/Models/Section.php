@@ -11,7 +11,7 @@ class Section extends Model
     
     protected $primaryKey = 'section_id';
     protected $table = 'section';
-    protected $fillable = ['section_rank','section_no','act_id','maintype_id', 'chapter_id', 'subtypes_id', 'parts_id','priliminary_id', 'section_title', 'section_content','appendix_id','schedule_id','is_append','serial_no'];
+    protected $fillable = ['section_rank','section_no','act_id','maintype_id', 'chapter_id', 'subtypes_id', 'parts_id','priliminary_id','main_order_id', 'section_title', 'section_content','appendix_id','schedule_id','is_append','serial_no'];
 
     public function MainTypeModel()
     {
@@ -34,6 +34,10 @@ class Section extends Model
     public function ChapterModel()
     {
         return $this->belongsTo(Chapter::class, 'chapter_id', 'chapter_id');
+    }
+    public function MainOrderModel()
+    {
+        return $this->belongsTo(MainOrder::class, 'main_order_id', 'main_order_id');
     }
     public function PriliminaryModel()
     {

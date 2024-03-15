@@ -10,7 +10,7 @@ class Stschedule extends Model
     use HasFactory;
     protected $primaryKey = 'stschedule_id';
     protected $table = 'stschedule';
-    protected $fillable = ['stschedule_rank','stschedule_no','act_id','maintype_id','appendix_id','schedule_id', 'chapter_id', 'subtypes_id', 'parts_id','priliminary_id', 'stschedule_title', 'stschedule_content','is_append', 'serial_no'];
+    protected $fillable = ['stschedule_rank','stschedule_no','act_id','maintype_id','appendix_id','schedule_id', 'chapter_id', 'subtypes_id', 'parts_id','priliminary_id','main_order_id', 'stschedule_title', 'stschedule_content','is_append', 'serial_no'];
 
     public function MainTypeModel()
     {
@@ -35,6 +35,10 @@ class Stschedule extends Model
     public function ChapterModel()
     {
         return $this->belongsTo(Chapter::class, 'chapter_id', 'chapter_id');
+    }
+    public function MainOrderModel()
+    {
+        return $this->belongsTo(MainOrder::class, 'main_order_id', 'main_order_id');
     }
     public function PriliminaryModel()
     {

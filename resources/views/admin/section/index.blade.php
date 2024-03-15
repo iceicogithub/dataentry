@@ -164,12 +164,14 @@
                                     use App\Models\Priliminary;
                                     use App\Models\Schedule;
                                     use App\Models\Appendix;
+                                    use App\Models\MainOrder;
 
                                     $chapter = Chapter::with('ChapterType')->where('act_id', $act_id)->first();
                                     $parts = Parts::with('PartsType')->where('act_id', $act_id)->first();
                                     $priliminary = Priliminary::with('PriliminaryType')->where('act_id', $act_id)->first();
                                     $schedule = Schedule::with('ScheduleType')->where('act_id', $act_id)->first();
                                     $appendix = Appendix::with('AppendixType')->where('act_id', $act_id)->first();
+                                    $main_order = MainOrder::with('MainOrderType')->where('act_id', $act_id)->first();
 
                                 @endphp
 
@@ -199,6 +201,11 @@
                                         @if ($appendix && $appendix->maintype_id)
                                             @if ($appendix->AppendixType->maintype_id == '5')
                                                 Appendix,
+                                            @endif
+                                        @endif
+                                        @if ($main_order && $main_order->maintype_id)
+                                            @if ($main_order->MainOrderType->maintype_id == '6')
+                                                Order,
                                             @endif
                                         @endif
 
@@ -261,6 +268,8 @@
                                         {!! $item->Schedulemodel->schedule_title !!}
                                     @elseif($item->maintype_id == 5)
                                         {!! $item->Appendixmodel->appendix_title !!}
+                                    @elseif($item->maintype_id == 6)
+                                        {!! $item->MainOrderModel->main_order_title !!}
                                     @else
                                         null
                                     @endif

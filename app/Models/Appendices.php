@@ -11,7 +11,7 @@ class Appendices extends Model
 
     protected $primaryKey = 'appendices_id';
     protected $table = 'appendices';
-    protected $fillable = ['appendices_no','appendices_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'appendices_title', 'appendices_content' ,'appendix_id','schedule_id','priliminary_id','is_append', 'serial_no'];
+    protected $fillable = ['appendices_no','appendices_rank' , 'act_id', 'maintype_id', 'chapter_id', 'subtypes_id', 'parts_id', 'appendices_title', 'appendices_content','main_order_id' ,'appendix_id','schedule_id','priliminary_id','is_append', 'serial_no'];
 
     public function MainTypeModel()
     {
@@ -40,6 +40,10 @@ class Appendices extends Model
     public function PriliminaryModel()
     {
         return $this->belongsTo(Priliminary::class, 'priliminary_id', 'priliminary_id');
+    }
+    public function MainOrderModel()
+    {
+        return $this->belongsTo(MainOrder::class, 'main_order_id', 'main_order_id');
     }
     public function footnoteModel()
     {

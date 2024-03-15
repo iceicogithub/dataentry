@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appendix;
 use App\Models\Chapter;
 use App\Models\Footnote;
+use App\Models\MainOrder;
 use App\Models\Parts;
 use App\Models\Priliminary;
 use App\Models\Schedule;
@@ -17,7 +18,7 @@ class stscheduleController extends Controller
     
     public function edit_stschedule($id)
     {
-        $stschedule = Stschedule::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel')->where('stschedule_id', $id)->first();
+        $stschedule = Stschedule::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel','MainOrderModel')->where('stschedule_id', $id)->first();
         $substschedule = Stschedule::where('stschedule_id', $id)
             ->with(['subStscheduleModel', 'footnoteModel' => function ($query) {
                 $query->whereNull('sub_stschedule_id');
@@ -86,6 +87,14 @@ class stscheduleController extends Controller
                     $appendix->update();
                 }
             }
+            if ($request->has('main_order_id')) {
+                $main_order = MainOrder::find($request->main_order_id);
+    
+                if ($main_order) {
+                    $main_order->main_order_title = $request->main_order_title;
+                    $main_order->update();
+                }
+            }
     
 
             // Check if section_id exists in the request
@@ -129,6 +138,7 @@ class stscheduleController extends Controller
                                 $footnote->stschedule_no = $stschedule->stschedule_no ?? null;
                                 $footnote->act_id = $stschedule->act_id ?? null;
                                 $footnote->chapter_id = $stschedule->chapter_id ?? null;
+                                $footnote->main_order_id = $stschedule->main_order_id ?? null;
                                 $footnote->parts_id = $stschedule->parts_id ?? null;
                                 $footnote->priliminary_id = $stschedule->priliminary_id ?? null;
                                 $footnote->schedule_id = $stschedule->schedule_id ?? null;
@@ -175,6 +185,7 @@ class stscheduleController extends Controller
                                         $footnote->stschedule_id = $id ?? null;
                                         $footnote->act_id = $stschedule->act_id ?? null;
                                         $footnote->chapter_id = $stschedule->chapter_id ?? null;
+                                        $footnote->main_order_id = $stschedule->main_order_id ?? null;
                                         $footnote->parts_id = $stschedule->parts_id ?? null;
                                         $footnote->priliminary_id = $stschedule->priliminary_id ?? null;
                                         $footnote->schedule_id = $stschedule->schedule_id ?? null;
@@ -192,6 +203,7 @@ class stscheduleController extends Controller
                         $substschedule->sub_stschedule_no = $item ?? null;
                         $substschedule->stschedule_no = $stschedule->stschedule_no ?? null;
                         $substschedule->chapter_id = $stschedule->chapter_id ?? null;
+                        $substschedule->main_order_id = $stschedule->main_order_id ?? null;
                         $substschedule->parts_id = $stschedule->parts_id ?? null;
                         $substschedule->priliminary_id = $stschedule->priliminary_id ?? null;
                         $substschedule->schedule_id = $stschedule->schedule_id ?? null;
@@ -209,6 +221,7 @@ class stscheduleController extends Controller
                                     $footnote->stschedule_id = $id ?? null;
                                     $footnote->act_id = $stschedule->act_id ?? null;
                                     $footnote->chapter_id = $stschedule->chapter_id ?? null;
+                                    $footnote->main_order_id = $stschedule->main_order_id ?? null;
                                     $footnote->parts_id = $stschedule->parts_id ?? null;
                                     $footnote->priliminary_id = $stschedule->priliminary_id ?? null;
                                     $footnote->schedule_id = $stschedule->schedule_id ?? null;
@@ -237,7 +250,7 @@ class stscheduleController extends Controller
         // dd('hello');
         // die();
         // $stschedule_rank = $stschedule_rank;
-        $stschedule = Stschedule::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel')->where('act_id', $id)
+        $stschedule = Stschedule::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel','MainOrderModel')->where('act_id', $id)
             ->where('stschedule_id', $stschedule_id)->first();
 
         return view('admin.stschedule.add_new', compact('stschedule'));
@@ -288,6 +301,14 @@ class stscheduleController extends Controller
                 $appendix->update();
             }
         }
+        if ($request->has('main_order_id')) {
+            $main_order = MainOrder::find($request->main_order_id);
+
+            if ($main_order) {
+                $main_order->main_order_title = $request->main_order_title;
+                $main_order->update();
+            }
+        }
 
 
         $id = $request->act_id;
@@ -313,6 +334,7 @@ class stscheduleController extends Controller
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
             'chapter_id' => $request->chapter_id ?? null,
+            'main_order_id' => $request->main_order_id ?? null,
             'priliminary_id' => $request->priliminary_id ?? null,
             'parts_id' => $request->parts_id ?? null,
             'schedule_id' => $request->schedule_id ?? null,
@@ -334,6 +356,7 @@ class stscheduleController extends Controller
                     $footnote->stschedule_id = $stschedule->stschedule_id ?? null;
                     $footnote->act_id = $request->act_id ?? null;
                     $footnote->chapter_id = $request->chapter_id ?? null;
+                    $footnote->main_order_id = $request->main_order_id ?? null;
                     $footnote->priliminary_id = $request->priliminary_id ?? null;
                     $footnote->parts_id = $request->parts_id ?? null;
                     $footnote->schedule_id = $request->schedule_id ?? null;
@@ -353,6 +376,7 @@ class stscheduleController extends Controller
                     'stschedule_no' => $request->stschedule_no ?? null,
                     'act_id' => $request->act_id,
                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                    'main_order_id' => $maintypeId == "6" ? $request->main_order_id : null,
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                     'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                     'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
@@ -370,6 +394,7 @@ class stscheduleController extends Controller
                             $footnote->stschedule_id = $stschedule->stschedule_id ?? null;
                             $footnote->act_id = $request->act_id ?? null;
                             $footnote->chapter_id = $request->chapter_id ?? null;
+                            $footnote->main_order_id = $request->main_order_id ?? null;
                             $footnote->parts_id = $request->parts_id ?? null;
                             $footnote->priliminary_id = $request->priliminary_id ?? null;
                             $footnote->schedule_id = $request->schedule_id ?? null;

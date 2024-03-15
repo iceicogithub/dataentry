@@ -6,6 +6,7 @@ use App\Models\Appendix;
 use App\Models\Article;
 use App\Models\Chapter;
 use App\Models\Footnote;
+use App\Models\MainOrder;
 use App\Models\Parts;
 use App\Models\Priliminary;
 use App\Models\Schedule;
@@ -17,7 +18,7 @@ class ArticleController extends Controller
     
     public function edit_article($id)
     {
-        $article = Article::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel')->where('article_id', $id)->first();
+        $article = Article::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel','MainOrderModel')->where('article_id', $id)->first();
         $subarticle = Article::where('article_id', $id)
             ->with(['subArticleModel', 'footnoteModel' => function ($query) {
                 $query->whereNull('sub_article_id');
@@ -86,6 +87,14 @@ class ArticleController extends Controller
                     $appendix->update();
                 }
             }
+            if ($request->has('main_order_id')) {
+                $main_order = MainOrder::find($request->main_order_id);
+    
+                if ($main_order) {
+                    $main_order->main_order_title = $request->main_order_title;
+                    $main_order->update();
+                }
+            }
     
 
             // Check if section_id exists in the request
@@ -129,6 +138,7 @@ class ArticleController extends Controller
                                 $footnote->article_no = $article->article_no ?? null;
                                 $footnote->act_id = $article->act_id ?? null;
                                 $footnote->chapter_id = $article->chapter_id ?? null;
+                                $footnote->main_order_id = $article->main_order_id ?? null;
                                 $footnote->parts_id = $article->parts_id ?? null;
                                 $footnote->priliminary_id = $article->priliminary_id ?? null;
                                 $footnote->schedule_id = $article->schedule_id ?? null;
@@ -175,6 +185,7 @@ class ArticleController extends Controller
                                         $footnote->article_id = $id ?? null;
                                         $footnote->act_id = $article->act_id ?? null;
                                         $footnote->chapter_id = $article->chapter_id ?? null;
+                                        $footnote->main_order_id = $article->main_order_id ?? null;
                                         $footnote->parts_id = $article->parts_id ?? null;
                                         $footnote->priliminary_id = $article->priliminary_id ?? null;
                                         $footnote->schedule_id = $article->schedule_id ?? null;
@@ -193,6 +204,7 @@ class ArticleController extends Controller
                         $subarticle->article_no = $article->article_no ?? null;
                         $subarticle->act_id = $article->act_id ?? null;
                         $subarticle->chapter_id = $article->chapter_id ?? null;
+                        $subarticle->main_order_id = $article->main_order_id ?? null;
                         $subarticle->parts_id = $article->parts_id ?? null;
                         $subarticle->priliminary_id = $article->priliminary_id ?? null;
                         $subarticle->schedule_id = $article->schedule_id ?? null;
@@ -210,6 +222,7 @@ class ArticleController extends Controller
                                     $footnote->article_id = $id ?? null;
                                     $footnote->act_id = $article->act_id ?? null;
                                     $footnote->chapter_id = $article->chapter_id ?? null;
+                                    $footnote->main_order_id = $article->main_order_id ?? null;
                                     $footnote->parts_id = $article->parts_id ?? null;
                                     $footnote->priliminary_id = $article->priliminary_id ?? null;
                                     $footnote->schedule_id = $article->schedule_id ?? null;
@@ -235,7 +248,7 @@ class ArticleController extends Controller
 
     public function add_below_new_article(Request $request, $id, $article_id)
 {
-    $article = Article::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel')
+    $article = Article::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel','MainOrderModel')
         ->where('act_id', $id)
         ->where('article_id', $article_id)
         ->first();
@@ -292,6 +305,14 @@ class ArticleController extends Controller
                 $appendix->update();
             }
         }
+        if ($request->has('main_order_id')) {
+            $main_order = MainOrder::find($request->main_order_id);
+
+            if ($main_order) {
+                $main_order->main_order_title = $request->main_order_title;
+                $main_order->update();
+            }
+        }
 
 
         $id = $request->act_id;
@@ -317,6 +338,7 @@ class ArticleController extends Controller
             'act_id' => $request->act_id,
             'maintype_id' => $maintypeId,
             'chapter_id' => $request->chapter_id ?? null,
+            'main_order_id' => $request->main_order_id ?? null,
             'priliminary_id' => $request->priliminary_id ?? null,
             'parts_id' => $request->parts_id ?? null,
             'schedule_id' => $request->schedule_id ?? null,
@@ -336,6 +358,7 @@ class ArticleController extends Controller
                     $footnote->article_id = $article->article_id ?? null;
                     $footnote->act_id = $request->act_id ?? null;
                     $footnote->chapter_id = $request->chapter_id ?? null;
+                    $footnote->main_order_id = $request->main_order_id ?? null;
                     $footnote->priliminary_id = $request->priliminary_id ?? null;
                     $footnote->parts_id = $request->parts_id ?? null;
                     $footnote->schedule_id = $request->schedule_id ?? null;
@@ -355,6 +378,7 @@ class ArticleController extends Controller
                     'article_no' => $request->article_no ?? null,
                     'act_id' => $request->act_id,
                     'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                    'main_order_id' => $maintypeId == "6" ? $request->main_order_id : null,
                     'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                     'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                     'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,

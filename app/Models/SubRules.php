@@ -10,7 +10,7 @@ class SubRules extends Model
     use HasFactory;
     protected $primaryKey = 'sub_rule_id';
     protected $table = 'sub_rules';
-    protected $fillable = ['sub_rule_no', 'rule_id', 'rule_no', 'act_id','appendix_id','schedule_id', 'chapter_id', 'parts_id','priliminary_id','sub_rule_title', 'sub_rule_content'];
+    protected $fillable = ['sub_rule_no', 'rule_id', 'rule_no', 'act_id','appendix_id','schedule_id', 'chapter_id', 'parts_id','priliminary_id','main_order_id','sub_rule_title', 'sub_rule_content'];
 
     public function footnoteModel()
     {

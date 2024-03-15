@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appendix;
 use App\Models\Chapter;
 use App\Models\Footnote;
+use App\Models\MainOrder;
 use App\Models\Part;
 use App\Models\Parts;
 use App\Models\Priliminary;
@@ -17,7 +18,7 @@ class PartController extends Controller
     
     public function edit_part($id)
     {
-       $part = Part::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel')->where('part_id', $id)->first();
+       $part = Part::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel','MainOrderModel')->where('part_id', $id)->first();
        $subpart = Part::where('part_id', $id)
            ->with(['subPartModel', 'footnoteModel' => function ($query) {
                $query->whereNull('sub_part_id');
@@ -85,6 +86,14 @@ class PartController extends Controller
                    $appendix->update();
                }
            }
+           if ($request->has('main_order_id')) {
+            $main_order = MainOrder::find($request->main_order_id);
+
+            if ($main_order) {
+                $main_order->main_order_title = $request->main_order_title;
+                $main_order->update();
+            }
+        }
    
 
            // Check if section_id exists in the request
@@ -128,6 +137,7 @@ class PartController extends Controller
                                $footnote->part_no = $part->part_no ?? null;
                                $footnote->act_id = $part->act_id ?? null;
                                $footnote->chapter_id = $part->chapter_id ?? null;
+                               $footnote->main_order_id = $part->main_order_id ?? null;
                                $footnote->parts_id = $part->parts_id ?? null;
                                $footnote->priliminary_id = $part->priliminary_id ?? null;
                                $footnote->schedule_id = $part->schedule_id ?? null;
@@ -174,6 +184,7 @@ class PartController extends Controller
                                        $footnote->part_id = $id ?? null;
                                        $footnote->act_id = $part->act_id ?? null;
                                        $footnote->chapter_id = $part->chapter_id ?? null;
+                                       $footnote->main_order_id = $part->main_order_id ?? null;
                                        $footnote->parts_id = $part->parts_id ?? null;
                                        $footnote->priliminary_id = $part->priliminary_id ?? null;
                                        $footnote->schedule_id = $part->schedule_id ?? null;
@@ -192,6 +203,7 @@ class PartController extends Controller
                        $subpart->part_no = $part->part_no ?? null;
                        $subpart->act_id = $part->act_id ?? null;
                        $subpart->chapter_id = $part->chapter_id ?? null;
+                       $subpart->main_order_id = $part->main_order_id ?? null;
                        $subpart->parts_id = $part->parts_id ?? null;
                        $subpart->priliminary_id = $part->priliminary_id ?? null;
                        $subpart->schedule_id = $part->schedule_id ?? null;
@@ -208,9 +220,11 @@ class PartController extends Controller
                                    $footnote->sub_part_id = $subpart->sub_part_id;
                                    $footnote->part_id = $id ?? null;
                                    $footnote->act_id = $part->act_id ?? null;
-                                   $footnote->chapter_id = $part->chapter_id ?? null;
+                                   $footnote->main_order_id = $part->main_order_id ?? null;
                                    $footnote->parts_id = $part->parts_id ?? null;
                                    $footnote->priliminary_id = $part->priliminary_id ?? null;
+                                   $footnote->chapter_id = $part->chapter_id ?? null;
+                                   $footnote->main_order_id = $part->main_order_id ?? null;
                                    $footnote->schedule_id = $part->schedule_id ?? null;
                                    $footnote->appendix_id = $part->appendix_id ?? null;
                                    $footnote->footnote_content = $item ?? null;
@@ -235,7 +249,7 @@ class PartController extends Controller
    public function add_below_new_part(Request $request, $id, $part_id)
    {
        
-       $part = Part::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel')->where('act_id', $id)
+       $part = Part::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel','MainOrderModel')->where('act_id', $id)
            ->where('part_id', $part_id)->first();
 
        return view('admin.part.add_new', compact('part'));
@@ -286,6 +300,14 @@ class PartController extends Controller
                $appendix->update();
            }
        }
+       if ($request->has('main_order_id')) {
+        $main_order = MainOrder::find($request->main_order_id);
+
+        if ($main_order) {
+            $main_order->main_order_title = $request->main_order_title;
+            $main_order->update();
+        }
+    }
 
 
        $id = $request->act_id;
@@ -311,6 +333,7 @@ class PartController extends Controller
            'act_id' => $request->act_id,
            'maintype_id' => $maintypeId,
            'chapter_id' => $request->chapter_id ?? null,
+           'main_order_id' => $request->main_order_id ?? null,
            'priliminary_id' => $request->priliminary_id ?? null,
            'parts_id' => $request->parts_id ?? null,
            'schedule_id' => $request->schedule_id ?? null,
@@ -331,6 +354,7 @@ class PartController extends Controller
                    $footnote->part_id = $part->part_id ?? null;
                    $footnote->act_id = $request->act_id ?? null;
                    $footnote->chapter_id = $request->chapter_id ?? null;
+                   $footnote->main_order_id = $request->main_order_id ?? null;
                    $footnote->priliminary_id = $request->priliminary_id ?? null;
                    $footnote->parts_id = $request->parts_id ?? null;
                    $footnote->schedule_id = $request->schedule_id ?? null;
@@ -350,6 +374,7 @@ class PartController extends Controller
                    'part_no' => $request->part_no ?? null,
                    'act_id' => $request->act_id,
                    'chapter_id' => $maintypeId == "1" ? $request->chapter_id : null,
+                   'main_order_id' => $maintypeId == "6" ? $request->main_order_id : null,
                    'parts_id' => $maintypeId == "2" ? $request->parts_id : null,
                    'priliminary_id' => $maintypeId == "3" ? $request->priliminary_id : null,
                    'schedule_id' => $maintypeId == "4" ? $request->schedule_id : null,
@@ -367,6 +392,7 @@ class PartController extends Controller
                            $footnote->part_id = $part->part_id ?? null;
                            $footnote->act_id = $request->act_id ?? null;
                            $footnote->chapter_id = $request->chapter_id ?? null;
+                           $footnote->main_order_id = $request->main_order_id ?? null;
                            $footnote->parts_id = $request->parts_id ?? null;
                            $footnote->priliminary_id = $request->priliminary_id ?? null;
                            $footnote->schedule_id = $request->schedule_id ?? null;
