@@ -1594,6 +1594,7 @@ class ActController extends Controller
                     $main_order->act_id = $act->act_id ?? null;
                     $main_order->maintype_id = $maintypeId;
                     $main_order->main_order_title = $request->main_order_title[$key] ?? null;
+                    $main_order->serial_no = $lastSerialNo;
                     $main_order->save();
 
                     if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {

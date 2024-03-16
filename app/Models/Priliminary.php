@@ -11,7 +11,7 @@ class Priliminary extends Model
     use HasFactory;
     protected $primaryKey = 'priliminary_id';
     protected $table = 'priliminary';
-    protected $fillable = ['act_id','maintype_id', 'priliminary_title'];
+    protected $fillable = ['act_id','maintype_id', 'priliminary_title','serial_no'];
 
     public function PriliminaryType()
     {

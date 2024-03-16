@@ -75,27 +75,16 @@ class MainActController extends Controller
           
 
             $sections = Section::where('act_id', $id)
-                ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
-                ->orWhereIn('parts_id', $part->pluck('part_id'))
-                ->orWhereIn('priliminary_id', $priliminarys->pluck('priliminary_id'))
-                ->orWhereIn('schedule_id', $schedules->pluck('schedule_id'))
-                ->orWhereIn('appendix_id', $Appendix->pluck('appendix_id'))
                 ->with('subsectionModel', 'footnoteModel', 'Partmodel', 'ChapterModel','PriliminaryModel','Schedulemodel','Appendixmodel')
                 ->get()
                 ->sortBy(function ($section) {
-                    $mixstring = $section->section_no;
+                    // Sorting conditions
+                        return [floatval($section->section_rank)];
+            });
 
-                    // Check if the regular expression matches
-                    if (preg_match('/^(\d+)([a-zA-Z]*)$/', $mixstring, $matches)) {
-                        $numericPart = str_pad($matches[1], 10, '0', STR_PAD_LEFT);
-                        $alphabeticPart = strtolower($matches[2]);
+            dd($sections);
+            die();
 
-                        return $numericPart . $alphabeticPart;
-                    } else {
-                        // Handle the case where the regular expression doesn't match
-                        return $mixstring; // Default behavior is to return the mixstring as is
-                    }
-            }, SORT_NATURAL);
 
             $articles = Article::where('act_id', $id)
                     ->orWhereIn('chapter_id', $chapter->pluck('chapter_id'))
@@ -1630,13 +1619,57 @@ class MainActController extends Controller
                 $AppendixList[] = '<h2 style="text-align:center!important;" id=""><strong>' . $item->appendix_title . '</strong></h2>' . $sectionString;
             }
 
+            $sidechapters = Chapter::where('act_id', $id)
+            ->with(['Sections' => function ($query) {
+                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                    ->orderBy('section_rank');
+            }])
+            ->with(['Articles' => function ($query) {
+                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                    ->orderBy('article_rank');
+            }])
+            ->with(['Rules' => function ($query) {
+                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                    ->orderBy('rule_rank');
+            }])
+            ->with(['Regulation' => function ($query) {
+                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                    ->orderBy('regulation_rank');
+            }])
+            ->with(['Lists' => function ($query) {
+                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                    ->orderBy('list_rank');
+            }])
+            ->with(['Part' => function ($query) {
+                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                    ->orderBy('part_rank');
+            }])
+            ->with(['Appendices' => function ($query) {
+                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                    ->orderBy('appendices_rank');
+            }])
+            ->with(['Order' => function ($query) {
+                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                    ->orderBy('order_rank');
+            }])
+            ->with(['Annexure' => function ($query) {
+                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                    ->orderBy('annexure_rank');
+            }])
+            ->with(['Stschedule' => function ($query) {
+                $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                    ->orderBy('stschedule_rank');
+            }])
+            ->orderBy('serial_no')
+            ->get();
+
 
             
 
 
             $sideBarList = [];
 
-            foreach ($chapter as $chapt) {
+            foreach ($sidechapters as $chapt) {
                 $chapterData = [
                     'ChapterId' => $chapt->chapter_id,
                     'Name' => $chapt->chapter_title,

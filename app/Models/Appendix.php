@@ -10,7 +10,7 @@ class Appendix extends Model
     use HasFactory;
     protected $primaryKey = 'appendix_id';
     protected $table = 'appendix';
-    protected $fillable = ['act_id','maintype_id', 'appendix_title'];
+    protected $fillable = ['act_id','maintype_id', 'appendix_title','serial_no'];
 
     public function AppendixType()
     {

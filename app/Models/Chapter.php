@@ -10,7 +10,7 @@ class Chapter extends Model
     use HasFactory;
     protected $primaryKey = 'chapter_id';
     protected $table = 'chapter';
-    protected $fillable = ['act_id','maintype_id', 'chapter_title'];
+    protected $fillable = ['act_id','maintype_id', 'chapter_title','serial_no'];
 
     public function ChapterType()
     {
