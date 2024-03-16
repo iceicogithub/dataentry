@@ -201,6 +201,7 @@ class ActController extends Controller
                     $chapt->act_id = $act->act_id ?? null;
                     $chapt->maintype_id = $maintypeId;
                     $chapt->chapter_title = $request->chapter_title[$key] ?? null;
+                    $chapt->serial_no = $lastSerialNo;
                     $chapt->save();
 
                     if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
@@ -485,6 +486,7 @@ class ActController extends Controller
                     $parts->maintype_id = $maintypeId;
                     $parts->partstype_id = $request->partstype_id[$key] ?? null;
                     $parts->parts_title = $request->parts_title[$key] ?? null;
+                    $parts->serial_no = $lastSerialNo;
                     $parts->save();
                   
                     if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
@@ -761,6 +763,7 @@ class ActController extends Controller
                     $priliminary->act_id = $act->act_id ?? null;
                     $priliminary->maintype_id = $maintypeId;
                     $priliminary->priliminary_title = $request->priliminary_title[$key] ?? null;
+                    $priliminary->serial_no = $lastSerialNo;
                     $priliminary->save();
 
                     if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
@@ -1036,6 +1039,7 @@ class ActController extends Controller
                     $schedule->act_id = $act->act_id ?? null;
                     $schedule->maintype_id = $maintypeId;
                     $schedule->schedule_title = $request->schedule_title[$key] ?? null;
+                    $schedule->serial_no = $lastSerialNo;
                     $schedule->save();
 
                     if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
@@ -1313,6 +1317,7 @@ class ActController extends Controller
                     $appendix->act_id = $act->act_id ?? null;
                     $appendix->maintype_id = $maintypeId;
                     $appendix->appendix_title = $request->appendix_title[$key] ?? null;
+                    $appendix->serial_no = $lastSerialNo;
                     $appendix->save();
 
                     if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
@@ -1588,6 +1593,7 @@ class ActController extends Controller
                     $main_order->act_id = $act->act_id ?? null;
                     $main_order->maintype_id = $maintypeId;
                     $main_order->main_order_title = $request->main_order_title[$key] ?? null;
+                    $main_order->serial_no = $lastSerialNo;
                     $main_order->save();
 
                     if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
