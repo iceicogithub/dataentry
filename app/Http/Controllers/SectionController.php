@@ -318,7 +318,6 @@ class SectionController extends Controller
                 return redirect()->route('edit-section', ['id' => $id])->withErrors(['error' => 'Section not found']);
             }
             if ($sections) {
-
                 $sections->section_content = $request->section_content ?? null;
                 $sections->section_title = $request->section_title ?? null;
                 $sections->section_no = $request->section_no ?? null;
@@ -364,6 +363,7 @@ class SectionController extends Controller
             // Store Sub-Sections
 
             if ($request->has('sub_section_no')) {
+
                 foreach ($request->sub_section_no as $key => $item) {
                     // Check if sub_section_id is present in the request
                     if ($request->filled('sub_section_id') && is_array($request->sub_section_id) && array_key_exists($key, $request->sub_section_id)) {
