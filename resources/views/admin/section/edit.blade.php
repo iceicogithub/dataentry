@@ -41,6 +41,7 @@
                         </div>
                     @endif
                     <input type="hidden" name="section_id" value="{{ $sections->section_id }}">
+                    <input type="hidden" name="currentPage" value="{{ $currentPage }}">
                     <input type="hidden" name="chapter_id" value="{{ $sections->chapter_id }}">
                     <input type="hidden" name="parts_id" value="{{ $sections->parts_id }}">
                     <input type="hidden" name="schedule_id" value="{{ $sections->schedule_id }}">

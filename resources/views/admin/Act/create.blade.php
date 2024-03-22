@@ -132,7 +132,7 @@
                                                     id="appendix_title"></textarea>
                                             </div>
                                              {{-- for MainOrder --}}
-                                             <div id="mainOrderSection" class="mainOrderSection">
+                                             <div id="mainOrderSection" class="mainOrderSection" style="display: none;">
                                                 <label class="float-label"> Order <span
                                                         class="text-danger">*</span></label>
                                                 <textarea name="main_order_title[]" class="form-control mb-3 main_order_title" placeholder="Enter Order Title"
@@ -594,7 +594,7 @@
                                                 </div>
                                                 {{-- for mainOrder --}}
                                                 <div id="mainOrderSection" class="mainOrderSection" style="display: none">
-                                                    <label class="float-label"> Order <span
+                                                    <label class="float-label"> Ordersa <span
                                                             class="text-danger">*</span></label>
                                                     <textarea name="main_order_title[]" class="form-control mb-3 main_order_title" placeholder="Enter Order Title"
                                                         id="main_order_title"></textarea>

@@ -41,6 +41,7 @@ use App\Models\SubType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Pagination\Paginator;
 
 class ActController extends Controller
 {
@@ -48,7 +49,6 @@ class ActController extends Controller
     public function index()
     {
         $act = Act::with('CategoryModel')->get();
-
         return view('admin.act.index', compact('act'));
     }
 
@@ -70,10 +70,7 @@ class ActController extends Controller
             // Sorting conditions
                 return [floatval($section->section_rank)];
         });
-
-
-
-       
+   
         $act_article = Article::where('act_id', $id)
             ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel','MainOrderModel')
             ->get()
@@ -140,10 +137,16 @@ class ActController extends Controller
             });
 
             $mergedCollection = collect([$act_section, $act_article, $act_rule,$act_regulation,$act_list,$act_part,$act_order,$act_annexure,$act_stschedule])->flatten(1)->sortBy('serial_no');
+
+            // dd($mergedCollection);
+            $perPage = 10; // Specify the number of items per page
+            $page = request()->get('page') ?: 1; // Get the current page from the request, default to 1
+            $paginatedCollection = new Paginator($mergedCollection->forPage($page, $perPage), $perPage, $page);
+
             // dd($act_stschedule);
             // die();
 
-        return view('admin.section.index', compact('mergedCollection','act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule', 'act_article', 'act_regulation', 'act_list', 'act_part', 'act_stschedule', 'act_order', 'act_annexure'));
+        return view('admin.section.index', compact('paginatedCollection','act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule', 'act_article', 'act_regulation', 'act_list', 'act_part', 'act_stschedule', 'act_order', 'act_annexure'));
     }
 
     public function create(Request $request, $id)

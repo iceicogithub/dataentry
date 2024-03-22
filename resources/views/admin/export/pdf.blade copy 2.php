@@ -56,7 +56,7 @@
         <div style="text-align: center; font-size: 20px !important;">ARRANGEMENT OF SECTIONS</div>
         <hr style="width: 10% !important;margin: 10px auto !important;">
 
-        <!--<div style="text-align: start; margin-top: 0.2rem;">PREAMBLE</div>-->
+        <div style="text-align: start; margin-top: 0.2rem;">PREAMBLE</div>
         {{-- for chapter  --}}
         @foreach($combinedItems as $item)
         @if(isset($item['parts_id']))
@@ -64,9 +64,9 @@
                 <div style="text-transform: uppercase !important; font-size: 15px !important; margin-top: 0.4rem;">
                     {!! preg_replace('/[0-9\[\]\.]/', '', $item['parts_title']) !!}</div>
             </div>
-            @if (!empty($item['sections']))
+            @if (!empty($item['Sections']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['sections'] as $sectionItem)
+                    @foreach ($item['Sections'] as $sectionItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -80,9 +80,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['articles']))
+            @if (!empty($item['Articles']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['articles'] as $articleItem)
+                    @foreach ($item['Articles'] as $articleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -96,9 +96,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['rules']))
+            @if (!empty($item['Rules']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['rules'] as $ruleItem)
+                    @foreach ($item['Rules'] as $ruleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -112,9 +112,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['regulation']))
+            @if (!empty($item['Regulation']))
                     <div style="text-align: start; margin-top: 0.4rem;">
-                        @foreach ($item['regulation'] as $regulationItem)
+                        @foreach ($item['Regulation'] as $regulationItem)
                             <table style="font-size: 15px !important;">
                                 <tr>
                                     <td style="vertical-align: baseline;">
@@ -128,9 +128,9 @@
                         @endforeach
                     </div>
             @endif
-            @if (!empty($item['lists']))
+            @if (!empty($item['Lists']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['lists'] as $listItem)
+                    @foreach ($item['Lists'] as $listItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -144,9 +144,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['part']))
+            @if (!empty($item['Part']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['part'] as $partItem)
+                    @foreach ($item['Part'] as $partItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -160,9 +160,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['appendices']))
+            @if (!empty($item['Appendices']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['appendices'] as $appendicesItem)
+                    @foreach ($item['Appendices'] as $appendicesItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -176,9 +176,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['order']))
+            @if (!empty($item['Order']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['order'] as $orderItem)
+                    @foreach ($item['Order'] as $orderItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -192,9 +192,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['annexure']))
+            @if (!empty($item['Annexure']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['annexure'] as $annexureItem)
+                    @foreach ($item['Annexure'] as $annexureItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -208,9 +208,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['stschedule']))
+            @if (!empty($item['Stschedule']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['stschedule'] as $stscheduleItem)
+                    @foreach ($item['Stschedule'] as $stscheduleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -230,25 +230,25 @@
                 <div style="text-transform: uppercase !important; font-size: 15px !important; margin-top: 0.4rem;">
                     {!! preg_replace('/[0-9\[\]\.]/', '', $item['chapter_title']) !!}</div>
             </div>
-            @if (!empty($item['sections']))
-                <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['sections'] as $sectionItem)
-                        <table style="font-size: 15px !important;">
-                            <tr>
-                                <td style="vertical-align: baseline;">
-                                    <p>{{ $sectionItem['section_no'] }}</p>
-                                </td>
-                                <td>
-                                    <p>{!! preg_replace('/[0-9\[\]\.]/', '', $sectionItem['section_title']) !!}</p>
-                                </td>
-                            </tr>
-                        </table>
-                    @endforeach
-                </div>
+            @if (!empty($item['Sections']))
+            <div style="text-align: start; margin-top: 0.4rem;">
+                @foreach ($item['Sections'] as $sectionItem)
+                    <table style="font-size: 15px !important;">
+                        <tr>
+                            <td style="vertical-align: baseline;">
+                                <p>{{ $sectionItem['section_no'] }}</p>
+                            </td>
+                            <td>
+                                <p>{!! preg_replace('/[0-9\[\]\.]/', '', $sectionItem['section_title']) !!}</p>
+                            </td>
+                        </tr>
+                    </table>
+                @endforeach
+            </div>
             @endif
-            @if (!empty($item['articles']))
+            @if (!empty($item['Articles']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['articles'] as $articleItem)
+                    @foreach ($item['Articles'] as $articleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -262,9 +262,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['rules']))
+            @if (!empty($item['Rules']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['rules'] as $ruleItem)
+                    @foreach ($item['Rules'] as $ruleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -278,25 +278,25 @@
                     @endforeach
                 </div>
             @endif
-            @if(!empty($item['regulation']))
-                <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['regulation'] as $regulationItem)
-                        <table style="font-size: 15px !important;">
-                            <tr>
-                                <td style="vertical-align: baseline;">
-                                    <p>{{ $regulationItem['regulation_no'] }}</p>
-                                </td>
-                                <td>
-                                    <p>{!! preg_replace('/[0-9\[\]\.]/', '', $regulationItem['regulation_title']) !!}</p>
-                                </td>
-                            </tr>
-                        </table>
-                    @endforeach
-                </div>
+            @if (!empty($item['Regulation']))
+                    <div style="text-align: start; margin-top: 0.4rem;">
+                        @foreach ($item['Regulation'] as $regulationItem)
+                            <table style="font-size: 15px !important;">
+                                <tr>
+                                    <td style="vertical-align: baseline;">
+                                        <p>{{ $regulationItem['regulation_no'] }}</p>
+                                    </td>
+                                    <td>
+                                        <p>{!! preg_replace('/[0-9\[\]\.]/', '', $regulationItem['regulation_title']) !!}</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        @endforeach
+                    </div>
             @endif
-            @if (!empty($item['lists']))
+            @if (!empty($item['Lists']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['lists'] as $listItem)
+                    @foreach ($item['Lists'] as $listItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -310,9 +310,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['part']))
+            @if (!empty($item['Part']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['part'] as $partItem)
+                    @foreach ($item['Part'] as $partItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -326,9 +326,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['appendices']))
+            @if (!empty($item['Appendices']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['appendices'] as $appendicesItem)
+                    @foreach ($item['Appendices'] as $appendicesItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -342,9 +342,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['order']))
+            @if (!empty($item['Order']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['order'] as $orderItem)
+                    @foreach ($item['Order'] as $orderItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -358,9 +358,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['annexure']))
+            @if (!empty($item['Annexure']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['annexure'] as $annexureItem)
+                    @foreach ($item['Annexure'] as $annexureItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -374,9 +374,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['stschedule']))
+            @if (!empty($item['Stschedule']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['stschedule'] as $stscheduleItem)
+                    @foreach ($item['Stschedule'] as $stscheduleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -396,9 +396,9 @@
                 <div style="text-transform: uppercase !important; font-size: 15px !important; margin-top: 0.4rem;">
                     {!! preg_replace('/[0-9\[\]\.]/', '', $item['priliminary_title']) !!}</div>
             </div>
-            @if (!empty($item['sections']))
+            @if (!empty($item['Sections']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['sections'] as $sectionItem)
+                    @foreach ($item['Sections'] as $sectionItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -412,9 +412,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['articles']))
+            @if (!empty($item['Articles']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['articles'] as $articleItem)
+                    @foreach ($item['Articles'] as $articleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -428,9 +428,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['rules']))
+            @if (!empty($item['Rules']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['rules'] as $ruleItem)
+                    @foreach ($item['Rules'] as $ruleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -444,9 +444,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['regulation']))
+            @if (!empty($item['Regulation']))
                     <div style="text-align: start; margin-top: 0.4rem;">
-                        @foreach ($item['regulation'] as $regulationItem)
+                        @foreach ($item['Regulation'] as $regulationItem)
                             <table style="font-size: 15px !important;">
                                 <tr>
                                     <td style="vertical-align: baseline;">
@@ -460,25 +460,25 @@
                         @endforeach
                     </div>
             @endif
-            @if (!empty($item['lists']))
-                    <div style="text-align: start; margin-top: 0.4rem;">
-                        @foreach ($item['lists'] as $listItem)
-                            <table style="font-size: 15px !important;">
-                                <tr>
-                                    <td style="vertical-align: baseline;">
-                                        <p>{{ $listItem['list_no'] }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</p>
-                                    </td>
-                                </tr>
-                            </table>
-                        @endforeach
-                    </div>
-            @endif
-            @if (!empty($item['part']))
+            @if (!empty($item['Lists']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['part'] as $partItem)
+                    @foreach ($item['Lists'] as $listItem)
+                        <table style="font-size: 15px !important;">
+                            <tr>
+                                <td style="vertical-align: baseline;">
+                                    <p>{{ $listItem['list_no'] }}</p>
+                                </td>
+                                <td>
+                                    <p>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    @endforeach
+                </div>
+            @endif
+            @if (!empty($item['Part']))
+                <div style="text-align: start; margin-top: 0.4rem;">
+                    @foreach ($item['Part'] as $partItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -492,9 +492,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['appendices']))
+            @if (!empty($item['Appendices']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['appendices'] as $appendicesItem)
+                    @foreach ($item['Appendices'] as $appendicesItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -508,9 +508,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['order']))
+            @if (!empty($item['Order']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['order'] as $orderItem)
+                    @foreach ($item['Order'] as $orderItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -524,9 +524,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['annexure']))
+            @if (!empty($item['Annexure']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['annexure'] as $annexureItem)
+                    @foreach ($item['Annexure'] as $annexureItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -540,9 +540,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['stschedule']))
+            @if (!empty($item['Stschedule']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['stschedule'] as $stscheduleItem)
+                    @foreach ($item['Stschedule'] as $stscheduleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -562,9 +562,9 @@
                 <div style="text-transform: uppercase !important; font-size: 15px !important; margin-top: 0.4rem;">
                     {!! preg_replace('/[0-9\[\]\.]/', '', $item['schedule_title']) !!}</div>
             </div>
-            @if (!empty($item['sections']))
+            @if (!empty($item['Sections']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['sections'] as $sectionItem)
+                    @foreach ($item['Sections'] as $sectionItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -578,9 +578,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['articles']))
+            @if (!empty($item['Articles']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['articles'] as $articleItem)
+                    @foreach ($item['Articles'] as $articleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -594,9 +594,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['rules']))
+            @if (!empty($item['Rules']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['rules'] as $ruleItem)
+                    @foreach ($item['Rules'] as $ruleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -610,9 +610,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['regulation']))
+            @if (!empty($item['Regulation']))
                     <div style="text-align: start; margin-top: 0.4rem;">
-                        @foreach ($item['regulation'] as $regulationItem)
+                        @foreach ($item['Regulation'] as $regulationItem)
                             <table style="font-size: 15px !important;">
                                 <tr>
                                     <td style="vertical-align: baseline;">
@@ -626,25 +626,25 @@
                         @endforeach
                     </div>
             @endif
-            @if (!empty($item['lists']))
-                    <div style="text-align: start; margin-top: 0.4rem;">
-                        @foreach ($item['lists'] as $listItem)
-                            <table style="font-size: 15px !important;">
-                                <tr>
-                                    <td style="vertical-align: baseline;">
-                                        <p>{{ $listItem['list_no'] }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</p>
-                                    </td>
-                                </tr>
-                            </table>
-                        @endforeach
-                    </div>
-            @endif
-            @if (!empty($item['part']))
+            @if (!empty($item['Lists']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['part'] as $partItem)
+                    @foreach ($item['Lists'] as $listItem)
+                        <table style="font-size: 15px !important;">
+                            <tr>
+                                <td style="vertical-align: baseline;">
+                                    <p>{{ $listItem['list_no'] }}</p>
+                                </td>
+                                <td>
+                                    <p>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    @endforeach
+                </div>
+            @endif
+            @if (!empty($item['Part']))
+                <div style="text-align: start; margin-top: 0.4rem;">
+                    @foreach ($item['Part'] as $partItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -658,9 +658,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['appendices']))
+            @if (!empty($item['Appendices']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['appendices'] as $appendicesItem)
+                    @foreach ($item['Appendices'] as $appendicesItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -674,9 +674,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['order']))
+            @if (!empty($item['Order']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['order'] as $orderItem)
+                    @foreach ($item['Order'] as $orderItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -690,9 +690,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['annexure']))
+            @if (!empty($item['Annexure']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['annexure'] as $annexureItem)
+                    @foreach ($item['Annexure'] as $annexureItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -706,9 +706,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['stschedule']))
+            @if (!empty($item['Stschedule']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['stschedule'] as $stscheduleItem)
+                    @foreach ($item['Stschedule'] as $stscheduleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -728,9 +728,9 @@
                 <div style="text-transform: uppercase !important; font-size: 15px !important; margin-top: 0.4rem;">
                     {!! preg_replace('/[0-9\[\]\.]/', '', $item['appendix_title']) !!}</div>
             </div>
-            @if (!empty($item['sections']))
+            @if (!empty($item['Sections']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['sections'] as $sectionItem)
+                    @foreach ($item['Sections'] as $sectionItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -744,9 +744,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['articles']))
+            @if (!empty($item['Articles']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['articles'] as $articleItem)
+                    @foreach ($item['Articles'] as $articleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -760,9 +760,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['rules']))
+            @if (!empty($item['Rules']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['rules'] as $ruleItem)
+                    @foreach ($item['Rules'] as $ruleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -776,9 +776,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['regulation']))
+            @if (!empty($item['Regulation']))
                     <div style="text-align: start; margin-top: 0.4rem;">
-                        @foreach ($item['regulation'] as $regulationItem)
+                        @foreach ($item['Regulation'] as $regulationItem)
                             <table style="font-size: 15px !important;">
                                 <tr>
                                     <td style="vertical-align: baseline;">
@@ -792,25 +792,25 @@
                         @endforeach
                     </div>
             @endif
-            @if (!empty($item['lists']))
-                    <div style="text-align: start; margin-top: 0.4rem;">
-                        @foreach ($item['lists'] as $listItem)
-                            <table style="font-size: 15px !important;">
-                                <tr>
-                                    <td style="vertical-align: baseline;">
-                                        <p>{{ $listItem['list_no'] }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</p>
-                                    </td>
-                                </tr>
-                            </table>
-                        @endforeach
-                    </div>
-            @endif
-            @if (!empty($item['part']))
+            @if (!empty($item['Lists']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['part'] as $partItem)
+                    @foreach ($item['Lists'] as $listItem)
+                        <table style="font-size: 15px !important;">
+                            <tr>
+                                <td style="vertical-align: baseline;">
+                                    <p>{{ $listItem['list_no'] }}</p>
+                                </td>
+                                <td>
+                                    <p>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    @endforeach
+                </div>
+            @endif
+            @if (!empty($item['Part']))
+                <div style="text-align: start; margin-top: 0.4rem;">
+                    @foreach ($item['Part'] as $partItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -824,9 +824,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['appendices']))
+            @if (!empty($item['Appendices']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['appendices'] as $appendicesItem)
+                    @foreach ($item['Appendices'] as $appendicesItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -840,9 +840,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['order']))
+            @if (!empty($item['Order']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['order'] as $orderItem)
+                    @foreach ($item['Order'] as $orderItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -856,9 +856,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['annexure']))
+            @if (!empty($item['Annexure']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['annexure'] as $annexureItem)
+                    @foreach ($item['Annexure'] as $annexureItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -872,9 +872,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['stschedule']))
+            @if (!empty($item['Stschedule']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['stschedule'] as $stscheduleItem)
+                    @foreach ($item['Stschedule'] as $stscheduleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -894,25 +894,25 @@
                 <div style="text-transform: uppercase !important; font-size: 15px !important; margin-top: 0.4rem;">
                     {!! preg_replace('/[0-9\[\]\.]/', '', $item['main_order_title']) !!}</div>
             </div>
-            @if (!empty($item['sections']))
-                <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['sections'] as $sectionItem)
-                        <table style="font-size: 15px !important;">
-                            <tr>
-                                <td style="vertical-align: baseline;">
-                                    <p>{{ $sectionItem['section_no'] }}</p>
-                                </td>
-                                <td>
-                                    <p>{!! preg_replace('/[0-9\[\]\.]/', '', $sectionItem['section_title']) !!}</p>
-                                </td>
-                            </tr>
-                        </table>
-                    @endforeach
-                </div>
+            @if (!empty($item['Sections']))
+            <div style="text-align: start; margin-top: 0.4rem;">
+                @foreach ($item['Sections'] as $sectionItem)
+                    <table style="font-size: 15px !important;">
+                        <tr>
+                            <td style="vertical-align: baseline;">
+                                <p>{{ $sectionItem['section_no'] }}</p>
+                            </td>
+                            <td>
+                                <p>{!! preg_replace('/[0-9\[\]\.]/', '', $sectionItem['section_title']) !!}</p>
+                            </td>
+                        </tr>
+                    </table>
+                @endforeach
+            </div>
             @endif
-            @if (!empty($item['articles']))
+            @if (!empty($item['Articles']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['articles'] as $articleItem)
+                    @foreach ($item['Articles'] as $articleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -926,9 +926,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['rules']))
+            @if (!empty($item['Rules']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['rules'] as $ruleItem)
+                    @foreach ($item['Rules'] as $ruleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -942,9 +942,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['regulation']))
+            @if (!empty($item['Regulation']))
                     <div style="text-align: start; margin-top: 0.4rem;">
-                        @foreach ($item['regulation'] as $regulationItem)
+                        @foreach ($item['Regulation'] as $regulationItem)
                             <table style="font-size: 15px !important;">
                                 <tr>
                                     <td style="vertical-align: baseline;">
@@ -958,25 +958,25 @@
                         @endforeach
                     </div>
             @endif
-            @if (!empty($item['lists']))
-                    <div style="text-align: start; margin-top: 0.4rem;">
-                        @foreach ($item['lists'] as $listItem)
-                            <table style="font-size: 15px !important;">
-                                <tr>
-                                    <td style="vertical-align: baseline;">
-                                        <p>{{ $listItem['list_no'] }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</p>
-                                    </td>
-                                </tr>
-                            </table>
-                        @endforeach
-                    </div>
-            @endif
-            @if (!empty($item['part']))
+            @if (!empty($item['Lists']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['part'] as $partItem)
+                    @foreach ($item['Lists'] as $listItem)
+                        <table style="font-size: 15px !important;">
+                            <tr>
+                                <td style="vertical-align: baseline;">
+                                    <p>{{ $listItem['list_no'] }}</p>
+                                </td>
+                                <td>
+                                    <p>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    @endforeach
+                </div>
+            @endif
+            @if (!empty($item['Part']))
+                <div style="text-align: start; margin-top: 0.4rem;">
+                    @foreach ($item['Part'] as $partItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -990,9 +990,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['appendices']))
+            @if (!empty($item['Appendices']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['appendices'] as $appendicesItem)
+                    @foreach ($item['Appendices'] as $appendicesItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -1006,9 +1006,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['order']))
+            @if (!empty($item['Order']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['order'] as $orderItem)
+                    @foreach ($item['Order'] as $orderItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -1022,9 +1022,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['annexure']))
+            @if (!empty($item['Annexure']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['annexure'] as $annexureItem)
+                    @foreach ($item['Annexure'] as $annexureItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -1038,9 +1038,9 @@
                     @endforeach
                 </div>
             @endif
-            @if (!empty($item['stschedule']))
+            @if (!empty($item['Stschedule']))
                 <div style="text-align: start; margin-top: 0.4rem;">
-                    @foreach ($item['stschedule'] as $stscheduleItem)
+                    @foreach ($item['Stschedule'] as $stscheduleItem)
                         <table style="font-size: 15px !important;">
                             <tr>
                                 <td style="vertical-align: baseline;">
@@ -1090,9 +1090,9 @@
                         {!! $item['parts_title'] !!}
                     </div>
                 </div>
-                @if (!empty($item['sections']))   
+                @if (!empty($item['Sections']))   
                     <div style="text-align: start">
-                        @foreach ($item['sections'] as $section)
+                        @foreach ($item['Sections'] as $section)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1131,10 +1131,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['articles']))   
+                @if (!empty($item['Articles']))   
                     <div style="text-align: start">
-                        @foreach ($item['articles'] as $article)
+                        @foreach ($item['Articles'] as $article)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1173,10 +1172,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['rules']))   
+                @if (!empty($item['Rules']))   
                     <div style="text-align: start">
-                        @foreach ($item['rules'] as $rule)
+                        @foreach ($item['Rules'] as $rule)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1215,10 +1213,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['regulation']))   
+                @if (!empty($item['Regulation']))   
                     <div style="text-align: start">
-                        @foreach ($item['regulation'] as $regulation)
+                        @foreach ($item['Regulation'] as $regulation)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1257,10 +1254,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['lists']))   
+                @if (!empty($item['Lists']))   
                     <div style="text-align: start">
-                        @foreach ($item['lists'] as $list)
+                        @foreach ($item['Lists'] as $list)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1299,10 +1295,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['part']))   
+                @if (!empty($item['Part']))   
                     <div style="text-align: start">
-                        @foreach ($item['part'] as $part)
+                        @foreach ($item['Part'] as $part)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1341,10 +1336,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['appendices']))   
+                @if (!empty($item['Appendices']))   
                     <div style="text-align: start">
-                        @foreach ($item['appendices'] as $appendices)
+                        @foreach ($item['Appendices'] as $appendices)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1383,10 +1377,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['order']))   
+                @if (!empty($item['Order']))   
                     <div style="text-align: start">
-                        @foreach ($item['order'] as $order)
+                        @foreach ($item['Order'] as $order)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1425,10 +1418,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['annexure']))   
+                @if (!empty($item['Annexure']))   
                     <div style="text-align: start">
-                        @foreach ($item['annexure'] as $annexure)
+                        @foreach ($item['Annexure'] as $annexure)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1467,10 +1459,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['stschedule']))   
+                @if (!empty($item['Stschedule']))   
                     <div style="text-align: start">
-                        @foreach ($item['stschedule'] as $stschedule)
+                        @foreach ($item['Stschedule'] as $stschedule)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1509,17 +1500,16 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-           @endif
+            @endif
             @if (isset($item['chapter_id']))
                 <div style="text-align: center">
                     <div style="text-transform: uppercase !important; font-size: 15px !important; margin-top: 0.4rem;">
                         {!! $item['chapter_title'] !!}
                     </div>
                 </div>
-                @if (!empty($item['sections']))   
+                @if (!empty($item['Sections']))   
                     <div style="text-align: start">
-                        @foreach ($item['sections'] as $section)
+                        @foreach ($item['Sections'] as $section)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1558,10 +1548,9 @@
                         @endforeach
                     </div>
                 @endif
-               <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['articles']))   
+                @if (!empty($item['Articles']))   
                     <div style="text-align: start">
-                        @foreach ($item['articles'] as $article)
+                        @foreach ($item['Articles'] as $article)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1600,10 +1589,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['rules']))   
+                @if (!empty($item['Rules']))   
                     <div style="text-align: start">
-                        @foreach ($item['rules'] as $rule)
+                        @foreach ($item['Rules'] as $rule)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1642,10 +1630,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['regulation']))   
+                @if (!empty($item['Regulation']))   
                     <div style="text-align: start">
-                        @foreach ($item['regulation'] as $regulation)
+                        @foreach ($item['Regulation'] as $regulation)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1684,10 +1671,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['lists']))   
+                @if (!empty($item['Lists']))   
                     <div style="text-align: start">
-                        @foreach ($item['lists'] as $list)
+                        @foreach ($item['Lists'] as $list)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1726,10 +1712,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['part']))   
+                @if (!empty($item['Part']))   
                     <div style="text-align: start">
-                        @foreach ($item['part'] as $part)
+                        @foreach ($item['Part'] as $part)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1768,10 +1753,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['appendices']))   
+                @if (!empty($item['Appendices']))   
                     <div style="text-align: start">
-                        @foreach ($item['appendices'] as $appendices)
+                        @foreach ($item['Appendices'] as $appendices)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1810,10 +1794,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['order']))   
+                @if (!empty($item['Order']))   
                     <div style="text-align: start">
-                        @foreach ($item['order'] as $order)
+                        @foreach ($item['Order'] as $order)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1852,10 +1835,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['annexure']))   
+                @if (!empty($item['Annexure']))   
                     <div style="text-align: start">
-                        @foreach ($item['annexure'] as $annexure)
+                        @foreach ($item['Annexure'] as $annexure)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1894,10 +1876,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['stschedule']))   
+                @if (!empty($item['Stschedule']))   
                     <div style="text-align: start">
-                        @foreach ($item['stschedule'] as $stschedule)
+                        @foreach ($item['Stschedule'] as $stschedule)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1936,7 +1917,6 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
             @endif
             @if (isset($item['priliminary_id']))
                 <div style="text-align: center">
@@ -1944,9 +1924,9 @@
                         {!! $item['priliminary_title'] !!}
                     </div>
                 </div>
-                @if (!empty($item['sections']))   
+                @if (!empty($item['Sections']))   
                     <div style="text-align: start">
-                        @foreach ($item['sections'] as $section)
+                        @foreach ($item['Sections'] as $section)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -1985,10 +1965,9 @@
                         @endforeach
                     </div>
                 @endif
-               <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['articles']))   
+                @if (!empty($item['Articles']))   
                     <div style="text-align: start">
-                        @foreach ($item['articles'] as $article)
+                        @foreach ($item['Articles'] as $article)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2027,10 +2006,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['rules']))   
+                @if (!empty($item['Rules']))   
                     <div style="text-align: start">
-                        @foreach ($item['rules'] as $rule)
+                        @foreach ($item['Rules'] as $rule)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2069,10 +2047,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['regulation']))   
+                @if (!empty($item['Regulation']))   
                     <div style="text-align: start">
-                        @foreach ($item['regulation'] as $regulation)
+                        @foreach ($item['Regulation'] as $regulation)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2111,10 +2088,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['lists']))   
+                @if (!empty($item['Lists']))   
                     <div style="text-align: start">
-                        @foreach ($item['lists'] as $list)
+                        @foreach ($item['Lists'] as $list)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2153,10 +2129,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['part']))   
+                @if (!empty($item['Part']))   
                     <div style="text-align: start">
-                        @foreach ($item['part'] as $part)
+                        @foreach ($item['Part'] as $part)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2195,10 +2170,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['appendices']))   
+                @if (!empty($item['Appendices']))   
                     <div style="text-align: start">
-                        @foreach ($item['appendices'] as $appendices)
+                        @foreach ($item['Appendices'] as $appendices)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2237,10 +2211,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['order']))   
+                @if (!empty($item['Order']))   
                     <div style="text-align: start">
-                        @foreach ($item['order'] as $order)
+                        @foreach ($item['Order'] as $order)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2279,10 +2252,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['annexure']))   
+                @if (!empty($item['Annexure']))   
                     <div style="text-align: start">
-                        @foreach ($item['annexure'] as $annexure)
+                        @foreach ($item['Annexure'] as $annexure)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2321,10 +2293,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['stschedule']))   
+                @if (!empty($item['Stschedule']))   
                     <div style="text-align: start">
-                        @foreach ($item['stschedule'] as $stschedule)
+                        @foreach ($item['Stschedule'] as $stschedule)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2363,7 +2334,6 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
             @endif
             @if (isset($item['schedule_id']))
                 <div style="text-align: center">
@@ -2371,51 +2341,50 @@
                         {!! $item['schedule_title'] !!}
                     </div>
                 </div>
-                @if (!empty($item['sections']))   
-                <div style="text-align: start">
-                    @foreach ($item['sections'] as $section)
-                        <strong>
-                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
-                                <tr>
-                                    <td style="vertical-align: baseline;">
-                                        <p>{{ $section['section_no'] }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{!! $section['section_title'] !!}</p>
-                                    </td>
-                                </tr>
-                            </table>
-                        </strong>
-                        <span>{!! $section['section_content'] !!}</span>
-                        
-                        @if (!empty($section['subsection_model']))
-                            @foreach ($section['subsection_model'] as $subSection)
-                                <table style="margin-left: 2%; text-align: justify; margin-top: 0.4rem; page-break-inside: avoid;">
+                @if (!empty($item['Sections']))   
+                    <div style="text-align: start">
+                        @foreach ($item['Sections'] as $section)
+                            <strong>
+                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
-                                            <p>{{ $subSection['sub_section_no'] }}</p>
+                                            <p>{{ $section['section_no'] }}</p>
                                         </td>
                                         <td>
-                                            <p>{!! $subSection['sub_section_content'] !!}</p>
+                                            <p>{!! $section['section_title'] !!}</p>
                                         </td>
                                     </tr>
                                 </table>
-                            @endforeach
-                        @endif
-    
-                        @if (!empty($section['footnote_model']))
-                            <hr style="width: 10% !important;margin: 10px auto !important;">
-                            @foreach ($section['footnote_model'] as $footnoteModel)
-                                <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
-                            @endforeach
-                        @endif
-                    @endforeach
-                </div>
+                            </strong>
+                            <span>{!! $section['section_content'] !!}</span>
+                            
+                            @if (!empty($section['subsection_model']))
+                                @foreach ($section['subsection_model'] as $subSection)
+                                    <table style="margin-left: 2%; text-align: justify; margin-top: 0.4rem; page-break-inside: avoid;">
+                                        <tr>
+                                            <td style="vertical-align: baseline;">
+                                                <p>{{ $subSection['sub_section_no'] }}</p>
+                                            </td>
+                                            <td>
+                                                <p>{!! $subSection['sub_section_content'] !!}</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                @endforeach
+                            @endif
+        
+                            @if (!empty($section['footnote_model']))
+                                <hr style="width: 10% !important;margin: 10px auto !important;">
+                                @foreach ($section['footnote_model'] as $footnoteModel)
+                                    <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
+                                @endforeach
+                            @endif
+                        @endforeach
+                    </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['articles']))   
+                @if (!empty($item['Articles']))   
                     <div style="text-align: start">
-                        @foreach ($item['articles'] as $article)
+                        @foreach ($item['Articles'] as $article)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2454,10 +2423,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['rules']))   
+                @if (!empty($item['Rules']))   
                     <div style="text-align: start">
-                        @foreach ($item['rules'] as $rule)
+                        @foreach ($item['Rules'] as $rule)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2496,10 +2464,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['regulation']))   
+                @if (!empty($item['Regulation']))   
                     <div style="text-align: start">
-                        @foreach ($item['regulation'] as $regulation)
+                        @foreach ($item['Regulation'] as $regulation)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2538,10 +2505,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['lists']))   
+                @if (!empty($item['Lists']))   
                     <div style="text-align: start">
-                        @foreach ($item['lists'] as $list)
+                        @foreach ($item['Lists'] as $list)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2580,10 +2546,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['part']))   
+                @if (!empty($item['Part']))   
                     <div style="text-align: start">
-                        @foreach ($item['part'] as $part)
+                        @foreach ($item['Part'] as $part)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2622,10 +2587,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['appendices']))   
+                @if (!empty($item['Appendices']))   
                     <div style="text-align: start">
-                        @foreach ($item['appendices'] as $appendices)
+                        @foreach ($item['Appendices'] as $appendices)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2664,10 +2628,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['order']))   
+                @if (!empty($item['Order']))   
                     <div style="text-align: start">
-                        @foreach ($item['order'] as $order)
+                        @foreach ($item['Order'] as $order)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2706,10 +2669,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['annexure']))   
+                @if (!empty($item['Annexure']))   
                     <div style="text-align: start">
-                        @foreach ($item['annexure'] as $annexure)
+                        @foreach ($item['Annexure'] as $annexure)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2748,10 +2710,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['stschedule']))   
+                @if (!empty($item['Stschedule']))   
                     <div style="text-align: start">
-                        @foreach ($item['stschedule'] as $stschedule)
+                        @foreach ($item['Stschedule'] as $stschedule)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2790,7 +2751,6 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
             @endif
             @if (isset($item['appendix_id']))
                 <div style="text-align: center">
@@ -2798,9 +2758,9 @@
                         {!! $item['appendix_title'] !!}
                     </div>
                 </div>
-                @if (!empty($item['sections']))   
+                @if (!empty($item['Sections']))   
                     <div style="text-align: start">
-                        @foreach ($item['sections'] as $section)
+                        @foreach ($item['Sections'] as $section)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2839,10 +2799,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['articles']))   
+                @if (!empty($item['Articles']))   
                     <div style="text-align: start">
-                        @foreach ($item['articles'] as $article)
+                        @foreach ($item['Articles'] as $article)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2881,10 +2840,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['rules']))   
+                @if (!empty($item['Rules']))   
                     <div style="text-align: start">
-                        @foreach ($item['rules'] as $rule)
+                        @foreach ($item['Rules'] as $rule)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2923,10 +2881,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['regulation']))   
+                @if (!empty($item['Regulation']))   
                     <div style="text-align: start">
-                        @foreach ($item['regulation'] as $regulation)
+                        @foreach ($item['Regulation'] as $regulation)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -2965,10 +2922,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['lists']))   
+                @if (!empty($item['Lists']))   
                     <div style="text-align: start">
-                        @foreach ($item['lists'] as $list)
+                        @foreach ($item['Lists'] as $list)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3007,10 +2963,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['part']))   
+                @if (!empty($item['Part']))   
                     <div style="text-align: start">
-                        @foreach ($item['part'] as $part)
+                        @foreach ($item['Part'] as $part)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3049,10 +3004,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['appendices']))   
+                @if (!empty($item['Appendices']))   
                     <div style="text-align: start">
-                        @foreach ($item['appendices'] as $appendices)
+                        @foreach ($item['Appendices'] as $appendices)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3091,10 +3045,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['order']))   
+                @if (!empty($item['Order']))   
                     <div style="text-align: start">
-                        @foreach ($item['order'] as $order)
+                        @foreach ($item['Order'] as $order)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3133,10 +3086,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['annexure']))   
+                @if (!empty($item['Annexure']))   
                     <div style="text-align: start">
-                        @foreach ($item['annexure'] as $annexure)
+                        @foreach ($item['Annexure'] as $annexure)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3175,10 +3127,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['stschedule']))   
+                @if (!empty($item['Stschedule']))   
                     <div style="text-align: start">
-                        @foreach ($item['stschedule'] as $stschedule)
+                        @foreach ($item['Stschedule'] as $stschedule)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3217,17 +3168,16 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-           @endif
-           @if (isset($item['main_order_id']))
+            @endif
+            @if (isset($item['main_order_id']))
                 <div style="text-align: center">
                     <div style="text-transform: uppercase !important; font-size: 15px !important; margin-top: 0.4rem;">
                         {!! $item['main_order_title'] !!}
                     </div>
                 </div>
-                @if (!empty($item['sections']))   
+                @if (!empty($item['Sections']))   
                     <div style="text-align: start">
-                        @foreach ($item['sections'] as $section)
+                        @foreach ($item['Sections'] as $section)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3266,10 +3216,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['articles']))   
+                @if (!empty($item['Articles']))   
                     <div style="text-align: start">
-                        @foreach ($item['articles'] as $article)
+                        @foreach ($item['Articles'] as $article)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3308,10 +3257,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['rules']))   
+                @if (!empty($item['Rules']))   
                     <div style="text-align: start">
-                        @foreach ($item['rules'] as $rule)
+                        @foreach ($item['Rules'] as $rule)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3350,10 +3298,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['regulation']))   
+                @if (!empty($item['Regulation']))   
                     <div style="text-align: start">
-                        @foreach ($item['regulation'] as $regulation)
+                        @foreach ($item['Regulation'] as $regulation)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3392,10 +3339,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['lists']))   
+                @if (!empty($item['Lists']))   
                     <div style="text-align: start">
-                        @foreach ($item['lists'] as $list)
+                        @foreach ($item['Lists'] as $list)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3434,10 +3380,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['part']))   
+                @if (!empty($item['Part']))   
                     <div style="text-align: start">
-                        @foreach ($item['part'] as $part)
+                        @foreach ($item['Part'] as $part)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3476,10 +3421,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['appendices']))   
+                @if (!empty($item['Appendices']))   
                     <div style="text-align: start">
-                        @foreach ($item['appendices'] as $appendices)
+                        @foreach ($item['Appendices'] as $appendices)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3518,10 +3462,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['order']))   
+                @if (!empty($item['Order']))   
                     <div style="text-align: start">
-                        @foreach ($item['order'] as $order)
+                        @foreach ($item['Order'] as $order)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3560,10 +3503,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['annexure']))   
+                @if (!empty($item['Annexure']))   
                     <div style="text-align: start">
-                        @foreach ($item['annexure'] as $annexure)
+                        @foreach ($item['Annexure'] as $annexure)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3602,10 +3544,9 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-                @if (!empty($item['stschedule']))   
+                @if (!empty($item['Stschedule']))   
                     <div style="text-align: start">
-                        @foreach ($item['stschedule'] as $stschedule)
+                        @foreach ($item['Stschedule'] as $stschedule)
                             <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
@@ -3644,8 +3585,7 @@
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-           @endif
+            @endif
     @endforeach 
     </div>
 </div>

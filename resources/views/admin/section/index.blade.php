@@ -1,4 +1,57 @@
 @extends('admin.layout.main')
+@section('style')
+<style>
+.pagination-links {
+    margin-top: 20px; /* Adjust margin as needed */
+    text-align: center; /* Center the pagination links horizontally */
+}
+
+/* Style the pagination links */
+.pagination-links ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination-links ul li {
+    display: inline-block;
+    margin-right: 5px; /* Adjust spacing between pagination items */
+}
+
+.pagination-links ul li a,
+.pagination-links ul li span {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #333;
+}
+
+.pagination-links ul li.active a {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+/* Style the pagination arrows */
+.pagination-links ul li.prev,
+.pagination-links ul li.next {
+    font-size: 14px; /* Adjust arrow size */
+    padding: 5px; /* Adjust padding */
+}
+
+.pagination-links ul li.prev a,
+.pagination-links ul li.next a {
+    padding: 5px; /* Adjust padding */
+}
+
+.pagination-links ul li.prev.disabled,
+.pagination-links ul li.next.disabled {
+    pointer-events: none; /* Disable clicking on disabled arrows */
+    opacity: 0.5; /* Reduce opacity of disabled arrows */
+}
+</style>
+@endsection('style')
 @section('content')
     <div class="breadcrumbs">
         <div class="col-sm-8">
@@ -252,277 +305,285 @@
                             <tbody>
                                 @php
                                 $i = 0;
+
+                                // dd($paginatedCollection->toArray());
+                                // die();
+
                                 @endphp 
-                                @foreach($mergedCollection as $item)
 
-                                <tr>
-                                    <td>@php echo $i++; @endphp </td>
-                                    <td>
-                                        @if ($item->maintype_id == 1)
-                                        {!! $item->ChapterModel->chapter_title !!}
-                                    @elseif($item->maintype_id == 2)
-                                        {!! $item->Partmodel->parts_title !!}
-                                    @elseif($item->maintype_id == 3)
-                                        {!! $item->PriliminaryModel->priliminary_title !!}
-                                    @elseif($item->maintype_id == 4)
-                                        {!! $item->Schedulemodel->schedule_title !!}
-                                    @elseif($item->maintype_id == 5)
-                                        {!! $item->Appendixmodel->appendix_title !!}
-                                    @elseif($item->maintype_id == 6)
-                                        {!! $item->MainOrderModel->main_order_title !!}
-                                    @else
-                                        null
-                                    @endif
-                                    </td>
-                                    <td>
-                                    @if ($item->section_no)
-                                        {{ $item->section_no}}
-                                    @elseif($item->article_no)
-                                        {{ $item->article_no }}
-                                    @elseif($item->rule_no)
-                                        {{ $item->rule_no}}
-                                    @elseif($item->regulation_no)
-                                        {{$item->regulation_no}}
-                                    @elseif($item->list_no)
-                                        {{ $item->list_no}}
-                                    @elseif($item->part_no)
-                                        {{ $item->part_no }}
-                                    @elseif($item->appendices_no)
-                                        {{ $item->appendices_no}}
-                                    @elseif($item->order_no)
-                                        {{$item->order_no}}
-                                    @elseif($item->annexure_no)
-                                        {{ $item->annexure_no}}
-                                    @elseif($item->stschedule_no)
-                                        {{ $item->stschedule_no}}
-                                    @else
-                                        null
-                                    @endif
-                                    </td>
-                                    <td>
-                                    @if ($item->section_title)
-                                        {!! $item->section_title !!}
-                                    @elseif($item->article_title)
-                                        {!! $item->article_title !!}
-                                    @elseif($item->rule_title)
-                                        {!! $item->rule_title!!}
-                                    @elseif($item->regulation_title)
-                                        {!!$item->regulation_title!!}
-                                    @elseif($item->list_title)
-                                        {{  $item->list_title }}
-                                    @elseif($item->part_title)
-                                        {{ $item->part_title }}
-                                    @elseif($item->appendices_title)
-                                        {!! $item->appendices_title!!}
-                                    @elseif($item->order_title)
-                                        {!!$item->order_title!!}
-                                    @elseif($item->annexure_title)
-                                        {!! $item->annexure_title!!}
-                                    @elseif($item->stschedule_title)
-                                        {!! $item->stschedule_title!!}
-                                    @else
-                                        null
-                                    @endif
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                    @if ($item->section_id)
+                                @foreach($paginatedCollection as $item)
 
-                                    <a href="/edit-section/{{ $item->section_id }}" title="Edit"
-                                        class="px-1">
-                                        <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                    </a>
-                                    <a href="/view-sub-section/{{ $item->section_id }}" title="View"
-                                        class="px-1">
-                                        <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ url('/delete_section/' . $item->section_id) }}"
-                                        title="Delete" class="px-1"
-                                        onclick="return confirm('Are you sure ?')">
-                                        <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_id' => $item->section_id]) }}"
-                                        title="Add Next Section" class="px-1">
-                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                    </a>
-                                    @elseif($item->article_id)
+                                    <tr>
+                                        <td>@php echo $i++; @endphp </td>
+                                        <td>
+                                            @if ($item->maintype_id == 1)
+                                            {!! $item->ChapterModel->chapter_title !!}
+                                        @elseif($item->maintype_id == 2)
+                                            {!! $item->Partmodel->parts_title !!}
+                                        @elseif($item->maintype_id == 3)
+                                            {!! $item->PriliminaryModel->priliminary_title !!}
+                                        @elseif($item->maintype_id == 4)
+                                            {!! $item->Schedulemodel->schedule_title !!}
+                                        @elseif($item->maintype_id == 5)
+                                            {!! $item->Appendixmodel->appendix_title !!}
+                                        @elseif($item->maintype_id == 6)
+                                            {!! $item->MainOrderModel->main_order_title !!}
+                                        @else
+                                            null
+                                        @endif
+                                        </td>
+                                        <td>
+                                        @if ($item->section_no)
+                                            {{ $item->section_no}}
+                                        @elseif($item->article_no)
+                                            {{ $item->article_no }}
+                                        @elseif($item->rule_no)
+                                            {{ $item->rule_no}}
+                                        @elseif($item->regulation_no)
+                                            {{$item->regulation_no}}
+                                        @elseif($item->list_no)
+                                            {{ $item->list_no}}
+                                        @elseif($item->part_no)
+                                            {{ $item->part_no }}
+                                        @elseif($item->appendices_no)
+                                            {{ $item->appendices_no}}
+                                        @elseif($item->order_no)
+                                            {{$item->order_no}}
+                                        @elseif($item->annexure_no)
+                                            {{ $item->annexure_no}}
+                                        @elseif($item->stschedule_no)
+                                            {{ $item->stschedule_no}}
+                                        @else
+                                            null
+                                        @endif
+                                        </td>
+                                        <td>
+                                        @if ($item->section_title)
+                                            {!! $item->section_title !!}
+                                        @elseif($item->article_title)
+                                            {!! $item->article_title !!}
+                                        @elseif($item->rule_title)
+                                            {!! $item->rule_title!!}
+                                        @elseif($item->regulation_title)
+                                            {!!$item->regulation_title!!}
+                                        @elseif($item->list_title)
+                                            {{  $item->list_title }}
+                                        @elseif($item->part_title)
+                                            {{ $item->part_title }}
+                                        @elseif($item->appendices_title)
+                                            {!! $item->appendices_title!!}
+                                        @elseif($item->order_title)
+                                            {!!$item->order_title!!}
+                                        @elseif($item->annexure_title)
+                                            {!! $item->annexure_title!!}
+                                        @elseif($item->stschedule_title)
+                                            {!! $item->stschedule_title!!}
+                                        @else
+                                            null
+                                        @endif
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                        @if ($item->section_id)
 
-                                    <a href="/edit-article/{{ $item->article_id }}" title="Edit"
-                                        class="px-1">
-                                        <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                    </a>
-                                    <a href="/view-sub-article/{{ $item->article_id }}" title="View"
-                                        class="px-1">
-                                        <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ url('/delete_article/' . $item->article_id) }}"
-                                        title="Delete" class="px-1"
-                                        onclick="return confirm('Are you sure ?')">
-                                        <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                    </a>
-                                    {{-- <a href="{{ url('/add_below_new_article', ['act_id' => $item->act_id, 'article_id' => $item->article_id, 'article_rank' => $item->article_rank]) }}"
-                                        title="Add Next Article" class="px-1">
-                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                    </a> --}}
-                                    <a href="{{ route('add_below_new_article', ['id' => $item->act_id, 'article_id' => $item->article_id]) }}"
-                                        title="Add Next Article" class="px-1">
-                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                     </a>
-                                     
-                                    @elseif($item->rule_id)
-                                        <a href="/edit-rule/{{ $item->rule_id }}" title="Edit" class="px-1">
-                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                                </a>
-                                                <a href="/view-sub-rule/{{ $item->rule_id }}" title="View"
-                                                    class="px-1">
-                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                                </a>
-                                                <a href="{{ url('/delete_rule/' . $item->rule_id) }}" title="Delete"
-                                                    class="px-1" onclick="return confirm('Are you sure ?')">
-                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                                </a>
-                                                <a href="{{ route('add_below_new_rule', ['id' => $item->act_id, 'rule_id' => $item->rule_id]) }}"
-                                                    title="Add Next Rule" class="px-1">
-                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                                </a>
-                                    @elseif($item->regulation_id)
-                                    <a href="/edit-regulation/{{ $item->regulation_id }}" title="Edit"
-                                        class="px-1">
-                                        <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                    </a>
-                                    <a href="/view-sub-regulation/{{ $item->regulation_id }}" title="View"
-                                        class="px-1">
-                                        <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ url('/delete_regulation/' . $item->regulation_id) }}"
-                                        title="Delete" class="px-1"
-                                        onclick="return confirm('Are you sure ?')">
-                                        <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                    </a>
-                                    {{-- <a href="{{ url('/add_below_new_regulation', ['act_id' => $item->act_id, 'regulation_id' => $item->regulation_id, 'regulation_rank' => $item->regulation_rank]) }}"
-                                        title="Add Next Regulation" class="px-1">
-                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                    </a> --}}
-                                    <a href="{{ route('add_below_new_regulation', ['id' => $item->act_id, 'regulation_id' => $item->regulation_id]) }}"
-                                        title="Add Next Regulation" class="px-1">
-                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                     </a>
-                                    @elseif($item->list_id)
-                                    <a href="/edit-list/{{ $item->list_id }}" title="Edit" class="px-1">
-                                        <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                    </a>
-                                    <a href="/view-sub-list/{{ $item->list_id }}" title="View"
-                                        class="px-1">
-                                        <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ url('/delete_list/' . $item->list_id) }}" title="Delete"
-                                        class="px-1" onclick="return confirm('Are you sure ?')">
-                                        <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                    </a>
-                                    
-                                    <a href="{{ route('add_below_new_list', ['id' => $item->act_id, 'list_id' => $item->list_id]) }}"
-                                        title="Add Next List" class="px-1">
-                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                     </a>
-                                    @elseif($item->part_id)
-                                    <a href="/edit-part/{{ $item->part_id }}" title="Edit" class="px-1">
-                                        <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                    </a>
-                                    <a href="/view-sub-part/{{ $item->part_id }}" title="View"
-                                        class="px-1">
-                                        <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ url('/delete_part/' . $item->part_id) }}" title="Delete"
-                                        class="px-1" onclick="return confirm('Are you sure ?')">
-                                        <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                    </a>
-                                    {{-- <a href="{{ url('/add_below_new_part', ['act_id' => $item->act_id, 'part_id' => $item->part_id, 'part_rank' => $item->part_rank]) }}"
-                                        title="Add Next Part" class="px-1">
-                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                    </a> --}}
-                                    <a href="{{ route('add_below_new_part', ['id' => $item->act_id, 'part_id' => $item->part_id]) }}"
-                                        title="Add Next Part" class="px-1">
-                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                     </a>
-                                    @elseif($item->appendices_id)
-                                    <a href="/edit-appendices/{{ $item->appendices_id }}" title="Edit"
-                                        class="px-1">
-                                        <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                    </a>
-                                    <a href="/view-sub-appendices/{{ $item->appendices_id }}" title="View"
-                                        class="px-1">
-                                        <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ url('/delete_appendices/' . $item->appendices_id) }}"
-                                        title="Delete" class="px-1"
-                                        onclick="return confirm('Are you sure ?')">
-                                        <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ route('add_below_new_appendices', ['id' => $item->act_id, 'appendices_id' => $item->appendices_id]) }}"
-                                        title="Add Next Appendices" class="px-1">
-                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                    </a>
-                                    @elseif($item->order_id)
-                                    <a href="/edit-order/{{ $item->order_id }}" title="Edit"
-                                        class="px-1">
-                                        <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                    </a>
-                                    <a href="/view-sub-order/{{ $item->order_id }}" title="View"
-                                        class="px-1">
-                                        <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ url('/delete_order/' . $item->order_id) }}" title="Delete"
-                                        class="px-1" onclick="return confirm('Are you sure ?')">
-                                        <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ route('add_below_new_order', ['id' => $item->act_id, 'order_id' => $item->order_id]) }}"
-                                        title="Add Next Order" class="px-1">
-                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                    </a>
-                                    @elseif($item->annexure_id)
-                                    <a href="/edit-annexure/{{ $item->annexure_id }}" title="Edit"
-                                        class="px-1">
-                                        <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                    </a>
-                                    <a href="/view-sub-annexure/{{ $item->annexure_id }}" title="View"
-                                        class="px-1">
-                                        <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ url('/delete_annexure/' . $item->annexure_id) }}"
-                                        title="Delete" class="px-1"
-                                        onclick="return confirm('Are you sure ?')">
-                                        <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ route('add_below_new_annexure', ['id' => $item->act_id, 'annexure_id' => $item->annexure_id]) }}"
-                                        title="Add Next Annexure" class="px-1">
-                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                    </a>
-                                    @elseif($item->stschedule_id)
-                                    <a href="/edit-stschedule/{{ $item->stschedule_id }}" title="Edit"
-                                        class="px-1">
-                                        <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                    </a>
-                                    <a href="/view-sub-stschedule/{{ $item->stschedule_id }}" title="View"
-                                        class="px-1">
-                                        <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ url('/delete_stschedule/' . $item->stschedule_id) }}"
-                                        title="Delete" class="px-1"
-                                        onclick="return confirm('Are you sure ?')">
-                                        <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                    </a>
-                                    <a href="{{ route('add_below_new_stschedule', ['id' => $item->act_id, 'stschedule_id' => $item->stschedule_id]) }}"
-                                        title="Add Next Schedule" class="px-1">
-                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                    </a> 
-                                    @else
-                                        null
-                                    @endif
-                                    </td>
-                                </tr>
+                                        <a href="/edit-section/{{ $item->section_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                            class="px-1">
+                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                        </a>
+                                        <a href="/view-sub-section/{{ $item->section_id }}" title="View"
+                                            class="px-1">
+                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ url('/delete_section/' . $item->section_id) }}"
+                                            title="Delete" class="px-1"
+                                            onclick="return confirm('Are you sure ?')">
+                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_id' => $item->section_id]) }}"
+                                            title="Add Next Section" class="px-1">
+                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                        </a>
+                                        @elseif($item->article_id)
+
+                                        <a href="/edit-article/{{ $item->article_id }}" title="Edit"
+                                            class="px-1">
+                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                        </a>
+                                        <a href="/view-sub-article/{{ $item->article_id }}" title="View"
+                                            class="px-1">
+                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ url('/delete_article/' . $item->article_id) }}"
+                                            title="Delete" class="px-1"
+                                            onclick="return confirm('Are you sure ?')">
+                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                        </a>
+                                        {{-- <a href="{{ url('/add_below_new_article', ['act_id' => $item->act_id, 'article_id' => $item->article_id, 'article_rank' => $item->article_rank]) }}"
+                                            title="Add Next Article" class="px-1">
+                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                        </a> --}}
+                                        <a href="{{ route('add_below_new_article', ['id' => $item->act_id, 'article_id' => $item->article_id]) }}"
+                                            title="Add Next Article" class="px-1">
+                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                        </a>
+                                        
+                                        @elseif($item->rule_id)
+                                            <a href="/edit-rule/{{ $item->rule_id }}" title="Edit" class="px-1">
+                                                        <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                    </a>
+                                                    <a href="/view-sub-rule/{{ $item->rule_id }}" title="View"
+                                                        class="px-1">
+                                                        <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                    </a>
+                                                    <a href="{{ url('/delete_rule/' . $item->rule_id) }}" title="Delete"
+                                                        class="px-1" onclick="return confirm('Are you sure ?')">
+                                                        <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                    </a>
+                                                    <a href="{{ route('add_below_new_rule', ['id' => $item->act_id, 'rule_id' => $item->rule_id]) }}"
+                                                        title="Add Next Rule" class="px-1">
+                                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                    </a>
+                                        @elseif($item->regulation_id)
+                                        <a href="/edit-regulation/{{ $item->regulation_id }}" title="Edit"
+                                            class="px-1">
+                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                        </a>
+                                        <a href="/view-sub-regulation/{{ $item->regulation_id }}" title="View"
+                                            class="px-1">
+                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ url('/delete_regulation/' . $item->regulation_id) }}"
+                                            title="Delete" class="px-1"
+                                            onclick="return confirm('Are you sure ?')">
+                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                        </a>
+                                        {{-- <a href="{{ url('/add_below_new_regulation', ['act_id' => $item->act_id, 'regulation_id' => $item->regulation_id, 'regulation_rank' => $item->regulation_rank]) }}"
+                                            title="Add Next Regulation" class="px-1">
+                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                        </a> --}}
+                                        <a href="{{ route('add_below_new_regulation', ['id' => $item->act_id, 'regulation_id' => $item->regulation_id]) }}"
+                                            title="Add Next Regulation" class="px-1">
+                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                        </a>
+                                        @elseif($item->list_id)
+                                        <a href="/edit-list/{{ $item->list_id }}" title="Edit" class="px-1">
+                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                        </a>
+                                        <a href="/view-sub-list/{{ $item->list_id }}" title="View"
+                                            class="px-1">
+                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ url('/delete_list/' . $item->list_id) }}" title="Delete"
+                                            class="px-1" onclick="return confirm('Are you sure ?')">
+                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                        </a>
+                                        
+                                        <a href="{{ route('add_below_new_list', ['id' => $item->act_id, 'list_id' => $item->list_id]) }}"
+                                            title="Add Next List" class="px-1">
+                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                        </a>
+                                        @elseif($item->part_id)
+                                        <a href="/edit-part/{{ $item->part_id }}" title="Edit" class="px-1">
+                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                        </a>
+                                        <a href="/view-sub-part/{{ $item->part_id }}" title="View"
+                                            class="px-1">
+                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ url('/delete_part/' . $item->part_id) }}" title="Delete"
+                                            class="px-1" onclick="return confirm('Are you sure ?')">
+                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                        </a>
+                                        {{-- <a href="{{ url('/add_below_new_part', ['act_id' => $item->act_id, 'part_id' => $item->part_id, 'part_rank' => $item->part_rank]) }}"
+                                            title="Add Next Part" class="px-1">
+                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                        </a> --}}
+                                        <a href="{{ route('add_below_new_part', ['id' => $item->act_id, 'part_id' => $item->part_id]) }}"
+                                            title="Add Next Part" class="px-1">
+                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                        </a>
+                                        @elseif($item->appendices_id)
+                                        <a href="/edit-appendices/{{ $item->appendices_id }}" title="Edit"
+                                            class="px-1">
+                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                        </a>
+                                        <a href="/view-sub-appendices/{{ $item->appendices_id }}" title="View"
+                                            class="px-1">
+                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ url('/delete_appendices/' . $item->appendices_id) }}"
+                                            title="Delete" class="px-1"
+                                            onclick="return confirm('Are you sure ?')">
+                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ route('add_below_new_appendices', ['id' => $item->act_id, 'appendices_id' => $item->appendices_id]) }}"
+                                            title="Add Next Appendices" class="px-1">
+                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                        </a>
+                                        @elseif($item->order_id)
+                                        <a href="/edit-order/{{ $item->order_id }}" title="Edit"
+                                            class="px-1">
+                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                        </a>
+                                        <a href="/view-sub-order/{{ $item->order_id }}" title="View"
+                                            class="px-1">
+                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ url('/delete_order/' . $item->order_id) }}" title="Delete"
+                                            class="px-1" onclick="return confirm('Are you sure ?')">
+                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ route('add_below_new_order', ['id' => $item->act_id, 'order_id' => $item->order_id]) }}"
+                                            title="Add Next Order" class="px-1">
+                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                        </a>
+                                        @elseif($item->annexure_id)
+                                        <a href="/edit-annexure/{{ $item->annexure_id }}" title="Edit"
+                                            class="px-1">
+                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                        </a>
+                                        <a href="/view-sub-annexure/{{ $item->annexure_id }}" title="View"
+                                            class="px-1">
+                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ url('/delete_annexure/' . $item->annexure_id) }}"
+                                            title="Delete" class="px-1"
+                                            onclick="return confirm('Are you sure ?')">
+                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ route('add_below_new_annexure', ['id' => $item->act_id, 'annexure_id' => $item->annexure_id]) }}"
+                                            title="Add Next Annexure" class="px-1">
+                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                        </a>
+                                        @elseif($item->stschedule_id)
+                                        <a href="/edit-stschedule/{{ $item->stschedule_id }}" title="Edit"
+                                            class="px-1">
+                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                        </a>
+                                        <a href="/view-sub-stschedule/{{ $item->stschedule_id }}" title="View"
+                                            class="px-1">
+                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ url('/delete_stschedule/' . $item->stschedule_id) }}"
+                                            title="Delete" class="px-1"
+                                            onclick="return confirm('Are you sure ?')">
+                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                        </a>
+                                        <a href="{{ route('add_below_new_stschedule', ['id' => $item->act_id, 'stschedule_id' => $item->stschedule_id]) }}"
+                                            title="Add Next Schedule" class="px-1">
+                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                        </a> 
+                                        @else
+                                            null
+                                        @endif
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="pagination-links">
+                            {{ $paginatedCollection->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

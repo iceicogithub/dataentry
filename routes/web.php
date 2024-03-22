@@ -77,7 +77,7 @@ Route::post('/update_all_section/{id}', [SectionController::class, 'update']);
 Route::get('/delete_sub_section/{id}', [SectionController::class, 'destroy_sub_section']);
 Route::get('/delete_section/{id}', [SectionController::class, 'destroy']);
 Route::get('/add_below_new_section/{id}/{section_id}', [SectionController::class, 'add_below_new_section'])->name('add_below_new_section');
-Route::post('/add_new_section', [SectionController::class, 'add_new_section']);
+Route::post('/add_new_section/{id}', [SectionController::class, 'add_new_section']);
 
 // chapter 
 Route::get('/chapter', [ChapterController::class, 'index'])->name('chapter');
