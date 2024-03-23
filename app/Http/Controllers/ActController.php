@@ -39,6 +39,7 @@ use App\Models\SubRules;
 use App\Models\SubStschedule;
 use App\Models\SubType;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\Paginator;

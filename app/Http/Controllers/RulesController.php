@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 class RulesController extends Controller
 {
     
-    public function edit_rule($id)
+    public function edit_rule($id,Request $request)
     {
         $rule = Rules::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel','MainOrderModel')->where('rule_id', $id)->first();
         $subrule = Rules::where('rule_id', $id)
@@ -36,8 +36,8 @@ class RulesController extends Controller
         }
 
 
-
-        return view('admin.rules.edit', compact('rule', 'subrule', 'sub_rule_f', 'count'));
+        $currentPage = $request->page;
+        return view('admin.rules.edit', compact('rule', 'subrule', 'sub_rule_f', 'count','currentPage'));
     }
     
     public function update(Request $request, $id)
@@ -46,6 +46,7 @@ class RulesController extends Controller
         // die();
 
         try {
+            $currentPage = $request->currentPage;
             if ($request->has('chapter_id')) {
                 $chapter = Chapter::find($request->chapter_id);
     
@@ -238,7 +239,7 @@ class RulesController extends Controller
 
 
 
-        return redirect()->route('get_act_section', ['id' => $rules->act_id])->with('success', 'Rule updated successfully');
+        return redirect()->route('get_act_section', ['id' => $rules->act_id,'page' => $currentPage])->with('success', 'Rule updated successfully');
         } catch (\Exception $e) {
             \Log::error('Error updating Act: ' . $e->getMessage());
             return redirect()->route('edit-rule', ['id' => $id])->withErrors(['error' => 'Failed to update Section. Please try again.' . $e->getMessage()]);

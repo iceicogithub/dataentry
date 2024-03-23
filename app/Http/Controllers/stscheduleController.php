@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 class stscheduleController extends Controller
 {
     
-    public function edit_stschedule($id)
+    public function edit_stschedule($id,Request $request)
     {
         $stschedule = Stschedule::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel','MainOrderModel')->where('stschedule_id', $id)->first();
         $substschedule = Stschedule::where('stschedule_id', $id)
@@ -36,8 +36,8 @@ class stscheduleController extends Controller
         }
 
 
-
-        return view('admin.stschedule.edit', compact('stschedule', 'substschedule', 'sub_stschedule_f', 'count'));
+        $currentPage = $request->page;
+        return view('admin.stschedule.edit', compact('stschedule', 'substschedule', 'sub_stschedule_f', 'count','currentPage'));
     }
 
 
@@ -47,6 +47,7 @@ class stscheduleController extends Controller
         // die();
 
         // try {
+            $currentPage = $request->currentPage;
             if ($request->has('chapter_id')) {
                 $chapter = Chapter::find($request->chapter_id);
     
@@ -238,7 +239,7 @@ class stscheduleController extends Controller
 
 
 
-            return redirect()->route('get_act_section', ['id' => $stschedule->act_id])->with('success', 'Schedule updated successfully');
+            return redirect()->route('get_act_section', ['id' => $stschedule->act_id,'page' => $currentPage])->with('success', 'Schedule updated successfully');
         // } catch (\Exception $e) {
         //     \Log::error('Error updating Act: ' . $e->getMessage());
         //     return redirect()->route('edit-stschedule', ['id' => $id])->withErrors(['error' => 'Failed to update Schedule. Please try again.' . $e->getMessage()]);

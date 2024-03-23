@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 class AnnexureController extends Controller
 {
 
-    public function edit_annexure($id)
+    public function edit_annexure($id,Request $request)
     {
         $annexure = Annexure::with('ChapterModel', 'Partmodel', 'Appendixmodel', 'Schedulemodel', 'PriliminaryModel','MainOrderModel')->where('annexure_id', $id)->first();
         $subannexure = Annexure::where('annexure_id', $id)
@@ -39,8 +39,8 @@ class AnnexureController extends Controller
         }
 
 
-
-        return view('admin.annexure.edit', compact('annexure', 'subannexure', 'sub_annexure_f', 'count'));
+        $currentPage = $request->page;
+        return view('admin.annexure.edit', compact('annexure', 'subannexure', 'sub_annexure_f', 'count','currentPage'));
     }
 
 
@@ -50,6 +50,7 @@ class AnnexureController extends Controller
         // die();
 
         // try {
+            $currentPage = $request->currentPage;
         if ($request->has('chapter_id')) {
             $chapter = Chapter::find($request->chapter_id);
 
@@ -242,7 +243,7 @@ class AnnexureController extends Controller
 
 
 
-        return redirect()->route('get_act_section', ['id' => $annexure->act_id])->with('success', 'Annexure updated successfully');
+        return redirect()->route('get_act_section', ['id' => $annexure->act_id,'page' => $currentPage])->with('success', 'Annexure updated successfully');
         // } catch (\Exception $e) {
         //     \Log::error('Error updating Act: ' . $e->getMessage());
         //     return redirect()->route('edit-annexure', ['id' => $id])->withErrors(['error' => 'Failed to update Annexure. Please try again.' . $e->getMessage()]);

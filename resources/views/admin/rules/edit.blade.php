@@ -41,6 +41,7 @@
                         </div>
                     @endif
                     <input type="hidden" name="rule_id" value="{{ $rule->rule_id }}">
+                    <input type="hidden" name="currentPage" value="{{ $currentPage }}">
                     <input type="hidden" name="schedule_id" value="{{ $rule->schedule_id }}">
                     <input type="hidden" name="chapter_id" value="{{ $rule->chapter_id }}">
                     <input type="hidden" name="parts_id" value="{{ $rule->parts_id }}">

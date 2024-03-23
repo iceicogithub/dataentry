@@ -405,7 +405,7 @@
                                         </a>
                                         @elseif($item->article_id)
 
-                                        <a href="/edit-article/{{ $item->article_id }}" title="Edit"
+                                        <a href="/edit-article/{{ $item->article_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
                                             class="px-1">
                                             <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                         </a>
@@ -428,7 +428,7 @@
                                         </a>
                                         
                                         @elseif($item->rule_id)
-                                            <a href="/edit-rule/{{ $item->rule_id }}" title="Edit" class="px-1">
+                                            <a href="/edit-rule/{{ $item->rule_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
                                                         <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                                     </a>
                                                     <a href="/view-sub-rule/{{ $item->rule_id }}" title="View"
@@ -444,7 +444,7 @@
                                                         <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                                     </a>
                                         @elseif($item->regulation_id)
-                                        <a href="/edit-regulation/{{ $item->regulation_id }}" title="Edit"
+                                        <a href="/edit-regulation/{{ $item->regulation_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
                                             class="px-1">
                                             <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                         </a>
@@ -466,7 +466,7 @@
                                             <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                         </a>
                                         @elseif($item->list_id)
-                                        <a href="/edit-list/{{ $item->list_id }}" title="Edit" class="px-1">
+                                        <a href="/edit-list/{{ $item->list_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
                                             <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                         </a>
                                         <a href="/view-sub-list/{{ $item->list_id }}" title="View"
@@ -483,7 +483,7 @@
                                             <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                         </a>
                                         @elseif($item->part_id)
-                                        <a href="/edit-part/{{ $item->part_id }}" title="Edit" class="px-1">
+                                        <a href="/edit-part/{{ $item->part_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
                                             <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                         </a>
                                         <a href="/view-sub-part/{{ $item->part_id }}" title="View"
@@ -503,7 +503,7 @@
                                             <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                         </a>
                                         @elseif($item->appendices_id)
-                                        <a href="/edit-appendices/{{ $item->appendices_id }}" title="Edit"
+                                        <a href="/edit-appendices/{{ $item->appendices_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
                                             class="px-1">
                                             <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                         </a>
@@ -521,7 +521,7 @@
                                             <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                         </a>
                                         @elseif($item->order_id)
-                                        <a href="/edit-order/{{ $item->order_id }}" title="Edit"
+                                        <a href="/edit-order/{{ $item->order_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
                                             class="px-1">
                                             <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                         </a>
@@ -538,7 +538,7 @@
                                             <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                         </a>
                                         @elseif($item->annexure_id)
-                                        <a href="/edit-annexure/{{ $item->annexure_id }}" title="Edit"
+                                        <a href="/edit-annexure/{{ $item->annexure_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
                                             class="px-1">
                                             <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                         </a>
@@ -556,7 +556,7 @@
                                             <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
                                         </a>
                                         @elseif($item->stschedule_id)
-                                        <a href="/edit-stschedule/{{ $item->stschedule_id }}" title="Edit"
+                                        <a href="/edit-stschedule/{{ $item->stschedule_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
                                             class="px-1">
                                             <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
                                         </a>

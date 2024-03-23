@@ -29,7 +29,7 @@ class RegulationController extends Controller
      * Display a listing of the resource.
      */
 
-    public function edit_regulation($id)
+    public function edit_regulation($id,Request $request)
     {
         $regulation = Regulation::with('ChapterModel', 'Partmodel', 'Appendixmodel', 'Schedulemodel', 'PriliminaryModel','MainOrderModel')->where('regulation_id', $id)->first();
         $subregulation = Regulation::where('regulation_id', $id)
@@ -52,8 +52,8 @@ class RegulationController extends Controller
         }
 
 
-
-        return view('admin.regulation.edit', compact('regulation', 'subregulation', 'sub_regulation_f', 'count'));
+        $currentPage = $request->page;
+        return view('admin.regulation.edit', compact('regulation', 'subregulation', 'sub_regulation_f', 'count','currentPage'));
     }
 
     public function update(Request $request, $id)
@@ -62,6 +62,7 @@ class RegulationController extends Controller
         // die();
 
         // try {
+            $currentPage = $request->currentPage;
         if ($request->has('chapter_id')) {
             $chapter = Chapter::find($request->chapter_id);
 
@@ -254,7 +255,7 @@ class RegulationController extends Controller
 
 
 
-        return redirect()->route('get_act_section', ['id' => $regulation->act_id])->with('success', 'Regulation updated successfully');
+        return redirect()->route('get_act_section', ['id' => $regulation->act_id,'page' => $currentPage])->with('success', 'Regulation updated successfully');
         // } catch (\Exception $e) {
         //     \Log::error('Error updating Act: ' . $e->getMessage());
         //     return redirect()->route('edit-regulation', ['id' => $id])->withErrors(['error' => 'Failed to update Regulation. Please try again.' . $e->getMessage()]);
