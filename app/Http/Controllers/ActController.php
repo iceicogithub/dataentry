@@ -138,11 +138,20 @@ class ActController extends Controller
 
             $mergedCollection = collect([$act_section, $act_article, $act_rule,$act_regulation,$act_list,$act_part,$act_order,$act_annexure,$act_stschedule])->flatten(1)->sortBy('serial_no');
 
-            // dd($mergedCollection);
             $perPage = 10; // Specify the number of items per page
             $page = request()->get('page') ?: 1; // Get the current page from the request, default to 1
-            $paginatedCollection = new Paginator($mergedCollection->forPage($page, $perPage), $perPage, $page);
-
+            $slicedData = $mergedCollection->forPage($page, $perPage);
+            
+            // Create a Paginator instance with the sliced data
+            $paginatedCollection = new LengthAwarePaginator(
+                $slicedData,
+                $mergedCollection->count(), // Total item count
+                $perPage,
+                $page
+            );
+            
+            // Optionally, set additional URL parameters for the paginator links
+            $paginatedCollection->withPath(request()->url());
             // dd($act_stschedule);
             // die();
 
