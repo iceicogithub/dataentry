@@ -1084,7 +1084,7 @@
 
     <div>
         @foreach($combinedItems as $item)
-           @if (isset($item['parts_id']))
+            @if (isset($item['parts_id']))
                 <div style="text-align: center">
                     <div style="text-transform: uppercase !important; font-size: 15px !important; margin-top: 0.4rem;">
                         {!! $item['parts_title'] !!}
@@ -1121,17 +1121,19 @@
                                     </table>
                                 @endforeach
                             @endif
-        
+                             
                             @if (!empty($section['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($section['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
+
                         @endforeach
                     </div>
-                @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
+                   
+                @endif  
                 @if (!empty($item['articles']))   
                     <div style="text-align: start">
                         @foreach ($item['articles'] as $article)
@@ -1163,17 +1165,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($article['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($article['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['rules']))   
                     <div style="text-align: start">
                         @foreach ($item['rules'] as $rule)
@@ -1205,17 +1206,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($rule['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($rule['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['regulation']))   
                     <div style="text-align: start">
                         @foreach ($item['regulation'] as $regulation)
@@ -1247,17 +1247,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($regulation['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($regulation['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['lists']))   
                     <div style="text-align: start">
                         @foreach ($item['lists'] as $list)
@@ -1289,17 +1288,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($list['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($list['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['part']))   
                     <div style="text-align: start">
                         @foreach ($item['part'] as $part)
@@ -1331,17 +1329,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($part['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($part['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['appendices']))   
                     <div style="text-align: start">
                         @foreach ($item['appendices'] as $appendices)
@@ -1373,17 +1370,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($appendices['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($appendices['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['order']))   
                     <div style="text-align: start">
                         @foreach ($item['order'] as $order)
@@ -1415,17 +1411,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($order['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($order['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['annexure']))   
                     <div style="text-align: start">
                         @foreach ($item['annexure'] as $annexure)
@@ -1457,17 +1452,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($annexure['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($annexure['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['stschedule']))   
                     <div style="text-align: start">
                         @foreach ($item['stschedule'] as $stschedule)
@@ -1499,18 +1493,17 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($stschedule['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($stschedule['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-           @endif
+            @endif
             @if (isset($item['chapter_id']))
                 <div style="text-align: center">
                     <div style="text-transform: uppercase !important; font-size: 15px !important; margin-top: 0.4rem;">
@@ -1548,17 +1541,18 @@
                                     </table>
                                 @endforeach
                             @endif
-        
+                             
                             @if (!empty($section['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($section['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
+
                         @endforeach
-                    </div>
-                @endif
-               <hr style="width: 10% !important;margin: 10px auto !important;">
+                    </div> 
+                @endif  
                 @if (!empty($item['articles']))   
                     <div style="text-align: start">
                         @foreach ($item['articles'] as $article)
@@ -1590,59 +1584,57 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($article['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($article['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['rules']))   
-                    <div style="text-align: start">
-                        @foreach ($item['rules'] as $rule)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
-                                    <tr>
-                                        <td style="vertical-align: baseline;">
-                                            <p>{{ $rule['rule_no'] }}</p>
-                                        </td>
-                                        <td>
-                                            <p>{!! $rule['rule_title'] !!}</p>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </strong>
-                            <span>{!! $rule['rule_content'] !!}</span>
-                            
-                            @if (!empty($rule['subrule_model']))
-                                @foreach ($rule['subrule_model'] as $subRule)
-                                    <table style="margin-left: 2%; text-align: justify; margin-top: 0.4rem; page-break-inside: avoid;">
+                        <div style="text-align: start">
+                            @foreach ($item['rules'] as $rule)
+                                <strong>
+                                    <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                         <tr>
                                             <td style="vertical-align: baseline;">
-                                                <p>{{ $subRule['sub_rule_no'] }}</p>
+                                                <p>{{ $rule['rule_no'] }}</p>
                                             </td>
                                             <td>
-                                                <p>{!! $subRule['sub_rule_content'] !!}</p>
+                                                <p>{!! $rule['rule_title'] !!}</p>
                                             </td>
                                         </tr>
                                     </table>
-                                @endforeach
-                            @endif
-
-                            @if (!empty($rule['footnote_model']))
+                                </strong>
+                                <span>{!! $rule['rule_content'] !!}</span>
+                                
+                                @if (!empty($rule['subrule_model']))
+                                    @foreach ($rule['subrule_model'] as $subRule)
+                                        <table style="margin-left: 2%; text-align: justify; margin-top: 0.4rem; page-break-inside: avoid;">
+                                            <tr>
+                                                <td style="vertical-align: baseline;">
+                                                    <p>{{ $subRule['sub_rule_no'] }}</p>
+                                                </td>
+                                                <td>
+                                                    <p>{!! $subRule['sub_rule_content'] !!}</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    @endforeach
+                                @endif
+                                @if (!empty($rule['footnote_model']))
+                                    <hr style="width: 10% !important;margin: 10px auto !important;">
+                                    @foreach ($rule['footnote_model'] as $footnoteModel)
+                                        <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
+                                    @endforeach
+                                @endif
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
-                                @foreach ($rule['footnote_model'] as $footnoteModel)
-                                    <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
-                                @endforeach
-                            @endif
-                        @endforeach
-                    </div>
+                            @endforeach
+                        </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['regulation']))   
                     <div style="text-align: start">
                         @foreach ($item['regulation'] as $regulation)
@@ -1674,17 +1666,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($regulation['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($regulation['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['lists']))   
                     <div style="text-align: start">
                         @foreach ($item['lists'] as $list)
@@ -1716,59 +1707,57 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($list['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($list['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['part']))   
-                    <div style="text-align: start">
-                        @foreach ($item['part'] as $part)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
-                                    <tr>
-                                        <td style="vertical-align: baseline;">
-                                            <p>{{ $part['part_no'] }}</p>
-                                        </td>
-                                        <td>
-                                            <p>{!! $part['part_title'] !!}</p>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </strong>
-                            <span>{!! $part['part_content'] !!}</span>
-                            
-                            @if (!empty($part['sub_part_model']))
-                                @foreach ($part['sub_part_model'] as $subPart)
-                                    <table style="margin-left: 2%; text-align: justify; margin-top: 0.4rem; page-break-inside: avoid;">
+                        <div style="text-align: start">
+                            @foreach ($item['part'] as $part)
+                                <strong>
+                                    <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                         <tr>
                                             <td style="vertical-align: baseline;">
-                                                <p>{{ $subPart['sub_part_no'] }}</p>
+                                                <p>{{ $part['part_no'] }}</p>
                                             </td>
                                             <td>
-                                                <p>{!! $subPart['sub_part_content'] !!}</p>
+                                                <p>{!! $part['part_title'] !!}</p>
                                             </td>
                                         </tr>
                                     </table>
-                                @endforeach
-                            @endif
-
-                            @if (!empty($part['footnote_model']))
+                                </strong>
+                                <span>{!! $part['part_content'] !!}</span>
+                                
+                                @if (!empty($part['sub_part_model']))
+                                    @foreach ($part['sub_part_model'] as $subPart)
+                                        <table style="margin-left: 2%; text-align: justify; margin-top: 0.4rem; page-break-inside: avoid;">
+                                            <tr>
+                                                <td style="vertical-align: baseline;">
+                                                    <p>{{ $subPart['sub_part_no'] }}</p>
+                                                </td>
+                                                <td>
+                                                    <p>{!! $subPart['sub_part_content'] !!}</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    @endforeach
+                                @endif
+                                @if (!empty($part['footnote_model']))
+                                    <hr style="width: 10% !important;margin: 10px auto !important;">
+                                    @foreach ($part['footnote_model'] as $footnoteModel)
+                                        <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
+                                    @endforeach
+                                @endif
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
-                                @foreach ($part['footnote_model'] as $footnoteModel)
-                                    <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
-                                @endforeach
-                            @endif
-                        @endforeach
-                    </div>
+                            @endforeach
+                        </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['appendices']))   
                     <div style="text-align: start">
                         @foreach ($item['appendices'] as $appendices)
@@ -1800,17 +1789,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($appendices['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($appendices['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['order']))   
                     <div style="text-align: start">
                         @foreach ($item['order'] as $order)
@@ -1842,17 +1830,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($order['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($order['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['annexure']))   
                     <div style="text-align: start">
                         @foreach ($item['annexure'] as $annexure)
@@ -1884,17 +1871,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($annexure['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($annexure['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['stschedule']))   
                     <div style="text-align: start">
                         @foreach ($item['stschedule'] as $stschedule)
@@ -1926,17 +1912,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($stschedule['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($stschedule['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
             @endif
             @if (isset($item['priliminary_id']))
                 <div style="text-align: center">
@@ -1975,17 +1960,18 @@
                                     </table>
                                 @endforeach
                             @endif
-        
+                            
                             @if (!empty($section['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($section['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
+
                         @endforeach
                     </div>
-                @endif
-               <hr style="width: 10% !important;margin: 10px auto !important;">
+                @endif  
                 @if (!empty($item['articles']))   
                     <div style="text-align: start">
                         @foreach ($item['articles'] as $article)
@@ -2017,17 +2003,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($article['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($article['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['rules']))   
                     <div style="text-align: start">
                         @foreach ($item['rules'] as $rule)
@@ -2059,17 +2044,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($rule['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($rule['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['regulation']))   
                     <div style="text-align: start">
                         @foreach ($item['regulation'] as $regulation)
@@ -2101,17 +2085,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($regulation['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($regulation['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['lists']))   
                     <div style="text-align: start">
                         @foreach ($item['lists'] as $list)
@@ -2143,17 +2126,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($list['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($list['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['part']))   
                     <div style="text-align: start">
                         @foreach ($item['part'] as $part)
@@ -2185,17 +2167,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($part['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($part['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['appendices']))   
                     <div style="text-align: start">
                         @foreach ($item['appendices'] as $appendices)
@@ -2227,17 +2208,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($appendices['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($appendices['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['order']))   
                     <div style="text-align: start">
                         @foreach ($item['order'] as $order)
@@ -2269,17 +2249,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($order['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($order['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['annexure']))   
                     <div style="text-align: start">
                         @foreach ($item['annexure'] as $annexure)
@@ -2311,17 +2290,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($annexure['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($annexure['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['stschedule']))   
                     <div style="text-align: start">
                         @foreach ($item['stschedule'] as $stschedule)
@@ -2353,17 +2331,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($stschedule['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($stschedule['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
-                @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
+                @endif          
             @endif
             @if (isset($item['schedule_id']))
                 <div style="text-align: center">
@@ -2372,47 +2349,48 @@
                     </div>
                 </div>
                 @if (!empty($item['sections']))   
-                <div style="text-align: start">
-                    @foreach ($item['sections'] as $section)
-                        <strong>
-                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
-                                <tr>
-                                    <td style="vertical-align: baseline;">
-                                        <p>{{ $section['section_no'] }}</p>
-                                    </td>
-                                    <td>
-                                        <p>{!! $section['section_title'] !!}</p>
-                                    </td>
-                                </tr>
-                            </table>
-                        </strong>
-                        <span>{!! $section['section_content'] !!}</span>
-                        
-                        @if (!empty($section['subsection_model']))
-                            @foreach ($section['subsection_model'] as $subSection)
-                                <table style="margin-left: 2%; text-align: justify; margin-top: 0.4rem; page-break-inside: avoid;">
+                    <div style="text-align: start">
+                        @foreach ($item['sections'] as $section)
+                            <strong>
+                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
-                                            <p>{{ $subSection['sub_section_no'] }}</p>
+                                            <p>{{ $section['section_no'] }}</p>
                                         </td>
                                         <td>
-                                            <p>{!! $subSection['sub_section_content'] !!}</p>
+                                            <p>{!! $section['section_title'] !!}</p>
                                         </td>
                                     </tr>
                                 </table>
-                            @endforeach
-                        @endif
-    
-                        @if (!empty($section['footnote_model']))
+                            </strong>
+                            <span>{!! $section['section_content'] !!}</span>
+                            
+                            @if (!empty($section['subsection_model']))
+                                @foreach ($section['subsection_model'] as $subSection)
+                                    <table style="margin-left: 2%; text-align: justify; margin-top: 0.4rem; page-break-inside: avoid;">
+                                        <tr>
+                                            <td style="vertical-align: baseline;">
+                                                <p>{{ $subSection['sub_section_no'] }}</p>
+                                            </td>
+                                            <td>
+                                                <p>{!! $subSection['sub_section_content'] !!}</p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                @endforeach
+                            @endif
+                            
+                            @if (!empty($section['footnote_model']))
+                                <hr style="width: 10% !important;margin: 10px auto !important;">
+                                @foreach ($section['footnote_model'] as $footnoteModel)
+                                    <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
+                                @endforeach
+                            @endif
                             <hr style="width: 10% !important;margin: 10px auto !important;">
-                            @foreach ($section['footnote_model'] as $footnoteModel)
-                                <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
-                            @endforeach
-                        @endif
-                    @endforeach
-                </div>
-                @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
+
+                        @endforeach
+                    </div>
+                @endif  
                 @if (!empty($item['articles']))   
                     <div style="text-align: start">
                         @foreach ($item['articles'] as $article)
@@ -2444,17 +2422,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($article['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($article['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['rules']))   
                     <div style="text-align: start">
                         @foreach ($item['rules'] as $rule)
@@ -2486,17 +2463,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($rule['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($rule['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['regulation']))   
                     <div style="text-align: start">
                         @foreach ($item['regulation'] as $regulation)
@@ -2528,17 +2504,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($regulation['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($regulation['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['lists']))   
                     <div style="text-align: start">
                         @foreach ($item['lists'] as $list)
@@ -2570,17 +2545,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($list['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($list['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['part']))   
                     <div style="text-align: start">
                         @foreach ($item['part'] as $part)
@@ -2612,17 +2586,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($part['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($part['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['appendices']))   
                     <div style="text-align: start">
                         @foreach ($item['appendices'] as $appendices)
@@ -2654,17 +2627,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($appendices['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($appendices['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['order']))   
                     <div style="text-align: start">
                         @foreach ($item['order'] as $order)
@@ -2696,17 +2668,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($order['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($order['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['annexure']))   
                     <div style="text-align: start">
                         @foreach ($item['annexure'] as $annexure)
@@ -2738,17 +2709,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($annexure['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($annexure['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['stschedule']))   
                     <div style="text-align: start">
                         @foreach ($item['stschedule'] as $stschedule)
@@ -2780,17 +2750,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($stschedule['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($stschedule['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
             @endif
             @if (isset($item['appendix_id']))
                 <div style="text-align: center">
@@ -2829,17 +2798,19 @@
                                     </table>
                                 @endforeach
                             @endif
-        
+                             
                             @if (!empty($section['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($section['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
+
                         @endforeach
                     </div>
-                @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
+                   
+                @endif  
                 @if (!empty($item['articles']))   
                     <div style="text-align: start">
                         @foreach ($item['articles'] as $article)
@@ -2871,17 +2842,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($article['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($article['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['rules']))   
                     <div style="text-align: start">
                         @foreach ($item['rules'] as $rule)
@@ -2913,17 +2883,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($rule['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($rule['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['regulation']))   
                     <div style="text-align: start">
                         @foreach ($item['regulation'] as $regulation)
@@ -2955,17 +2924,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($regulation['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($regulation['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['lists']))   
                     <div style="text-align: start">
                         @foreach ($item['lists'] as $list)
@@ -2997,17 +2965,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($list['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($list['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['part']))   
                     <div style="text-align: start">
                         @foreach ($item['part'] as $part)
@@ -3039,17 +3006,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($part['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($part['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['appendices']))   
                     <div style="text-align: start">
                         @foreach ($item['appendices'] as $appendices)
@@ -3081,17 +3047,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($appendices['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($appendices['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['order']))   
                     <div style="text-align: start">
                         @foreach ($item['order'] as $order)
@@ -3123,17 +3088,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($order['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($order['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['annexure']))   
                     <div style="text-align: start">
                         @foreach ($item['annexure'] as $annexure)
@@ -3165,17 +3129,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($annexure['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($annexure['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['stschedule']))   
                     <div style="text-align: start">
                         @foreach ($item['stschedule'] as $stschedule)
@@ -3207,18 +3170,17 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($stschedule['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($stschedule['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
-           @endif
+            @endif
            @if (isset($item['main_order_id']))
                 <div style="text-align: center">
                     <div style="text-transform: uppercase !important; font-size: 15px !important; margin-top: 0.4rem;">
@@ -3256,17 +3218,18 @@
                                     </table>
                                 @endforeach
                             @endif
-        
+                            
                             @if (!empty($section['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($section['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
+
                         @endforeach
                     </div>
-                @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
+                @endif  
                 @if (!empty($item['articles']))   
                     <div style="text-align: start">
                         @foreach ($item['articles'] as $article)
@@ -3298,17 +3261,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($article['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($article['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['rules']))   
                     <div style="text-align: start">
                         @foreach ($item['rules'] as $rule)
@@ -3340,17 +3302,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($rule['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($rule['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['regulation']))   
                     <div style="text-align: start">
                         @foreach ($item['regulation'] as $regulation)
@@ -3382,17 +3343,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($regulation['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($regulation['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['lists']))   
                     <div style="text-align: start">
                         @foreach ($item['lists'] as $list)
@@ -3424,17 +3384,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($list['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($list['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['part']))   
                     <div style="text-align: start">
                         @foreach ($item['part'] as $part)
@@ -3466,17 +3425,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($part['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($part['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['appendices']))   
                     <div style="text-align: start">
                         @foreach ($item['appendices'] as $appendices)
@@ -3508,17 +3466,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($appendices['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($appendices['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['order']))   
                     <div style="text-align: start">
                         @foreach ($item['order'] as $order)
@@ -3550,17 +3507,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($order['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($order['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['annexure']))   
                     <div style="text-align: start">
                         @foreach ($item['annexure'] as $annexure)
@@ -3592,17 +3548,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($annexure['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($annexure['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
                 @if (!empty($item['stschedule']))   
                     <div style="text-align: start">
                         @foreach ($item['stschedule'] as $stschedule)
@@ -3634,17 +3589,16 @@
                                     </table>
                                 @endforeach
                             @endif
-
                             @if (!empty($stschedule['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($stschedule['footnote_model'] as $footnoteModel)
                                     <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
                                 @endforeach
                             @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
                         @endforeach
                     </div>
                 @endif
-                <hr style="width: 10% !important;margin: 10px auto !important;">
            @endif
     @endforeach 
     </div>

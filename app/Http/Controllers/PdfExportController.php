@@ -476,9 +476,6 @@ class PdfExportController extends Controller
             // Sort the combined items by their serial_no
             ksort($combinedItems);
 
-            dd($combinedItems);
-            die();
-
             $type = MainType::all();
             $act = Act::findOrFail($id);
             $act_footnotes = Act::where('act_id',$id)->get();

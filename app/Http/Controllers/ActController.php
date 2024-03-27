@@ -42,6 +42,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ActController extends Controller
 {
@@ -135,6 +136,7 @@ class ActController extends Controller
             ->sortBy(function ($stschedule) {
                 return [floatval($stschedule->stschedule_rank)];
             });
+            
 
             $mergedCollection = collect([$act_section, $act_article, $act_rule,$act_regulation,$act_list,$act_part,$act_order,$act_annexure,$act_stschedule])->flatten(1)->sortBy('serial_no');
 
