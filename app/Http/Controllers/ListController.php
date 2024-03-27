@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 class ListController extends Controller
 {
-    public function edit_list($id)
+    public function edit_list($id,Request $request)
     {
        $list = Lists::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel','MainOrderModel')->where('list_id', $id)->first();
        $sublist = Lists::where('list_id', $id)
@@ -35,8 +35,8 @@ class ListController extends Controller
        }
 
 
-
-       return view('admin.list.edit', compact('list', 'sublist', 'sub_list_f', 'count'));
+       $currentPage = $request->page;
+       return view('admin.list.edit', compact('list', 'sublist', 'sub_list_f', 'count','currentPage'));
    }
 
    public function update(Request $request, $id)
@@ -45,6 +45,7 @@ class ListController extends Controller
        // die();
 
        // try {
+           $currentPage = $request->currentPage;
            if ($request->has('chapter_id')) {
                $chapter = Chapter::find($request->chapter_id);
    
@@ -237,7 +238,7 @@ class ListController extends Controller
 
 
 
-           return redirect()->route('get_act_section', ['id' => $list->act_id])->with('success', 'List updated successfully');
+           return redirect()->route('get_act_section', ['id' => $list->act_id,'page' => $currentPage])->with('success', 'List updated successfully');
        // } catch (\Exception $e) {
        //     \Log::error('Error updating Act: ' . $e->getMessage());
        //     return redirect()->route('edit-list', ['id' => $id])->withErrors(['error' => 'Failed to update List. Please try again.' . $e->getMessage()]);

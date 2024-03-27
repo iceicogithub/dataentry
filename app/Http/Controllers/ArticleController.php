@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 class ArticleController extends Controller
 {
     
-    public function edit_article($id)
+    public function edit_article($id,Request $request ) 
     {
         $article = Article::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel','MainOrderModel')->where('article_id', $id)->first();
         $subarticle = Article::where('article_id', $id)
@@ -36,8 +36,8 @@ class ArticleController extends Controller
         }
 
 
-
-        return view('admin.article.edit', compact('article', 'subarticle', 'sub_article_f', 'count'));
+        $currentPage = $request->page;
+        return view('admin.article.edit', compact('article', 'subarticle', 'sub_article_f', 'count','currentPage'));
     }
 
 
@@ -47,6 +47,7 @@ class ArticleController extends Controller
         // die();
 
         // try {
+            $currentPage = $request->currentPage;
             if ($request->has('chapter_id')) {
                 $chapter = Chapter::find($request->chapter_id);
     
@@ -239,7 +240,7 @@ class ArticleController extends Controller
 
 
 
-            return redirect()->route('get_act_section', ['id' => $article->act_id])->with('success', 'Article updated successfully');
+            return redirect()->route('get_act_section', ['id' => $article->act_id,'page' => $currentPage])->with('success', 'Article updated successfully');
         // } catch (\Exception $e) {
         //     \Log::error('Error updating Act: ' . $e->getMessage());
         //     return redirect()->route('edit-article', ['id' => $id])->withErrors(['error' => 'Failed to update Article. Please try again.' . $e->getMessage()]);

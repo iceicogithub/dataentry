@@ -42,6 +42,7 @@
                         </div>
                     @endif
                     <input type="hidden" name="stschedule_id" value="{{ $stschedule->stschedule_id }}">
+                    <input type="hidden" name="currentPage" value="{{ $currentPage }}">
                     <input type="hidden" name="chapter_id" value="{{ $stschedule->chapter_id }}">
                     <input type="hidden" name="parts_id" value="{{ $stschedule->parts_id }}">
                     <input type="hidden" name="priliminary_id" value="{{ $stschedule->priliminary_id }}">

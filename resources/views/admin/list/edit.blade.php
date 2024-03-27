@@ -43,6 +43,7 @@
                     @endif
                     <input type="hidden" name="list_id" value="{{ $list->list_id }}">
                     <input type="hidden" name="chapter_id" value="{{ $list->chapter_id }}">
+                    <input type="hidden" name="currentPage" value="{{ $currentPage }}">
                     <input type="hidden" name="parts_id" value="{{ $list->parts_id }}">
                     <input type="hidden" name="priliminary_id" value="{{ $list->priliminary_id }}">
                     <input type="hidden" name="schedule_id" value="{{ $list->schedule_id }}">

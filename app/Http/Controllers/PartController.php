@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 class PartController extends Controller
 {
     
-    public function edit_part($id)
+    public function edit_part($id,Request $request)
     {
        $part = Part::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel','MainOrderModel')->where('part_id', $id)->first();
        $subpart = Part::where('part_id', $id)
@@ -36,8 +36,8 @@ class PartController extends Controller
        }
 
 
-
-       return view('admin.part.edit', compact('part', 'subpart', 'sub_part_f', 'count'));
+       $currentPage = $request->page;
+       return view('admin.part.edit', compact('part', 'subpart', 'sub_part_f', 'count','currentPage'));
    }
 
    public function update(Request $request, $id)
@@ -46,6 +46,7 @@ class PartController extends Controller
        // die();
 
        // try {
+        $currentPage = $request->currentPage;
            if ($request->has('chapter_id')) {
                $chapter = Chapter::find($request->chapter_id);
    
@@ -239,7 +240,7 @@ class PartController extends Controller
 
 
 
-           return redirect()->route('get_act_section', ['id' => $part->act_id])->with('success', 'Part updated successfully');
+           return redirect()->route('get_act_section', ['id' => $part->act_id,'page' => $currentPage])->with('success', 'Part updated successfully');
        // } catch (\Exception $e) {
        //     \Log::error('Error updating Act: ' . $e->getMessage());
        //     return redirect()->route('edit-part', ['id' => $id])->withErrors(['error' => 'Failed to update Part. Please try again.' . $e->getMessage()]);

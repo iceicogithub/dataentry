@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     
-    public function edit_order($id)
+    public function edit_order($id,Request $request)
     {
         $order = Orders::with('ChapterModel', 'Partmodel','Appendixmodel','Schedulemodel','PriliminaryModel','MainOrderModel')->where('order_id', $id)->first();
         $suborder = Orders::where('order_id', $id)
@@ -36,8 +36,8 @@ class OrderController extends Controller
         }
 
 
-
-        return view('admin.Orders.edit', compact('order', 'suborder', 'sub_order_f', 'count'));
+        $currentPage = $request->page;
+        return view('admin.Orders.edit', compact('order', 'suborder', 'sub_order_f', 'count','currentPage'));
     }
 
 
@@ -47,6 +47,7 @@ class OrderController extends Controller
         // die();
 
         // try {
+            $currentPage = $request->currentPage;
             if ($request->has('chapter_id')) {
                 $chapter = Chapter::find($request->chapter_id);
     
@@ -239,7 +240,7 @@ class OrderController extends Controller
 
 
 
-            return redirect()->route('get_act_section', ['id' => $order->act_id])->with('success', 'Order updated successfully');
+            return redirect()->route('get_act_section', ['id' => $order->act_id,'page' => $currentPage])->with('success', 'Order updated successfully');
         // } catch (\Exception $e) {
         //     \Log::error('Error updating Act: ' . $e->getMessage());
         //     return redirect()->route('edit-order', ['id' => $id])->withErrors(['error' => 'Failed to update Orders. Please try again.' . $e->getMessage()]);

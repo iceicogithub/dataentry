@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 class AppendicesController extends Controller
 {
 
-    public function edit_appendices($id)
+    public function edit_appendices($id,Request $request)
     {
         $appendices = Appendices::with('ChapterModel', 'Partmodel', 'Appendixmodel', 'Schedulemodel', 'PriliminaryModel','MainOrderModel')->where('appendices_id', $id)->first();
         $subappendices = Appendices::where('appendices_id', $id)
@@ -39,8 +39,8 @@ class AppendicesController extends Controller
         }
 
 
-
-        return view('admin.appendices.edit', compact('appendices', 'subappendices', 'sub_appendices_f', 'count'));
+        $currentPage = $request->page;
+        return view('admin.appendices.edit', compact('appendices', 'subappendices', 'sub_appendices_f', 'count','currentPage'));
     }
 
 
@@ -50,6 +50,7 @@ class AppendicesController extends Controller
         // die();
 
         // try {
+            $currentPage = $request->currentPage;
         if ($request->has('chapter_id')) {
             $chapter = Chapter::find($request->chapter_id);
 
@@ -242,7 +243,7 @@ class AppendicesController extends Controller
 
 
 
-        return redirect()->route('get_act_section', ['id' => $appendices->act_id])->with('success', 'Appendices updated successfully');
+        return redirect()->route('get_act_section', ['id' => $appendices->act_id,'page' => $currentPage])->with('success', 'Appendices updated successfully');
         // } catch (\Exception $e) {
         //     \Log::error('Error updating Act: ' . $e->getMessage());
         //     return redirect()->route('edit-appendices', ['id' => $id])->withErrors(['error' => 'Failed to update Appendices. Please try again.' . $e->getMessage()]);

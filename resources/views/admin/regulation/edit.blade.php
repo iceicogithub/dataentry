@@ -42,6 +42,7 @@
                         </div>
                     @endif
                     <input type="hidden" name="regulation_id" value="{{ $regulation->regulation_id }}">
+                    <input type="hidden" name="currentPage" value="{{ $currentPage }}">
                     <input type="hidden" name="chapter_id" value="{{ $regulation->chapter_id }}">
                     <input type="hidden" name="parts_id" value="{{ $regulation->parts_id }}">
                     <input type="hidden" name="priliminary_id" value="{{ $regulation->priliminary_id }}">

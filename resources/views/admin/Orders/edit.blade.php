@@ -42,6 +42,7 @@
                         </div>
                     @endif
                     <input type="hidden" name="order_id" value="{{ $order->order_id }}">
+                    <input type="hidden" name="currentPage" value="{{ $currentPage }}">
                     <input type="hidden" name="chapter_id" value="{{ $order->chapter_id }}">
                     <input type="hidden" name="parts_id" value="{{ $order->parts_id }}">
                     <input type="hidden" name="priliminary_id" value="{{ $order->priliminary_id }}">
