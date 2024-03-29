@@ -40,6 +40,7 @@
                     <input type="hidden" name="serial_no" value="{{ $appendices->serial_no }}">
                     <input type="hidden" name="maintype_id" value="{{ $appendices->maintype_id }}">
                     <input type="hidden" name="act_id" value="{{ $appendices->act_id }}">
+                    <input type="hidden" name="currentPage" value="{{ $currentPage }}">
                     {{-- <input type="hidden" name="section_rank" value="{{ $appendices_rank }}"> --}}
                     @if ($appendices->chapter_id)
                         <input type="hidden" name="chapter_id" value="{{ $appendices->chapter_id }}">

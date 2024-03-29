@@ -110,11 +110,11 @@ class ActController extends Controller
                 return [floatval($part->part_rank)];
             });
 
-        // $act_appendices = Appendices::where('act_id', $id)
-        //     ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel','MainOrderModel')->get()
-        //     ->sortBy(function ($appendices) {
-        //         return [floatval($appendices->appendices_rank)];
-        //     });
+        $act_appendices = Appendices::where('act_id', $id)
+            ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel','MainOrderModel')->get()
+            ->sortBy(function ($appendices) {
+                return [floatval($appendices->appendices_rank)];
+            });
 
         $act_order = Orders::where('act_id', $id)
             ->with('MainTypeModel', 'Schedulemodel', 'Appendixmodel', 'Partmodel', 'ChapterModel', 'PriliminaryModel','MainOrderModel')
@@ -137,7 +137,7 @@ class ActController extends Controller
                 return [floatval($stschedule->stschedule_rank)];
             });
 
-            $mergedCollection = collect([$act_section, $act_article, $act_rule,$act_regulation,$act_list,$act_part,$act_order,$act_annexure,$act_stschedule])->flatten(1)->sortBy('serial_no');
+            $mergedCollection = collect([$act_section, $act_article, $act_rule,$act_regulation,$act_list,$act_part,$act_order,$act_annexure,$act_stschedule,$act_appendices])->flatten(1)->sortBy('serial_no');
 
             $perPage = 10; // Specify the number of items per page
             $page = request()->get('page') ?: 1; // Get the current page from the request, default to 1
@@ -156,7 +156,7 @@ class ActController extends Controller
             // dd($act_stschedule);
             // die();
 
-        return view('admin.section.index', compact('paginatedCollection','act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_rule', 'act_article', 'act_regulation', 'act_list', 'act_part', 'act_stschedule', 'act_order', 'act_annexure'));
+        return view('admin.section.index', compact('paginatedCollection','act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions','act_appendices', 'act_rule', 'act_article', 'act_regulation', 'act_list', 'act_part', 'act_stschedule', 'act_order', 'act_annexure'));
     }
 
     public function create(Request $request, $id)

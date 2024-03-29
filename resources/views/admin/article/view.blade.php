@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{$article->act_id}}"><button class="btn btn-danger">Back</button></a>
+                        <a href="/get_act_section/{{$article->act_id}}?page={{ $currentPage }}"><button class="btn btn-danger">Back</button></a>
                     </ol>
 
                 </div>
@@ -44,7 +44,7 @@
 
     <div class="content mt-3">
         <div class="row">
-
+            <input type="hidden" name="currentPage" value="{{ $currentPage }}">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">

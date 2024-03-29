@@ -258,14 +258,15 @@ class ArticleController extends Controller
         // Handle the scenario where no article is found
         abort(404); // or redirect, or return a message
     }
-
-    return view('admin.article.add_new', compact('article'));
+    $currentPage = $request->page;
+    return view('admin.article.add_new', compact('article','currentPage'));
 }
     public function add_new_article(Request $request)
     {
         // dd($request);
         // die();
         try {
+            $currentPage = $request->currentPage;
         if ($request->has('chapter_id')) {
             $chapter = Chapter::find($request->chapter_id);
 
@@ -409,7 +410,7 @@ class ArticleController extends Controller
             }
         }
 
-        return redirect()->route('get_act_section', ['id' =>$article->act_id])->with('success', 'Ayrticle created successfully');
+        return redirect()->route('get_act_section', ['id' =>$article->act_id,'page' => $currentPage])->with('success', 'Ayrticle created successfully');
         } catch (\Exception $e) {
             \Log::error('Error creating Act: ' . $e->getMessage());
 
@@ -422,7 +423,8 @@ class ArticleController extends Controller
     {
         $article = Article::where('article_id', $id)->first();
         $sub_article = SubArticle::where('article_id', $id)->with('footnoteModel')->get();
-        return view('admin.article.view', compact('article','sub_article'));
+        $currentPage = $request->page;
+        return view('admin.article.view', compact('article','sub_article','currentPage'));
     }
 
     public function destroy_sub_article(string $id)

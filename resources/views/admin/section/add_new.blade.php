@@ -40,7 +40,9 @@
 
                         <div class="row">
                             <input type="hidden" name="click_section_rank" value="{{ $sections->section_rank }}">
-                            <input type="hidden" name="serial_no" value="{{ $sections->serial_no }}">        
+                            <input type="hidden" name="serial_no" value="{{ $sections->serial_no }}">  
+                            <input type="hidden" name="currentPage" value="{{ $currentPage }}">
+      
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="role" class=" form-control-label">Select Category<span

@@ -252,8 +252,9 @@ class RulesController extends Controller
         // $rule_rank = $rule_rank;
         $rule = Rules::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel','MainOrderModel')->where('act_id', $id)
             ->where('rule_id', $rule_id)->first();
-
-        return view('admin.rules.add_new', compact('rule'));
+          
+        $currentPage = $request->page;
+        return view('admin.rules.add_new', compact('rule','currentPage'));
     }
 
     public function add_new_rule(Request $request)
@@ -261,6 +262,8 @@ class RulesController extends Controller
         // dd($request);
         // die();
         try {
+
+            $currentPage = $request->currentPage;
             if ($request->has('chapter_id')) {
                 $chapter = Chapter::find($request->chapter_id);
      
@@ -408,7 +411,7 @@ class RulesController extends Controller
                 }
             }
 
-            return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Rules created successfully');
+            return redirect()->route('get_act_section', ['id' => $id,'page' => $currentPage])->with('success', 'Rules created successfully');
         } catch (\Exception $e) {
             \Log::error('Error creating Act: ' . $e->getMessage());
 
@@ -420,7 +423,8 @@ class RulesController extends Controller
     {
         $rule = Rules::where('rule_id', $id)->first();
         $sub_rule = SubRules::where('rule_id', $id)->with('footnoteModel')->get();
-        return view('admin.rules.view', compact('rule','sub_rule'));
+        $currentPage = $request->page;
+        return view('admin.rules.view', compact('rule','sub_rule','currentPage'));
     }
 
     public function destroy_sub_rule(string $id)

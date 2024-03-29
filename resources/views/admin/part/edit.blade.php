@@ -213,7 +213,7 @@
                                                                             value="{{ $subPartItem->sub_part_no ?? '' }}"
                                                                             placeholder="Enter Sub-Part No."
                                                                             style="width: 20%;"
-                                                                            data-index="{{ $k }}"">
+                                                                            data-index="{{ $k }}">
 
                                                                     </span>
                                                                     <textarea type="text" name="sub_part_content[{{ $k }}]"

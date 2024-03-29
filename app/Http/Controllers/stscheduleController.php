@@ -253,8 +253,8 @@ class stscheduleController extends Controller
         // $stschedule_rank = $stschedule_rank;
         $stschedule = Stschedule::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel','MainOrderModel')->where('act_id', $id)
             ->where('stschedule_id', $stschedule_id)->first();
-
-        return view('admin.stschedule.add_new', compact('stschedule'));
+        $currentPage = $request->page;
+        return view('admin.stschedule.add_new', compact('stschedule','currentPage'));
     }
 
     public function add_new_stschedule(Request $request)
@@ -262,6 +262,7 @@ class stscheduleController extends Controller
         // dd($request);
         // die();
         try {
+            $currentPage = $request->currentPage;
         if ($request->has('chapter_id')) {
             $chapter = Chapter::find($request->chapter_id);
 
@@ -408,7 +409,7 @@ class stscheduleController extends Controller
             }
         }
 
-        return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Ayrticle created successfully');
+        return redirect()->route('get_act_section', ['id' => $id,'page' => $currentPage])->with('success', 'Ayrticle created successfully');
         } catch (\Exception $e) {
             \Log::error('Error creating Act: ' . $e->getMessage());
 
