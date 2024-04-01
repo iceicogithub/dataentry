@@ -43,7 +43,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class ActController extends Controller
 {
@@ -141,19 +141,17 @@ class ActController extends Controller
 
             $mergedCollection = collect([$act_section, $act_article, $act_rule,$act_regulation,$act_list,$act_part,$act_order,$act_annexure,$act_stschedule])->flatten(1)->sortBy('serial_no');
 
-            $perPage = 10; // Specify the number of items per page
-            $page = request()->get('page') ?: 1; // Get the current page from the request, default to 1
+            $perPage = 10; 
+            $page = request()->get('page') ?: 1;  
             $slicedData = $mergedCollection->forPage($page, $perPage);
             
-            // Create a Paginator instance with the sliced data
             $paginatedCollection = new LengthAwarePaginator(
                 $slicedData,
-                $mergedCollection->count(), // Total item count
+                $mergedCollection->count(), 
                 $perPage,
                 $page
             );
             
-            // Optionally, set additional URL parameters for the paginator links
             $paginatedCollection->withPath(request()->url());
             // dd($act_stschedule);
             // die();
@@ -1907,7 +1905,455 @@ class ActController extends Controller
     public function view(Request $request, $id)
     {
         $export = Act::where('act_id', $id)->get();
-        return view('admin.act.view', compact('export'));
+        $chapters = Chapter::where('act_id', $id)
+        ->with(['Sections' => function ($query) {
+            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('section_id')
+                ->orderBy('section_rank');
+                
+        }])
+        ->with(['Articles' => function ($query) {
+            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('article_id')
+                ->orderBy('article_rank');
+               
+        }])
+        ->with(['Rules' => function ($query) {
+            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('rule_id')
+                ->orderBy('rule_rank');
+                
+        }])
+        ->with(['Regulation' => function ($query) {
+            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('regulation_id')
+                ->orderBy('regulation_rank');
+                
+        }])
+        ->with(['Lists' => function ($query) {
+            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('list_id')
+                ->orderBy('list_rank');
+                
+        }])
+        ->with(['Part' => function ($query) {
+            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('part_id')
+                ->orderBy('part_rank');
+              
+        }])
+        ->with(['Appendices' => function ($query) {
+            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('appendices_id')
+                ->orderBy('appendices_rank');
+                
+        }])
+        ->with(['Order' => function ($query) {
+            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('order_id')
+                ->orderBy('order_rank');
+               
+        }])
+        ->with(['Annexure' => function ($query) {
+            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('annexure_id')
+                ->orderBy('annexure_rank');
+               
+        }])
+        ->with(['Stschedule' => function ($query) {
+             $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('stschedule_id')
+                ->orderBy('stschedule_rank');
+                
+        }])
+        ->orderBy('chapter_id')
+        ->orderBy('serial_no')
+        ->get();
+
+
+        $parts = Parts::where('act_id', $id)
+        ->with(['Sections' => function ($query) {
+            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('section_id')
+                ->orderBy('section_rank');
+                
+        }])
+        ->with(['Articles' => function ($query) {
+            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('article_id')
+                ->orderBy('article_rank');
+               
+        }])
+        ->with(['Rules' => function ($query) {
+            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('rule_id')
+                ->orderBy('rule_rank');
+                
+        }])
+        ->with(['Regulation' => function ($query) {
+            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('regulation_id')
+                ->orderBy('regulation_rank');
+                
+        }])
+        ->with(['Lists' => function ($query) {
+            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('list_id')
+                ->orderBy('list_rank');
+                
+        }])
+        ->with(['Part' => function ($query) {
+            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('part_id')
+                ->orderBy('part_rank');
+              
+        }])
+        ->with(['Appendices' => function ($query) {
+            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('appendices_id')
+                ->orderBy('appendices_rank');
+                
+        }])
+        ->with(['Order' => function ($query) {
+            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('order_id')
+                ->orderBy('order_rank');
+               
+        }])
+        ->with(['Annexure' => function ($query) {
+            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('annexure_id')
+                ->orderBy('annexure_rank');
+               
+        }])
+        ->with(['Stschedule' => function ($query) {
+             $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('stschedule_id')
+                ->orderBy('stschedule_rank');
+                
+        }])
+        ->orderBy('parts_id')
+        ->orderBy('serial_no')
+        ->get();
+
+
+
+        $priliminarys = Priliminary::where('act_id', $id)
+        ->with(['Sections' => function ($query) {
+            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('section_id')
+                ->orderBy('section_rank');
+                
+        }])
+        ->with(['Articles' => function ($query) {
+            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('article_id')
+                ->orderBy('article_rank');
+               
+        }])
+        ->with(['Rules' => function ($query) {
+            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('rule_id')
+                ->orderBy('rule_rank');
+                
+        }])
+        ->with(['Regulation' => function ($query) {
+            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('regulation_id')
+                ->orderBy('regulation_rank');
+                
+        }])
+        ->with(['Lists' => function ($query) {
+            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('list_id')
+                ->orderBy('list_rank');
+                
+        }])
+        ->with(['Part' => function ($query) {
+            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('part_id')
+                ->orderBy('part_rank');
+              
+        }])
+        ->with(['Appendices' => function ($query) {
+            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('appendices_id')
+                ->orderBy('appendices_rank');
+                
+        }])
+        ->with(['Order' => function ($query) {
+            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('order_id')
+                ->orderBy('order_rank');
+               
+        }])
+        ->with(['Annexure' => function ($query) {
+            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('annexure_id')
+                ->orderBy('annexure_rank');
+               
+        }])
+        ->with(['Stschedule' => function ($query) {
+             $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('stschedule_id')
+                ->orderBy('stschedule_rank');
+                
+        }])
+        ->orderBy('priliminary_id')
+        ->orderBy('serial_no')
+        ->get();
+
+        $schedules = Schedule::where('act_id', $id)
+        ->with(['Sections' => function ($query) {
+            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('section_id')
+                ->orderBy('section_rank');
+                
+        }])
+        ->with(['Articles' => function ($query) {
+            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('article_id')
+                ->orderBy('article_rank');
+               
+        }])
+        ->with(['Rules' => function ($query) {
+            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('rule_id')
+                ->orderBy('rule_rank');
+                
+        }])
+        ->with(['Regulation' => function ($query) {
+            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('regulation_id')
+                ->orderBy('regulation_rank');
+                
+        }])
+        ->with(['Lists' => function ($query) {
+            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('list_id')
+                ->orderBy('list_rank');
+                
+        }])
+        ->with(['Part' => function ($query) {
+            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('part_id')
+                ->orderBy('part_rank');
+              
+        }])
+        ->with(['Appendices' => function ($query) {
+            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('appendices_id')
+                ->orderBy('appendices_rank');
+                
+        }])
+        ->with(['Order' => function ($query) {
+            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('order_id')
+                ->orderBy('order_rank');
+               
+        }])
+        ->with(['Annexure' => function ($query) {
+            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('annexure_id')
+                ->orderBy('annexure_rank');
+               
+        }])
+        ->with(['Stschedule' => function ($query) {
+             $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('stschedule_id')
+                ->orderBy('stschedule_rank');
+                
+        }])
+        ->orderBy('schedule_id')
+        ->orderBy('serial_no')
+        ->get();
+
+        $appendixes = Appendix::where('act_id', $id)
+        ->with(['Sections' => function ($query) {
+            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('section_id')
+                ->orderBy('section_rank');
+                
+        }])
+        ->with(['Articles' => function ($query) {
+            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('article_id')
+                ->orderBy('article_rank');
+               
+        }])
+        ->with(['Rules' => function ($query) {
+            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('rule_id')
+                ->orderBy('rule_rank');
+                
+        }])
+        ->with(['Regulation' => function ($query) {
+            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('regulation_id')
+                ->orderBy('regulation_rank');
+                
+        }])
+        ->with(['Lists' => function ($query) {
+            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('list_id')
+                ->orderBy('list_rank');
+                
+        }])
+        ->with(['Part' => function ($query) {
+            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('part_id')
+                ->orderBy('part_rank');
+              
+        }])
+        ->with(['Appendices' => function ($query) {
+            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('appendices_id')
+                ->orderBy('appendices_rank');
+                
+        }])
+        ->with(['Order' => function ($query) {
+            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('order_id')
+                ->orderBy('order_rank');
+               
+        }])
+        ->with(['Annexure' => function ($query) {
+            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('annexure_id')
+                ->orderBy('annexure_rank');
+               
+        }])
+        ->with(['Stschedule' => function ($query) {
+             $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('stschedule_id')
+                ->orderBy('stschedule_rank');
+                
+        }])
+        ->orderBy('appendix_id')
+        ->orderBy('serial_no')
+        ->get();
+
+        $mainOrders = MainOrder::where('act_id', $id)
+        ->with(['Sections' => function ($query) {
+            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('section_id')
+                ->orderBy('section_rank');
+                
+        }])
+        ->with(['Articles' => function ($query) {
+            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('article_id')
+                ->orderBy('article_rank');
+               
+        }])
+        ->with(['Rules' => function ($query) {
+            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('rule_id')
+                ->orderBy('rule_rank');
+                
+        }])
+        ->with(['Regulation' => function ($query) {
+            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('regulation_id')
+                ->orderBy('regulation_rank');
+                
+        }])
+        ->with(['Lists' => function ($query) {
+            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('list_id')
+                ->orderBy('list_rank');
+                
+        }])
+        ->with(['Part' => function ($query) {
+            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('part_id')
+                ->orderBy('part_rank');
+              
+        }])
+        ->with(['Appendices' => function ($query) {
+            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('appendices_id')
+                ->orderBy('appendices_rank');
+                
+        }])
+        ->with(['Order' => function ($query) {
+            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('order_id')
+                ->orderBy('order_rank');
+               
+        }])
+        ->with(['Annexure' => function ($query) {
+            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('annexure_id')
+                ->orderBy('annexure_rank');
+               
+        }])
+        ->with(['Stschedule' => function ($query) {
+             $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                ->orderBy('stschedule_id')
+                ->orderBy('stschedule_rank');
+                
+        }])
+        ->orderBy('main_order_id')
+        ->orderBy('serial_no')
+        ->get();
+
+        // dd($parts);
+        // die();
+
+
+
+    $combinedItems = collect([]);
+
+    foreach ($chapters as $chapter) {
+        $chapterData = $chapter->toArray();
+        $combinedItems->put($chapter->serial_no, $chapterData);
+    }
+
+    foreach ($parts as $part) {
+        $partData = $part->toArray();
+        $combinedItems->put($part->serial_no, $partData);
+    }
+
+    foreach ($priliminarys as $priliminary) {
+        $priliminaryData = $priliminary->toArray();
+        $combinedItems->put($priliminary->serial_no, $priliminaryData);
+    }
+
+    foreach ($schedules as $schedule) {
+        $scheduleData = $schedule->toArray();
+        $combinedItems->put($schedule->serial_no, $scheduleData);
+    }
+
+    foreach ($appendixes as $appendix) {
+        $appendixData = $appendix->toArray();
+        $combinedItems->put($appendix->serial_no, $appendixData);
+    }
+
+    foreach ($mainOrders as $mainOrder) {
+        $mainOrderData = $mainOrder->toArray();
+        $combinedItems->put($mainOrder->serial_no, $mainOrderData);
+    }
+
+    // Sort the combined items by their serial_no
+    $combinedItems = $combinedItems->sortBy(function ($item, $key) {
+        return $key;
+    });
+
+
+    $perPage = 10; 
+    $page = request()->get('page') ?: 1;  
+    $slicedData = $combinedItems->forPage($page, $perPage);
+
+    $paginatedItems = new LengthAwarePaginator(
+        $slicedData,
+        $combinedItems->count(), 
+        $perPage,
+        $page
+    );
+
+    $paginatedItems->withPath(request()->url());
+            return view('admin.act.view', compact('export','paginatedItems'));
     }
     public function update_main_act(Request $request, $id)
     {
@@ -2035,6 +2481,95 @@ class ActController extends Controller
             \Log::error('Error deleting act and related records: ' . $e->getMessage());
 
             return redirect()->back()->withErrors(['error' => 'Failed to delete act and related records. Please try again.' . $e->getMessage()]);
+        }
+    }
+
+    public function delete_parts($id) {
+        $parts = Parts::find($id);
+        if ($parts) {
+            try {
+                $parts->delete();
+                return redirect()->back()->with('success', 'Parts deleted successfully');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Failed to delete parts. Error: ' . $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('error', 'Parts not found');
+        }
+    }
+
+    public function delete_chapter($id) {
+        $chapter = Chapter::find($id);
+        if ($chapter) {
+            try {
+                
+                $chapter->delete();
+                return redirect()->back()->with('success', 'chapter deleted successfully');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Failed to delete chapter. Error: ' . $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('error', 'chapter not found');
+        }
+    }
+
+    public function delete_priliminary($id) {
+        $priliminary = Priliminary::find($id);
+        if ($priliminary) {
+            try {
+                
+                $priliminary->delete();
+                return redirect()->back()->with('success', 'priliminary deleted successfully');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Failed to delete priliminary. Error: ' . $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('error', 'priliminary not found');
+        }
+    }
+
+    public function delete_schedule($id) {
+        $schedule = Schedule::find($id);
+        if ($schedule) {
+            try {
+                
+                $schedule->delete();
+                return redirect()->back()->with('success', 'schedule deleted successfully');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Failed to delete schedule. Error: ' . $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('error', 'schedule not found');
+        }
+    }
+
+    public function delete_appendix($id) {
+        $appendix = Appendix::find($id);
+        if ($appendix) {
+            try {
+                
+                $appendix->delete();
+                return redirect()->back()->with('success', 'appendix deleted successfully');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Failed to delete appendix. Error: ' . $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('error', 'appendix not found');
+        }
+    }
+
+    public function delete_main_order($id) {
+        $main_order = MainOrder::find($id);
+        if ($main_order) {
+            try {
+                
+                $main_order->delete();
+                return redirect()->back()->with('success', 'order deleted successfully');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Failed to delete order. Error: ' . $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('error', 'order not found');
         }
     }
 }

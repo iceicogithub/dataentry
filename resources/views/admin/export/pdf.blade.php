@@ -1093,7 +1093,6 @@
                 @if (!empty($item['sections']))   
                     <div style="text-align: start">
                         @foreach ($item['sections'] as $section)
-                            <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
@@ -1104,7 +1103,6 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </strong>
                             <span>{!! $section['section_content'] !!}</span>
                             
                             @if (!empty($section['subsection_model']))
@@ -1137,8 +1135,7 @@
                 @if (!empty($item['articles']))   
                     <div style="text-align: start">
                         @foreach ($item['articles'] as $article)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $article['article_no'] }}</p>
@@ -1147,8 +1144,7 @@
                                             <p>{!! $article['article_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $article['article_content'] !!}</span>
                             
                             @if (!empty($article['sub_article_model']))
@@ -1178,8 +1174,7 @@
                 @if (!empty($item['rules']))   
                     <div style="text-align: start">
                         @foreach ($item['rules'] as $rule)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $rule['rule_no'] }}</p>
@@ -1188,8 +1183,7 @@
                                             <p>{!! $rule['rule_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $rule['rule_content'] !!}</span>
                             
                             @if (!empty($rule['subrule_model']))
@@ -1219,8 +1213,7 @@
                 @if (!empty($item['regulation']))   
                     <div style="text-align: start">
                         @foreach ($item['regulation'] as $regulation)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $regulation['regulation_no'] }}</p>
@@ -1229,8 +1222,7 @@
                                             <p>{!! $regulation['regulation_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $regulation['regulation_content'] !!}</span>
                             
                             @if (!empty($regulation['sub_regulation_model']))
@@ -1260,8 +1252,7 @@
                 @if (!empty($item['lists']))   
                     <div style="text-align: start">
                         @foreach ($item['lists'] as $list)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $list['list_no'] }}</p>
@@ -1270,8 +1261,7 @@
                                             <p>{!! $list['list_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $list['list_content'] !!}</span>
                             
                             @if (!empty($list['sub_list_model']))
@@ -1301,8 +1291,7 @@
                 @if (!empty($item['part']))   
                     <div style="text-align: start">
                         @foreach ($item['part'] as $part)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $part['part_no'] }}</p>
@@ -1311,8 +1300,7 @@
                                             <p>{!! $part['part_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $part['part_content'] !!}</span>
                             
                             @if (!empty($part['sub_part_model']))
@@ -1342,8 +1330,7 @@
                 @if (!empty($item['appendices']))   
                     <div style="text-align: start">
                         @foreach ($item['appendices'] as $appendices)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $appendices['appendices_no'] }}</p>
@@ -1352,8 +1339,7 @@
                                             <p>{!! $appendices['appendices_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $appendices['appendices_content'] !!}</span>
                             
                             @if (!empty($appendices['sub_appendices_model']))
@@ -1383,8 +1369,7 @@
                 @if (!empty($item['order']))   
                     <div style="text-align: start">
                         @foreach ($item['order'] as $order)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $order['order_no'] }}</p>
@@ -1393,8 +1378,7 @@
                                             <p>{!! $order['order_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $order['order_content'] !!}</span>
                             
                             @if (!empty($order['sub_order_model']))
@@ -1424,8 +1408,7 @@
                 @if (!empty($item['annexure']))   
                     <div style="text-align: start">
                         @foreach ($item['annexure'] as $annexure)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $annexure['annexure_no'] }}</p>
@@ -1434,8 +1417,7 @@
                                             <p>{!! $annexure['annexure_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $annexure['annexure_content'] !!}</span>
                             
                             @if (!empty($annexure['sub_annexure_model']))
@@ -1465,8 +1447,7 @@
                 @if (!empty($item['stschedule']))   
                     <div style="text-align: start">
                         @foreach ($item['stschedule'] as $stschedule)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $stschedule['stschedule_no'] }}</p>
@@ -1475,8 +1456,7 @@
                                             <p>{!! $stschedule['stschedule_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $stschedule['stschedule_content'] !!}</span>
                             
                             @if (!empty($stschedule['sub_stschedule_model']))
@@ -1513,7 +1493,6 @@
                 @if (!empty($item['sections']))   
                     <div style="text-align: start">
                         @foreach ($item['sections'] as $section)
-                            <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
@@ -1524,7 +1503,6 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </strong>
                             <span>{!! $section['section_content'] !!}</span>
                             
                             @if (!empty($section['subsection_model']))
@@ -1541,7 +1519,7 @@
                                     </table>
                                 @endforeach
                             @endif
-                             
+                            
                             @if (!empty($section['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($section['footnote_model'] as $footnoteModel)
@@ -1551,13 +1529,12 @@
                             <hr style="width: 10% !important;margin: 10px auto !important;">
 
                         @endforeach
-                    </div> 
+                    </div>
                 @endif  
                 @if (!empty($item['articles']))   
                     <div style="text-align: start">
                         @foreach ($item['articles'] as $article)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $article['article_no'] }}</p>
@@ -1566,8 +1543,7 @@
                                             <p>{!! $article['article_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $article['article_content'] !!}</span>
                             
                             @if (!empty($article['sub_article_model']))
@@ -1595,51 +1571,48 @@
                     </div>
                 @endif
                 @if (!empty($item['rules']))   
-                        <div style="text-align: start">
-                            @foreach ($item['rules'] as $rule)
-                                <strong>
-                                    <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                    <div style="text-align: start">
+                        @foreach ($item['rules'] as $rule)
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                                    <tr>
+                                        <td style="vertical-align: baseline;">
+                                            <p>{{ $rule['rule_no'] }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{!! $rule['rule_title'] !!}</p>
+                                        </td>
+                                    </tr>
+                            </table>
+                            <span>{!! $rule['rule_content'] !!}</span>
+                            
+                            @if (!empty($rule['subrule_model']))
+                                @foreach ($rule['subrule_model'] as $subRule)
+                                    <table style="margin-left: 2%; text-align: justify; margin-top: 0.4rem; page-break-inside: avoid;">
                                         <tr>
                                             <td style="vertical-align: baseline;">
-                                                <p>{{ $rule['rule_no'] }}</p>
+                                                <p>{{ $subRule['sub_rule_no'] }}</p>
                                             </td>
                                             <td>
-                                                <p>{!! $rule['rule_title'] !!}</p>
+                                                <p>{!! $subRule['sub_rule_content'] !!}</p>
                                             </td>
                                         </tr>
                                     </table>
-                                </strong>
-                                <span>{!! $rule['rule_content'] !!}</span>
-                                
-                                @if (!empty($rule['subrule_model']))
-                                    @foreach ($rule['subrule_model'] as $subRule)
-                                        <table style="margin-left: 2%; text-align: justify; margin-top: 0.4rem; page-break-inside: avoid;">
-                                            <tr>
-                                                <td style="vertical-align: baseline;">
-                                                    <p>{{ $subRule['sub_rule_no'] }}</p>
-                                                </td>
-                                                <td>
-                                                    <p>{!! $subRule['sub_rule_content'] !!}</p>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    @endforeach
-                                @endif
-                                @if (!empty($rule['footnote_model']))
-                                    <hr style="width: 10% !important;margin: 10px auto !important;">
-                                    @foreach ($rule['footnote_model'] as $footnoteModel)
-                                        <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
-                                    @endforeach
-                                @endif
+                                @endforeach
+                            @endif
+                            @if (!empty($rule['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
-                            @endforeach
-                        </div>
+                                @foreach ($rule['footnote_model'] as $footnoteModel)
+                                    <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
+                                @endforeach
+                            @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
+                        @endforeach
+                    </div>
                 @endif
                 @if (!empty($item['regulation']))   
                     <div style="text-align: start">
                         @foreach ($item['regulation'] as $regulation)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $regulation['regulation_no'] }}</p>
@@ -1648,8 +1621,7 @@
                                             <p>{!! $regulation['regulation_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $regulation['regulation_content'] !!}</span>
                             
                             @if (!empty($regulation['sub_regulation_model']))
@@ -1679,8 +1651,7 @@
                 @if (!empty($item['lists']))   
                     <div style="text-align: start">
                         @foreach ($item['lists'] as $list)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $list['list_no'] }}</p>
@@ -1689,8 +1660,7 @@
                                             <p>{!! $list['list_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $list['list_content'] !!}</span>
                             
                             @if (!empty($list['sub_list_model']))
@@ -1718,51 +1688,48 @@
                     </div>
                 @endif
                 @if (!empty($item['part']))   
-                        <div style="text-align: start">
-                            @foreach ($item['part'] as $part)
-                                <strong>
-                                    <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                    <div style="text-align: start">
+                        @foreach ($item['part'] as $part)
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                                    <tr>
+                                        <td style="vertical-align: baseline;">
+                                            <p>{{ $part['part_no'] }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{!! $part['part_title'] !!}</p>
+                                        </td>
+                                    </tr>
+                            </table>
+                            <span>{!! $part['part_content'] !!}</span>
+                            
+                            @if (!empty($part['sub_part_model']))
+                                @foreach ($part['sub_part_model'] as $subPart)
+                                    <table style="margin-left: 2%; text-align: justify; margin-top: 0.4rem; page-break-inside: avoid;">
                                         <tr>
                                             <td style="vertical-align: baseline;">
-                                                <p>{{ $part['part_no'] }}</p>
+                                                <p>{{ $subPart['sub_part_no'] }}</p>
                                             </td>
                                             <td>
-                                                <p>{!! $part['part_title'] !!}</p>
+                                                <p>{!! $subPart['sub_part_content'] !!}</p>
                                             </td>
                                         </tr>
                                     </table>
-                                </strong>
-                                <span>{!! $part['part_content'] !!}</span>
-                                
-                                @if (!empty($part['sub_part_model']))
-                                    @foreach ($part['sub_part_model'] as $subPart)
-                                        <table style="margin-left: 2%; text-align: justify; margin-top: 0.4rem; page-break-inside: avoid;">
-                                            <tr>
-                                                <td style="vertical-align: baseline;">
-                                                    <p>{{ $subPart['sub_part_no'] }}</p>
-                                                </td>
-                                                <td>
-                                                    <p>{!! $subPart['sub_part_content'] !!}</p>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    @endforeach
-                                @endif
-                                @if (!empty($part['footnote_model']))
-                                    <hr style="width: 10% !important;margin: 10px auto !important;">
-                                    @foreach ($part['footnote_model'] as $footnoteModel)
-                                        <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
-                                    @endforeach
-                                @endif
+                                @endforeach
+                            @endif
+                            @if (!empty($part['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
-                            @endforeach
-                        </div>
+                                @foreach ($part['footnote_model'] as $footnoteModel)
+                                    <em class="footnote" style="padding-left: 2rem !important; font-size: 12px !important; margin-top: 0.4rem;">{!! $footnoteModel['footnote_content'] !!}</em>
+                                @endforeach
+                            @endif
+                            <hr style="width: 10% !important;margin: 10px auto !important;">
+                        @endforeach
+                    </div>
                 @endif
                 @if (!empty($item['appendices']))   
                     <div style="text-align: start">
                         @foreach ($item['appendices'] as $appendices)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $appendices['appendices_no'] }}</p>
@@ -1771,8 +1738,7 @@
                                             <p>{!! $appendices['appendices_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $appendices['appendices_content'] !!}</span>
                             
                             @if (!empty($appendices['sub_appendices_model']))
@@ -1802,8 +1768,7 @@
                 @if (!empty($item['order']))   
                     <div style="text-align: start">
                         @foreach ($item['order'] as $order)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $order['order_no'] }}</p>
@@ -1812,8 +1777,7 @@
                                             <p>{!! $order['order_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $order['order_content'] !!}</span>
                             
                             @if (!empty($order['sub_order_model']))
@@ -1843,8 +1807,7 @@
                 @if (!empty($item['annexure']))   
                     <div style="text-align: start">
                         @foreach ($item['annexure'] as $annexure)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $annexure['annexure_no'] }}</p>
@@ -1853,8 +1816,7 @@
                                             <p>{!! $annexure['annexure_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $annexure['annexure_content'] !!}</span>
                             
                             @if (!empty($annexure['sub_annexure_model']))
@@ -1884,8 +1846,7 @@
                 @if (!empty($item['stschedule']))   
                     <div style="text-align: start">
                         @foreach ($item['stschedule'] as $stschedule)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $stschedule['stschedule_no'] }}</p>
@@ -1894,8 +1855,7 @@
                                             <p>{!! $stschedule['stschedule_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $stschedule['stschedule_content'] !!}</span>
                             
                             @if (!empty($stschedule['sub_stschedule_model']))
@@ -1932,7 +1892,6 @@
                 @if (!empty($item['sections']))   
                     <div style="text-align: start">
                         @foreach ($item['sections'] as $section)
-                            <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
@@ -1943,7 +1902,6 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </strong>
                             <span>{!! $section['section_content'] !!}</span>
                             
                             @if (!empty($section['subsection_model']))
@@ -1970,13 +1928,12 @@
                             <hr style="width: 10% !important;margin: 10px auto !important;">
 
                         @endforeach
-                    </div>
+                    </div>   
                 @endif  
                 @if (!empty($item['articles']))   
                     <div style="text-align: start">
                         @foreach ($item['articles'] as $article)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $article['article_no'] }}</p>
@@ -1985,8 +1942,7 @@
                                             <p>{!! $article['article_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $article['article_content'] !!}</span>
                             
                             @if (!empty($article['sub_article_model']))
@@ -2016,8 +1972,7 @@
                 @if (!empty($item['rules']))   
                     <div style="text-align: start">
                         @foreach ($item['rules'] as $rule)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $rule['rule_no'] }}</p>
@@ -2026,8 +1981,7 @@
                                             <p>{!! $rule['rule_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $rule['rule_content'] !!}</span>
                             
                             @if (!empty($rule['subrule_model']))
@@ -2057,8 +2011,7 @@
                 @if (!empty($item['regulation']))   
                     <div style="text-align: start">
                         @foreach ($item['regulation'] as $regulation)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $regulation['regulation_no'] }}</p>
@@ -2067,8 +2020,7 @@
                                             <p>{!! $regulation['regulation_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $regulation['regulation_content'] !!}</span>
                             
                             @if (!empty($regulation['sub_regulation_model']))
@@ -2098,8 +2050,7 @@
                 @if (!empty($item['lists']))   
                     <div style="text-align: start">
                         @foreach ($item['lists'] as $list)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $list['list_no'] }}</p>
@@ -2108,8 +2059,7 @@
                                             <p>{!! $list['list_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $list['list_content'] !!}</span>
                             
                             @if (!empty($list['sub_list_model']))
@@ -2139,8 +2089,7 @@
                 @if (!empty($item['part']))   
                     <div style="text-align: start">
                         @foreach ($item['part'] as $part)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $part['part_no'] }}</p>
@@ -2149,8 +2098,7 @@
                                             <p>{!! $part['part_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $part['part_content'] !!}</span>
                             
                             @if (!empty($part['sub_part_model']))
@@ -2180,8 +2128,7 @@
                 @if (!empty($item['appendices']))   
                     <div style="text-align: start">
                         @foreach ($item['appendices'] as $appendices)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $appendices['appendices_no'] }}</p>
@@ -2190,8 +2137,7 @@
                                             <p>{!! $appendices['appendices_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $appendices['appendices_content'] !!}</span>
                             
                             @if (!empty($appendices['sub_appendices_model']))
@@ -2221,8 +2167,7 @@
                 @if (!empty($item['order']))   
                     <div style="text-align: start">
                         @foreach ($item['order'] as $order)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $order['order_no'] }}</p>
@@ -2231,8 +2176,7 @@
                                             <p>{!! $order['order_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $order['order_content'] !!}</span>
                             
                             @if (!empty($order['sub_order_model']))
@@ -2262,8 +2206,7 @@
                 @if (!empty($item['annexure']))   
                     <div style="text-align: start">
                         @foreach ($item['annexure'] as $annexure)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $annexure['annexure_no'] }}</p>
@@ -2272,8 +2215,7 @@
                                             <p>{!! $annexure['annexure_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $annexure['annexure_content'] !!}</span>
                             
                             @if (!empty($annexure['sub_annexure_model']))
@@ -2303,8 +2245,7 @@
                 @if (!empty($item['stschedule']))   
                     <div style="text-align: start">
                         @foreach ($item['stschedule'] as $stschedule)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $stschedule['stschedule_no'] }}</p>
@@ -2313,8 +2254,7 @@
                                             <p>{!! $stschedule['stschedule_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $stschedule['stschedule_content'] !!}</span>
                             
                             @if (!empty($stschedule['sub_stschedule_model']))
@@ -2351,7 +2291,6 @@
                 @if (!empty($item['sections']))   
                     <div style="text-align: start">
                         @foreach ($item['sections'] as $section)
-                            <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
@@ -2362,7 +2301,6 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </strong>
                             <span>{!! $section['section_content'] !!}</span>
                             
                             @if (!empty($section['subsection_model']))
@@ -2379,7 +2317,7 @@
                                     </table>
                                 @endforeach
                             @endif
-                            
+                             
                             @if (!empty($section['footnote_model']))
                                 <hr style="width: 10% !important;margin: 10px auto !important;">
                                 @foreach ($section['footnote_model'] as $footnoteModel)
@@ -2390,12 +2328,12 @@
 
                         @endforeach
                     </div>
+                   
                 @endif  
                 @if (!empty($item['articles']))   
                     <div style="text-align: start">
                         @foreach ($item['articles'] as $article)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $article['article_no'] }}</p>
@@ -2404,8 +2342,7 @@
                                             <p>{!! $article['article_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $article['article_content'] !!}</span>
                             
                             @if (!empty($article['sub_article_model']))
@@ -2435,8 +2372,7 @@
                 @if (!empty($item['rules']))   
                     <div style="text-align: start">
                         @foreach ($item['rules'] as $rule)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $rule['rule_no'] }}</p>
@@ -2445,8 +2381,7 @@
                                             <p>{!! $rule['rule_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $rule['rule_content'] !!}</span>
                             
                             @if (!empty($rule['subrule_model']))
@@ -2476,8 +2411,7 @@
                 @if (!empty($item['regulation']))   
                     <div style="text-align: start">
                         @foreach ($item['regulation'] as $regulation)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $regulation['regulation_no'] }}</p>
@@ -2486,8 +2420,7 @@
                                             <p>{!! $regulation['regulation_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $regulation['regulation_content'] !!}</span>
                             
                             @if (!empty($regulation['sub_regulation_model']))
@@ -2517,8 +2450,7 @@
                 @if (!empty($item['lists']))   
                     <div style="text-align: start">
                         @foreach ($item['lists'] as $list)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $list['list_no'] }}</p>
@@ -2527,8 +2459,7 @@
                                             <p>{!! $list['list_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $list['list_content'] !!}</span>
                             
                             @if (!empty($list['sub_list_model']))
@@ -2558,8 +2489,7 @@
                 @if (!empty($item['part']))   
                     <div style="text-align: start">
                         @foreach ($item['part'] as $part)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $part['part_no'] }}</p>
@@ -2568,8 +2498,7 @@
                                             <p>{!! $part['part_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $part['part_content'] !!}</span>
                             
                             @if (!empty($part['sub_part_model']))
@@ -2599,8 +2528,7 @@
                 @if (!empty($item['appendices']))   
                     <div style="text-align: start">
                         @foreach ($item['appendices'] as $appendices)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $appendices['appendices_no'] }}</p>
@@ -2609,8 +2537,7 @@
                                             <p>{!! $appendices['appendices_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $appendices['appendices_content'] !!}</span>
                             
                             @if (!empty($appendices['sub_appendices_model']))
@@ -2640,8 +2567,7 @@
                 @if (!empty($item['order']))   
                     <div style="text-align: start">
                         @foreach ($item['order'] as $order)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $order['order_no'] }}</p>
@@ -2650,8 +2576,7 @@
                                             <p>{!! $order['order_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $order['order_content'] !!}</span>
                             
                             @if (!empty($order['sub_order_model']))
@@ -2681,8 +2606,7 @@
                 @if (!empty($item['annexure']))   
                     <div style="text-align: start">
                         @foreach ($item['annexure'] as $annexure)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $annexure['annexure_no'] }}</p>
@@ -2691,8 +2615,7 @@
                                             <p>{!! $annexure['annexure_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $annexure['annexure_content'] !!}</span>
                             
                             @if (!empty($annexure['sub_annexure_model']))
@@ -2722,8 +2645,7 @@
                 @if (!empty($item['stschedule']))   
                     <div style="text-align: start">
                         @foreach ($item['stschedule'] as $stschedule)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $stschedule['stschedule_no'] }}</p>
@@ -2732,8 +2654,7 @@
                                             <p>{!! $stschedule['stschedule_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $stschedule['stschedule_content'] !!}</span>
                             
                             @if (!empty($stschedule['sub_stschedule_model']))
@@ -2770,7 +2691,6 @@
                 @if (!empty($item['sections']))   
                     <div style="text-align: start">
                         @foreach ($item['sections'] as $section)
-                            <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
@@ -2781,7 +2701,6 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </strong>
                             <span>{!! $section['section_content'] !!}</span>
                             
                             @if (!empty($section['subsection_model']))
@@ -2814,8 +2733,7 @@
                 @if (!empty($item['articles']))   
                     <div style="text-align: start">
                         @foreach ($item['articles'] as $article)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $article['article_no'] }}</p>
@@ -2824,8 +2742,7 @@
                                             <p>{!! $article['article_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $article['article_content'] !!}</span>
                             
                             @if (!empty($article['sub_article_model']))
@@ -2855,8 +2772,7 @@
                 @if (!empty($item['rules']))   
                     <div style="text-align: start">
                         @foreach ($item['rules'] as $rule)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $rule['rule_no'] }}</p>
@@ -2865,8 +2781,7 @@
                                             <p>{!! $rule['rule_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $rule['rule_content'] !!}</span>
                             
                             @if (!empty($rule['subrule_model']))
@@ -2896,8 +2811,7 @@
                 @if (!empty($item['regulation']))   
                     <div style="text-align: start">
                         @foreach ($item['regulation'] as $regulation)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $regulation['regulation_no'] }}</p>
@@ -2906,8 +2820,7 @@
                                             <p>{!! $regulation['regulation_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $regulation['regulation_content'] !!}</span>
                             
                             @if (!empty($regulation['sub_regulation_model']))
@@ -2937,8 +2850,7 @@
                 @if (!empty($item['lists']))   
                     <div style="text-align: start">
                         @foreach ($item['lists'] as $list)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $list['list_no'] }}</p>
@@ -2947,8 +2859,7 @@
                                             <p>{!! $list['list_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $list['list_content'] !!}</span>
                             
                             @if (!empty($list['sub_list_model']))
@@ -2978,8 +2889,7 @@
                 @if (!empty($item['part']))   
                     <div style="text-align: start">
                         @foreach ($item['part'] as $part)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $part['part_no'] }}</p>
@@ -2988,8 +2898,7 @@
                                             <p>{!! $part['part_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $part['part_content'] !!}</span>
                             
                             @if (!empty($part['sub_part_model']))
@@ -3019,8 +2928,7 @@
                 @if (!empty($item['appendices']))   
                     <div style="text-align: start">
                         @foreach ($item['appendices'] as $appendices)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $appendices['appendices_no'] }}</p>
@@ -3029,8 +2937,7 @@
                                             <p>{!! $appendices['appendices_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $appendices['appendices_content'] !!}</span>
                             
                             @if (!empty($appendices['sub_appendices_model']))
@@ -3060,8 +2967,7 @@
                 @if (!empty($item['order']))   
                     <div style="text-align: start">
                         @foreach ($item['order'] as $order)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $order['order_no'] }}</p>
@@ -3070,8 +2976,7 @@
                                             <p>{!! $order['order_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $order['order_content'] !!}</span>
                             
                             @if (!empty($order['sub_order_model']))
@@ -3101,8 +3006,7 @@
                 @if (!empty($item['annexure']))   
                     <div style="text-align: start">
                         @foreach ($item['annexure'] as $annexure)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $annexure['annexure_no'] }}</p>
@@ -3111,8 +3015,7 @@
                                             <p>{!! $annexure['annexure_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $annexure['annexure_content'] !!}</span>
                             
                             @if (!empty($annexure['sub_annexure_model']))
@@ -3142,8 +3045,7 @@
                 @if (!empty($item['stschedule']))   
                     <div style="text-align: start">
                         @foreach ($item['stschedule'] as $stschedule)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $stschedule['stschedule_no'] }}</p>
@@ -3152,8 +3054,7 @@
                                             <p>{!! $stschedule['stschedule_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $stschedule['stschedule_content'] !!}</span>
                             
                             @if (!empty($stschedule['sub_stschedule_model']))
@@ -3190,7 +3091,6 @@
                 @if (!empty($item['sections']))   
                     <div style="text-align: start">
                         @foreach ($item['sections'] as $section)
-                            <strong>
                                 <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
@@ -3201,7 +3101,6 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </strong>
                             <span>{!! $section['section_content'] !!}</span>
                             
                             @if (!empty($section['subsection_model']))
@@ -3228,13 +3127,12 @@
                             <hr style="width: 10% !important;margin: 10px auto !important;">
 
                         @endforeach
-                    </div>
+                    </div>   
                 @endif  
                 @if (!empty($item['articles']))   
                     <div style="text-align: start">
                         @foreach ($item['articles'] as $article)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $article['article_no'] }}</p>
@@ -3243,8 +3141,7 @@
                                             <p>{!! $article['article_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $article['article_content'] !!}</span>
                             
                             @if (!empty($article['sub_article_model']))
@@ -3274,8 +3171,7 @@
                 @if (!empty($item['rules']))   
                     <div style="text-align: start">
                         @foreach ($item['rules'] as $rule)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $rule['rule_no'] }}</p>
@@ -3284,8 +3180,7 @@
                                             <p>{!! $rule['rule_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $rule['rule_content'] !!}</span>
                             
                             @if (!empty($rule['subrule_model']))
@@ -3315,8 +3210,7 @@
                 @if (!empty($item['regulation']))   
                     <div style="text-align: start">
                         @foreach ($item['regulation'] as $regulation)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $regulation['regulation_no'] }}</p>
@@ -3325,8 +3219,7 @@
                                             <p>{!! $regulation['regulation_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $regulation['regulation_content'] !!}</span>
                             
                             @if (!empty($regulation['sub_regulation_model']))
@@ -3356,8 +3249,7 @@
                 @if (!empty($item['lists']))   
                     <div style="text-align: start">
                         @foreach ($item['lists'] as $list)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $list['list_no'] }}</p>
@@ -3366,8 +3258,7 @@
                                             <p>{!! $list['list_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $list['list_content'] !!}</span>
                             
                             @if (!empty($list['sub_list_model']))
@@ -3397,8 +3288,7 @@
                 @if (!empty($item['part']))   
                     <div style="text-align: start">
                         @foreach ($item['part'] as $part)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $part['part_no'] }}</p>
@@ -3407,8 +3297,7 @@
                                             <p>{!! $part['part_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $part['part_content'] !!}</span>
                             
                             @if (!empty($part['sub_part_model']))
@@ -3438,8 +3327,7 @@
                 @if (!empty($item['appendices']))   
                     <div style="text-align: start">
                         @foreach ($item['appendices'] as $appendices)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $appendices['appendices_no'] }}</p>
@@ -3448,8 +3336,7 @@
                                             <p>{!! $appendices['appendices_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $appendices['appendices_content'] !!}</span>
                             
                             @if (!empty($appendices['sub_appendices_model']))
@@ -3479,8 +3366,7 @@
                 @if (!empty($item['order']))   
                     <div style="text-align: start">
                         @foreach ($item['order'] as $order)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $order['order_no'] }}</p>
@@ -3489,8 +3375,7 @@
                                             <p>{!! $order['order_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $order['order_content'] !!}</span>
                             
                             @if (!empty($order['sub_order_model']))
@@ -3520,8 +3405,7 @@
                 @if (!empty($item['annexure']))   
                     <div style="text-align: start">
                         @foreach ($item['annexure'] as $annexure)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $annexure['annexure_no'] }}</p>
@@ -3530,8 +3414,7 @@
                                             <p>{!! $annexure['annexure_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $annexure['annexure_content'] !!}</span>
                             
                             @if (!empty($annexure['sub_annexure_model']))
@@ -3561,8 +3444,7 @@
                 @if (!empty($item['stschedule']))   
                     <div style="text-align: start">
                         @foreach ($item['stschedule'] as $stschedule)
-                            <strong>
-                                <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
+                            <table style="font-size: 15px !important; margin-top: 0.4rem; page-break-inside: avoid;">
                                     <tr>
                                         <td style="vertical-align: baseline;">
                                             <p>{{ $stschedule['stschedule_no'] }}</p>
@@ -3571,8 +3453,7 @@
                                             <p>{!! $stschedule['stschedule_title'] !!}</p>
                                         </td>
                                     </tr>
-                                </table>
-                            </strong>
+                            </table>
                             <span>{!! $stschedule['stschedule_content'] !!}</span>
                             
                             @if (!empty($stschedule['sub_stschedule_model']))

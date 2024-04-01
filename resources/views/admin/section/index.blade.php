@@ -394,9 +394,10 @@
                                             class="px-1">
                                             <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
                                         </a>
-                                        <a href="{{ url('/delete_section/' . $item->section_id) }}"
-                                            title="Delete" class="px-1"
-                                            onclick="return confirm('Are you sure ?')">
+                                        <a href="#" title="Delete" class="px-1" data-toggle="modal" data-target="#deleteModal"
+                                            data-chapterid="{{ $item->chapter_id }}" data-partsid="{{ $item->parts_id }}"
+                                            data-preliminaryid="{{ $item->preliminary_id }}" data-scheduleid="{{ $item->schedule_id }}"
+                                            data-mainorderid="{{ $item->main_order_id }}" data-sectionid="{{ $item->section_id }}">
                                             <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
                                         </a>
                                         <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_id' => $item->section_id]) }}"
@@ -588,6 +589,40 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+        aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Delete Type</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>What type of item do you want to delete?</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="deleteType" id="mainTypeRadio" value="mainType">
+                            <label class="form-check-label" for="mainTypeRadio">
+                                Main Type
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="deleteType" id="subTypeRadio" value="subType">
+                            <label class="form-check-label" for="subTypeRadio">
+                                Sub Type
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmDelete()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
     </div>
 
 
@@ -654,6 +689,67 @@
             });
 
         });
+
+        function confirmDelete() {
+        var deleteType = $('input[name=deleteType]:checked').val();
+        var chapterId = $('#deleteModal').data('chapterid');
+        var partId = $('#deleteModal').data('partsid');
+        var preliminaryId = $('#deleteModal').data('preliminaryid');
+        var sectionId = $('#deleteModal').data('sectionid');
+        console.log(chapterId);
+        console.log(partId);
+        console.log(preliminaryId);
+        console.log(sectionId);
+
+        var url;
+        if (deleteType === 'mainType') {
+            if (chapterId !== null) {
+                url = '/delete_chapter/' + chapterId;
+            } else if (partId !== null) {
+                url = '/delete_part/' + partId;
+            } else if (preliminaryId !== null) {
+                url = '/delete_preliminary/' + preliminaryId;
+            } else {
+                // Handle the case where no ID is available
+                console.error('No ID available for deletion.');
+                return;
+            }
+        } else {
+            // Perform deletion for sub type
+            url = '/delete_section/' + sectionId;
+        }
+
+        // Redirect to delete endpoint
+        window.location.href = url;
+    }
+
+     $(document).ready(function() {
+        console.log("Document ready!");
+        $('body').on('show.bs.modal', '#deleteModal', function(event) {
+        console.log("Modal show event triggered!");
+        var button = $(event.relatedTarget);
+        console.log(button);
+        var chapterId = button.data('chapterid');
+        var partId = button.data('partsid');
+        var preliminaryId = button.data('preliminaryid');
+        var sectionId = button.data('sectionid');
+        console.log(chapterId);
+        console.log(partId);
+        console.log(preliminaryId);
+        console.log(sectionId);
+
+        $(this).find('#mainTypeRadio').val('mainType');
+
+        // Set data attributes for chapter, part, preliminary, and section IDs
+        $(this).data('chapterid', chapterId);
+        $(this).data('partsid', partId);
+        $(this).data('preliminaryid', preliminaryId);
+        $(this).data('sectionid', sectionId);
+        });
+        });
+
+
+     
     </script>
     
 @endsection

@@ -65,6 +65,12 @@ Route::get('/add-act/{id}', [ActController::class, 'create'])->name('add-act');
 Route::get('/edit-act', [ActController::class, 'edit'])->name('edit-act');
 Route::post('/store_act/{id}', [ActController::class, 'store']);
 Route::get('/get_act_section/{id}', [ActController::class, 'get_act_section'])->name('get_act_section');
+Route::get('/delete_parts/{id}', [ActController::class, 'delete_parts'])->name('delete_parts');
+Route::get('/delete_chapter/{id}', [ActController::class, 'delete_chapter'])->name('delete_chapter');
+Route::get('/delete_prilimiary/{id}', [ActController::class, 'delete_priliminary'])->name('delete_priliminary');
+Route::get('/delete_schedule/{id}', [ActController::class, 'delete_schedule'])->name('delete_schedule');
+Route::get('/delete_appendix/{id}', [ActController::class, 'delete_appendix'])->name('delete_appendix');
+Route::get('/delete_main_order/{id}', [ActController::class, 'delete_main_order'])->name('delete_main_order');
 
 // section 
 // Route::get('/section', [SectionController::class, 'index'])->name('section');
@@ -75,7 +81,7 @@ Route::get('/edit-section/{id}', [SectionController::class, 'edit_section'])->na
 Route::get('/view-sub-section/{id}', [SectionController::class, 'view_sub_section'])->name('view_sub_section');
 Route::post('/update_all_section/{id}', [SectionController::class, 'update']);
 Route::get('/delete_sub_section/{id}', [SectionController::class, 'destroy_sub_section']);
-Route::get('/delete_section/{id}', [SectionController::class, 'destroy']);
+Route::get('/delete_maintype/{id}', [SectionController::class, 'destroy']);
 Route::get('/add_below_new_section/{id}/{section_id}', [SectionController::class, 'add_below_new_section'])->name('add_below_new_section');
 Route::post('/add_new_section/{id}', [SectionController::class, 'add_new_section']);
 
