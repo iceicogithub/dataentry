@@ -39,6 +39,7 @@
                     <input type="hidden" name="click_regulation_rank" value="{{ $regulation->regulation_rank }}">
                     <input type="hidden" name="serial_no" value="{{ $regulation->serial_no }}">
                     <input type="hidden" name="maintype_id" value="{{ $regulation->maintype_id }}">
+                    <input type="hidden" name="currentPage" value="{{ $currentPage }}">
                     <input type="hidden" name="act_id" value="{{ $regulation->act_id }}">
                     {{-- <input type="hidden" name="section_rank" value="{{ $regulation }}"> --}}
                     @if ($regulation->chapter_id)

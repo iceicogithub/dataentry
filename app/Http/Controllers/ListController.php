@@ -251,8 +251,8 @@ class ListController extends Controller
     //    $list_rank = $list_rank;
        $list = Lists::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel','MainOrderModel')->where('act_id', $id)
            ->where('list_id', $list_id)->first();
-
-       return view('admin.list.add_new', compact('list'));
+        $currentPage = $request->page;
+       return view('admin.list.add_new', compact('list','currentPage'));
    }
 
    public function add_new_list(Request $request)
@@ -260,6 +260,7 @@ class ListController extends Controller
        // dd($request);
        // die();
        try {
+        $currentPage = $request->currentPage;
        if ($request->has('chapter_id')) {
            $chapter = Chapter::find($request->chapter_id);
 
@@ -405,7 +406,7 @@ class ListController extends Controller
            }
        }
 
-       return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Ayrticle created successfully');
+       return redirect()->route('get_act_section', ['id' => $id,'page' => $currentPage])->with('success', 'Ayrticle created successfully');
        } catch (\Exception $e) {
            \Log::error('Error creating Act: ' . $e->getMessage());
 
@@ -417,7 +418,8 @@ class ListController extends Controller
    {
        $list = Lists::where('list_id', $id)->first();
        $sub_list = SubLists::where('list_id', $id)->with('footnoteModel')->get();
-       return view('admin.list.view', compact('list','sub_list'));
+       $currentPage = $request->page;
+       return view('admin.list.view', compact('list','sub_list','currentPage'));
    }
 
 

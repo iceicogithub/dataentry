@@ -253,8 +253,8 @@ class OrderController extends Controller
         // $order_rank = $order_rank;
         $order = Orders::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Appendixmodel','Schedulemodel','MainOrderModel')->where('act_id', $id)
             ->where('order_id', $order_id)->first();
-
-        return view('admin.Orders.add_new', compact('order'));
+        $currentPage = $request->page;
+        return view('admin.Orders.add_new', compact('order','currentPage'));
     }
 
     public function add_new_order(Request $request)
@@ -262,6 +262,7 @@ class OrderController extends Controller
         // dd($request);
         // die();
         try {
+            $currentPage = $request->currentPage;
         if ($request->has('chapter_id')) {
             $chapter = Chapter::find($request->chapter_id);
 
@@ -407,7 +408,7 @@ class OrderController extends Controller
             }
         }
 
-        return redirect()->route('get_act_section', ['id' =>$order->act_id])->with('success', 'Ayrticle created successfully');
+        return redirect()->route('get_act_section', ['id' =>$id,'page' => $currentPage])->with('success', 'Ayrticle created successfully');
         } catch (\Exception $e) {
             \Log::error('Error creating Act: ' . $e->getMessage());
 
@@ -420,7 +421,8 @@ class OrderController extends Controller
     {
         $order = Orders::where('order_id', $id)->first();
         $sub_order = SubOrders::where('order_id', $id)->with('footnoteModel')->get();
-        return view('admin.Orders.view', compact('order','sub_order'));
+        $currentPage = $request->page;
+        return view('admin.Orders.view', compact('order','sub_order','currentPage'));
     }
 
     public function destroy_sub_order(string $id)

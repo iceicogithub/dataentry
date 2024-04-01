@@ -40,6 +40,7 @@
                     <input type="hidden" name="serial_no" value="{{ $annexure->serial_no }}">
                     <input type="hidden" name="maintype_id" value="{{ $annexure->maintype_id }}">
                     <input type="hidden" name="act_id" value="{{ $annexure->act_id }}">
+                    <input type="hidden" name="currentPage" value="{{ $currentPage }}">
                     {{-- <input type="hidden" name="annexure_rank" value="{{ $annexure_rank }}"> --}}
                     @if ($annexure->chapter_id)
                         <input type="hidden" name="chapter_id" value="{{ $annexure->chapter_id }}">

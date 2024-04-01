@@ -256,8 +256,8 @@ class AppendicesController extends Controller
         
         $appendices = Appendices::with('ChapterModel', 'Partmodel', 'PriliminaryModel', 'Appendixmodel', 'Schedulemodel','MainOrderModel')->where('act_id', $id)
             ->where('appendices_id', $appendices_id)->first();
-
-        return view('admin.appendices.add_new', compact('appendices'));
+        $currentPage = $request->page;
+        return view('admin.appendices.add_new', compact('appendices','currentPage'));
     }
 
     public function add_new_appendices(Request $request)
@@ -265,6 +265,7 @@ class AppendicesController extends Controller
         // dd($request);
         // die();
         try {
+            $currentPage = $request->currentPage;
         if ($request->has('chapter_id')) {
             $chapter = Chapter::find($request->chapter_id);
 
@@ -411,7 +412,7 @@ class AppendicesController extends Controller
             }
         }
 
-        return redirect()->route('get_act_section', ['id' =>$appendices->act_id])->with('success', 'Appendices created successfully');
+        return redirect()->route('get_act_section', ['id' =>$appendices->act_id,'page' => $currentPage])->with('success', 'Appendices created successfully');
         } catch (\Exception $e) {
             \Log::error('Error creating Act: ' . $e->getMessage());
 
@@ -424,7 +425,8 @@ class AppendicesController extends Controller
     {
         $appendices = Appendices::where('appendices_id', $id)->first();
         $sub_appendices = SubAppendices::where('appendices_id', $id)->with('footnoteModel')->get();
-        return view('admin.appendices.view', compact('appendices', 'sub_appendices'));
+        $currentPage = $request->page;
+        return view('admin.appendices.view', compact('appendices', 'sub_appendices','currentPage'));
     }
 
     public function destroy_sub_appendices(string $id)

@@ -39,6 +39,7 @@
                     <input type="hidden" name="click_order_rank" value="{{ $order->order_rank }}">
                     <input type="hidden" name="serial_no" value="{{ $order->serial_no }}">
                     <input type="hidden" name="maintype_id" value="{{ $order->maintype_id }}">
+                    <input type="hidden" name="currentPage" value="{{ $currentPage }}">
                     <input type="hidden" name="act_id" value="{{ $order->act_id }}">
                     {{-- <input type="hidden" name="order_rank" value="{{ $order_rank }}"> --}}
                     @if ($order->chapter_id)

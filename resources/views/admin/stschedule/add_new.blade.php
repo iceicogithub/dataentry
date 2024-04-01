@@ -39,6 +39,7 @@
                     <input type="hidden" name="click_stschedule_rank" value="{{ $stschedule->stschedule_rank }}">
                     <input type="hidden" name="serial_no" value="{{ $stschedule->serial_no }}">
                     <input type="hidden" name="maintype_id" value="{{ $stschedule->maintype_id }}">
+                    <input type="hidden" name="currentPage" value="{{ $currentPage }}">
                     <input type="hidden" name="act_id" value="{{ $stschedule->act_id }}">
                     {{-- <input type="hidden" name="section_rank" value="{{ $stschedule_rank }}"> --}}
                     @if ($stschedule->chapter_id)

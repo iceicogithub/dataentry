@@ -69,8 +69,6 @@ class SectionController extends Controller
         // dd($showFormTitle);
         // die();
 
-        // return view('admin.act.create', compact('category', 'status', 'states', 'mtype', 'parts', 'stype', 'act', 'showFormTitle'));
-
             $sections = Section::with('ChapterModel', 'Partmodel', 'PriliminaryModel','Schedulemodel','Appendixmodel','MainOrderModel')
                 ->where('act_id', $id)
                 ->where('section_id', $section_id)
@@ -80,8 +78,9 @@ class SectionController extends Controller
                 // Handle the scenario where no sections are found
                 abort(404); // or redirect, or return a message
             }
-
-            return view('admin.section.add_new', compact('category', 'status', 'states', 'mtype', 'parts', 'stype', 'act', 'showFormTitle','sections'));
+             
+            $currentPage = $request->page; 
+            return view('admin.section.add_new', compact('category', 'status', 'states', 'mtype', 'parts', 'stype', 'act', 'showFormTitle','sections','currentPage'));
         }
     // public function add_new_section(Request $request)
     // {
@@ -254,7 +253,8 @@ class SectionController extends Controller
             // die();
     
             try {
-    
+                
+                $currentPage = $request->currentPage;
                 $act = Act::find($id);
               
                 $act->update([
@@ -1962,7 +1962,7 @@ class SectionController extends Controller
                     }
                 }
     
-                return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Index added successfully');
+                return redirect()->route('get_act_section', ['id' => $id,'page' => $currentPage])->with('success', 'Index added successfully');
     
             } catch (\Exception $e) {
                 \Log::error('Error creating Act: ' . $e->getMessage());
@@ -2224,7 +2224,8 @@ class SectionController extends Controller
     {
         $section = Section::where('section_id', $id)->first();
         $sub_section = SubSection::where('section_id', $id)->with('footnoteModel')->get();
-        return view('admin.section.view', compact('section','sub_section'));
+        $currentPage = $request->page;
+        return view('admin.section.view', compact('section','sub_section','currentPage'));
     }
 
     public function destroy_sub_section(string $id)
