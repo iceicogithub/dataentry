@@ -50,7 +50,7 @@ class ActController extends Controller
 
     public function index()
     {
-        $act = Act::with('CategoryModel')->get();
+        $act = Act::with('CategoryModel')->orderBy('act_id', 'desc')->get();
         return view('admin.act.index', compact('act'));
     }
 
