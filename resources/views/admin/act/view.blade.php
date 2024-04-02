@@ -32,7 +32,7 @@
 
 .pagination-links {
     margin-top: 20px; /* Adjust margin as needed */
-    text-align: center; /* Center the pagination links horizontally */
+    text-align: right; /* Center the pagination links horizontally */
 }
 
 /* Style the pagination links */
@@ -65,7 +65,7 @@
 /* Style the pagination arrows */
 .pagination-links ul li.prev,
 .pagination-links ul li.next {
-    font-size: 14px; /* Adjust arrow size */
+    font-size: 12px; /* Small size font */
     padding: 5px; /* Adjust padding */
 }
 
@@ -78,6 +78,12 @@
 .pagination-links ul li.next.disabled {
     pointer-events: none; /* Disable clicking on disabled arrows */
     opacity: 0.5; /* Reduce opacity of disabled arrows */
+}
+.pagination-links .hidden {
+    text-align: left!important;
+}
+.pagination-links .w-5  {
+    display:none;
 }
 
 /* //accordion end*/
@@ -855,7 +861,7 @@
            
         </div>
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12 pagination-links">
                 {{ $paginatedItems->links() }}
             </div>
         </div>
