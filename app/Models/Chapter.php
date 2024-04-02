@@ -64,4 +64,24 @@ class Chapter extends Model
     {
         return $this->hasMany(Stschedule::class,'chapter_id', 'chapter_id');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Define the deleting event
+        static::deleting(function ($parts) {
+            // Delete related subtypes
+            $parts->Sections()->delete();
+            $parts->Articles()->delete();
+            $parts->Rules()->delete();
+            $parts->Regulation()->delete();
+            $parts->Lists()->delete();
+            $parts->Part()->delete();
+            $parts->Appendices()->delete();
+            $parts->Order()->delete();
+            $parts->Annexure()->delete();
+            $parts->Stschedule()->delete();
+        });
+    }
 }

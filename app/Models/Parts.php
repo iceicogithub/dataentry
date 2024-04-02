@@ -20,7 +20,7 @@ class Parts extends Model
     {
         return $this->belongsTo(PartsType::class, 'partstype_id', 'partstype_id');
     }
-    public function sections()
+    public function Sections()
     {
         return $this->hasMany(Section::class, 'parts_id', 'parts_id');
     }
@@ -64,5 +64,25 @@ class Parts extends Model
     public function Stschedule()
     {
         return $this->hasMany(Stschedule::class,'parts_id', 'parts_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Define the deleting event
+        static::deleting(function ($parts) {
+            // Delete related subtypes
+            $parts->Sections()->delete();
+            $parts->Articles()->delete();
+            $parts->Rules()->delete();
+            $parts->Regulation()->delete();
+            $parts->Lists()->delete();
+            $parts->Part()->delete();
+            $parts->Appendices()->delete();
+            $parts->Order()->delete();
+            $parts->Annexure()->delete();
+            $parts->Stschedule()->delete();
+        });
     }
 }
