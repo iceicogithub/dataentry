@@ -137,6 +137,18 @@
             <div class="col-sm-12">
                    <h3 class="m-3">Main Types</h3>
                     <div class="right-side-treatment pt-0 wow bounceInRight" data-wow-delay="1.5s">
+                        <div class="pagination-links">
+                            <form action="{{ request()->url() }}" method="GET" class="form-inline">
+                                <label for="perPage">Show:</label>
+                                <select name="perPage" id="perPage" class="form-control mx-2" onchange="this.form.submit()">
+                                    <option value="10" {{ request()->get('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="25" {{ request()->get('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                    <option value="50" {{ request()->get('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                    <option value="100" {{ request()->get('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                </select>
+                                <span>entries</span>
+                            </form>
+                        </div>
                         <div class="right-side-content-treatment">
                             <div id="accordion">
                                 @foreach($paginatedItems as $item)
@@ -851,13 +863,9 @@
                             </div>
                         </div>
                     </div>
+                    {{ $paginatedItems->links() }}
             </div>
            
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                {{ $paginatedItems->links() }}
-            </div>
         </div>
     </div>
 @endsection

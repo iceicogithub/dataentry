@@ -1,12 +1,12 @@
 @extends('admin.layout.main')
 @section('style')
 <style>
-.pagination-links {
-    margin-top: 20px; /* Adjust margin as needed */
-    text-align: right; /* Center the pagination links horizontally */
+/* .pagination-links {
+    margin-top: 20px; 
+    text-align: right; 
 }
 
-/* Style the pagination links */
+
 .pagination-links ul {
     list-style-type: none;
     padding: 0;
@@ -15,7 +15,7 @@
 
 .pagination-links ul li {
     display: inline-block;
-    margin-right: 5px; /* Adjust spacing between pagination items */
+    margin-right: 5px; 
 }
 
 .pagination-links ul li a,
@@ -33,29 +33,29 @@
     border-color: #007bff;
 }
 
-/* Style the pagination arrows */
+
 .pagination-links ul li.prev,
 .pagination-links ul li.next {
-    font-size: 12px; /* Small size font */
-    padding: 5px; /* Adjust padding */
+    font-size: 12px;
+    padding: 5px; 
 }
 
 .pagination-links ul li.prev a,
 .pagination-links ul li.next a {
-    padding: 5px; /* Adjust padding */
+    padding: 5px;
 }
 
 .pagination-links ul li.prev.disabled,
 .pagination-links ul li.next.disabled {
-    pointer-events: none; /* Disable clicking on disabled arrows */
-    opacity: 0.5; /* Reduce opacity of disabled arrows */
+    pointer-events: none; 
+    opacity: 0.5; 
 }
 .pagination-links .hidden {
     text-align: left!important;
 }
 .pagination-links .w-5  {
     display:none;
-}
+} */
 
 
 </style>
@@ -235,6 +235,22 @@
                                     $main_order = MainOrder::with('MainOrderType')->where('act_id', $act_id)->first();
 
                                 @endphp
+                                 <tr>
+                                    <td colspan="6"> <!-- Adjust colspan based on the number of columns in your table -->
+                                        <div class="pagination-links">
+                                            <form action="{{ request()->url() }}" method="GET" class="form-inline">
+                                                <label for="perPage">Show:</label>
+                                                <select name="perPage" id="perPage" class="form-control mx-2" onchange="this.form.submit()">
+                                                    <option value="10" {{ request()->get('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                                    <option value="25" {{ request()->get('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                                    <option value="50" {{ request()->get('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                                    <option value="100" {{ request()->get('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                                </select>
+                                                <span>entries</span>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
 
                                 <tr>
                                     <th scope="col" class="text-center">Sr.No</th>
@@ -312,32 +328,27 @@
                             </thead>
                             <tbody>
                                 @php
-                                $i = 0;
-
-                                // dd($paginatedCollection->toArray());
-                                // die();
-
-                                @endphp 
+                                $perPage = $paginatedCollection->perPage();
+                                $currentPage = $paginatedCollection->currentPage();
+                                $startingSerialNumber = ($currentPage - 1) * $perPage;
+                            @endphp
 
                                 @foreach($paginatedCollection as $item)
 
                                     <tr>
+                                        <td>{{++$startingSerialNumber}} </td>
                                         <td>
-                                            @php 
-                                              echo $i++; 
-                                            @endphp </td>
-                                        <td>
-                                            @if ($item->maintype_id == 1)
+                                            @if ($item->maintype_id == 1 && $item->ChapterModel && $item->ChapterModel->chapter_title)
                                             {!! $item->ChapterModel->chapter_title !!}
-                                        @elseif($item->maintype_id == 2)
+                                        @elseif($item->maintype_id == 2 && $item->Partmodel && $item->Partmodel->parts_title)
                                             {!! $item->Partmodel->parts_title !!}
-                                        @elseif($item->maintype_id == 3)
+                                        @elseif($item->maintype_id == 3 && $item->PriliminaryModel && $item->PriliminaryModel->priliminary_title)
                                             {!! $item->PriliminaryModel->priliminary_title !!}
-                                        @elseif($item->maintype_id == 4)
+                                        @elseif($item->maintype_id == 4 && $item->Schedulemodel && $item->Schedulemodel->schedule_title)
                                             {!! $item->Schedulemodel->schedule_title !!}
-                                        @elseif($item->maintype_id == 5)
+                                        @elseif($item->maintype_id == 5 && $item->Appendixmodel && $item->Appendixmodel->appendix_title)
                                             {!! $item->Appendixmodel->appendix_title !!}
-                                        @elseif($item->maintype_id == 6)
+                                        @elseif($item->maintype_id == 6 && $item->MainOrderModel && $item->MainOrderModel->main_order_title)
                                             {!! $item->MainOrderModel->main_order_title !!}
                                         @else
                                             null
@@ -414,7 +425,7 @@
                                         <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_id' => $item->section_id]) }}?page={{ $paginatedCollection->currentPage() }}"
                                             title="Add Next Section" class="px-1">
                                             <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a>
+                                        </a>    
                                         @elseif($item->article_id)
 
                                         <a href="/edit-article/{{ $item->article_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
@@ -599,10 +610,17 @@
                                     </tr>
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6"> <!-- Adjust colspan based on the number of columns in your table -->
+                                        <div class="pagination-links">
+                                            {{ $paginatedCollection->links() }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
-                        <div class="pagination-links">
-                            {{ $paginatedCollection->links() }}
-                        </div>
+                       
                     </div>
                 </div>
             </div>

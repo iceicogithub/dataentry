@@ -139,25 +139,26 @@ class ActController extends Controller
             });
             
 
-            $mergedCollection = collect([$act_section, $act_article, $act_rule,$act_regulation,$act_list,$act_part,$act_order,$act_annexure,$act_stschedule,$act_appendices])->flatten(1)->sortBy('serial_no');
+            $mergedCollection = collect([$act_section, $act_article, $act_rule, $act_regulation, $act_list, $act_part, $act_order, $act_annexure, $act_stschedule, $act_appendices])->flatten(1)->sortBy('serial_no');
 
-            $perPage = 10; 
-            $page = request()->get('page') ?: 1;  
-            $slicedData = $mergedCollection->forPage($page, $perPage);
+            $perPage = request()->get('perPage') ?: 10; // Get the perPage value from the request
+            $page = request()->get('page') ?: 1;
             
+            // Paginate the merged collection directly
             $paginatedCollection = new LengthAwarePaginator(
-                $slicedData,
-                $mergedCollection->count(), 
+                $mergedCollection->forPage($page, $perPage),
+                $mergedCollection->count(),
                 $perPage,
                 $page
             );
             
+            // Append perPage parameter to pagination links
+            $paginatedCollection->appends(['perPage' => $perPage]);
+            
             $paginatedCollection->withPath(request()->url());
-            // dd($act_stschedule);
-            // die();
-
-        return view('admin.section.index', compact('paginatedCollection','act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions','act_appendices', 'act_rule', 'act_article', 'act_regulation', 'act_list', 'act_part', 'act_stschedule', 'act_order', 'act_annexure'));
-    }
+            
+            return view('admin.section.index', compact('paginatedCollection', 'act_section', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions', 'act_appendices', 'act_rule', 'act_article', 'act_regulation', 'act_list', 'act_part', 'act_stschedule', 'act_order', 'act_annexure')); 
+        }
 
     public function create(Request $request, $id)
     {
@@ -2341,19 +2342,24 @@ class ActController extends Controller
     });
 
 
-    $perPage = 10; 
-    $page = request()->get('page') ?: 1;  
-    $slicedData = $combinedItems->forPage($page, $perPage);
-
+    
+    $perPage = request()->get('perPage') ?: 10; // Get the perPage value from the request
+    $page = request()->get('page') ?: 1;
+    
+    // Paginate the merged collection directly
     $paginatedItems = new LengthAwarePaginator(
-        $slicedData,
-        $combinedItems->count(), 
+        $combinedItems->forPage($page, $perPage),
+        $combinedItems->count(),
         $perPage,
         $page
     );
-
+    
+    // Append perPage parameter to pagination links
+    $paginatedItems->appends(['perPage' => $perPage]);
+    
     $paginatedItems->withPath(request()->url());
-            return view('admin.act.view', compact('export','paginatedItems'));
+    
+    return view('admin.act.view', compact('export','paginatedItems'));
     }
     public function update_main_act(Request $request, $id)
     {
