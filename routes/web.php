@@ -71,6 +71,9 @@ Route::get('/delete_prilimiary/{id}', [ActController::class, 'delete_priliminary
 Route::get('/delete_schedule/{id}', [ActController::class, 'delete_schedule'])->name('delete_schedule');
 Route::get('/delete_appendix/{id}', [ActController::class, 'delete_appendix'])->name('delete_appendix');
 Route::get('/delete_main_order/{id}', [ActController::class, 'delete_main_order'])->name('delete_main_order');
+Route::post('/add_new_main_type/{id}', [ActController::class, 'add_new_main_type'])->name('add_new_main_type');
+Route::get('/add_below_new_parts/{id}/{parts_id}', [ActController::class, 'add_new_parts_name'])->name('add_new_parts_name');
+
 
 // section 
 // Route::get('/section', [SectionController::class, 'index'])->name('section');
@@ -81,9 +84,9 @@ Route::get('/edit-section/{id}', [SectionController::class, 'edit_section'])->na
 Route::get('/view-sub-section/{id}', [SectionController::class, 'view_sub_section'])->name('view_sub_section');
 Route::post('/update_all_section/{id}', [SectionController::class, 'update']);
 Route::get('/delete_sub_section/{id}', [SectionController::class, 'destroy_sub_section']);
-Route::get('/delete_maintype/{id}', [SectionController::class, 'destroy']);
+Route::get('/delete_section/{id}', [SectionController::class, 'destroy']);
 Route::get('/add_below_new_section/{id}/{section_id}', [SectionController::class, 'add_below_new_section'])->name('add_below_new_section');
-Route::post('/add_new_section', [SectionController::class, 'add_new_section'])->name('add_new_section');
+
 
 // chapter 
 Route::get('/chapter', [ChapterController::class, 'index'])->name('chapter');

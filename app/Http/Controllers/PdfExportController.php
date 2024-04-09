@@ -29,6 +29,7 @@ use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Barryvdh\DomPDF\PDF;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use App\Models\MainTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -42,372 +43,322 @@ class PdfExportController extends Controller
             $options = new Options();
             $options->set('isHtml5ParserEnabled', true);
             $dompdf = new Dompdf($options);
-            $chapters = Chapter::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
+            $mainsequence = MainTable::where('act_id', $id)
+            ->with([
+                'chapters' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'parts' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'priliminarys' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'schedules' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'appendixes' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'mainOrders' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->orderBy('main_rank')
             ->get();
-
-
-            $parts = Parts::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-
-
-            $priliminarys = Priliminary::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
+    
+                
+            $combinedItems = collect([]);
+    
+            foreach ($mainsequence as $mainItem) {
+                foreach ($mainItem->chapters as $chapter) {
+                    $chapterData = $chapter->toArray();
+                    $combinedItems->push($chapterData);
+                }
             
+                foreach ($mainItem->parts as $part) {
+                    $partData = $part->toArray();
+                    $combinedItems->push($partData);
+                }
             
-            $schedules = Schedule::where('act_id', $id)
-           ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-
-            $appendixes = Appendix::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
+                foreach ($mainItem->priliminarys as $preliminary) {
+                    $preliminaryData = $preliminary->toArray();
+                    $combinedItems->push($preliminaryData);
+                }
             
-            $mainOrders = MainOrder::where('act_id', $id)
-           ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-// dd($parts);
-// die();
-
-
-
-            $combinedItems = [];
-
-            foreach ($chapters as $chapter) {
-                $chapterData = $chapter->toArray();
-                $combinedItems[$chapter->serial_no] = $chapterData;
-            }
-
-            foreach ($parts as $part) {
-                $partData = $part->toArray();
-                $combinedItems[$part->serial_no] = $partData;
-            }
-
-            foreach ($priliminarys as $priliminary) {
-                $priliminaryData = $priliminary->toArray();
-                $combinedItems[$priliminary->serial_no] = $priliminaryData;
-            }
-
-            foreach ($schedules as $schedule) {
-                $scheduleData = $schedule->toArray();
-                $combinedItems[$schedule->serial_no] = $scheduleData;
-            }
-
-            foreach ($appendixes as $appendix) {
-                $appendixData = $appendix->toArray();
-                $combinedItems[$appendix->serial_no] = $appendixData;
-            }
-
-            foreach ($mainOrders as $mainOrder) {
-                $mainOrderData = $mainOrder->toArray();
-                $combinedItems[$mainOrder->serial_no] = $mainOrderData;
+                foreach ($mainItem->schedules as $schedule) {
+                    $scheduleData = $schedule->toArray();
+                    $combinedItems->push($scheduleData);
+                }
+            
+                foreach ($mainItem->appendixes as $appendix) {
+                    $appendixData = $appendix->toArray();
+                    $combinedItems->push($appendixData);
+                }
+            
+                foreach ($mainItem->mainOrders as $mainOrder) {
+                    $mainOrderData = $mainOrder->toArray();
+                    $combinedItems->push($mainOrderData);
+                }
             }
 
 
-            // Sort the combined items by their serial_no
-            ksort($combinedItems);
 
             $type = MainType::all();
             $act = Act::findOrFail($id);

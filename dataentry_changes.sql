@@ -81,3 +81,7 @@ this above table would be added
 ]  
 ADD SCHEDULE IN SUBTYPE
 ALTER TABLE `footnote` ADD `stschedule_id` INT(11) NULL DEFAULT NULL AFTER `sub_appendix_id`, ADD `stschedule_no` VARCHAR(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL AFTER `stschedule_id`, ADD `sub_stschedule_id` INT(11) NULL DEFAULT NULL AFTER `stschedule_no`;
+
+
+-- 06-04-2024
+CREATE TABLE main_table ( main_id INT PRIMARY KEY AUTO_INCREMENT, main_rank FLOAT, act_id INT, maintype_id INT, serial_no INT, chapter_id INT, parts_id INT, priliminary_id INT, schedule_id INT, main_order_id INT, appendix_id INT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP );

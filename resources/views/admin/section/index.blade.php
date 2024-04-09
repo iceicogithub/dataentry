@@ -58,6 +58,34 @@
 } */
 
 
+.accordion-title:before {
+            float: right !important;
+            font-family: FontAwesome;
+            content: "\f0d8";
+            padding-right: 5px;
+        }
+
+        .accordion-title.collapsed:before {
+            float: right !important;
+            content: "\f0d7";
+        }
+
+        #accordion .card-header .accordion-title {
+            text-decoration: none;
+            font-weight: 700;
+            color: #47b0ab;
+        }
+
+        #accordion .card {
+            margin-top: 0 !important;
+        }
+
+        .card {
+            margin-block: 0;
+            min-height: 100%;
+        }
+
+       
 </style>
 @endsection('style')
 @section('content')
@@ -209,454 +237,2172 @@
     </div>
 
     <div class="content mt-3">
-        <div class="row">
-
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <strong class="card-title">Arrangement of Sections</strong>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-bordered text-center" id="myTable">
-                            <thead class="thead-light">
+        <div class="row m-2">
+            <div class="col-sm-12">
+                    <h3 class="m-3">Main Types</h3>
+                    <div class="right-side-treatment pt-0 wow bounceInRight" data-wow-delay="1.5s">
+                        <div class="pagination-links">
+                            <form action="{{ request()->url() }}" method="GET" class="form-inline">
+                                <label for="perPage">Show:</label>
+                                <select name="perPage" id="perPage" class="form-control mx-2" onchange="this.form.submit()">
+                                    <option value="10" {{ request()->get('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="25" {{ request()->get('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                    <option value="50" {{ request()->get('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                    <option value="100" {{ request()->get('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                </select>
+                                <span>entries</span>
+                            </form>
+                        </div>
+                        <div class="right-side-content-treatment">
+                            <div id="accordion">
                                 @php
-                                    use App\Models\Chapter;
-                                    use App\Models\Parts;
-                                    use App\Models\Priliminary;
-                                    use App\Models\Schedule;
-                                    use App\Models\Appendix;
-                                    use App\Models\MainOrder;
-
-                                    $chapter = Chapter::with('ChapterType')->where('act_id', $act_id)->first();
-                                    $parts = Parts::with('PartsType')->where('act_id', $act_id)->first();
-                                    $priliminary = Priliminary::with('PriliminaryType')->where('act_id', $act_id)->first();
-                                    $schedule = Schedule::with('ScheduleType')->where('act_id', $act_id)->first();
-                                    $appendix = Appendix::with('AppendixType')->where('act_id', $act_id)->first();
-                                    $main_order = MainOrder::with('MainOrderType')->where('act_id', $act_id)->first();
-
+                                   $i = 0; 
                                 @endphp
-                                 <tr>
-                                    <td colspan="6"> <!-- Adjust colspan based on the number of columns in your table -->
-                                        <div class="pagination-links">
-                                            <form action="{{ request()->url() }}" method="GET" class="form-inline">
-                                                <label for="perPage">Show:</label>
-                                                <select name="perPage" id="perPage" class="form-control mx-2" onchange="this.form.submit()">
-                                                    <option value="10" {{ request()->get('perPage') == 10 ? 'selected' : '' }}>10</option>
-                                                    <option value="25" {{ request()->get('perPage') == 25 ? 'selected' : '' }}>25</option>
-                                                    <option value="50" {{ request()->get('perPage') == 50 ? 'selected' : '' }}>50</option>
-                                                    <option value="100" {{ request()->get('perPage') == 100 ? 'selected' : '' }}>100</option>
-                                                </select>
-                                                <span>entries</span>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <th scope="col" class="text-center">Sr.No</th>
-                                    <th scope="col" class="text-center">
-                                        @if ($chapter && $chapter->maintype_id)
-                                            @if ($chapter->ChapterType->maintype_id == '1')
-                                                Chapter,
-                                            @endif
-                                        @endif
-                                        @if ($parts && $parts->maintype_id)
-                                            @if ($parts->PartsType->maintype_id == '2')
-                                                Parts,
-                                            @endif
-                                        @endif
-                                        @if ($priliminary && $priliminary->maintype_id)
-                                            @if ($priliminary->PriliminaryType->maintype_id == '3')
-                                                Priliminary,
-                                            @endif
-                                        @endif
-                                        @if ($schedule && $schedule->maintype_id)
-                                            @if ($schedule->ScheduleType->maintype_id == '4')
-                                                Schedule,
-                                            @endif
-                                        @endif
-                                        @if ($appendix && $appendix->maintype_id)
-                                            @if ($appendix->AppendixType->maintype_id == '5')
-                                                Appendix,
-                                            @endif
-                                        @endif
-                                        @if ($main_order && $main_order->maintype_id)
-                                            @if ($main_order->MainOrderType->maintype_id == '6')
-                                                Order,
-                                            @endif
-                                        @endif
-
-                                    </th>
-                                    <th scope="col" class="text-center">
-                                        @if ($chapter && $chapter->maintype_id)
-                                            @if ($chapter->ChapterType->maintype_id == '1')
-                                                Section No. ,
-                                            @endif
-                                        @endif
-                                        @if ($schedule && $schedule->maintype_id)
-                                            @if ($schedule->ScheduleType->maintype_id == '4')
-                                                Rule No. ,
-                                            @endif
-                                        @endif
-                                        @if ($appendix && $appendix->maintype_id)
-                                            @if ($appendix->AppendixType->maintype_id == '5')
-                                                Article No. ,
-                                            @endif
-                                        @endif
-
-                                    </th>
-                                    <th scope="col" class="text-center">
-                                        @if ($chapter && $chapter->maintype_id)
-                                            @if ($chapter->ChapterType->maintype_id == '1')
-                                                Section ,
-                                            @endif
-                                        @endif
-                                        @if ($schedule && $schedule->maintype_id)
-                                            @if ($schedule->ScheduleType->maintype_id == '4')
-                                                Rule ,
-                                            @endif
-                                        @endif
-                                        @if ($appendix && $appendix->maintype_id)
-                                            @if ($appendix->AppendixType->maintype_id == '5')
-                                                Article ,
-                                            @endif
-                                        @endif
-                                    </th>
-                                    <th scope="col" class="text-center">Date of changes</th>
-                                    <th scope="col" class="text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                $perPage = $paginatedCollection->perPage();
-                                $currentPage = $paginatedCollection->currentPage();
-                                $startingSerialNumber = ($currentPage - 1) * $perPage;
-                            @endphp
-
                                 @foreach($paginatedCollection as $item)
-
-                                    <tr>
-                                        <td>{{++$startingSerialNumber}} </td>
-                                        <td>
-                                            @if ($item->maintype_id == 1 && $item->ChapterModel && $item->ChapterModel->chapter_title)
-                                            {!! $item->ChapterModel->chapter_title !!}
-                                        @elseif($item->maintype_id == 2 && $item->Partmodel && $item->Partmodel->parts_title)
-                                            {!! $item->Partmodel->parts_title !!}
-                                        @elseif($item->maintype_id == 3 && $item->PriliminaryModel && $item->PriliminaryModel->priliminary_title)
-                                            {!! $item->PriliminaryModel->priliminary_title !!}
-                                        @elseif($item->maintype_id == 4 && $item->Schedulemodel && $item->Schedulemodel->schedule_title)
-                                            {!! $item->Schedulemodel->schedule_title !!}
-                                        @elseif($item->maintype_id == 5 && $item->Appendixmodel && $item->Appendixmodel->appendix_title)
-                                            {!! $item->Appendixmodel->appendix_title !!}
-                                        @elseif($item->maintype_id == 6 && $item->MainOrderModel && $item->MainOrderModel->main_order_title)
-                                            {!! $item->MainOrderModel->main_order_title !!}
-                                        @else
-                                            null
-                                        @endif
-                                        </td>
-                                        <td>
-                                        @if ($item->section_no)
-                                        {{ $item->section_no ? $item->section_no : 'null' }}
-                                         @elseif($item->article_no)
-                                            {{ $item->article_no ? $item->article_no : 'null'}}
-                                        @elseif($item->rule_no)
-                                            {{ $item->rule_no ? $item->rule_no : 'null'}}
-                                        @elseif($item->regulation_no)
-                                            {{ $item->regulation_no ? $item->regulation_no : 'null'}}
-                                        @elseif($item->list_no)
-                                            {{ $item->list_no ? $item->list_no : 'null'}}
-                                        @elseif($item->part_no)
-                                            {{ $item->part_no ? $item->part_no : 'null'}}
-                                        @elseif($item->appendices_no)
-                                            {{ $item->appendices_no ? $item->appendices_no : 'null'}}
-                                        @elseif($item->order_no)
-                                            {{ $item->order_no ? $item->order_no : 'null'}}
-                                        @elseif($item->annexure_no)
-                                            {{ $item->annexure_no ? $item->annexure_no : 'null'}}
-                                        @elseif($item->stschedule_no)
-                                            {{ $item->stschedule_no ? $item->stschedule_no : 'null'}}
-                                        @else
-                                            null
-                                        @endif
-                                        </td>
-                                        <td>
-                                        @if ($item->section_title)
-                                            {!! $item->section_title ? $item->section_title : 'null' !!}
-                                        @elseif($item->article_title)
-                                            {!! $item->article_title ? $item->article_title : 'null' !!}
-                                        @elseif($item->rule_title)
-                                            {!! $item->rule_title ? $item->rule_title : 'null' !!}
-                                        @elseif($item->regulation_title)
-                                            {!!$item->regulation_title ? $item->regulation_title : 'null' !!}
-                                        @elseif($item->list_title)
-                                            {{  $item->list_title ? $item->list_title : 'null' }}
-                                        @elseif($item->part_title)
-                                            {{ $item->part_title ? $item->part_title : 'null' }}
-                                        @elseif($item->appendices_title)
-                                            {!! $item->appendices_title ? $item->appendices_title : 'null' !!}
-                                        @elseif($item->order_title)
-                                            {!!$item->order_title ? $item->order_title : 'null' !!}
-                                        @elseif($item->annexure_title)
-                                            {!! $item->annexure_title ? $item->annexure_title : 'null' !!}
-                                        @elseif($item->stschedule_title)
-                                            {!! $item->stschedule_title ? $item->stschedule_title : 'null' !!}
-                                        @else
-                                            null
-                                        @endif
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                        @if ($item->section_id)
-
-                                        <a href="/edit-section/{{ $item->section_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
-                                            class="px-1">
-                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                        </a>
-                                        <a href="/view-sub-section/{{ $item->section_id }}?page={{ $paginatedCollection->currentPage() }}" title="View"
-                                            class="px-1">
-                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                        </a>
-                                        <a href="#" title="Delete" class="px-1" data-toggle="modal" data-target="#deleteModal"
-                                            data-chapterid="{{ $item->chapter_id }}" data-partsid="{{ $item->parts_id }}"
-                                            data-preliminaryid="{{ $item->preliminary_id }}" data-scheduleid="{{ $item->schedule_id }}"
-                                            data-mainorderid="{{ $item->main_order_id }}" data-sectionid="{{ $item->section_id }}">
-                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ url('/add_below_new_section', ['act_id' => $item->act_id, 'section_id' => $item->section_id]) }}?page={{ $paginatedCollection->currentPage() }}"
-                                            title="Add Next Section" class="px-1">
-                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a>    
-                                        @elseif($item->article_id)
-
-                                        <a href="/edit-article/{{ $item->article_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
-                                            class="px-1">
-                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                        </a>
-                                        <a href="/view-sub-article/{{ $item->article_id }}?page={{ $paginatedCollection->currentPage() }}" title="View"
-                                            class="px-1">
-                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ url('/delete_article/' . $item->article_id) }}"
-                                            title="Delete" class="px-1"
-                                            onclick="return confirm('Are you sure ?')">
-                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                        </a>
-                                        {{-- <a href="{{ url('/add_below_new_article', ['act_id' => $item->act_id, 'article_id' => $item->article_id, 'article_rank' => $item->article_rank]) }}"
-                                            title="Add Next Article" class="px-1">
-                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a> --}}
-                                        <a href="{{ route('add_below_new_article', ['id' => $item->act_id, 'article_id' => $item->article_id]) }}?page={{ $paginatedCollection->currentPage() }}"
-                                            title="Add Next Article" class="px-1">
-                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a>
-                                        
-                                        @elseif($item->rule_id)
-                                            <a href="/edit-rule/{{ $item->rule_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
-                                                        <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                                    </a>
-                                                    <a href="/view-sub-rule/{{ $item->rule_id }}?page={{ $paginatedCollection->currentPage() }}" title="View"
-                                                        class="px-1">
-                                                        <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                                    </a>
-                                                    <a href="{{ url('/delete_rule/' . $item->rule_id) }}" title="Delete"
-                                                        class="px-1" onclick="return confirm('Are you sure ?')">
-                                                        <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                                    </a>
-                                                    <a href="{{ route('add_below_new_rule', ['id' => $item->act_id, 'rule_id' => $item->rule_id]) }}"
-                                                        title="Add Next Rule" class="px-1">
-                                                        <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                                    </a>
-
-                                        @elseif($item->regulation_id)
-                                        <a href="/edit-regulation/{{ $item->regulation_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
-                                            class="px-1">
-                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                        </a>
-                                        <a href="/view-sub-regulation/{{ $item->regulation_id }}?page={{ $paginatedCollection->currentPage() }}" title="View"
-                                            class="px-1">
-                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ url('/delete_regulation/' . $item->regulation_id) }}"
-                                            title="Delete" class="px-1"
-                                            onclick="return confirm('Are you sure ?')">
-                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                        </a>
-                                        {{-- <a href="{{ url('/add_below_new_regulation', ['act_id' => $item->act_id, 'regulation_id' => $item->regulation_id, 'regulation_rank' => $item->regulation_rank]) }}"
-                                            title="Add Next Regulation" class="px-1">
-                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a> --}}
-                                        <a href="{{ route('add_below_new_regulation', ['id' => $item->act_id, 'regulation_id' => $item->regulation_id]) }}?page={{ $paginatedCollection->currentPage() }}"
-                                            title="Add Next Regulation" class="px-1">
-                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a>
-
-                                        @elseif($item->list_id)
-                                        <a href="/edit-list/{{ $item->list_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
-                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                        </a>
-                                        <a href="/view-sub-list/{{ $item->list_id }}?page={{ $paginatedCollection->currentPage() }}" title="View"
-                                            class="px-1">
-                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ url('/delete_list/' . $item->list_id) }}" title="Delete"
-                                            class="px-1" onclick="return confirm('Are you sure ?')">
-                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                        </a>
-                                        
-                                        <a href="{{ route('add_below_new_list', ['id' => $item->act_id, 'list_id' => $item->list_id]) }}?page={{ $paginatedCollection->currentPage() }}"
-                                            title="Add Next List" class="px-1">
-                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a>
-
-                                        @elseif($item->part_id)
-                                        <a href="/edit-part/{{ $item->part_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
-                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                        </a>
-                                        <a href="/view-sub-part/{{ $item->part_id }}?page={{ $paginatedCollection->currentPage() }}" title="View"
-                                            class="px-1">
-                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ url('/delete_part/' . $item->part_id) }}" title="Delete"
-                                            class="px-1" onclick="return confirm('Are you sure ?')">
-                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                        </a>
-                                        {{-- <a href="{{ url('/add_below_new_part', ['act_id' => $item->act_id, 'part_id' => $item->part_id, 'part_rank' => $item->part_rank]) }}"
-                                            title="Add Next Part" class="px-1">
-                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a> --}}
-                                        <a href="{{ route('add_below_new_part', ['id' => $item->act_id, 'part_id' => $item->part_id]) }}?page={{ $paginatedCollection->currentPage() }}"
-                                            title="Add Next Part" class="px-1">
-                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a>
-
-                                        @elseif($item->appendices_id)
-                                        <a href="/edit-appendices/{{ $item->appendices_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
-                                            class="px-1">
-                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                        </a>
-                                        <a href="/view-sub-appendices/{{ $item->appendices_id }}?page={{ $paginatedCollection->currentPage() }}" title="View"
-                                            class="px-1">
-                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ url('/delete_appendices/' . $item->appendices_id) }}"
-                                            title="Delete" class="px-1"
-                                            onclick="return confirm('Are you sure ?')">
-                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ route('add_below_new_appendices', ['id' => $item->act_id, 'appendices_id' => $item->appendices_id]) }}?page={{ $paginatedCollection->currentPage() }}"
-                                            title="Add Next Appendices" class="px-1">
-                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a>
-
-                                        @elseif($item->order_id)
-                                        <a href="/edit-order/{{ $item->order_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
-                                            class="px-1">
-                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                        </a>
-                                        <a href="/view-sub-order/{{ $item->order_id }}?page={{ $paginatedCollection->currentPage() }}" title="View"
-                                            class="px-1">
-                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ url('/delete_order/' . $item->order_id) }}" title="Delete"
-                                            class="px-1" onclick="return confirm('Are you sure ?')">
-                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ route('add_below_new_order', ['id' => $item->act_id, 'order_id' => $item->order_id]) }}?page={{ $paginatedCollection->currentPage() }}"
-                                            title="Add Next Order" class="px-1">
-                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a>
-
-                                        @elseif($item->annexure_id)
-                                        <a href="/edit-annexure/{{ $item->annexure_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
-                                            class="px-1">
-                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                        </a>
-                                        <a href="/view-sub-annexure/{{ $item->annexure_id }}?page={{ $paginatedCollection->currentPage() }}" title="View"
-                                            class="px-1">
-                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ url('/delete_annexure/' . $item->annexure_id) }}"
-                                            title="Delete" class="px-1"
-                                            onclick="return confirm('Are you sure ?')">
-                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ route('add_below_new_annexure', ['id' => $item->act_id, 'annexure_id' => $item->annexure_id]) }}?page={{ $paginatedCollection->currentPage() }}"
-                                            title="Add Next Annexure" class="px-1">
-                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a>
-                                        
-                                        @elseif($item->stschedule_id)
-                                        <a href="/edit-stschedule/{{ $item->stschedule_id }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
-                                            class="px-1">
-                                            <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
-                                        </a>
-                                        <a href="/view-sub-stschedule/{{ $item->stschedule_id }}?page={{ $paginatedCollection->currentPage() }}" title="View"
-                                            class="px-1">
-                                            <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ url('/delete_stschedule/' . $item->stschedule_id) }}"
-                                            title="Delete" class="px-1"
-                                            onclick="return confirm('Are you sure ?')">
-                                            <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
-                                        </a>
-                                        <a href="{{ route('add_below_new_stschedule', ['id' => $item->act_id, 'stschedule_id' => $item->stschedule_id]) }}?page={{ $paginatedCollection->currentPage() }}"
-                                            title="Add Next Schedule" class="px-1">
-                                            <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
-                                        </a> 
-                                        @else
-                                            null
-                                        @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="6"> <!-- Adjust colspan based on the number of columns in your table -->
-                                        <div class="pagination-links">
-                                            {{ $paginatedCollection->links() }}
+                                @if(isset($item['parts_id']))
+                                    <div class="card">
+                                        <div class="card-header d-flex">
+                                            <div style="width: 90%; text-align: center;">
+                                                <a class="card-link accordion-title" data-toggle="collapse"
+                                                    href="#collapse_parts_{{ $item['parts_id'] }}">
+                                                    {!! preg_replace('/[0-9\[\]\.]/', '', $item['parts_title']) !!}
+                                                </a>
+                                            </div>
+                                            <div style="width: 10%; display: flex; justify-content: center; align-items: center;">
+                                                <a href="{{ url('/add_below_new_parts', ['act_id' => $item['act_id'], 'parts_id' => $item['parts_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                    title="Add Next Parts" class="px-1">
+                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                </a>
+                                                <a href="{{ url('/delete_parts/' . $item['parts_id']) }}" title="Delete" class="px-1 " onclick="return confirm('Are you sure ?')">
+                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                       
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-        aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteModalLabel">Delete Type</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>What type of item do you want to delete?</p>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="deleteType" id="mainTypeRadio" value="mainType">
-                            <label class="form-check-label" for="mainTypeRadio">
-                                Main Type
-                            </label>
+                                    @if (!empty($item['sections']))
+                                        <div id="collapse_parts_{{ $item['parts_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['sections'] as $sectionItem)
+                                                        <tr>
+                                                            <td>{{$sectionItem['section_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $sectionItem['section_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-section/{{ $sectionItem['section_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-section/{{ $sectionItem['section_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_section/' . $sectionItem['section_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/add_below_new_section', ['act_id' => $sectionItem['act_id'], 'section_id' => $sectionItem['section_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Section" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>     
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['articles']))
+                                        <div id="collapse_parts_{{ $item['parts_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['articles'] as $articleItem)
+                                                        <tr>
+                                                            <td>{{$articleItem['article_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $articleItem['article_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-article/{{ $articleItem['article_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-article/{{ $articleItem['article_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_article/' . $articleItem['article_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_article', ['id' => $articleItem['act_id'], 'article_id' => $articleItem['article_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Article" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                   @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['rules']))
+                                        <div id="collapse_parts_{{ $item['parts_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['rules'] as $ruleItem)
+                                                        <tr>
+                                                            <td>{{$ruleItem['rule_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $ruleItem['rule_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-rule/{{ $ruleItem['rule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-rule/{{ $ruleItem['rule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_rule/' . $ruleItem['rule_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_rule', ['id' => $ruleItem['act_id'],'rule_id' => $ruleItem['rule_id']]) }}"
+                                                                    title="Add Next Rule" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                   @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['regulation']))
+                                        <div id="collapse_parts_{{ $item['parts_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['regulation'] as $regulationItem)
+                                                        <tr>
+                                                            <td>{{$regulationItem['regulation_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $regulationItem['regulation_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-regulation/{{ $regulationItem['regulation_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-regulation/{{ $regulationItem['regulation_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_regulation/' . $regulationItem['regulation_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_regulation', ['id' => $regulationItem['act_id'], 'regulation_id' => $regulationItem['regulation_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Regulation" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                   @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['lists']))
+                                        <div id="collapse_parts_{{ $item['parts_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['lists'] as $listItem)
+                                                        <tr>
+                                                            <td>{{$listItem['list_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-list/{{ $listItem['list_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-list/{{ $listItem['list_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_list/' . $listItem['list_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                
+                                                                <a href="{{ route('add_below_new_list', ['id' => $listItem['act_id'], 'list_id' => $listItem['list_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next List" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                   @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['part']))
+                                        <div id="collapse_parts_{{ $item['parts_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['part'] as $partItem)
+                                                        <tr>
+                                                            <td>{{$partItem['part_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $partItem['part_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-part/{{ $partItem['part_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-part/{{ $partItem['part_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_part/' . $partItem['part_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_part', ['id' => $partItem['act_id'], 'part_id' => $partItem['part_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Part" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                   @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['appendices']))
+                                        <div id="collapse_parts_{{ $item['parts_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['appendices'] as $appendicesItem)
+                                                        <tr>
+                                                            <td>{{$appendicesItem['appendices_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $appendicesItem['appendices_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-appendices/{{ $appendicesItem['appendices_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-appendices/{{ $appendicesItem['appendices_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_appendices/' . $appendicesItem['appendices_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_appendices', ['id' => $appendicesItem['act_id'], 'appendices_id' => $appendicesItem['appendices_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Appendices" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                   @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['order']))
+                                        <div id="collapse_parts_{{ $item['parts_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['order'] as $orderItem)
+                                                        <tr>
+                                                            <td>{{$orderItem['order_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $orderItem['order_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-order/{{ $orderItem['order_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-order/{{ $orderItem['order_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_order/' . $orderItem['order_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_order', ['id' => $orderItem['act_id'], 'order_id' => $orderItem['order_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Order" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                        
+                                                            </td>
+                                                        </tr>
+                                                   @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['annexure']))
+                                        <div id="collapse_parts_{{ $item['parts_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['annexure'] as $annexureItem)
+                                                        <tr>
+                                                            <td>{{$annexureItem['annexure_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $annexureItem['annexure_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-annexure/{{ $annexureItem['annexure_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-annexure/{{ $annexureItem['annexure_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_annexure/' . $annexureItem['annexure_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_annexure', ['id' => $annexureItem['act_id'], 'annexure_id' => $annexureItem['annexure_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Annexure" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                      
+                                                            </td>
+                                                        </tr>
+                                                   @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['stschedule']))
+                                        <div id="collapse_parts_{{ $item['parts_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['stschedule'] as $stscheduleItem)
+                                                        <tr>
+                                                            <td>{{$stscheduleItem['stschedule_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $stscheduleItem['stschedule_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-stschedule/{{ $stscheduleItem['stschedule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-stschedule/{{ $stscheduleItem['stschedule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_stschedule/' . $stscheduleItem['stschedule_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_stschedule', ['id' => $stscheduleItem['act_id'], 'stschedule_id' => $stscheduleItem['stschedule_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Schedule" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                      
+                                                            </td>
+                                                        </tr>
+                                                   @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                </div>
+                                @endif
+                            @if (isset($item['chapter_id']))
+                                <div class="card">
+                                    <div class="card-header d-flex">
+                                        <div style="width: 90%; text-align: center;">
+                                            <a class="card-link accordion-title" data-toggle="collapse"
+                                                href="#collapse_chapter_{{ $item['chapter_id'] }}">
+                                                {!! preg_replace('/[0-9\[\]\.]/', '', $item['chapter_title']) !!}
+                                            </a>
+                                        </div>
+                                        <div
+                                            style="width: 10%; display: flex; justify-content: center; align-items: center;">
+                                            <a href="{{ url('/add_below_new_chapter', ['act_id' => $item['act_id'], 'parts_id' => $item['chapter_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                title="Add Next Parts" class="px-1">
+                                                <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                            </a>
+                                            <a href="{{ url('/delete_chapter/' . $item['chapter_id']) }}"
+                                                title="Delete" class="px-1"
+                                                onclick="return confirm('Are you sure ?')">
+                                                <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    @if (!empty($item['sections']))
+                                        <div id="collapse_chapter_{{ $item['chapter_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['sections'] as $sectionItem)
+                                                        <tr>
+                                                            <td>{{$sectionItem['section_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $sectionItem['section_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-section/{{ $sectionItem['section_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-section/{{ $sectionItem['section_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_section/' . $sectionItem['section_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/add_below_new_section', ['act_id' => $sectionItem['act_id'], 'section_id' => $sectionItem['section_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Section" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>     
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['articles']))
+                                        <div id="collapse_chapter_{{ $item['chapter_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['articles'] as $articleItem)
+                                                        <tr>
+                                                            <td>{{$articleItem['article_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $articleItem['article_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-article/{{ $articleItem['article_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-article/{{ $articleItem['article_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_article/' . $articleItem['article_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_article', ['id' => $articleItem['act_id'], 'article_id' => $articleItem['article_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Article" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['rules']))
+                                        <div id="collapse_chapter_{{ $item['chapter_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['rules'] as $ruleItem)
+                                                        <tr>
+                                                            <td>{{$ruleItem['rule_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $ruleItem['rule_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-rule/{{ $ruleItem['rule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-rule/{{ $ruleItem['rule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_rule/' . $ruleItem['rule_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_rule', ['id' => $ruleItem['act_id'],'rule_id' => $ruleItem['rule_id']]) }}"
+                                                                    title="Add Next Rule" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['regulation']))
+                                        <div id="collapse_chapter_{{ $item['chapter_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['regulation'] as $regulationItem)
+                                                        <tr>
+                                                            <td>{{$regulationItem['regulation_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $regulationItem['regulation_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-regulation/{{ $regulationItem['regulation_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-regulation/{{ $regulationItem['regulation_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_regulation/' . $regulationItem['regulation_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_regulation', ['id' => $regulationItem['act_id'], 'regulation_id' => $regulationItem['regulation_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Regulation" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['lists']))
+                                        <div id="collapse_chapter_{{ $item['chapter_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['lists'] as $listItem)
+                                                        <tr>
+                                                            <td>{{$listItem['list_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-list/{{ $listItem['list_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-list/{{ $listItem['list_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_list/' . $listItem['list_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                
+                                                                <a href="{{ route('add_below_new_list', ['id' => $listItem['act_id'], 'list_id' => $listItem['list_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next List" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['part']))
+                                        <div id="collapse_chapter_{{ $item['chapter_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['part'] as $partItem)
+                                                        <tr>
+                                                            <td>{{$partItem['part_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $partItem['part_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-part/{{ $partItem['part_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-part/{{ $partItem['part_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_part/' . $partItem['part_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_part', ['id' => $partItem['act_id'], 'part_id' => $partItem['part_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Part" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['appendices']))
+                                        <div id="collapse_chapter_{{ $item['chapter_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['appendices'] as $appendicesItem)
+                                                        <tr>
+                                                            <td>{{$appendicesItem['appendices_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $appendicesItem['appendices_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-appendices/{{ $appendicesItem['appendices_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-appendices/{{ $appendicesItem['appendices_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_appendices/' . $appendicesItem['appendices_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_appendices', ['id' => $appendicesItem['act_id'], 'appendices_id' => $appendicesItem['appendices_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Appendices" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['order']))
+                                        <div id="collapse_chapter_{{ $item['chapter_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['order'] as $orderItem)
+                                                        <tr>
+                                                            <td>{{$orderItem['order_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $orderItem['order_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-order/{{ $orderItem['order_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-order/{{ $orderItem['order_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_order/' . $orderItem['order_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_order', ['id' => $orderItem['act_id'], 'order_id' => $orderItem['order_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Order" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                        
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['annexure']))
+                                        <div id="collapse_chapter_{{ $item['chapter_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['annexure'] as $annexureItem)
+                                                        <tr>
+                                                            <td>{{$annexureItem['annexure_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $annexureItem['annexure_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-annexure/{{ $annexureItem['annexure_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-annexure/{{ $annexureItem['annexure_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_annexure/' . $annexureItem['annexure_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_annexure', ['id' => $annexureItem['act_id'], 'annexure_id' => $annexureItem['annexure_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Annexure" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                      
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['stschedule']))
+                                        <div id="collapse_chapter_{{ $item['chapter_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['stschedule'] as $stscheduleItem)
+                                                        <tr>
+                                                            <td>{{$stscheduleItem['stschedule_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $stscheduleItem['stschedule_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-stschedule/{{ $stscheduleItem['stschedule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-stschedule/{{ $stscheduleItem['stschedule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_stschedule/' . $stscheduleItem['stschedule_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_stschedule', ['id' => $stscheduleItem['act_id'], 'stschedule_id' => $stscheduleItem['stschedule_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Schedule" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                      
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
+                            @if (isset($item['priliminary_id']))
+                                <div class="card">
+                                    <div class="card-header d-flex">
+                                        <div style="width: 90%; text-align: center;">
+                                            <a class="card-link accordion-title" data-toggle="collapse"
+                                                href="#collapse_priliminary_{{ $item['priliminary_id'] }}">
+                                                {!! preg_replace('/[0-9\[\]\.]/', '', $item['priliminary_title']) !!}
+                                            </a>
+                                        </div>
+                                        <div
+                                            style="width: 10%; display: flex; justify-content: center; align-items: center;">
+                                            <a href="{{ url('/add_below_new_priliminary', ['act_id' => $item['act_id'], 'priliminary_id' => $item['priliminary_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                title="Add Next Parts" class="px-1">
+                                                <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                            </a>
+                                            <a href="{{ url('/delete_prilimiary/' . $item['priliminary_id']) }}"
+                                                title="Delete" class="px-1"
+                                                onclick="return confirm('Are you sure ?')">
+                                                <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                            </a>  
+                                        </div>
+                                    </div>
+                                    @if (!empty($item['sections']))
+                                        <div id="collapse_priliminary_{{ $item['priliminary_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['sections'] as $sectionItem)
+                                                        <tr>
+                                                            <td>{{$sectionItem['section_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $sectionItem['section_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-section/{{ $sectionItem['section_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-section/{{ $sectionItem['section_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_section/' . $sectionItem['section_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/add_below_new_section', ['act_id' => $sectionItem['act_id'], 'section_id' => $sectionItem['section_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Section" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>     
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['articles']))
+                                        <div id="collapse_priliminary_{{ $item['priliminary_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['articles'] as $articleItem)
+                                                        <tr>
+                                                            <td>{{$articleItem['article_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $articleItem['article_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-article/{{ $articleItem['article_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-article/{{ $articleItem['article_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_article/' . $articleItem['article_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_article', ['id' => $articleItem['act_id'], 'article_id' => $articleItem['article_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Article" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['rules']))
+                                        <div id="collapse_priliminary_{{ $item['priliminary_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['rules'] as $ruleItem)
+                                                        <tr>
+                                                            <td>{{$ruleItem['rule_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $ruleItem['rule_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-rule/{{ $ruleItem['rule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-rule/{{ $ruleItem['rule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_rule/' . $ruleItem['rule_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_rule', ['id' => $ruleItem['act_id'],'rule_id' => $ruleItem['rule_id']]) }}"
+                                                                    title="Add Next Rule" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['regulation']))
+                                        <div id="collapse_priliminary_{{ $item['priliminary_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['regulation'] as $regulationItem)
+                                                        <tr>
+                                                            <td>{{$regulationItem['regulation_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $regulationItem['regulation_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-regulation/{{ $regulationItem['regulation_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-regulation/{{ $regulationItem['regulation_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_regulation/' . $regulationItem['regulation_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_regulation', ['id' => $regulationItem['act_id'], 'regulation_id' => $regulationItem['regulation_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Regulation" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['lists']))
+                                        <div id="collapse_priliminary_{{ $item['priliminary_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['lists'] as $listItem)
+                                                        <tr>
+                                                            <td>{{$listItem['list_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-list/{{ $listItem['list_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-list/{{ $listItem['list_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_list/' . $listItem['list_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                
+                                                                <a href="{{ route('add_below_new_list', ['id' => $listItem['act_id'], 'list_id' => $listItem['list_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next List" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['part']))
+                                        <div id="collapse_priliminary_{{ $item['priliminary_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['part'] as $partItem)
+                                                        <tr>
+                                                            <td>{{$partItem['part_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $partItem['part_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-part/{{ $partItem['part_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-part/{{ $partItem['part_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_part/' . $partItem['part_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_part', ['id' => $partItem['act_id'], 'part_id' => $partItem['part_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Part" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['appendices']))
+                                        <div id="collapse_priliminary_{{ $item['priliminary_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['appendices'] as $appendicesItem)
+                                                        <tr>
+                                                            <td>{{$appendicesItem['appendices_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $appendicesItem['appendices_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-appendices/{{ $appendicesItem['appendices_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-appendices/{{ $appendicesItem['appendices_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_appendices/' . $appendicesItem['appendices_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_appendices', ['id' => $appendicesItem['act_id'], 'appendices_id' => $appendicesItem['appendices_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Appendices" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['order']))
+                                        <div id="collapse_priliminary_{{ $item['priliminary_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['order'] as $orderItem)
+                                                        <tr>
+                                                            <td>{{$orderItem['order_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $orderItem['order_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-order/{{ $orderItem['order_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-order/{{ $orderItem['order_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_order/' . $orderItem['order_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_order', ['id' => $orderItem['act_id'], 'order_id' => $orderItem['order_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Order" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                        
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['annexure']))
+                                        <div id="collapse_priliminary_{{ $item['priliminary_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['annexure'] as $annexureItem)
+                                                        <tr>
+                                                            <td>{{$annexureItem['annexure_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $annexureItem['annexure_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-annexure/{{ $annexureItem['annexure_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-annexure/{{ $annexureItem['annexure_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_annexure/' . $annexureItem['annexure_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_annexure', ['id' => $annexureItem['act_id'], 'annexure_id' => $annexureItem['annexure_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Annexure" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                      
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['stschedule']))
+                                        <div id="collapse_priliminary_{{ $item['priliminary_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['stschedule'] as $stscheduleItem)
+                                                        <tr>
+                                                            <td>{{$stscheduleItem['stschedule_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $stscheduleItem['stschedule_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-stschedule/{{ $stscheduleItem['stschedule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-stschedule/{{ $stscheduleItem['stschedule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_stschedule/' . $stscheduleItem['stschedule_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_stschedule', ['id' => $stscheduleItem['act_id'], 'stschedule_id' => $stscheduleItem['stschedule_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Schedule" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                      
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
+                            @if (isset($item['schedule_id']))
+                                <div class="card">
+                                    <div class="card-header d-flex">
+                                        <div style="width: 90%; text-align: center;">
+                                            <a class="card-link accordion-title" data-toggle="collapse"
+                                                href="#collapse_schedule_{{ $item['schedule_id'] }}">
+                                                {!! preg_replace('/[0-9\[\]\.]/', '', $item['schedule_title']) !!}
+                                            </a>
+                                        </div>
+                                        <div
+                                            style="width: 10%; display: flex; justify-content: center; align-items: center;">
+                                            <a href="{{ url('/add_below_new_schedule', ['act_id' => $item['act_id'], 'schedule_id' => $item['schedule_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                title="Add Next Parts" class="px-1">
+                                                <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                            </a>
+                                            <a href="{{ url('/delete_schedule/' . $item['schedule_id']) }}"
+                                                title="Delete" class="px-1"
+                                                onclick="return confirm('Are you sure ?')">
+                                                <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    @if (!empty($item['sections']))
+                                        <div id="collapse_schedule_{{ $item['schedule_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['sections'] as $sectionItem)
+                                                        <tr>
+                                                            <td>{{$sectionItem['section_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $sectionItem['section_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-section/{{ $sectionItem['section_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-section/{{ $sectionItem['section_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_section/' . $sectionItem['section_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/add_below_new_section', ['act_id' => $sectionItem['act_id'], 'section_id' => $sectionItem['section_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Section" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>     
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['articles']))
+                                        <div id="collapse_schedule_{{ $item['schedule_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['articles'] as $articleItem)
+                                                        <tr>
+                                                            <td>{{$articleItem['article_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $articleItem['article_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-article/{{ $articleItem['article_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-article/{{ $articleItem['article_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_article/' . $articleItem['article_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_article', ['id' => $articleItem['act_id'], 'article_id' => $articleItem['article_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Article" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['rules']))
+                                        <div id="collapse_schedule_{{ $item['schedule_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['rules'] as $ruleItem)
+                                                        <tr>
+                                                            <td>{{$ruleItem['rule_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $ruleItem['rule_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-rule/{{ $ruleItem['rule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-rule/{{ $ruleItem['rule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_rule/' . $ruleItem['rule_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_rule', ['id' => $ruleItem['act_id'],'rule_id' => $ruleItem['rule_id']]) }}"
+                                                                    title="Add Next Rule" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['regulation']))
+                                        <div id="collapse_schedule_{{ $item['schedule_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['regulation'] as $regulationItem)
+                                                        <tr>
+                                                            <td>{{$regulationItem['regulation_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $regulationItem['regulation_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-regulation/{{ $regulationItem['regulation_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-regulation/{{ $regulationItem['regulation_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_regulation/' . $regulationItem['regulation_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_regulation', ['id' => $regulationItem['act_id'], 'regulation_id' => $regulationItem['regulation_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Regulation" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['lists']))
+                                        <div id="collapse_schedule_{{ $item['schedule_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['lists'] as $listItem)
+                                                        <tr>
+                                                            <td>{{$listItem['list_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-list/{{ $listItem['list_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-list/{{ $listItem['list_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_list/' . $listItem['list_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                
+                                                                <a href="{{ route('add_below_new_list', ['id' => $listItem['act_id'], 'list_id' => $listItem['list_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next List" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['part']))
+                                        <div id="collapse_schedule_{{ $item['schedule_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['part'] as $partItem)
+                                                        <tr>
+                                                            <td>{{$partItem['part_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $partItem['part_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-part/{{ $partItem['part_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-part/{{ $partItem['part_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_part/' . $partItem['part_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_part', ['id' => $partItem['act_id'], 'part_id' => $partItem['part_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Part" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['appendices']))
+                                        <div id="collapse_schedule_{{ $item['schedule_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['appendices'] as $appendicesItem)
+                                                        <tr>
+                                                            <td>{{$appendicesItem['appendices_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $appendicesItem['appendices_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-appendices/{{ $appendicesItem['appendices_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-appendices/{{ $appendicesItem['appendices_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_appendices/' . $appendicesItem['appendices_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_appendices', ['id' => $appendicesItem['act_id'], 'appendices_id' => $appendicesItem['appendices_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Appendices" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['order']))
+                                        <div id="collapse_schedule_{{ $item['schedule_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['order'] as $orderItem)
+                                                        <tr>
+                                                            <td>{{$orderItem['order_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $orderItem['order_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-order/{{ $orderItem['order_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-order/{{ $orderItem['order_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_order/' . $orderItem['order_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_order', ['id' => $orderItem['act_id'], 'order_id' => $orderItem['order_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Order" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                        
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['annexure']))
+                                        <div id="collapse_schedule_{{ $item['schedule_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['annexure'] as $annexureItem)
+                                                        <tr>
+                                                            <td>{{$annexureItem['annexure_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $annexureItem['annexure_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-annexure/{{ $annexureItem['annexure_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-annexure/{{ $annexureItem['annexure_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_annexure/' . $annexureItem['annexure_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_annexure', ['id' => $annexureItem['act_id'], 'annexure_id' => $annexureItem['annexure_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Annexure" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                      
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['stschedule']))
+                                        <div id="collapse_schedule_{{ $item['schedule_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['stschedule'] as $stscheduleItem)
+                                                        <tr>
+                                                            <td>{{$stscheduleItem['stschedule_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $stscheduleItem['stschedule_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-stschedule/{{ $stscheduleItem['stschedule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-stschedule/{{ $stscheduleItem['stschedule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_stschedule/' . $stscheduleItem['stschedule_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_stschedule', ['id' => $stscheduleItem['act_id'], 'stschedule_id' => $stscheduleItem['stschedule_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Schedule" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                      
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
+                            @if (isset($item['appendix_id']))
+                                <div class="card">
+                                    <div class="card-header d-flex">
+                                        <div style="width: 90%; text-align: center;">
+                                            <a class="card-link accordion-title" data-toggle="collapse"
+                                                href="#collapse_appendix_{{ $item['appendix_id'] }}">
+                                                {!! preg_replace('/[0-9\[\]\.]/', '', $item['appendix_title']) !!}
+                                            </a>
+                                        </div>
+                                        <div
+                                            style="width: 10%; display: flex; justify-content: center; align-items: center;">
+                                            <a href="{{ url('/add_below_new_appendix', ['act_id' => $item['act_id'], 'appendix_id' => $item['appendix_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                title="Add Next Parts" class="px-1">
+                                                <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                            </a>
+                                            <a href="{{ url('/delete_appendix/' . $item['appendix_id']) }}"
+                                                title="Delete" class="px-1"
+                                                onclick="return confirm('Are you sure ?')">
+                                                <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    @if (!empty($item['sections']))
+                                        <div id="collapse_appendix_{{ $item['appendix_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['sections'] as $sectionItem)
+                                                        <tr>
+                                                            <td>{{$sectionItem['section_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $sectionItem['section_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-section/{{ $sectionItem['section_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-section/{{ $sectionItem['section_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_section/' . $sectionItem['section_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/add_below_new_section', ['act_id' => $sectionItem['act_id'], 'section_id' => $sectionItem['section_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Section" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>     
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['articles']))
+                                        <div id="collapse_appendix_{{ $item['appendix_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['articles'] as $articleItem)
+                                                        <tr>
+                                                            <td>{{$articleItem['article_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $articleItem['article_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-article/{{ $articleItem['article_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-article/{{ $articleItem['article_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_article/' . $articleItem['article_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_article', ['id' => $articleItem['act_id'], 'article_id' => $articleItem['article_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Article" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['rules']))
+                                        <div id="collapse_appendix_{{ $item['appendix_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['rules'] as $ruleItem)
+                                                        <tr>
+                                                            <td>{{$ruleItem['rule_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $ruleItem['rule_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-rule/{{ $ruleItem['rule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-rule/{{ $ruleItem['rule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_rule/' . $ruleItem['rule_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_rule', ['id' => $ruleItem['act_id'],'rule_id' => $ruleItem['rule_id']]) }}"
+                                                                    title="Add Next Rule" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['regulation']))
+                                        <div id="collapse_appendix_{{ $item['appendix_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['regulation'] as $regulationItem)
+                                                        <tr>
+                                                            <td>{{$regulationItem['regulation_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $regulationItem['regulation_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-regulation/{{ $regulationItem['regulation_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-regulation/{{ $regulationItem['regulation_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_regulation/' . $regulationItem['regulation_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_regulation', ['id' => $regulationItem['act_id'], 'regulation_id' => $regulationItem['regulation_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Regulation" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['lists']))
+                                        <div id="collapse_appendix_{{ $item['appendix_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['lists'] as $listItem)
+                                                        <tr>
+                                                            <td>{{$listItem['list_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-list/{{ $listItem['list_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-list/{{ $listItem['list_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_list/' . $listItem['list_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                
+                                                                <a href="{{ route('add_below_new_list', ['id' => $listItem['act_id'], 'list_id' => $listItem['list_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next List" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['part']))
+                                        <div id="collapse_appendix_{{ $item['appendix_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['part'] as $partItem)
+                                                        <tr>
+                                                            <td>{{$partItem['part_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $partItem['part_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-part/{{ $partItem['part_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-part/{{ $partItem['part_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_part/' . $partItem['part_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_part', ['id' => $partItem['act_id'], 'part_id' => $partItem['part_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Part" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['appendices']))
+                                        <div id="collapse_appendix_{{ $item['appendix_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['appendices'] as $appendicesItem)
+                                                        <tr>
+                                                            <td>{{$appendicesItem['appendices_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $appendicesItem['appendices_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-appendices/{{ $appendicesItem['appendices_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-appendices/{{ $appendicesItem['appendices_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_appendices/' . $appendicesItem['appendices_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_appendices', ['id' => $appendicesItem['act_id'], 'appendices_id' => $appendicesItem['appendices_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Appendices" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['order']))
+                                        <div id="collapse_appendix_{{ $item['appendix_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['order'] as $orderItem)
+                                                        <tr>
+                                                            <td>{{$orderItem['order_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $orderItem['order_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-order/{{ $orderItem['order_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-order/{{ $orderItem['order_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_order/' . $orderItem['order_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_order', ['id' => $orderItem['act_id'], 'order_id' => $orderItem['order_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Order" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                        
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['annexure']))
+                                        <div id="collapse_appendix_{{ $item['appendix_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['annexure'] as $annexureItem)
+                                                        <tr>
+                                                            <td>{{$annexureItem['annexure_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $annexureItem['annexure_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-annexure/{{ $annexureItem['annexure_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-annexure/{{ $annexureItem['annexure_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_annexure/' . $annexureItem['annexure_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_annexure', ['id' => $annexureItem['act_id'], 'annexure_id' => $annexureItem['annexure_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Annexure" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                      
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['stschedule']))
+                                        <div id="collapse_appendix_{{ $item['appendix_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['stschedule'] as $stscheduleItem)
+                                                        <tr>
+                                                            <td>{{$stscheduleItem['stschedule_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $stscheduleItem['stschedule_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-stschedule/{{ $stscheduleItem['stschedule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-stschedule/{{ $stscheduleItem['stschedule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_stschedule/' . $stscheduleItem['stschedule_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_stschedule', ['id' => $stscheduleItem['act_id'], 'stschedule_id' => $stscheduleItem['stschedule_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Schedule" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                      
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
+                            @if (isset($item['main_order_id']))
+                                <div class="card">
+                                    <div class="card-header d-flex">
+                                        <div style="width: 90%; text-align: center;">
+                                            <a class="card-link accordion-title" data-toggle="collapse"
+                                                href="#collapse_main_order_{{ $item['main_order_id'] }}">
+                                                {!! preg_replace('/[0-9\[\]\.]/', '', $item['main_order_title']) !!}
+                                            </a>
+                                        </div>
+                                        <div
+                                            style="width: 10%; display: flex; justify-content: center; align-items: center;">
+                                            <a href="{{ url('/add_below_new_main_order', ['act_id' => $item['act_id'], 'main_order_id' => $item['main_order_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                title="Add Next Parts" class="px-1">
+                                                <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                            </a>
+                                            <a href="{{ url('/delete_main_order/' . $item['main_order_id']) }}"
+                                                title="Delete" class="px-1"
+                                                onclick="return confirm('Are you sure ?')">
+                                                <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    @if (!empty($item['sections']))
+                                        <div id="collapse_main_order_{{ $item['main_order_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['sections'] as $sectionItem)
+                                                        <tr>
+                                                            <td>{{$sectionItem['section_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $sectionItem['section_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-section/{{ $sectionItem['section_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-section/{{ $sectionItem['section_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_section/' . $sectionItem['section_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/add_below_new_section', ['act_id' => $sectionItem['act_id'], 'section_id' => $sectionItem['section_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Section" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>     
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['articles']))
+                                        <div id="collapse_main_order_{{ $item['main_order_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['articles'] as $articleItem)
+                                                        <tr>
+                                                            <td>{{$articleItem['article_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $articleItem['article_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-article/{{ $articleItem['article_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-article/{{ $articleItem['article_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_article/' . $articleItem['article_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_article', ['id' => $articleItem['act_id'], 'article_id' => $articleItem['article_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Article" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['rules']))
+                                        <div id="collapse_main_order_{{ $item['main_order_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['rules'] as $ruleItem)
+                                                        <tr>
+                                                            <td>{{$ruleItem['rule_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $ruleItem['rule_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-rule/{{ $ruleItem['rule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-rule/{{ $ruleItem['rule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_rule/' . $ruleItem['rule_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_rule', ['id' => $ruleItem['act_id'],'rule_id' => $ruleItem['rule_id']]) }}"
+                                                                    title="Add Next Rule" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['regulation']))
+                                        <div id="collapse_main_order_{{ $item['main_order_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['regulation'] as $regulationItem)
+                                                        <tr>
+                                                            <td>{{$regulationItem['regulation_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $regulationItem['regulation_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-regulation/{{ $regulationItem['regulation_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-regulation/{{ $regulationItem['regulation_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_regulation/' . $regulationItem['regulation_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_regulation', ['id' => $regulationItem['act_id'], 'regulation_id' => $regulationItem['regulation_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Regulation" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['lists']))
+                                        <div id="collapse_main_order_{{ $item['main_order_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['lists'] as $listItem)
+                                                        <tr>
+                                                            <td>{{$listItem['list_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $listItem['list_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-list/{{ $listItem['list_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-list/{{ $listItem['list_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_list/' . $listItem['list_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                
+                                                                <a href="{{ route('add_below_new_list', ['id' => $listItem['act_id'], 'list_id' => $listItem['list_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next List" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['part']))
+                                        <div id="collapse_main_order_{{ $item['main_order_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['part'] as $partItem)
+                                                        <tr>
+                                                            <td>{{$partItem['part_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $partItem['part_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-part/{{ $partItem['part_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit" class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-part/{{ $partItem['part_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_part/' . $partItem['part_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_part', ['id' => $partItem['act_id'], 'part_id' => $partItem['part_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Part" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['appendices']))
+                                        <div id="collapse_main_order_{{ $item['main_order_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['appendices'] as $appendicesItem)
+                                                        <tr>
+                                                            <td>{{$appendicesItem['appendices_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $appendicesItem['appendices_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-appendices/{{ $appendicesItem['appendices_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-appendices/{{ $appendicesItem['appendices_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_appendices/' . $appendicesItem['appendices_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_appendices', ['id' => $appendicesItem['act_id'], 'appendices_id' => $appendicesItem['appendices_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Appendices" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['order']))
+                                        <div id="collapse_main_order_{{ $item['main_order_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['order'] as $orderItem)
+                                                        <tr>
+                                                            <td>{{$orderItem['order_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $orderItem['order_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-order/{{ $orderItem['order_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-order/{{ $orderItem['order_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_order/' . $orderItem['order_id']) }}" title="Delete"
+                                                                    class="px-1" onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_order', ['id' => $orderItem['act_id'], 'order_id' => $orderItem['order_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Order" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                        
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['annexure']))
+                                        <div id="collapse_main_order_{{ $item['main_order_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['annexure'] as $annexureItem)
+                                                        <tr>
+                                                            <td>{{$annexureItem['annexure_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $annexureItem['annexure_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-annexure/{{ $annexureItem['annexure_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-annexure/{{ $annexureItem['annexure_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_annexure/' . $annexureItem['annexure_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_annexure', ['id' => $annexureItem['act_id'], 'annexure_id' => $annexureItem['annexure_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Annexure" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                      
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                    @if (!empty($item['stschedule']))
+                                        <div id="collapse_main_order_{{ $item['main_order_id'] }}" class="collapse"
+                                            data-parent="#accordion">
+                                            <table class="table table-bordered text-center" id="">
+                                                <tbody>
+                                                    @foreach ($item['stschedule'] as $stscheduleItem)
+                                                        <tr>
+                                                            <td>{{$stscheduleItem['stschedule_no']}}</td>
+                                                            <td>{!! preg_replace('/[0-9\[\]\.]/', '', $stscheduleItem['stschedule_title']) !!}</td>
+                                                            <td>
+                                                                <a href="/edit-stschedule/{{ $stscheduleItem['stschedule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="Edit"
+                                                                    class="px-1">
+                                                                    <i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="/view-sub-stschedule/{{ $stscheduleItem['stschedule_id'] }}?page={{ $paginatedCollection->currentPage() }}" title="View"
+                                                                    class="px-1">
+                                                                    <i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ url('/delete_stschedule/' . $stscheduleItem['stschedule_id']) }}"
+                                                                    title="Delete" class="px-1"
+                                                                    onclick="return confirm('Are you sure ?')">
+                                                                    <i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i>
+                                                                </a>
+                                                                <a href="{{ route('add_below_new_stschedule', ['id' => $stscheduleItem['act_id'], 'stschedule_id' => $stscheduleItem['stschedule_id']]) }}?page={{ $paginatedCollection->currentPage() }}"
+                                                                    title="Add Next Schedule" class="px-1">
+                                                                    <i class="bg-success btn-sm fa fa-plus p-1 text-white"></i>
+                                                                </a>                      
+                                                            </td>
+                                                        </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endif
+                        @endforeach
+                            </div>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="deleteType" id="subTypeRadio" value="subType">
-                            <label class="form-check-label" for="subTypeRadio">
-                                Sub Type
-                            </label>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="confirmDelete()">Delete</button>
-                    </div>
-                </div>
-            </div>
+                        {{ $paginatedCollection->links() }}
+           </div>
         </div> 
 
     </div>
@@ -726,65 +2472,7 @@
 
         });
 
-        function confirmDelete() {
-        var deleteType = $('input[name=deleteType]:checked').val();
-        var chapterId = $('#deleteModal').data('chapterid');
-        var partId = $('#deleteModal').data('partsid');
-        var preliminaryId = $('#deleteModal').data('preliminaryid');
-        var sectionId = $('#deleteModal').data('sectionid');
-        console.log(chapterId);
-        console.log(partId);
-        console.log(preliminaryId);
-        console.log(sectionId);
-
-        var url;
-        if (deleteType === 'mainType') {
-            if (chapterId !== null) {
-                url = '/delete_chapter/' + chapterId;
-            } else if (partId !== null) {
-                url = '/delete_part/' + partId;
-            } else if (preliminaryId !== null) {
-                url = '/delete_preliminary/' + preliminaryId;
-            } else {
-                // Handle the case where no ID is available
-                console.error('No ID available for deletion.');
-                return;
-            }
-        } else {
-            // Perform deletion for sub type
-            url = '/delete_section/' + sectionId;
-        }
-
-        // Redirect to delete endpoint
-        window.location.href = url;
-    }
-
-     $(document).ready(function() {
-        console.log("Document ready!");
-        $('body').on('show.bs.modal', '#deleteModal', function(event) {
-        console.log("Modal show event triggered!");
-        var button = $(event.relatedTarget);
-        console.log(button);
-        var chapterId = button.data('chapterid');
-        var partId = button.data('partsid');
-        var preliminaryId = button.data('preliminaryid');
-        var sectionId = button.data('sectionid');
-        console.log(chapterId);
-        console.log(partId);
-        console.log(preliminaryId);
-        console.log(sectionId);
-
-        $(this).find('#mainTypeRadio').val('mainType');
-
-        // Set data attributes for chapter, part, preliminary, and section IDs
-        $(this).data('chapterid', chapterId);
-        $(this).data('partsid', partId);
-        $(this).data('preliminaryid', preliminaryId);
-        $(this).data('sectionid', sectionId);
-        });
-        });
-
-
+      
      
     </script>
     <script>
