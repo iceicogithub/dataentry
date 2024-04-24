@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{ $list->act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="{{ url('/get_act_section/' . $list->act_id . '?perPage=10&page=' . $currentPage) }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                                                     <div class="float-right">
                                                         <span style="font-size: small;"
                                                             class="px-2 text-uppercase font-weight-bold">
-                                                            (Add footnote for List)
+                                                            (FOOTNOTE)
                                                         </span>
                                                         <button type="button"
                                                             class="btn btn-sm social facebook p-0 add-multi-footnote">
@@ -125,7 +125,7 @@
                                                         </button>
                                                         <button type="button"
                                                             class="btn btn-sm social youtube p-0 remove-multi-footnote">
-                                                            <i class="fa fa-minus"></i>
+                                                            <i class="fa fa-trash"></i>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -142,15 +142,11 @@
                                                     <div class="float-right">
                                                         <span style="font-size: small;"
                                                             class="px-2 text-uppercase font-weight-bold">
-                                                            (for add and remove Sub-List and Footnote)
+                                                          (SUB LIST)
                                                         </span>
                                                         <button type="button"
                                                             class="btn btn-sm social facebook p-0 add-multi-addition">
                                                             <i class="fa fa-plus"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                            <i class="fa fa-minus"></i>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -247,6 +243,9 @@
                 var newList = `
                                 <div class="multi-addition">
                                     <div class="border col-md-12 p-3">
+                                        <button type="button" class="btn btn-sm social youtube p-0 remove-multi-addition">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
                                         <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                             <label class="float-label">
                                             Add Sub-List
@@ -268,7 +267,7 @@
                                                                 <div class="float-right">
                                                                     <span style="font-size: small;"
                                                                         class="px-2 text-uppercase font-weight-bold">
-                                                                        (Add footnote for sub-list)
+                                                                        (Add footnote)
                                                                     </span>
                                                                     <button type="button"
                                                                         class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -276,23 +275,10 @@
                                                                     </button>
                                                                     <button type="button"
                                                                         class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                        <i class="fa fa-minus"></i>
+                                                                        <i class="fa fa-trash"></i>
                                                                     </button>
                                                                 </div>
                                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 px-0 py-3">
-                                        <div class="float-right">
-                                            <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                            ( for add and remove Sub-List and Footnote )
-                                            </span>
-                                            <button type="button" class="btn btn-sm social facebook p-0 add-multi-addition">
-                                            <i class="fa fa-plus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                            <i class="fa fa-minus"></i>
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -300,8 +286,8 @@
 
 
                   // $('.multi-addition-container').append(newSection);
-                  var $clickedElement = $(this).closest('.multi-addition');
-                $clickedElement.after(newList);
+                //   var $clickedElement = $(this).closest('.multi-addition');
+                $('.multi-addition').last().after(newList);
 
 
                 CKEDITOR.replace($('.multi-addition:last').find('.ckeditor-replace')[0]);
@@ -370,6 +356,7 @@
                     var footnote2AdditionContainer = multiAdditionContainer.find(
                         '.footnote2-addition-container');
                     footnote2AdditionContainer.append(newList);
+                    $(this).hide();
 
                     CKEDITOR.replace(footnote2AdditionContainer.find('.footnote2-addition:last').find(
                         '.ckeditor-replace')[0]);
@@ -381,8 +368,21 @@
             });
 
             $(document).on('click', '.remove-multi-footnote2', function() {
-                if ($('.footnote2-addition').length > 0) {
-                    $('.footnote2-addition:last').remove();
+                // Find the container for the current footnote2 addition
+                var footnote2AdditionContainer = $(this).closest('.footnote2-addition-container');
+                
+                // Find the last footnote2 addition within the current container
+                var lastFootnote2Addition = footnote2AdditionContainer.find('.footnote2-addition:last');
+
+                if (lastFootnote2Addition.length > 0) {
+                    // Remove the last footnote2 addition
+                    lastFootnote2Addition.remove();
+                    
+                    // Check if there are any remaining footnotes in this sub-section
+                    if (footnote2AdditionContainer.find('.footnote2-addition').length === 0) {
+                        // Show the corresponding "+ Add Footnote" button for this sub-section
+                        footnote2AdditionContainer.find('.add-multi-footnote2').show();
+                    }
                 }
             });
 
@@ -407,6 +407,7 @@
                                 `;
 
                 $('.footnote-addition-container').append(newList);
+                $(this).hide();
 
                 CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[0]);
                 // CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[1]);
@@ -417,6 +418,7 @@
             $(document).on('click', '.remove-multi-footnote', function() {
                 if ($('.footnote-addition').length > 0) {
                     $('.footnote-addition:last').remove();
+                    $('.add-multi-footnote').show();
                 }
             });
 

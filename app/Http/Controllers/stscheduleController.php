@@ -118,20 +118,18 @@ class stscheduleController extends Controller
 
 
                 if ($request->has('stschedule_footnote_content')) {
-                    foreach ($request->stschedule_footnote_content as $key => $items) {
-                        // Check if the key exists before using it
-                        foreach ($items as $kys => $item) {
-                            // Check if the sec_footnote_id exists at the specified index
-                            if (isset($request->stschedule_footnote_id[$key][$kys])) {
-                                // Use first() instead of get() to get a single model instance
-                                $foot = Footnote::find($request->stschedule_footnote_id[$key][$kys]);
+                    $item = $request->stschedule_footnote_content;
+                            if ($request->has('stschedule_footnote_id')) {
+                                $footnote_id = $request->stschedule_footnote_id;
+                                if($footnote_id){
+                                    $foot = Footnote::find($footnote_id);
 
-                                if ($foot) {
-                                    $foot->update([
-                                        'footnote_content' => $item ?? null,
-                                        'footnote_no' => $request->stschedule_footnote_no[$key][$kys] ?? null,
-                                    ]);
-                                }
+                                    if ($foot) {
+                                        $foot->update([
+                                            'footnote_content' => $item ?? null,
+                                        ]);
+                                    }
+                                }   
                             } else {
                                 // Create a new footnote
                                 $footnote = new Footnote();
@@ -147,8 +145,6 @@ class stscheduleController extends Controller
                                 $footnote->footnote_content = $item ?? null;
                                 $footnote->save();
                             }
-                        }
-                    }
                 }
             }
 
@@ -156,45 +152,37 @@ class stscheduleController extends Controller
 
             if ($request->has('sub_stschedule_no')) {
                 foreach ($request->sub_stschedule_no as $key => $item) {
-                    // Check if sub_section_id is present in the request
-                    if ($request->filled('sub_stschedule_id') && is_array($request->sub_stschedule_id) && array_key_exists($key, $request->sub_stschedule_id)) {
+                       $sub_stschedule_id = $request->sub_stschedule_id[$key] ?? null;
+                       $sub_stschedule_content = $request->sub_stschedule_content[$key] ?? null;
+                    if ($sub_stschedule_id && $existingSubStschedule = SubStschedule::find($sub_stschedule_id)) {
+                        $existingSubStschedule->update([
+                            'sub_stschedule_no' => $item,
+                            'sub_stschedule_content' => $sub_stschedule_content,
+                        ]);
 
-                        $sub_stschedule = SubStschedule::find($request->sub_stschedule_id[$key]);
+                        if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                            foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
 
-                        // Check if $sub_section is found in the database and the IDs match
-                        if ($sub_stschedule && $sub_stschedule->sub_stschedule_id == $request->sub_stschedule_id[$key]) {
-                            $sub_stschedule->sub_stschedule_no = $item ?? null;
-                            $sub_stschedule->sub_stschedule_content = $request->sub_stschedule_content[$key] ?? null;
-                            $sub_stschedule->update();
-
-                            if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                                foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                                    // Check if the sec_footnote_id exists at the specified index
-                                    if (isset($request->sub_footnote_id[$key][$kys])) {
-                                        // Use first() instead of get() to get a single model instance
-                                        $foot = Footnote::find($request->sub_footnote_id[$key][$kys]);
-
-                                        if ($foot) {
-                                            $foot->update([
-                                                'footnote_content' => $item ?? null,
-                                            ]);
-                                        }
-                                    } else {
-                                        // Create a new footnote only if sub_footnote_id does not exist
-                                        $footnote = new Footnote();
-                                        $footnote->sub_stschedule_id = $sub_stschedule->sub_stschedule_id;
-                                        $footnote->stschedule_id = $id ?? null;
-                                        $footnote->act_id = $stschedule->act_id ?? null;
-                                        $footnote->chapter_id = $stschedule->chapter_id ?? null;
-                                        $footnote->main_order_id = $stschedule->main_order_id ?? null;
-                                        $footnote->parts_id = $stschedule->parts_id ?? null;
-                                        $footnote->priliminary_id = $stschedule->priliminary_id ?? null;
-                                        $footnote->schedule_id = $stschedule->schedule_id ?? null;
-                                        $footnote->appendix_id = $stschedule->appendix_id ?? null;
-                                        $footnote->footnote_content = $item ?? null;
-                                        $footnote->save();
-                                    }
+                                $footnote_id = $request->sub_footnote_id[$key][$kys] ?? null;
+                                if ($footnote_id && $foot = Footnote::find($footnote_id)) {
+                                    $foot->update(['footnote_content' => $footnote_content]);
                                 }
+                                else {
+                                    $footnote = new Footnote();
+                                    $footnote->sub_stschedule_id = $sub_stschedule_id;
+                                    $footnote->stschedule_id = $id ?? null;
+                                    $footnote->act_id = $stschedule->act_id ?? null;
+                                    $footnote->chapter_id = $stschedule->chapter_id ?? null;
+                                    $footnote->main_order_id = $stschedule->main_order_id ?? null;
+                                    $footnote->parts_id = $stschedule->parts_id ?? null;
+                                    $footnote->priliminary_id = $stschedule->priliminary_id ?? null;
+                                    $footnote->schedule_id = $stschedule->schedule_id ?? null;
+                                    $footnote->appendix_id = $stschedule->appendix_id ?? null;
+                                    $footnote->footnote_content = $footnote_content ?? null;
+                                    $footnote->save();
+                                }
+
+                                
                             }
                         }
                     } else {
@@ -209,28 +197,25 @@ class stscheduleController extends Controller
                         $substschedule->priliminary_id = $stschedule->priliminary_id ?? null;
                         $substschedule->schedule_id = $stschedule->schedule_id ?? null;
                         $substschedule->appendix_id = $stschedule->appendix_id ?? null;
-                        $substschedule->sub_stschedule_content = $request->sub_stschedule_content[$key] ?? null;
+                        $substschedule->sub_stschedule_content = $sub_stschedule_content ?? null;
                         $substschedule->save();
 
-                        if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                            foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                                // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
-                                if (isset($request->sub_footnote_content[$key][$kys])) {
-                                    // Create a new footnote for the newly created subsection
-                                    $footnote = new Footnote();
-                                    $footnote->sub_stschedule_id = $substschedule->sub_stschedule_id;
-                                    $footnote->stschedule_id = $id ?? null;
-                                    $footnote->act_id = $stschedule->act_id ?? null;
-                                    $footnote->chapter_id = $stschedule->chapter_id ?? null;
-                                    $footnote->main_order_id = $stschedule->main_order_id ?? null;
-                                    $footnote->parts_id = $stschedule->parts_id ?? null;
-                                    $footnote->priliminary_id = $stschedule->priliminary_id ?? null;
-                                    $footnote->schedule_id = $stschedule->schedule_id ?? null;
-                                    $footnote->appendix_id = $stschedule->appendix_id ?? null;
-                                    $footnote->footnote_content = $item ?? null;
-                                    $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
-                                    $footnote->save();
-                                }
+                        if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                            foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
+                               
+                                $footnote = new Footnote();
+                                $footnote->sub_stschedule_id = $substschedule->sub_stschedule_id;
+                                $footnote->stschedule_id = $id ?? null;
+                                $footnote->act_id = $stschedule->act_id ?? null;
+                                $footnote->chapter_id = $stschedule->chapter_id ?? null;
+                                $footnote->main_order_id = $stschedule->main_order_id ?? null;
+                                $footnote->parts_id = $stschedule->parts_id ?? null;
+                                $footnote->priliminary_id = $stschedule->priliminary_id ?? null;
+                                $footnote->schedule_id = $stschedule->schedule_id ?? null;
+                                $footnote->appendix_id = $stschedule->appendix_id ?? null;
+                                $footnote->footnote_content = $footnote_content ?? null;
+                                $footnote->save();
+                                
                             }
                         }
                     }

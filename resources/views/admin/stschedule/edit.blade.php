@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{ $stschedule->act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="{{ url('/get_act_section/' . $stschedule->act_id . '?perPage=10&page=' . $currentPage) }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                                             @elseif($stschedule->maintype_id == 3)
                                                 <label class="float-label font-weight-bold">Priliminary :</label>
 
-                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="pr_title">{{ $stschedule->Priliminarymodel->priliminary_title }}</textarea>
+                                                <textarea name="priliminary_title" class="form-control mb-3 priliminary_title" placeholder="Enter Priliminary Title" id="pr_title">{{ $stschedule->Priliminarymodel->priliminary_title }}</textarea>
                                             @elseif($stschedule->maintype_id == 4)
                                                 <label class="float-label font-weight-bold">Schedule :</label>
 
@@ -132,10 +132,10 @@
                                                                     <div class="show-footnote" style="display: block">
                                                                         {{-- footnote for section --}}
                                                                         <input type="hidden"
-                                                                            name="stschedule_footnote_id[{{ $s }}][{{ $f }}]"
+                                                                            name="stschedule_footnote_id"
                                                                             value="{{ $footnote->footnote_id }}">
 
-                                                                        <textarea type="text" name="stschedule_footnote_content[{{ $s }}][{{ $f }}]"
+                                                                        <textarea type="text" name="stschedule_footnote_content"
                                                                             class="form-control ckeditor-replace footnote">{{ $footnote->footnote_content }}</textarea>
                                                                     </div>
                                                                 </div>
@@ -149,7 +149,7 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (Add footnote for stschedule)
+                                                                (FOOTNOTE)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-footnote">
@@ -157,32 +157,13 @@
                                                             </button>
                                                             <button type="button"
                                                                 class="btn btn-sm social youtube p-0 remove-multi-footnote">
-                                                                <i class="fa fa-minus"></i>
+                                                                <i class="fa fa-trash"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                 @endif
 
                                             </div>
-                                            @if ($sub_stschedule_f->count() > 0 || $count > 0)
-                                                <div class="col-md-12 px-0 py-3">
-                                                    <div class="float-right">
-                                                        <span style="font-size: small;"
-                                                            class="px-2 text-uppercase font-weight-bold">
-                                                            (for add and remove Sub-Stschedule and
-                                                            Footnote)
-                                                        </span>
-                                                        <button type="button"
-                                                            class="btn btn-sm social facebook p-0 add-multi-addition">
-                                                            <i class="fa fa-plus"></i>
-                                                        </button>
-                                                        <button type="button"
-                                                            class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                            <i class="fa fa-minus"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            @endif
                                         </div>
 
 
@@ -202,7 +183,7 @@
                                                                         <button type="button"
                                                                             class="btn btn-sm social facebook p-0 add-sub_stschedule">
                                                                             <i
-                                                                                class="fa {{ $subStscheduleItem->sub_stschedule_no ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                                class="fa {{ $subStscheduleItem->sub_stschedule_no ? 'fa-minus' : 'fa-plus' }}"></i>
                                                                         </button>
                                                                     </span>
                                                                 </label>
@@ -218,85 +199,69 @@
 
                                                                     </span>
                                                                     <textarea type="text" name="sub_stschedule_content[{{ $k }}]"
-                                                                        class="form-control ckeditor-replace sub_section">{{ $subStscheduleItem->sub_stschedule_content ?? '' }}</textarea>
+                                                                        class="form-control ckeditor-replace sub_section">{{ $subStscheduleItem->sub_stschedule_content ?? '' }}
+                                                                    </textarea>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        @if (count($subStscheduleItem->footnoteModel) > 0)
-                                                            @foreach ($subStscheduleItem->footnoteModel as $a => $footnoteItem)
-                                                                <input type="hidden"
-                                                                    name="sub_footnote_id[{{ $k }}][{{ $a }}]"
-                                                                    value="{{ $footnoteItem->footnote_id }}">
-                                                                <div class="border col-md-12 p-3">
-                                                                    <div
-                                                                        class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                                                                        <div class="d-flex justify-content-between">
-                                                                            <label class="float-label">
-                                                                                Add Footnote
-                                                                                <span class="pl-2">
-                                                                                    <button type="button"
-                                                                                        class="btn btn-sm social facebook p-0 add-footnote">
-                                                                                        <i
-                                                                                            class="fa {{ !empty($footnoteItem->footnote_content) ? 'fa-minus' : 'fa-plus' }}"></i>
-                                                                                    </button>
-                                                                                </span>
-                                                                            </label>
-                                                                            <div>
-                                                                                <a href="{{ url('/delete_footnote/' . $footnoteItem->footnote_id) }}"
-                                                                                    onclick="return confirm('Are you sure ?')"><i
-                                                                                        class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
+                                                            @if (count($subStscheduleItem->footnoteModel) > 0)
+                                                                @foreach ($subStscheduleItem->footnoteModel as $a => $footnoteItem)
+                                                                    <input type="hidden"
+                                                                        name="sub_footnote_id[{{ $k }}][{{ $a }}]"
+                                                                        value="{{ $footnoteItem->footnote_id }}">
+                                                                    <div class="border col-md-12 p-3">
+                                                                        <div
+                                                                            class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <label class="float-label">
+                                                                                    Add Footnote
+                                                                                    <span class="pl-2">
+                                                                                        <button type="button"
+                                                                                            class="btn btn-sm social facebook p-0 add-footnote">
+                                                                                            <i
+                                                                                                class="fa {{ !empty($footnoteItem->footnote_content) ? 'fa-minus' : 'fa-plus' }}"></i>
+                                                                                        </button>
+                                                                                    </span>
+                                                                                </label>
+                                                                                <div>
+                                                                                    <a href="{{ url('/delete_footnote/' . $footnoteItem->footnote_id) }}"
+                                                                                        onclick="return confirm('Are you sure ?')"><i
+                                                                                            class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="show-footnote">
+                                                                                <textarea type="text" name="sub_footnote_content[{{ $k }}][{{ $a }}]"
+                                                                                    class="form-control ckeditor-replace footnote">{{ $footnoteItem->footnote_content ?? '' }}</textarea>
                                                                             </div>
                                                                         </div>
-
-                                                                        <div class="show-footnote">
-                                                                            <textarea type="text" name="sub_footnote_content[{{ $k }}][{{ $a }}]"
-                                                                                class="form-control ckeditor-replace footnote">{{ $footnoteItem->footnote_content ?? '' }}</textarea>
+                                                                    </div>
+                                                                @endforeach
+                                                            @else
+                                                                <div class="footnote2-addition-container">
+                                                                    <div class="col-md-12 px-0 py-3">
+                                                                        <div class="float-right">
+                                                                            <span style="font-size: small;"
+                                                                                class="px-2 text-uppercase font-weight-bold">
+                                                                                (FOOTNOTE)
+                                                                            </span>
+                                                                            <button type="button"
+                                                                                class="btn btn-sm social facebook p-0 add-multi-footnote2">
+                                                                                <i class="fa fa-plus"></i>
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                class="btn btn-sm social youtube p-0 remove-multi-footnote2">
+                                                                                <i class="fa fa-trash"></i>
+                                                                            </button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            @endforeach
-                                                        @else
-                                                            <div class="footnote2-addition-container">
-                                                                <div class="col-md-12 px-0 py-3">
-                                                                    <div class="float-right">
-                                                                        <span style="font-size: small;"
-                                                                            class="px-2 text-uppercase font-weight-bold">
-                                                                            (add Footnote for sub-Schedule)
-                                                                        </span>
-                                                                        <button type="button"
-                                                                            class="btn btn-sm social facebook p-0 add-multi-footnote2">
-                                                                            <i class="fa fa-plus"></i>
-                                                                        </button>
-                                                                        <button type="button"
-                                                                            class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                            <i class="fa fa-minus"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        @endif
-
-                                                        <div class="col-md-12 px-0 py-3">
-                                                            <div class="float-right">
-                                                                <span style="font-size: small;"
-                                                                    class="px-2 text-uppercase font-weight-bold">
-                                                                    (for add and remove Sub-Schedule and
-                                                                    Footnote)
-                                                                </span>
-                                                                <button type="button"
-                                                                    class="btn btn-sm social facebook p-0 add-multi-addition">
-                                                                    <i class="fa fa-plus"></i>
-                                                                </button>
-                                                                {{-- <button type="button"
-                                                                    class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                                    <i class="fa fa-minus"></i>
-                                                                </button> --}}
-                                                            </div>
+                                                            @endif
+                                                        </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             @endforeach
-                                        @else
+                                            @endif
                                             <!-- If there are no subsections or footnotes, show the default section -->
                                             <div class="multi-addition-container col-md-12 px-0">
                                                 <div class="multi-addition">
@@ -304,22 +269,17 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (for add and remove Sub-Schedule and
-                                                                Footnote)
+                                                               (SUB SCHEDULE)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-addition">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
-                                                            <button type="button"
-                                                                class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                                <i class="fa fa-minus"></i>
-                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
+                                        
 
                                     </div>
 
@@ -425,6 +385,9 @@
                 var newStschedule = `
                                 <div class="multi-addition">
                                     <div class="border col-md-12 p-3">
+                                        <button type="button" class="btn btn-sm social youtube p-0 remove-multi-addition">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
                                         <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                             <label class="float-label">
                                             Add Sub-Schedule
@@ -445,7 +408,7 @@
                                                                 <div class="float-right">
                                                                     <span style="font-size: small;"
                                                                         class="px-2 text-uppercase font-weight-bold">
-                                                                        (Add footnote for sub-Schedule)
+                                                                        (FOOTNOTE)
                                                                     </span>
                                                                     <button type="button"
                                                                         class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -453,23 +416,10 @@
                                                                     </button>
                                                                     <button type="button"
                                                                         class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                        <i class="fa fa-minus"></i>
+                                                                        <i class="fa fa-trash"></i>
                                                                     </button>
                                                                 </div>
                                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 px-0 py-3">
-                                        <div class="float-right">
-                                            <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                            ( for add and remove Sub-Schedule and Footnote )
-                                            </span>
-                                            <button type="button" class="btn btn-sm social facebook p-0 add-multi-addition">
-                                            <i class="fa fa-plus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                            <i class="fa fa-minus"></i>
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -478,7 +428,7 @@
 
                 // $('.multi-addition-container').append(newSection);
                 var $clickedElement = $(this).closest('.multi-addition');
-                $clickedElement.after(newStschedule);
+                $('.multi-addition').last().after(newStschedule);
 
 
 
@@ -487,7 +437,7 @@
 
                 // Update sub_section_no and sub_section_content names in all elements
                 $('.multi-addition').each(function(index) {
-                    var newIndex = index + 1;
+                    var newIndex = index;
                     $(this).find(`[name^="sub_stschedule_no["]`).attr('name',
                         `sub_stschedule_no[${newIndex}]`);
                     $(this).find(`[name^="sub_stschedule_content["]`).attr('name',
@@ -549,6 +499,7 @@
                     var footnote2AdditionContainer = multiAdditionContainer.find(
                         '.footnote2-addition-container');
                     footnote2AdditionContainer.append(newStschedule);
+                    $(this).hide();
 
                     // CKEDITOR.replace(footnote2AdditionContainer.find('.footnote2-addition:last').find(
                     //     '.ckeditor-replace')[0]);
@@ -565,19 +516,26 @@
             });
 
             $(document).on('click', '.remove-multi-footnote2', function() {
-                if ($('.footnote2-addition').length > 0) {
-                    $('.footnote2-addition:last').remove();
+                // Find the container for the current footnote2 addition
+                var footnote2AdditionContainer = $(this).closest('.footnote2-addition-container');
+                
+                // Find the last footnote2 addition within the current container
+                var lastFootnote2Addition = footnote2AdditionContainer.find('.footnote2-addition:last');
+
+                if (lastFootnote2Addition.length > 0) {
+                    // Remove the last footnote2 addition
+                    lastFootnote2Addition.remove();
+                    
+                    // Check if there are any remaining footnotes in this sub-section
+                    if (footnote2AdditionContainer.find('.footnote2-addition').length === 0) {
+                        // Show the corresponding "+ Add Footnote" button for this sub-section
+                        footnote2AdditionContainer.find('.add-multi-footnote2').show();
+                    }
                 }
             });
 
             // for section footnote 
             $(document).on('click', '.add-multi-footnote', function() {
-
-                var lastInputFoot = $('[data-footstscheduleindex]:last').data('footstscheduleindex');
-                var lastInputStschedule = $('[data-stscheduleindex]:last').data('stscheduleindex');
-                // console.log(lastInputFoot);
-                var footCounterIndex = parseInt(lastInputFoot) + 1;
-                // console.log(footCounterIndex);
 
                 var newStschedule = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
                                         <label class="float-label">
@@ -589,7 +547,7 @@
                                         </span>
                                         </label>
                                         <div class="show-footnote" style="display: none">
-                                            <textarea type="text" name="stschedule_footnote_content[${lastInputStschedule}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
+                                            <textarea type="text" name="stschedule_footnote_content" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                    
                                        
@@ -598,6 +556,7 @@
                                 `;
 
                 $('.footnote-addition-container').append(newStschedule);
+                $(this).hide();
 
                 CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[0]);
                 // CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[1]);
@@ -608,6 +567,7 @@
             $(document).on('click', '.remove-multi-footnote', function() {
                 if ($('.footnote-addition').length > 0) {
                     $('.footnote-addition:last').remove();
+                    $('.add-multi-footnote').show();
                 }
             });
 

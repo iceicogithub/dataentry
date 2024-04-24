@@ -121,20 +121,21 @@ class AnnexureController extends Controller
 
 
             if ($request->has('annexure_footnote_content')) {
-                foreach ($request->annexure_footnote_content as $key => $items) {
-                    // Check if the key exists before using it
-                    foreach ($items as $kys => $item) {
-                        // Check if the sec_footnote_id exists at the specified index
-                        if (isset($request->annexure_footnote_id[$key][$kys])) {
-                            // Use first() instead of get() to get a single model instance
-                            $foot = Footnote::find($request->annexure_footnote_id[$key][$kys]);
+                $item = $request->annexure_footnote_content;
+                        if ($request->has('annexure_footnote_id')) {
+
+                            $footnote_id = $request->annexure_footnote_id;
+                            if(isset($footnote_id)){
+                            $foot = Footnote::find($footnote_id);
 
                             if ($foot) {
                                 $foot->update([
                                     'footnote_content' => $item ?? null,
-                                    'footnote_no' => $request->annexure_footnote_no[$key][$kys] ?? null,
+                                    'footnote_no' => $request->annexure_footnote_no ?? null,
                                 ]);
                             }
+                            }
+                           
                         } else {
                             // Create a new footnote
                             $footnote = new Footnote();
@@ -150,8 +151,6 @@ class AnnexureController extends Controller
                             $footnote->footnote_content = $item ?? null;
                             $footnote->save();
                         }
-                    }
-                }
             }
         }
 
@@ -159,45 +158,42 @@ class AnnexureController extends Controller
 
         if ($request->has('sub_annexure_no')) {
             foreach ($request->sub_annexure_no as $key => $item) {
+
+                // Initialize variables for reuse
+                $sub_annexure_id = $request->sub_annexure_id[$key] ?? null;
+                $sub_annexure_content = $request->sub_annexure_content[$key] ?? null;
+                 
                 // Check if sub_section_id is present in the request
-                if ($request->filled('sub_annexure_id') && is_array($request->sub_annexure_id) && array_key_exists($key, $request->sub_annexure_id)) {
+                if ($sub_annexure_id && $existingSubAnnexure = SubAnnexure::find($sub_annexure_id)) {
 
-                    $sub_annexure = SubAnnexure::find($request->sub_annexure_id[$key]);
+                    $existingSubAnnexure->update([
+                        'sub_annexure_no' => $item,
+                        'sub_annexure_content' => $sub_annexure_content,
+                    ]);
 
-                    // Check if $sub_section is found in the database and the IDs match
-                    if ($sub_annexure && $sub_annexure->sub_annexure_id == $request->sub_annexure_id[$key]) {
-                        $sub_annexure->sub_annexure_no = $item ?? null;
-                        $sub_annexure->sub_annexure_content = $request->sub_annexure_content[$key] ?? null;
-                        $sub_annexure->update();
+                    if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                        foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
 
-                        if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                            foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                                // Check if the sec_footnote_id exists at the specified index
-                                if (isset($request->sub_footnote_id[$key][$kys])) {
-                                    // Use first() instead of get() to get a single model instance
-                                    $foot = Footnote::find($request->sub_footnote_id[$key][$kys]);
-
-                                    if ($foot) {
-                                        $foot->update([
-                                            'footnote_content' => $item ?? null,
-                                        ]);
-                                    }
-                                } else {
-                                    // Create a new footnote only if sub_footnote_id does not exist
-                                    $footnote = new Footnote();
-                                    $footnote->sub_annexure_id = $sub_annexure->sub_annexure_id;
-                                    $footnote->annexure_id = $id ?? null;
-                                    $footnote->act_id = $annexure->act_id ?? null;
-                                    $footnote->chapter_id = $annexure->chapter_id ?? null;
-                                    $footnote->main_order_id = $annexure->main_order_id ?? null;
-                                    $footnote->parts_id = $annexure->parts_id ?? null;
-                                    $footnote->priliminary_id = $annexure->priliminary_id ?? null;
-                                    $footnote->schedule_id = $annexure->schedule_id ?? null;
-                                    $footnote->appendix_id = $annexure->appendix_id ?? null;
-                                    $footnote->footnote_content = $item ?? null;
-                                    $footnote->save();
-                                }
+                            $footnote_id = $request->sub_footnote_id[$key][$kys] ?? null;
+                            if ($footnote_id && $foot = Footnote::find($footnote_id)) {
+                                $foot->update(['footnote_content' => $footnote_content]);
                             }
+                            else {
+                                // Create new footnote if ID is not provided or invalid
+                                $footnote = new Footnote();
+                                $footnote->sub_annexure_id = $sub_annexure_id;
+                                $footnote->annexure_id = $id ?? null;
+                                $footnote->act_id = $annexure->act_id ?? null;
+                                $footnote->chapter_id = $annexure->chapter_id ?? null;
+                                $footnote->main_order_id = $annexure->main_order_id ?? null;
+                                $footnote->parts_id = $annexure->parts_id ?? null;
+                                $footnote->priliminary_id = $annexure->priliminary_id ?? null;
+                                $footnote->schedule_id = $annexure->schedule_id ?? null;
+                                $footnote->appendix_id = $annexure->appendix_id ?? null;
+                                $footnote->footnote_content = $footnote_content ?? null;
+                                $footnote->save();
+                            }
+
                         }
                     }
                 } else {
@@ -213,14 +209,13 @@ class AnnexureController extends Controller
                     $subannexure->priliminary_id = $annexure->priliminary_id ?? null;
                     $subannexure->schedule_id = $annexure->schedule_id ?? null;
                     $subannexure->appendix_id = $annexure->appendix_id ?? null;
-                    $subannexure->sub_annexure_content = $request->sub_annexure_content[$key] ?? null;
+                    $subannexure->sub_annexure_content = $sub_annexure_content ?? null;
                     $subannexure->save();
 
-                    if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                        foreach ($request->sub_footnote_content[$key] as $kys => $item) {
+                    if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                        foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
                             // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
-                            if (isset($request->sub_footnote_content[$key][$kys])) {
-                                // Create a new footnote for the newly created subsection
+                          
                                 $footnote = new Footnote();
                                 $footnote->sub_annexure_id = $subannexure->sub_annexure_id;
                                 $footnote->annexure_id = $id ?? null;
@@ -231,10 +226,8 @@ class AnnexureController extends Controller
                                 $footnote->priliminary_id = $annexure->priliminary_id ?? null;
                                 $footnote->schedule_id = $annexure->schedule_id ?? null;
                                 $footnote->appendix_id = $annexure->appendix_id ?? null;
-                                $footnote->footnote_content = $item ?? null;
-                                $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
+                                $footnote->footnote_content = $footnote_content?? null;
                                 $footnote->save();
-                            }
                         }
                     }
                 }

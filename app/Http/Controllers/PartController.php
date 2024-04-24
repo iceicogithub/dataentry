@@ -109,29 +109,26 @@ class PartController extends Controller
                return redirect()->route('edit-part', ['id' => $id])->withErrors(['error' => 'Part not found']);
            }
            if ($part) {
-
                $part->part_content = $request->part_content ?? null;
                $part->part_title = $request->part_title ?? null;
                $part->part_no = $request->part_no ?? null;
                $part->update();
 
 
-               if ($request->has('part_footnote_content')) {
-                   foreach ($request->part_footnote_content as $key => $items) {
-                       // Check if the key exists before using it
-                       foreach ($items as $kys => $item) {
-                           // Check if the sec_footnote_id exists at the specified index
-                           if (isset($request->part_footnote_id[$key][$kys])) {
-                               // Use first() instead of get() to get a single model instance
-                               $foot = Footnote::find($request->part_footnote_id[$key][$kys]);
+                if ($request->has('part_footnote_content')) {
+                       $item = $request->part_footnote_content;
+                            if ($request->has('part_footnote_id')) {
+                               $footnote_id = $request->part_footnote_id;
+                                if (isset($footnote_id)) {
+                                $foot = Footnote::find($footnote_id);
 
-                               if ($foot) {
-                                   $foot->update([
-                                       'footnote_content' => $item ?? null,
-                                       'footnote_no' => $request->part_footnote_no[$key][$kys] ?? null,
-                                   ]);
-                               }
-                           } else {
+                                if ($foot) {
+                                    $foot->update([
+                                        'footnote_content' => $item ?? null,
+                                    ]);
+                                }
+                                }
+                            } else {
                                // Create a new footnote
                                $footnote = new Footnote();
                                $footnote->part_id = $id ?? null;
@@ -146,56 +143,47 @@ class PartController extends Controller
                                $footnote->footnote_content = $item ?? null;
                                $footnote->save();
                            }
-                       }
-                   }
-               }
-           }
+                        }
+            }
 
            // Store Sub-Sections
 
            if ($request->has('sub_part_no')) {
                foreach ($request->sub_part_no as $key => $item) {
+
+                $sub_part_id = $request->sub_part_id[$key] ?? null;
+                $sub_part_content = $request->sub_part_content[$key] ?? null;
                    // Check if sub_section_id is present in the request
-                   if ($request->filled('sub_part_id') && is_array($request->sub_part_id) && array_key_exists($key, $request->sub_part_id)) {
+                   if ($sub_part_id && $existingSubPart = SubPart::find($sub_part_id)) {
+                    $existingSubPart->update([
+                        'sub_part_no' => $item,
+                        'sub_part_content' => $sub_part_content,
+                    ]);
 
-                       $sub_part = SubPart::find($request->sub_part_id[$key]);
+                           if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                               foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
 
-                       // Check if $sub_section is found in the database and the IDs match
-                       if ($sub_part && $sub_part->sub_part_id == $request->sub_part_id[$key]) {
-                           $sub_part->sub_part_no = $item ?? null;
-                           $sub_part->sub_part_content = $request->sub_part_content[$key] ?? null;
-                           $sub_part->update();
-
-                           if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                               foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                                   // Check if the sec_footnote_id exists at the specified index
-                                   if (isset($request->sub_footnote_id[$key][$kys])) {
-                                       // Use first() instead of get() to get a single model instance
-                                       $foot = Footnote::find($request->sub_footnote_id[$key][$kys]);
-
-                                       if ($foot) {
-                                           $foot->update([
-                                               'footnote_content' => $item ?? null,
-                                           ]);
-                                       }
-                                   } else {
-                                       // Create a new footnote only if sub_footnote_id does not exist
-                                       $footnote = new Footnote();
-                                       $footnote->sub_part_id = $sub_part->sub_part_id;
-                                       $footnote->part_id = $id ?? null;
-                                       $footnote->act_id = $part->act_id ?? null;
-                                       $footnote->chapter_id = $part->chapter_id ?? null;
-                                       $footnote->main_order_id = $part->main_order_id ?? null;
-                                       $footnote->parts_id = $part->parts_id ?? null;
-                                       $footnote->priliminary_id = $part->priliminary_id ?? null;
-                                       $footnote->schedule_id = $part->schedule_id ?? null;
-                                       $footnote->appendix_id = $part->appendix_id ?? null;
-                                       $footnote->footnote_content = $item ?? null;
-                                       $footnote->save();
-                                   }
-                               }
-                           }
-                       }
+                                    $footnote_id = $request->sub_footnote_id[$key][$kys] ?? null;
+                                    if ($footnote_id && $foot = Footnote::find($footnote_id)) {
+                                        $foot->update(['footnote_content' => $footnote_content]);
+                                    }
+                                    else {
+                                    // Create new footnote if ID is not provided or invalid
+                                        $footnote = new Footnote();
+                                        $footnote->sub_part_id = $sub_part_id;
+                                        $footnote->part_id = $id ?? null;
+                                        $footnote->act_id = $part->act_id ?? null;
+                                        $footnote->chapter_id = $part->chapter_id ?? null;
+                                        $footnote->main_order_id = $part->main_order_id ?? null;
+                                        $footnote->parts_id = $part->parts_id ?? null;
+                                        $footnote->priliminary_id = $part->priliminary_id ?? null;
+                                        $footnote->schedule_id = $part->schedule_id ?? null;
+                                        $footnote->appendix_id = $part->appendix_id ?? null;
+                                        $footnote->footnote_content = $footnote_content ?? null;
+                                        $footnote->save();
+                                    }   
+                                }
+                            }
                    } else {
                        // Existing subsection not found, create a new one
                        $subpart = new SubPart();
@@ -209,29 +197,24 @@ class PartController extends Controller
                        $subpart->priliminary_id = $part->priliminary_id ?? null;
                        $subpart->schedule_id = $part->schedule_id ?? null;
                        $subpart->appendix_id = $part->appendix_id ?? null;
-                       $subpart->sub_part_content = $request->sub_part_content[$key] ?? null;
+                       $subpart->sub_part_content = $sub_part_content ?? null;
                        $subpart->save();
 
-                       if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                           foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                               // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
-                               if (isset($request->sub_footnote_content[$key][$kys])) {
-                                   // Create a new footnote for the newly created subsection
-                                   $footnote = new Footnote();
-                                   $footnote->sub_part_id = $subpart->sub_part_id;
-                                   $footnote->part_id = $id ?? null;
-                                   $footnote->act_id = $part->act_id ?? null;
-                                   $footnote->main_order_id = $part->main_order_id ?? null;
-                                   $footnote->parts_id = $part->parts_id ?? null;
-                                   $footnote->priliminary_id = $part->priliminary_id ?? null;
-                                   $footnote->chapter_id = $part->chapter_id ?? null;
-                                   $footnote->main_order_id = $part->main_order_id ?? null;
-                                   $footnote->schedule_id = $part->schedule_id ?? null;
-                                   $footnote->appendix_id = $part->appendix_id ?? null;
-                                   $footnote->footnote_content = $item ?? null;
-                                   $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
-                                   $footnote->save();
-                               }
+                       if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                           foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
+                                $footnote = new Footnote();
+                                $footnote->sub_part_id = $subpart->sub_part_id;
+                                $footnote->part_id = $id ?? null;
+                                $footnote->act_id = $part->act_id ?? null;
+                                $footnote->main_order_id = $part->main_order_id ?? null;
+                                $footnote->parts_id = $part->parts_id ?? null;
+                                $footnote->priliminary_id = $part->priliminary_id ?? null;
+                                $footnote->chapter_id = $part->chapter_id ?? null;
+                                $footnote->main_order_id = $part->main_order_id ?? null;
+                                $footnote->schedule_id = $part->schedule_id ?? null;
+                                $footnote->appendix_id = $part->appendix_id ?? null;
+                                $footnote->footnote_content = $footnote_content ?? null;
+                                $footnote->save();
                            }
                        }
                    }

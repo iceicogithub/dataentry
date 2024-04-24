@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{ $article->act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="{{ url('/get_act_section/' . $article->act_id . '?perPage=10&page=' . $currentPage) }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                                             @elseif($article->maintype_id == 3)
                                                 <label class="float-label font-weight-bold">Priliminary :</label>
 
-                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="pr_title">{{ $article->Priliminarymodel->priliminary_title }}</textarea>
+                                                <textarea name="priliminary_title" class="form-control mb-3 priliminary_title" placeholder="Enter Priliminary Title" id="pr_title">{{ $article->Priliminarymodel->priliminary_title }}</textarea>
                                             @elseif($article->maintype_id == 4)
                                                 <label class="float-label font-weight-bold">Schedule :</label>
 
@@ -132,10 +132,10 @@
                                                                     <div class="show-footnote" style="display: block">
                                                                         {{-- footnote for section --}}
                                                                         <input type="hidden"
-                                                                            name="article_footnote_id[{{ $s }}][{{ $f }}]"
+                                                                            name="article_footnote_id"
                                                                             value="{{ $footnote->footnote_id }}">
 
-                                                                        <textarea type="text" name="article_footnote_content[{{ $s }}][{{ $f }}]"
+                                                                        <textarea type="text" name="article_footnote_content"
                                                                             class="form-control ckeditor-replace footnote">{{ $footnote->footnote_content }}</textarea>
                                                                     </div>
                                                                 </div>
@@ -149,7 +149,7 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (Add footnote for article)
+                                                                (footnote)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-footnote">
@@ -157,20 +157,19 @@
                                                             </button>
                                                             <button type="button"
                                                                 class="btn btn-sm social youtube p-0 remove-multi-footnote">
-                                                                <i class="fa fa-minus"></i>
+                                                                <i class="fa fa-trash"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                 @endif
 
                                             </div>
-                                            @if ($sub_article_f->count() > 0 || $count > 0)
+                                            {{-- @if ($sub_article_f->count() > 0 || $count > 0)
                                                 <div class="col-md-12 px-0 py-3">
                                                     <div class="float-right">
                                                         <span style="font-size: small;"
                                                             class="px-2 text-uppercase font-weight-bold">
-                                                            (for add and remove Sub-Article and
-                                                            Footnote)
+                                                           
                                                         </span>
                                                         <button type="button"
                                                             class="btn btn-sm social facebook p-0 add-multi-addition">
@@ -182,7 +181,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            @endif --}}
                                         </div>
 
 
@@ -202,7 +201,7 @@
                                                                         <button type="button"
                                                                             class="btn btn-sm social facebook p-0 add-sub_article">
                                                                             <i
-                                                                                class="fa {{ $subArticleItem->sub_article_no ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                                class="fa {{ $subArticleItem->sub_article_no ? 'fa-minus'  : 'fa-plus' }}"></i>
                                                                         </button>
                                                                     </span>
                                                                 </label>
@@ -221,8 +220,7 @@
                                                                         class="form-control ckeditor-replace sub_section">{{ $subArticleItem->sub_article_content ?? '' }}</textarea>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        @if (count($subArticleItem->footnoteModel) > 0)
+                                                            @if (count($subArticleItem->footnoteModel) > 0)
                                                             @foreach ($subArticleItem->footnoteModel as $a => $footnoteItem)
                                                                 <input type="hidden"
                                                                     name="sub_footnote_id[{{ $k }}][{{ $a }}]"
@@ -261,7 +259,7 @@
                                                                     <div class="float-right">
                                                                         <span style="font-size: small;"
                                                                             class="px-2 text-uppercase font-weight-bold">
-                                                                            (add Footnote for sub-article)
+                                                                            (Footnote)
                                                                         </span>
                                                                         <button type="button"
                                                                             class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -269,34 +267,18 @@
                                                                         </button>
                                                                         <button type="button"
                                                                             class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                            <i class="fa fa-minus"></i>
+                                                                            <i class="fa fa-trash"></i>
                                                                         </button>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         @endif
-
-                                                        <div class="col-md-12 px-0 py-3">
-                                                            <div class="float-right">
-                                                                <span style="font-size: small;"
-                                                                    class="px-2 text-uppercase font-weight-bold">
-                                                                    (for add and remove Sub-Article and
-                                                                    Footnote)
-                                                                </span>
-                                                                <button type="button"
-                                                                    class="btn btn-sm social facebook p-0 add-multi-addition">
-                                                                    <i class="fa fa-plus"></i>
-                                                                </button>
-                                                                {{-- <button type="button"
-                                                                    class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                                    <i class="fa fa-minus"></i>
-                                                                </button> --}}
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             @endforeach
-                                        @else
+                                            @endif
+
                                             <!-- If there are no subsections or footnotes, show the default section -->
                                             <div class="multi-addition-container col-md-12 px-0">
                                                 <div class="multi-addition">
@@ -304,31 +286,17 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (for add and remove Sub-Article and
-                                                                Footnote)
+                                                               (SUB ARTICLE)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-addition">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
-                                                            <button type="button"
-                                                                class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                                <i class="fa fa-minus"></i>
-                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
 
-                                    </div>
-
-
-
-                                    <div class="form-group form-default" id="orderDiv" style="display: none">
-                                        <input type="text" class="form-control mb-3"
-                                            placeholder="Enter Order & Rules Title">
-                                        <textarea type="text" id="order" name="order" class="form-control ckeditor-replace order"></textarea>
                                     </div>
                                     <button class="btn btn-success">Submit</button>
                                 </div>
@@ -397,7 +365,7 @@
                 initializeCKEditor();
             });
 
-            let articleCounter = 1;
+            let articleCounter = 0;
             let sub_articleCounter = 0;
             let subArticleIndex = 0;
             let currentIndex;
@@ -425,6 +393,10 @@
                 var newArticle = `
                                 <div class="multi-addition">
                                     <div class="border col-md-12 p-3">
+                                        <button type="button"
+                                            class="btn btn-sm social youtube p-0 remove-multi-addition">
+                                                 <i class="fa fa-trash"></i>
+                                         </button>
                                         <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                             <label class="float-label">
                                             Add Sub-Article
@@ -441,82 +413,50 @@
                                         </div>
                                     
                                         <div class="footnote2-addition-container">
-                                                            <div class="col-md-12 px-0 py-3">
-                                                                <div class="float-right">
-                                                                    <span style="font-size: small;"
-                                                                        class="px-2 text-uppercase font-weight-bold">
-                                                                        (Add footnote for sub-article)
-                                                                    </span>
-                                                                    <button type="button"
-                                                                        class="btn btn-sm social facebook p-0 add-multi-footnote2">
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                        <i class="fa fa-minus"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 px-0 py-3">
-                                        <div class="float-right">
-                                            <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                            ( for add and remove Sub-Article and Footnote )
-                                            </span>
-                                            <button type="button" class="btn btn-sm social facebook p-0 add-multi-addition">
-                                            <i class="fa fa-plus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                            <i class="fa fa-minus"></i>
-                                            </button>
+                                            <div class="col-md-12 px-0 py-3">
+                                                <div class="float-right">
+                                                    <span style="font-size: small;"
+                                                        class="px-2 text-uppercase font-weight-bold">
+                                                        (FOOTNOTE)
+                                                    </span>
+                                                    <button type="button"
+                                                        class="btn btn-sm social facebook p-0 add-multi-footnote2">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                    <button type="button"
+                                                        class="btn btn-sm social youtube p-0 remove-multi-footnote2">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 `;
 
 
-                // $('.multi-addition-container').append(newSection);
-                var $clickedElement = $(this).closest('.multi-addition');
-                $clickedElement.after(newArticle);
+                                // var $clickedElement = $(this).closest('.multi-addition');
+                                $('.multi-addition').last().after(newArticle);
+                    // Update sub_article_no and sub_article_content names in all elements
+                    $('.multi-addition').each(function(index) {
+                        var newIndex = index;
+                        $(this).find(`[name^="sub_article_no["]`).attr('name', `sub_article_no[${newIndex}]`);
+                        $(this).find(`[name^="sub_article_content["]`).attr('name', `sub_article_content[${newIndex}]`);
+                        $(this).find('[data-index]').attr('data-index', newIndex);
+                    });
 
-
-
-                CKEDITOR.replace($('.multi-addition:last').find('.ckeditor-replace')[0]);
-                CKEDITOR.replace($('.multi-addition:last').find('.ckeditor-replace')[1]);
-
-                // Update sub_section_no and sub_section_content names in all elements
-                $('.multi-addition').each(function(index) {
-                    var newIndex = index + 1;
-                    $(this).find(`[name^="sub_article_no["]`).attr('name',
-                        `sub_article_no[${newIndex}]`);
-                    $(this).find(`[name^="sub_article_content["]`).attr('name',
-                        `sub_article_content[${newIndex}]`);
-                    $(this).find('[data-index]').attr('data-index', newIndex);
-                });
-
-                articleCounter++;
-                sub_articleCounter = 0;
-
+                    articleCounter++;
+                    sub_articleCounter = 0;
             });
 
             $(document).on('click', '.remove-multi-addition', function() {
-                var $clickedElement = $(this).closest('.multi-addition');
-
-                if ($('.multi-addition').length > 0) {
-                    $clickedElement.remove();
-
-                    // Find the index of the clicked element
-                    var index = $('.multi-addition').index($clickedElement);
-                }
+                $(this).closest('.multi-addition').remove();
+            
             });
-
             //  for sub section footnote 
             $(document).on('click', '.add-multi-footnote2', function() {
                 // Find the closest multi-addition container
                 var multiAdditionContainer = $(this).closest('.multi-addition');
-
-                // Find the associated sub_section_no within the multi-addition container
                 var associatedSubArticleTitle = multiAdditionContainer.find('[name^="sub_article_no["]');
 
                 // Check if the associatedSubSectionTitle is found
@@ -549,7 +489,7 @@
                     var footnote2AdditionContainer = multiAdditionContainer.find(
                         '.footnote2-addition-container');
                     footnote2AdditionContainer.append(newArticle);
-
+                    $(this).hide();
                     // CKEDITOR.replace(footnote2AdditionContainer.find('.footnote2-addition:last').find(
                     //     '.ckeditor-replace')[0]);
                     setTimeout(function() {
@@ -565,23 +505,33 @@
             });
 
             $(document).on('click', '.remove-multi-footnote2', function() {
-                if ($('.footnote2-addition').length > 0) {
-                    $('.footnote2-addition:last').remove();
+                // Find the container for the current footnote2 addition
+                var footnote2AdditionContainer = $(this).closest('.footnote2-addition-container');
+                
+                // Find the last footnote2 addition within the current container
+                var lastFootnote2Addition = footnote2AdditionContainer.find('.footnote2-addition:last');
+
+                if (lastFootnote2Addition.length > 0) {
+                    // Remove the last footnote2 addition
+                    lastFootnote2Addition.remove();
+                    
+                    // Check if there are any remaining footnotes in this sub-section
+                    if (footnote2AdditionContainer.find('.footnote2-addition').length === 0) {
+                        // Show the corresponding "+ Add Footnote" button for this sub-section
+                        footnote2AdditionContainer.find('.add-multi-footnote2').show();
+                    }
                 }
             });
 
+
+
+
+
             // for section footnote 
             $(document).on('click', '.add-multi-footnote', function() {
-
-                var lastInputFoot = $('[data-footarticleindex]:last').data('footarticleindex');
-                var lastInputArticle = $('[data-articleindex]:last').data('articleindex');
-                // console.log(lastInputFoot);
-                var footCounterIndex = parseInt(lastInputFoot) + 1;
-                // console.log(footCounterIndex);
-
                 var newArticle = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
                                         <label class="float-label">
-                                        Add Footnote
+                                        Add footnote
                                         <span class="pl-2">
                                             <button type="button" class="btn btn-sm social facebook p-0 add-footnote">
                                             <i class="fa fa-plus"></i>
@@ -589,7 +539,7 @@
                                         </span>
                                         </label>
                                         <div class="show-footnote" style="display: none">
-                                            <textarea type="text" name="article_footnote_content[${lastInputArticle}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
+                                            <textarea type="text" name="article_footnote_content" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                    
                                        
@@ -598,6 +548,7 @@
                                 `;
 
                 $('.footnote-addition-container').append(newArticle);
+                $(".add-multi-footnote").hide();
 
                 CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[0]);
                 // CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[1]);
@@ -605,9 +556,12 @@
                 articleCounter++; // Increment the counter for the next section
             });
 
+           
+
             $(document).on('click', '.remove-multi-footnote', function() {
                 if ($('.footnote-addition').length > 0) {
                     $('.footnote-addition:last').remove();
+                    $(".add-multi-footnote").show();
                 }
             });
 

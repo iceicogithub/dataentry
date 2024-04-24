@@ -118,19 +118,18 @@ class OrderController extends Controller
 
 
                 if ($request->has('order_footnote_content')) {
-                    foreach ($request->order_footnote_content as $key => $items) {
-                        // Check if the key exists before using it
-                        foreach ($items as $kys => $item) {
-                            // Check if the sec_footnote_id exists at the specified index
-                            if (isset($request->order_footnote_id[$key][$kys])) {
-                                // Use first() instead of get() to get a single model instance
-                                $foot = Footnote::find($request->order_footnote_id[$key][$kys]);
+                    $item = $request->order_footnote_content;
+                            if ($request->has('order_footnote_id')) {
+                                $footnote_id = $request->order_footnote_id;
+                                if (isset($footnote_id)) {
+                                    // Use first() instead of get() to get a single model instance
+                                    $foot = Footnote::find($footnote_id);
 
-                                if ($foot) {
-                                    $foot->update([
-                                        'footnote_content' => $item ?? null,
-                                        'footnote_no' => $request->order_footnote_no[$key][$kys] ?? null,
-                                    ]);
+                                    if ($foot) {
+                                        $foot->update([
+                                            'footnote_content' => $item ?? null,
+                                        ]);
+                                    }
                                 }
                             } else {
                                 // Create a new footnote
@@ -147,8 +146,7 @@ class OrderController extends Controller
                                 $footnote->footnote_content = $item ?? null;
                                 $footnote->save();
                             }
-                        }
-                    }
+                        
                 }
             }
 
@@ -156,33 +154,27 @@ class OrderController extends Controller
 
             if ($request->has('sub_order_no')) {
                 foreach ($request->sub_order_no as $key => $item) {
+
+                    $sub_order_id = $request->sub_order_id[$key] ?? null;
+                    $sub_order_content = $request->sub_order_content[$key] ?? null;
                     // Check if sub_section_id is present in the request
-                    if ($request->filled('sub_order_id') && is_array($request->sub_order_id) && array_key_exists($key, $request->sub_order_id)) {
+                    if ($sub_order_id && $existingSubOrder = SubOrders::find($sub_order_id)) {
+                        $existingSubOrder->update([
+                            'sub_order_no' => $item,
+                            'sub_order_content' => $sub_order_content,
+                        ]);
 
-                        $sub_order = SubOrders::find($request->sub_order_id[$key]);
+                            if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                                foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
 
-                        // Check if $sub_section is found in the database and the IDs match
-                        if ($sub_order && $sub_order->sub_order_id == $request->sub_order_id[$key]) {
-                            $sub_order->sub_order_no = $item ?? null;
-                            $sub_order->sub_order_content = $request->sub_order_content[$key] ?? null;
-                            $sub_order->update();
-
-                            if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                                foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                                    // Check if the sec_footnote_id exists at the specified index
-                                    if (isset($request->sub_footnote_id[$key][$kys])) {
-                                        // Use first() instead of get() to get a single model instance
-                                        $foot = Footnote::find($request->sub_footnote_id[$key][$kys]);
-
-                                        if ($foot) {
-                                            $foot->update([
-                                                'footnote_content' => $item ?? null,
-                                            ]);
-                                        }
-                                    } else {
-                                        // Create a new footnote only if sub_footnote_id does not exist
+                                    $footnote_id = $request->sub_footnote_id[$key][$kys] ?? null;
+                                    if ($footnote_id && $foot = Footnote::find($footnote_id)) {
+                                        $foot->update(['footnote_content' => $footnote_content]);
+                                    }
+                                    else {
+                                        // Create new footnote if ID is not provided or invalid
                                         $footnote = new Footnote();
-                                        $footnote->sub_order_id = $sub_order->sub_order_id;
+                                        $footnote->sub_order_id = $sub_order_id;
                                         $footnote->order_id = $id ?? null;
                                         $footnote->act_id = $order->act_id ?? null;
                                         $footnote->chapter_id = $order->chapter_id ?? null;
@@ -191,12 +183,11 @@ class OrderController extends Controller
                                         $footnote->priliminary_id = $order->priliminary_id ?? null;
                                         $footnote->schedule_id = $order->schedule_id ?? null;
                                         $footnote->appendix_id = $order->appendix_id ?? null;
-                                        $footnote->footnote_content = $item ?? null;
+                                        $footnote->footnote_content = $footnote_content ?? null;
                                         $footnote->save();
-                                    }
+                                    }    
                                 }
                             }
-                        }
                     } else {
                         // Existing subsection not found, create a new one
                         $suborder = new SubOrders();
@@ -210,28 +201,23 @@ class OrderController extends Controller
                         $suborder->priliminary_id = $order->priliminary_id ?? null;
                         $suborder->schedule_id = $order->schedule_id ?? null;
                         $suborder->appendix_id = $order->appendix_id ?? null;
-                        $suborder->sub_order_content = $request->sub_order_content[$key] ?? null;
+                        $suborder->sub_order_content = $sub_order_content ?? null;
                         $suborder->save();
 
-                        if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                            foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                                // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
-                                if (isset($request->sub_footnote_content[$key][$kys])) {
-                                    // Create a new footnote for the newly created subsection
-                                    $footnote = new Footnote();
-                                    $footnote->sub_order_id = $suborder->sub_order_id;
-                                    $footnote->order_id = $id ?? null;
-                                    $footnote->act_id = $order->act_id ?? null;
-                                    $footnote->chapter_id = $order->chapter_id ?? null;
-                                    $footnote->main_order_id = $order->main_order_id ?? null;
-                                    $footnote->parts_id = $order->parts_id ?? null;
-                                    $footnote->priliminary_id = $order->priliminary_id ?? null;
-                                    $footnote->schedule_id = $order->schedule_id ?? null;
-                                    $footnote->appendix_id = $order->appendix_id ?? null;
-                                    $footnote->footnote_content = $item ?? null;
-                                    $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
-                                    $footnote->save();
-                                }
+                        if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                            foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
+                                $footnote = new Footnote();
+                                $footnote->sub_order_id = $suborder->sub_order_id;
+                                $footnote->order_id = $id ?? null;
+                                $footnote->act_id = $order->act_id ?? null;
+                                $footnote->chapter_id = $order->chapter_id ?? null;
+                                $footnote->main_order_id = $order->main_order_id ?? null;
+                                $footnote->parts_id = $order->parts_id ?? null;
+                                $footnote->priliminary_id = $order->priliminary_id ?? null;
+                                $footnote->schedule_id = $order->schedule_id ?? null;
+                                $footnote->appendix_id = $order->appendix_id ?? null;
+                                $footnote->footnote_content = $footnote_content ?? null;
+                                $footnote->save();
                             }
                         }
                     }

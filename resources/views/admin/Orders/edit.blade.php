@@ -12,8 +12,9 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{ $order->act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="{{ url('/get_act_section/' . $order->act_id . '?perPage=10&page=' . $currentPage) }}"><button class="btn btn-success">Back</button></a>
                     </ol>
+                    
                 </div>
             </div>
         </div>
@@ -67,7 +68,7 @@
                                             @elseif($order->maintype_id == 3)
                                                 <label class="float-label font-weight-bold">Priliminary :</label>
 
-                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="pr_title">{{ $order->Priliminarymodel->priliminary_title }}</textarea>
+                                                <textarea name="priliminary_title" class="form-control mb-3 priliminary_title" placeholder="Enter Priliminary Title" id="pr_title">{{ $order->Priliminarymodel->priliminary_title }}</textarea>
                                             @elseif($order->maintype_id == 4)
                                                 <label class="float-label font-weight-bold">Schedule :</label>
 
@@ -132,10 +133,10 @@
                                                                     <div class="show-footnote" style="display: block">
                                                                         {{-- footnote for section --}}
                                                                         <input type="hidden"
-                                                                            name="order_footnote_id[{{ $s }}][{{ $f }}]"
+                                                                            name="order_footnote_id"
                                                                             value="{{ $footnote->footnote_id }}">
 
-                                                                        <textarea type="text" name="order_footnote_content[{{ $s }}][{{ $f }}]"
+                                                                        <textarea type="text" name="order_footnote_content"
                                                                             class="form-control ckeditor-replace footnote">{{ $footnote->footnote_content }}</textarea>
                                                                     </div>
                                                                 </div>
@@ -149,7 +150,7 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (Add footnote for order)
+                                                                (FOOTNOTE)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-footnote">
@@ -157,20 +158,19 @@
                                                             </button>
                                                             <button type="button"
                                                                 class="btn btn-sm social youtube p-0 remove-multi-footnote">
-                                                                <i class="fa fa-minus"></i>
+                                                                <i class="fa fa-trash"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                 @endif
 
                                             </div>
-                                            @if ($sub_order_f->count() > 0 || $count > 0)
+                                            {{-- @if ($sub_order_f->count() > 0 || $count > 0)
                                                 <div class="col-md-12 px-0 py-3">
                                                     <div class="float-right">
                                                         <span style="font-size: small;"
                                                             class="px-2 text-uppercase font-weight-bold">
-                                                            (for add and remove Sub-Order and
-                                                            Footnote)
+                                                          
                                                         </span>
                                                         <button type="button"
                                                             class="btn btn-sm social facebook p-0 add-multi-addition">
@@ -182,7 +182,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            @endif --}}
                                         </div>
 
 
@@ -221,8 +221,7 @@
                                                                         class="form-control ckeditor-replace sub_section">{{ $subOrderItem->sub_order_content ?? '' }}</textarea>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        @if (count($subOrderItem->footnoteModel) > 0)
+                                                            @if (count($subOrderItem->footnoteModel) > 0)
                                                             @foreach ($subOrderItem->footnoteModel as $a => $footnoteItem)
                                                                 <input type="hidden"
                                                                     name="sub_footnote_id[{{ $k }}][{{ $a }}]"
@@ -261,7 +260,7 @@
                                                                     <div class="float-right">
                                                                         <span style="font-size: small;"
                                                                             class="px-2 text-uppercase font-weight-bold">
-                                                                            (add Footnote for sub-order)
+                                                                            (FOOTNOTE)
                                                                         </span>
                                                                         <button type="button"
                                                                             class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -269,34 +268,17 @@
                                                                         </button>
                                                                         <button type="button"
                                                                             class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                            <i class="fa fa-minus"></i>
+                                                                            <i class="fa fa-trash"></i>
                                                                         </button>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         @endif
-
-                                                        <div class="col-md-12 px-0 py-3">
-                                                            <div class="float-right">
-                                                                <span style="font-size: small;"
-                                                                    class="px-2 text-uppercase font-weight-bold">
-                                                                    (for add and remove Sub-Order and
-                                                                    Footnote)
-                                                                </span>
-                                                                <button type="button"
-                                                                    class="btn btn-sm social facebook p-0 add-multi-addition">
-                                                                    <i class="fa fa-plus"></i>
-                                                                </button>
-                                                                {{-- <button type="button"
-                                                                    class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                                    <i class="fa fa-minus"></i>
-                                                                </button> --}}
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             @endforeach
-                                        @else
+                                        @endif
                                             <!-- If there are no subsections or footnotes, show the default section -->
                                             <div class="multi-addition-container col-md-12 px-0">
                                                 <div class="multi-addition">
@@ -304,22 +286,17 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (for add and remove Sub-Order and
-                                                                Footnote)
+                                                                (SUB ORDER)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-addition">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
-                                                            <button type="button"
-                                                                class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                                <i class="fa fa-minus"></i>
-                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
+                                        
 
                                     </div>
 
@@ -425,6 +402,9 @@
                 var newOrder = `
                                 <div class="multi-addition">
                                     <div class="border col-md-12 p-3">
+                                        <button type="button" class="btn btn-sm social youtube p-0 remove-multi-addition">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
                                         <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                             <label class="float-label">
                                             Add Sub-Order
@@ -445,7 +425,7 @@
                                                                 <div class="float-right">
                                                                     <span style="font-size: small;"
                                                                         class="px-2 text-uppercase font-weight-bold">
-                                                                        (Add footnote for sub-order)
+                                                                        (Add footnote)
                                                                     </span>
                                                                     <button type="button"
                                                                         class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -453,32 +433,20 @@
                                                                     </button>
                                                                     <button type="button"
                                                                         class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                        <i class="fa fa-minus"></i>
+                                                                        <i class="fa fa-trash"></i>
                                                                     </button>
                                                                 </div>
                                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 px-0 py-3">
-                                        <div class="float-right">
-                                            <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                            ( for add and remove Sub-Order and Footnote )
-                                            </span>
-                                            <button type="button" class="btn btn-sm social facebook p-0 add-multi-addition">
-                                            <i class="fa fa-plus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                            <i class="fa fa-minus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                                 `;
 
 
                 // $('.multi-addition-container').append(newSection);
-                var $clickedElement = $(this).closest('.multi-addition');
-                $clickedElement.after(newOrder);
+                // var $clickedElement = $(this).closest('.multi-addition');
+                $('.multi-addition').last().after(newOrder);
 
 
 
@@ -487,7 +455,7 @@
 
                 // Update sub_section_no and sub_section_content names in all elements
                 $('.multi-addition').each(function(index) {
-                    var newIndex = index + 1;
+                    var newIndex = index;
                     $(this).find(`[name^="sub_order_no["]`).attr('name',
                         `sub_order_no[${newIndex}]`);
                     $(this).find(`[name^="sub_order_content["]`).attr('name',
@@ -549,6 +517,7 @@
                     var footnote2AdditionContainer = multiAdditionContainer.find(
                         '.footnote2-addition-container');
                     footnote2AdditionContainer.append(newOrder);
+                    $(this).hide();
 
                     // CKEDITOR.replace(footnote2AdditionContainer.find('.footnote2-addition:last').find(
                     //     '.ckeditor-replace')[0]);
@@ -565,19 +534,25 @@
             });
 
             $(document).on('click', '.remove-multi-footnote2', function() {
-                if ($('.footnote2-addition').length > 0) {
-                    $('.footnote2-addition:last').remove();
+                // Find the container for the current footnote2 addition
+                var footnote2AdditionContainer = $(this).closest('.footnote2-addition-container');
+                
+                // Find the last footnote2 addition within the current container
+                var lastFootnote2Addition = footnote2AdditionContainer.find('.footnote2-addition:last');
+
+                if (lastFootnote2Addition.length > 0) {
+                    // Remove the last footnote2 addition
+                    lastFootnote2Addition.remove();
+                    
+                    // Check if there are any remaining footnotes in this sub-section
+                    if (footnote2AdditionContainer.find('.footnote2-addition').length === 0) {
+                        // Show the corresponding "+ Add Footnote" button for this sub-section
+                        footnote2AdditionContainer.find('.add-multi-footnote2').show();
+                    }
                 }
             });
-
             // for section footnote 
             $(document).on('click', '.add-multi-footnote', function() {
-
-                var lastInputFoot = $('[data-footorderindex]:last').data('footorderindex');
-                var lastInputOrder = $('[data-orderindex]:last').data('orderindex');
-                // console.log(lastInputFoot);
-                var footCounterIndex = parseInt(lastInputFoot) + 1;
-                // console.log(footCounterIndex);
 
                 var newOrder = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
                                         <label class="float-label">
@@ -589,7 +564,7 @@
                                         </span>
                                         </label>
                                         <div class="show-footnote" style="display: none">
-                                            <textarea type="text" name="order_footnote_content[${lastInputOrder}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
+                                            <textarea type="text" name="order_footnote_content" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                    
                                        
@@ -598,6 +573,7 @@
                                 `;
 
                 $('.footnote-addition-container').append(newOrder);
+                $(this).hide();
 
                 CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[0]);
                 // CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[1]);
@@ -608,6 +584,7 @@
             $(document).on('click', '.remove-multi-footnote', function() {
                 if ($('.footnote-addition').length > 0) {
                     $('.footnote-addition:last').remove();
+                    $('.add-multi-footnote').show();
                 }
             });
 

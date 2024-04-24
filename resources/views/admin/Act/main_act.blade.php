@@ -60,7 +60,7 @@
                                                 @elseif ($item->id === 4)
                                                     <a href="/get_timeline/{{ $act_id }}">{{ $item->title }}</a>
                                                 @elseif ($item->id === 5)
-                                                    <a href="/get_act_rule/{{ $act_id }}">{{ $item->title }}</a>
+                                                    <a href="/get_rule/{{ $act_id }}">{{ $item->title }}</a>
                                                 @elseif ($item->id === 6)
                                                     <a href="/get_act_regulation/{{ $act_id }}">{{ $item->title }}</a>
                                                 @elseif ($item->id === 7)

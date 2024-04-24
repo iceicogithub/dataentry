@@ -31,6 +31,7 @@ use App\Models\Annexure;
 use App\Models\SubAnnexure;
 use App\Models\Stschedule;
 use App\Models\SubStschedule;
+use App\Models\MainTable;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Barryvdh\DomPDF\PDF;
 use Dompdf\Dompdf;
@@ -67,379 +68,331 @@ class MainActController extends Controller
 
             $act = Act::findOrFail($id);
             $type = MainType::all();
-            $sidechapters = Chapter::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-
-
-            $sideparts = Parts::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-
-
-
-            $sidepriliminarys = Priliminary::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-
-
-            $sideschedules = Schedule::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-
-
-            $sideappendixes = Appendix::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-
-
-            $sidemainOrders = MainOrder::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-
-
-
-
-
-
-
-
-
-           $combinedItems = [];
-
-            foreach ($sidechapters as $chapter) {
-                $chapterData = $chapter->toArray();
-                $combinedItems[$chapter->serial_no] = $chapterData;
-            }
-
-            foreach ($sideparts as $part) {
-                $partData = $part->toArray();
-                $combinedItems[$part->serial_no] = $partData;
-            }
-
-            foreach ($sidepriliminarys as $priliminary) {
-                $priliminaryData = $priliminary->toArray();
-                $combinedItems[$priliminary->serial_no] = $priliminaryData;
-            }
-
-            foreach ($sideschedules as $schedule) {
-                $scheduleData = $schedule->toArray();
-                $combinedItems[$schedule->serial_no] = $scheduleData;
-            }
-
-            foreach ($sideappendixes as $appendix) {
-                $appendixData = $appendix->toArray();
-                $combinedItems[$appendix->serial_no] = $appendixData;
-            }
-
-            foreach ($sidemainOrders as $mainOrder) {
-                $mainOrderData = $mainOrder->toArray();
-                $combinedItems[$mainOrder->serial_no] = $mainOrderData;
-            }
-
+           
 
             // Sort the combined items by their serial_no
-            ksort($combinedItems);
+            // ksort($combinedItems);
+
+            $mainsequence = MainTable::where('act_id', $id)
+            ->with([
+                'chapters' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'parts' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'priliminarys' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'schedules' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'appendixes' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'mainOrders' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->orderBy('main_rank')
+            ->get();
+    
+                
+            $combinedItems = collect([]);
+    
+            foreach ($mainsequence as $mainItem) {
+                foreach ($mainItem->chapters as $chapter) {
+                    $chapterData = $chapter->toArray();
+                    $chapterData['main_id'] = $mainItem->main_id;
+                    $combinedItems->push($chapterData);
+                }
+            
+                foreach ($mainItem->parts as $part) {
+                    $partData = $part->toArray();
+                    $partData['main_id'] = $mainItem->main_id;
+                    $combinedItems->push($partData);
+                }
+            
+                foreach ($mainItem->priliminarys as $preliminary) {
+                    $preliminaryData = $preliminary->toArray();
+                    $preliminaryData['main_id'] = $mainItem->main_id;
+                    $combinedItems->push($preliminaryData);
+                }
+            
+                foreach ($mainItem->schedules as $schedule) {
+                    $scheduleData = $schedule->toArray();
+                    $scheduleData['main_id'] = $mainItem->main_id;
+                    $combinedItems->push($scheduleData);
+                }
+            
+                foreach ($mainItem->appendixes as $appendix) {
+                    $appendixData = $appendix->toArray();
+                    $appendixData['main_id'] = $mainItem->main_id;
+                    $combinedItems->push($appendixData);
+                }
+            
+                foreach ($mainItem->mainOrders as $mainOrder) {
+                    $mainOrderData = $mainOrder->toArray();
+                    $mainOrderData['main_id'] = $mainItem->main_id;
+                    $combinedItems->push($mainOrderData);
+                }
+            }
 
            
             $sideBarList = [];
@@ -1124,252 +1077,308 @@ class MainActController extends Controller
             
                     $Data = [];
                     if (!empty($item['sections'])) {
-                        foreach ($item['sections'] as $section) {
+                         foreach ($item['sections'] as $section) {
                             $subSectionsList = [];
-                            if(!empty($section['subsection_model'])){
+                            if (!empty($section['subsection_model'])) {
                                 foreach ($section['subsection_model'] as $subsection) {
-                                    $subSectionsList[] = '<div style="display:flex!important;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
+                                    $subSectionsList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
                                 }
                             }
                           
                             $footnoteList = [];
-                            if (!empty($section['footnote_model'])){
+                            if (!empty($section['footnote_model'])) {
                                 foreach ($section['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                          
-            
+                        
                             $subSectionString = implode('', $subSectionsList);
                             $footnoteString = implode('', $footnoteList);
-            
-                            $Data[] = '<div id="' . $section['section_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $section['section_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $section['section_title'] . '</h4></div></br><div>' . $section['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $sectionCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $sectionHtml = '<div id="' . $section['section_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $section['section_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $section['section_title'] . '</h4></div></br><div>' . $section['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $sectionCss . $sectionHtml;
                         }
                     }
                 
                     if(!empty($item['articles'])){
-                        foreach ($item['articles'] as $article) { // assuming sections are directly nested in $item
-                        $subArticleList = [];
-                        if (!empty($article['sub_article_model'])){
-                            foreach ($article['sub_article_model'] as $subarticle) {
-                                    $subArticleList[] = '<div style="display:flex!important;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';  
-                            }
-                        }
-                      
-                        $footnoteList = [];
-                        if (!empty($article['footnote_model'])){
-                            foreach ($article['footnote_model'] as $footnote) {
-                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
-                            }
-                        }
-                       
-                        $subArticleString = implode('', $subArticleList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $article['article_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $article['article_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $article['article_title'] . '</h4></div></br><div>' . $article['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
-                    }
-
-                    if(!empty($item['rules'])){
-                        foreach ($item['rules'] as $rule) { // assuming sections are directly nested in $item
-                            $subRuleList = [];
-                            if (!empty($rule['subrule_model'])){
-                                foreach ($rule['subrule_model'] as $subrule) {
-                                        $subRuleList[] = '<div style="display:flex!important;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subarticle['sub_rule_content'] . '</div></div>';
-                                }   
-                            }
-                           
-    
-                            $footnoteList = [];
-                            if (!empty($rule['footnote_model'])){
-                                foreach ($rule['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
-                                }
-                            }
-    
-                            $subRuleString = implode('', $subRuleList);
-                            $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $rule['rule_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $rule['rule_title'] . '</h4></div></br><div>' . $rule['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';    
-                        }        
-                    }
-
-                    if(!empty($item['regulation'])){
-                        foreach ($item['regulation'] as $regulation) { // assuming sections are directly nested in $item
-                            $subRegulationList = [];
-                            if(!empty($regulation['sub_regulation_model'])){
-                                foreach ($regulation['sub_regulation_model'] as $subRegulation) {
-                                        $subRegulationList[] = '<div style="display:flex!important;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                        foreach ($item['articles'] as $article) {
+                            $subArticleList = [];
+                            if (!empty($article['sub_article_model'])) {
+                                foreach ($article['sub_article_model'] as $subarticle) {
+                                    $subArticleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';
                                 }
                             }
                           
-    
                             $footnoteList = [];
-                            if (!empty($regulation['footnote_model'])){
-                                foreach ($regulation['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            if (!empty($article['footnote_model'])) {
+                                foreach ($article['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
+                        
+                            $subArticleString = implode('', $subArticleList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $articleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $articleHtml = '<div id="' . $article['article_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $article['article_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $article['article_title'] . '</h4></div></br><div>' . $article['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $articleCss . $articleHtml;
+                        }
+                    }
+
+                    if(!empty($item['rules'])){
+                        
+                        foreach ($item['rules'] as $rule) {
+                            $subRuleList = [];
+                            if (!empty($rule['subrule_model'])) {
+                                foreach ($rule['subrule_model'] as $subrule) {
+                                    $subRuleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($rule['footnote_model'])) {
+                                foreach ($rule['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
+                            $subRuleString = implode('', $subRuleList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $ruleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $ruleHtml = '<div id="' . $rule['rule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $rule['rule_title'] . '</h4></div></br><div>' . $rule['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $ruleCss . $ruleHtml;
+                        }
+                    }
+
+                    if(!empty($item['regulation'])){
+                        foreach ($item['regulation'] as $regulation) {
+                            $subRegulationList = [];
+                            if (!empty($regulation['sub_regulation_model'])) {
+                                foreach ($regulation['sub_regulation_model'] as $subRegulation) {
+                                    $subRegulationList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($regulation['footnote_model'])) {
+                                foreach ($regulation['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
                             $subRegulationString = implode('', $subRegulationList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $regulation['regulation_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $regulation['regulation_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $regulation['regulation_title'] . '</h4></div></br><div>' . $regulation['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                  
-                        }        
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $regulationCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $regulationHtml = '<div id="' . $regulation['regulation_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $regulation['regulation_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $regulation['regulation_title'] . '</h4></div></br><div>' . $regulation['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $regulationCss . $regulationHtml;
+                        }
                     }
 
                     if(!empty($item['lists'])){
-                        foreach ($item['lists'] as $list) { // assuming sections are directly nested in $item
-                        $subListList = [];
-                        if (!empty($list['sub_list_model'])){
-                            foreach ($list['sub_list_model'] as $subList) {
-                                    $subListList[] = '<div style="display:flex!important;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                        
+                        foreach ($item['lists'] as $list) {
+                            $subListList = [];
+                            if (!empty($list['sub_list_model'])) {
+                                foreach ($list['sub_list_model'] as $subList) {
+                                    $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-
-                        $footnoteList = [];
-
-                        if(!empty($list['footnote_model'])){
-                            foreach ($list['footnote_model'] as $footnote) {
-                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                          
+                            $footnoteList = [];
+                            if (!empty($list['footnote_model'])) {
+                                foreach ($list['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
+                        
+                            $subListString = implode('', $subListList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $listCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $listHtml = '<div id="' . $list['list_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $list['list_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $list['list_title'] . '</h4></div></br><div>' . $list['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $listCss . $listHtml;
                         }
-                      
-
-                        $subListString = implode('', $subListList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $list['list_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $list['list_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $list['list_title'] . '</h4></div></br><div>' . $list['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
                     }
 
                     if(!empty($item['part'])){
-                        foreach ($item['part'] as $part) { // assuming sections are directly nested in $item
+                        foreach ($item['part'] as $part) {
                             $subPartList = [];
-                            if (!empty($part['sub_part_model'])){
+                            if (!empty($part['sub_part_model'])) {
                                 foreach ($part['sub_part_model'] as $subPartsOfPart) {
-                                        $subPartList[] = '<div style="display:flex!important;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
+                                    $subPartList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
                                 }
                             }
-                            
-    
+                          
                             $footnoteList = [];
-                            if (!empty($part['footnote_model'])){
+                            if (!empty($part['footnote_model'])) {
                                 foreach ($part['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
-    
+                        
                             $subPartString = implode('', $subPartList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $part['part_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $part['part_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $part['part_title'] . '</h4></div></br><div>' . $part['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                         
-                        }        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $partCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $partHtml = '<div id="' . $part['part_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $part['part_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $part['part_title'] . '</h4></div></br><div>' . $part['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $partCss . $partHtml;
+                        }
                     }
 
                     if(!empty($item['appendices'])){
-                        foreach ($item['appendices'] as $appendices) { // assuming sections are directly nested in $item
-                        $subAppendiceList = [];
-                        if (!empty($appendices['sub_appendices_model'])){
-                            foreach ($appendices['sub_appendices_model'] as $subAppendice) {
-                                    $subAppendiceList[] = '<div style="display:flex!important;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                        foreach ($item['appendices'] as $appendices) {
+                            $subAppendiceList = [];
+                            if (!empty($appendices['sub_appendices_model'])) {
+                                foreach ($appendices['sub_appendices_model'] as $subAppendice) {
+                                    $subAppendiceList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-
-                        $footnoteList = [];
-                        if(!empty($appendices['footnote_model'])){
-                            foreach ($appendices['footnote_model'] as $footnote) {
-                                    $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                          
+                            $footnoteList = [];
+                            if (!empty($appendices['footnote_model'])) {
+                                foreach ($appendices['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
-                        }
-                       
-
-                        $subAppendiceString = implode('', $subAppendiceList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $appendices['appendices_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $appendices['appendices_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $appendices['appendices_title'] . '</h4></div></br><div>' . $appendices['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            $subAppendiceString = implode('', $subAppendiceList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $appendicesCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $appendicesHtml = '<div id="' . $appendices['appendices_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $appendices['appendices_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $appendices['appendices_title'] . '</h4></div></br><div>' . $appendices['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $appendicesCss . $appendicesHtml;
                         }        
                     }
 
                     if(!empty($item['order'])){
-                        foreach ($item['order'] as $order) { // assuming sections are directly nested in $item
-                        $subOrderList = [];
-                        if (!empty($order['sub_order_model'])){
-                            foreach ($order['sub_order_model'] as $subOrder) {
-                                    $subOrderList[] = '<div style="display:flex!important;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
-                            }    
-                        }
-                      
-                        $footnoteList = [];
-                        if (!empty($order['footnote_model'])){
-                            foreach ($order['footnote_model'] as $footnote) {
-                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
-                            }
-                        }
                        
-
-                        $subOrderString = implode('', $subOrderList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $order['order_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $order['order_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $order['order_title'] . '</h4></div></br><div>' . $order['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
-                    }
-
-                    if(!empty($item['annexure'])){
-                        foreach ($item['annexure'] as $annexure) { // assuming sections are directly nested in $item
-                            $subAnnexureList = [];
-                            if (!empty($annexure['sub_annexure_model'])){
-                                foreach ($annexure['sub_annexure_model'] as $subAnnexure) {
-                                        $subAnnexureList[] = '<div style="display:flex!important;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                        foreach ($item['order'] as $order) {
+                            $subOrderList = [];
+                            if (!empty($order['sub_order_model'])) {
+                                foreach ($order['sub_order_model'] as $subOrder) {
+                                    $subOrderList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
                                 }
                             }
                           
-    
                             $footnoteList = [];
-                            if (!empty($annexure['footnote_model'])){
-                                foreach ($annexure['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            if (!empty($order['footnote_model'])) {
+                                foreach ($order['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
-    
+                        
+                            $subOrderString = implode('', $subOrderList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $orderCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $orderHtml = '<div id="' . $order['order_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $order['order_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $order['order_title'] . '</h4></div></br><div>' . $order['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $orderCss . $orderHtml;
+                        } 
+                    }
+
+                    if(!empty($item['annexure'])){
+                        
+                        foreach ($item['annexure'] as $annexure) {
+                            $subAnnexureList = [];
+                            if (!empty($annexure['sub_annexure_model'])) {
+                                foreach ($annexure['sub_annexure_model'] as $subAnnexure) {
+                                    $subAnnexureList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($annexure['footnote_model'])) {
+                                foreach ($annexure['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
                             $subAnnexureString = implode('', $subAnnexureList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $annexure['annexure_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $annexure['annexure_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $annexure['annexure_title'] . '</h4></div></br><div>' . $annexure['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                         
-                        }        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $annexureCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $annexureHtml = '<div id="' . $annexure['annexure_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $annexure['annexure_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $annexure['annexure_title'] . '</h4></div></br><div>' . $annexure['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $annexureCss . $annexureHtml;
+                        } 
                     }
                    
                     if(!empty($item['stschedule'])){
-                        foreach ($item['stschedule'] as $stschedule) { // assuming sections are directly nested in $item
+                         
+                        foreach ($item['stschedule'] as $stschedule) {
                             $subStscheduleList = [];
-                            if (!empty($stschedule['sub_stschedule_model'])){
+                            if (!empty($stschedule['sub_stschedule_model'])) {
                                 foreach ($stschedule['sub_stschedule_model'] as $subStschedule) {
-                                        $subStscheduleList[] = '<div style="display:flex!important;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
+                                    $subStscheduleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
                                 }
                             }
-                            
-    
+                          
                             $footnoteList = [];
-                            if(!empty($stschedule['footnote_model'])){
+                            if (!empty($stschedule['footnote_model'])) {
                                 foreach ($stschedule['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                           
-    
+                        
                             $subStscheduleString = implode('', $subStscheduleList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $stschedule['stschedule_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $stschedule['stschedule_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $stschedule['stschedule_title'] . '</h4></div></br><div>' . $stschedule['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                           
-                        }        
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $stscheduleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $stscheduleHtml = '<div id="' . $stschedule['stschedule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $stschedule['stschedule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $stschedule['stschedule_title'] . '</h4></div></br><div>' . $stschedule['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $stscheduleCss . $stscheduleHtml;
+                        } 
                     }
 
                     $sectionString = implode('', $Data);
@@ -1383,249 +1392,301 @@ class MainActController extends Controller
                     if (!empty($item['sections'])) {
                         foreach ($item['sections'] as $section) {
                             $subSectionsList = [];
-                            if(!empty($section['subsection_model'])){
+                            if (!empty($section['subsection_model'])) {
                                 foreach ($section['subsection_model'] as $subsection) {
-                                    $subSectionsList[] = '<div style="display:flex!important;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
+                                    $subSectionsList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
                                 }
                             }
                           
                             $footnoteList = [];
-                            if (!empty($section['footnote_model'])){
+                            if (!empty($section['footnote_model'])) {
                                 foreach ($section['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                          
-            
+                        
                             $subSectionString = implode('', $subSectionsList);
                             $footnoteString = implode('', $footnoteList);
-            
-                            $Data[] = '<div id="' . $section['section_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $section['section_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $section['section_title'] . '</h4></div></br><div>' . $section['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $sectionCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $sectionHtml = '<div id="' . $section['section_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $section['section_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $section['section_title'] . '</h4></div></br><div>' . $section['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $sectionCss . $sectionHtml;
                         }
                     }
                 
                     if(!empty($item['articles'])){
-                        foreach ($item['articles'] as $article) { // assuming sections are directly nested in $item
-                        $subArticleList = [];
-                        if (!empty($article['sub_article_model'])){
-                            foreach ($article['sub_article_model'] as $subarticle) {
-                                    $subArticleList[] = '<div style="display:flex!important;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';  
+                        foreach ($item['articles'] as $article) {
+                            $subArticleList = [];
+                            if (!empty($article['sub_article_model'])) {
+                                foreach ($article['sub_article_model'] as $subarticle) {
+                                    $subArticleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-                        $footnoteList = [];
-                        if (!empty($article['footnote_model'])){
-                            foreach ($article['footnote_model'] as $footnote) {
+                          
+                            $footnoteList = [];
+                            if (!empty($article['footnote_model'])) {
+                                foreach ($article['footnote_model'] as $footnote) {
                                     $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
-                        }
-                       
-                        $subArticleString = implode('', $subArticleList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $article['article_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $article['article_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $article['article_title'] . '</h4></div></br><div>' . $article['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            $subArticleString = implode('', $subArticleList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $articleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $articleHtml = '<div id="' . $article['article_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $article['article_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $article['article_title'] . '</h4></div></br><div>' . $article['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $articleCss . $articleHtml;
                         }        
                     }
 
                     if(!empty($item['rules'])){
-                        foreach ($item['rules'] as $rule) { // assuming sections are directly nested in $item
+                        foreach ($item['rules'] as $rule) {
                             $subRuleList = [];
-                            if (!empty($rule['subrule_model'])){
+                            if (!empty($rule['subrule_model'])) {
                                 foreach ($rule['subrule_model'] as $subrule) {
-                                        $subRuleList[] = '<div style="display:flex!important;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
-                                }   
-                            }
-                           
-    
-                            $footnoteList = [];
-                            if (!empty($rule['footnote_model'])){
-                                foreach ($rule['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
-                                }
-                            }
-    
-                            $subRuleString = implode('', $subRuleList);
-                            $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $rule['rule_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $rule['rule_title'] . '</h4></div></br><div>' . $rule['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';    
-                        }        
-                    }
-
-                    if(!empty($item['regulation'])){
-                        foreach ($item['regulation'] as $regulation) { // assuming sections are directly nested in $item
-                            $subRegulationList = [];
-                            if(!empty($regulation['sub_regulation_model'])){
-                                foreach ($regulation['sub_regulation_model'] as $subRegulation) {
-                                        $subRegulationList[] = '<div style="display:flex!important;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                                    $subRuleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
                                 }
                             }
                           
-    
                             $footnoteList = [];
-                            if (!empty($regulation['footnote_model'])){
-                                foreach ($regulation['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            if (!empty($rule['footnote_model'])) {
+                                foreach ($rule['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
+                        
+                            $subRuleString = implode('', $subRuleList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $ruleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $ruleHtml = '<div id="' . $rule['rule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $rule['rule_title'] . '</h4></div></br><div>' . $rule['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $ruleCss . $ruleHtml;
+                        }       
+                    }
+
+                    if(!empty($item['regulation'])){
+                        foreach ($item['regulation'] as $regulation) {
+                            $subRegulationList = [];
+                            if (!empty($regulation['sub_regulation_model'])) {
+                                foreach ($regulation['sub_regulation_model'] as $subRegulation) {
+                                    $subRegulationList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($regulation['footnote_model'])) {
+                                foreach ($regulation['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
                             $subRegulationString = implode('', $subRegulationList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $regulation['regulation_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $regulation['regulation_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $regulation['regulation_title'] . '</h4></div></br><div>' . $regulation['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                  
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $regulationCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $regulationHtml = '<div id="' . $regulation['regulation_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $regulation['regulation_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $regulation['regulation_title'] . '</h4></div></br><div>' . $regulation['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $regulationCss . $regulationHtml;
                         }        
                     }
 
                     if(!empty($item['lists'])){
-                        foreach ($item['lists'] as $list) { // assuming sections are directly nested in $item
-                        $subListList = [];
-                        if (!empty($list['sub_list_model'])){
-                            foreach ($list['sub_list_model'] as $subList) {
-                                    $subListList[] = '<div style="display:flex!important;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                        foreach ($item['lists'] as $list) {
+                            $subListList = [];
+                            if (!empty($list['
+                            '])) {
+                                foreach ($list['sub_list_model'] as $subList) {
+                                    $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-
-                        $footnoteList = [];
-
-                        if(!empty($list['footnote_model'])){
-                            foreach ($list['footnote_model'] as $footnote) {
-                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                          
+                            $footnoteList = [];
+                            if (!empty($list['footnote_model'])) {
+                                foreach ($list['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
-                        }
-                      
-
-                        $subListString = implode('', $subListList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $list['list_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $list['list_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $list['list_title'] . '</h4></div></br><div>' . $list['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
+                        
+                            $subListString = implode('', $subListList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $listCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $listHtml = '<div id="' . $list['list_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $list['list_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $list['list_title'] . '</h4></div></br><div>' . $list['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $listCss . $listHtml;
+                        }       
                     }
 
                     if(!empty($item['part'])){
-                        foreach ($item['part'] as $part) { // assuming sections are directly nested in $item
+                        foreach ($item['part'] as $part) {
                             $subPartList = [];
-                            if (!empty($part['sub_part_model'])){
+                            if (!empty($part['sub_part_model'])) {
                                 foreach ($part['sub_part_model'] as $subPartsOfPart) {
-                                        $subPartList[] = '<div style="display:flex!important;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
+                                    $subPartList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
                                 }
                             }
-                            
-    
+                          
                             $footnoteList = [];
-                            if (!empty($part['footnote_model'])){
+                            if (!empty($part['footnote_model'])) {
                                 foreach ($part['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
-    
+                        
                             $subPartString = implode('', $subPartList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $part['part_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $part['part_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $part['part_title'] . '</h4></div></br><div>' . $part['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                         
-                        }        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $partCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $partHtml = '<div id="' . $part['part_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $part['part_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $part['part_title'] . '</h4></div></br><div>' . $part['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $partCss . $partHtml;
+                        }       
                     }
 
                     if(!empty($item['appendices'])){
-                        foreach ($item['appendices'] as $appendices) { // assuming sections are directly nested in $item
-                        $subAppendiceList = [];
-                        if (!empty($appendices['sub_appendices_model'])){
-                            foreach ($appendices['sub_appendices_model'] as $subAppendice) {
-                                    $subAppendiceList[] = '<div style="display:flex!important;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                        foreach ($item['appendices'] as $appendices) {
+                            $subAppendiceList = [];
+                            if (!empty($appendices['sub_appendices_model'])) {
+                                foreach ($appendices['sub_appendices_model'] as $subAppendice) {
+                                    $subAppendiceList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-
-                        $footnoteList = [];
-                        if(!empty($appendices['footnote_model'])){
-                            foreach ($appendices['footnote_model'] as $footnote) {
-                                    $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                          
+                            $footnoteList = [];
+                            if (!empty($appendices['footnote_model'])) {
+                                foreach ($appendices['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
-                        }
-                       
-
-                        $subAppendiceString = implode('', $subAppendiceList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $appendices['appendices_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $appendices['appendices_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $appendices['appendices_title'] . '</h4></div></br><div>' . $appendices['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            $subAppendiceString = implode('', $subAppendiceList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $appendicesCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $appendicesHtml = '<div id="' . $appendices['appendices_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $appendices['appendices_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $appendices['appendices_title'] . '</h4></div></br><div>' . $appendices['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $appendicesCss . $appendicesHtml;
                         }        
                     }
 
                     if(!empty($item['order'])){
-                        foreach ($item['order'] as $order) { // assuming sections are directly nested in $item
-                        $subOrderList = [];
-                        if (!empty($order['sub_order_model'])){
-                            foreach ($order['sub_order_model'] as $subOrder) {
-                                    $subOrderList[] = '<div style="display:flex!important;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
-                            }    
-                        }
-                      
-                        $footnoteList = [];
-                        if (!empty($order['footnote_model'])){
-                            foreach ($order['footnote_model'] as $footnote) {
-                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
-                            }
-                        }
-                       
-
-                        $subOrderString = implode('', $subOrderList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $order['order_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $order['order_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $order['order_title'] . '</h4></div></br><div>' . $order['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
-                    }
-
-                    if(!empty($item['annexure'])){
-                        foreach ($item['annexure'] as $annexure) { // assuming sections are directly nested in $item
-                            $subAnnexureList = [];
-                            if (!empty($annexure['sub_annexure_model'])){
-                                foreach ($annexure['sub_annexure_model'] as $subAnnexure) {
-                                        $subAnnexureList[] = '<div style="display:flex!important;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                        foreach ($item['order'] as $order) {
+                            $subOrderList = [];
+                            if (!empty($order['sub_order_model'])) {
+                                foreach ($order['sub_order_model'] as $subOrder) {
+                                    $subOrderList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
                                 }
                             }
                           
-    
                             $footnoteList = [];
-                            if (!empty($annexure['footnote_model'])){
-                                foreach ($annexure['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            if (!empty($order['footnote_model'])) {
+                                foreach ($order['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
-    
+                        
+                            $subOrderString = implode('', $subOrderList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $orderCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $orderHtml = '<div id="' . $order['order_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $order['order_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $order['order_title'] . '</h4></div></br><div>' . $order['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $orderCss . $orderHtml;
+                        }         
+                    }
+
+                    if(!empty($item['annexure'])){
+                        foreach ($item['annexure'] as $annexure) {
+                            $subAnnexureList = [];
+                            if (!empty($annexure['sub_annexure_model'])) {
+                                foreach ($annexure['sub_annexure_model'] as $subAnnexure) {
+                                    $subAnnexureList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($annexure['footnote_model'])) {
+                                foreach ($annexure['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
                             $subAnnexureString = implode('', $subAnnexureList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $annexure['annexure_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $annexure['annexure_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $annexure['annexure_title'] . '</h4></div></br><div>' . $annexure['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                         
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $annexureCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $annexureHtml = '<div id="' . $annexure['annexure_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $annexure['annexure_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $annexure['annexure_title'] . '</h4></div></br><div>' . $annexure['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $annexureCss . $annexureHtml;
                         }        
                     }
                    
                     if(!empty($item['stschedule'])){
-                        foreach ($item['stschedule'] as $stschedule) { // assuming sections are directly nested in $item
+                        foreach ($item['stschedule'] as $stschedule) {
                             $subStscheduleList = [];
-                            if (!empty($stschedule['sub_stschedule_model'])){
+                            if (!empty($stschedule['sub_stschedule_model'])) {
                                 foreach ($stschedule['sub_stschedule_model'] as $subStschedule) {
-                                        $subStscheduleList[] = '<div style="display:flex!important;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
+                                    $subStscheduleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
                                 }
                             }
-                            
-    
+                          
                             $footnoteList = [];
-                            if(!empty($stschedule['footnote_model'])){
+                            if (!empty($stschedule['footnote_model'])) {
                                 foreach ($stschedule['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                           
-    
+                        
                             $subStscheduleString = implode('', $subStscheduleList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $stschedule['stschedule_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $stschedule['stschedule_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $stschedule['stschedule_title'] . '</h4></div></br><div>' . $stschedule['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                           
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $stscheduleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $stscheduleHtml = '<div id="' . $stschedule['stschedule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $stschedule['stschedule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $stschedule['stschedule_title'] . '</h4></div></br><div>' . $stschedule['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $stscheduleCss . $stscheduleHtml;
                         }        
                     }
 
@@ -1640,249 +1701,301 @@ class MainActController extends Controller
                     if (!empty($item['sections'])) {
                         foreach ($item['sections'] as $section) {
                             $subSectionsList = [];
-                            if(!empty($section['subsection_model'])){
+                            if (!empty($section['subsection_model'])) {
                                 foreach ($section['subsection_model'] as $subsection) {
-                                    $subSectionsList[] = '<div style="display:flex!important;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
+                                    $subSectionsList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
                                 }
                             }
                           
                             $footnoteList = [];
-                            if (!empty($section['footnote_model'])){
+                            if (!empty($section['footnote_model'])) {
                                 foreach ($section['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                          
-            
+                        
                             $subSectionString = implode('', $subSectionsList);
                             $footnoteString = implode('', $footnoteList);
-            
-                            $Data[] = '<div id="' . $section['section_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $section['section_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $section['section_title'] . '</h4></div></br><div>' . $section['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $sectionCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $sectionHtml = '<div id="' . $section['section_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $section['section_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $section['section_title'] . '</h4></div></br><div>' . $section['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $sectionCss . $sectionHtml;
                         }
                     }
                 
                     if(!empty($item['articles'])){
-                        foreach ($item['articles'] as $article) { // assuming sections are directly nested in $item
-                        $subArticleList = [];
-                        if (!empty($article['sub_article_model'])){
-                            foreach ($article['sub_article_model'] as $subarticle) {
-                                    $subArticleList[] = '<div style="display:flex!important;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';  
-                            }
-                        }
-                      
-                        $footnoteList = [];
-                        if (!empty($article['footnote_model'])){
-                            foreach ($article['footnote_model'] as $footnote) {
-                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
-                            }
-                        }
-                       
-                        $subArticleString = implode('', $subArticleList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $article['article_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $article['article_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $article['article_title'] . '</h4></div></br><div>' . $article['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
-                    }
-
-                    if(!empty($item['rules'])){
-                        foreach ($item['rules'] as $rule) { // assuming sections are directly nested in $item
-                            $subRuleList = [];
-                            if (!empty($rule['subrule_model'])){
-                                foreach ($rule['subrule_model'] as $subrule) {
-                                        $subRuleList[] = '<div style="display:flex!important;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
-                                }   
-                            }
-                           
-    
-                            $footnoteList = [];
-                            if (!empty($rule['footnote_model'])){
-                                foreach ($rule['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
-                                }
-                            }
-    
-                            $subRuleString = implode('', $subRuleList);
-                            $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $rule['rule_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $rule['rule_title'] . '</h4></div></br><div>' . $rule['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';    
-                        }        
-                    }
-
-                    if(!empty($item['regulation'])){
-                        foreach ($item['regulation'] as $regulation) { // assuming sections are directly nested in $item
-                            $subRegulationList = [];
-                            if(!empty($regulation['sub_regulation_model'])){
-                                foreach ($regulation['sub_regulation_model'] as $subRegulation) {
-                                        $subRegulationList[] = '<div style="display:flex!important;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                        foreach ($item['articles'] as $article) {
+                            $subArticleList = [];
+                            if (!empty($article['sub_article_model'])) {
+                                foreach ($article['sub_article_model'] as $subarticle) {
+                                    $subArticleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';
                                 }
                             }
                           
-    
                             $footnoteList = [];
-                            if (!empty($regulation['footnote_model'])){
-                                foreach ($regulation['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            if (!empty($article['footnote_model'])) {
+                                foreach ($article['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
+                        
+                            $subArticleString = implode('', $subArticleList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $articleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $articleHtml = '<div id="' . $article['article_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $article['article_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $article['article_title'] . '</h4></div></br><div>' . $article['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $articleCss . $articleHtml;
+                        }       
+                    }
+
+                    if(!empty($item['rules'])){
+                        foreach ($item['rules'] as $rule) {
+                            $subRuleList = [];
+                            if (!empty($rule['subrule_model'])) {
+                                foreach ($rule['subrule_model'] as $subrule) {
+                                    $subRuleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($rule['footnote_model'])) {
+                                foreach ($rule['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
+                            $subRuleString = implode('', $subRuleList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $ruleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $ruleHtml = '<div id="' . $rule['rule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $rule['rule_title'] . '</h4></div></br><div>' . $rule['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $ruleCss . $ruleHtml;
+                        }       
+                    }
+
+                    if(!empty($item['regulation'])){
+                        foreach ($item['regulation'] as $regulation) {
+                            $subRegulationList = [];
+                            if (!empty($regulation['sub_regulation_model'])) {
+                                foreach ($regulation['sub_regulation_model'] as $subRegulation) {
+                                    $subRegulationList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($regulation['footnote_model'])) {
+                                foreach ($regulation['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
                             $subRegulationString = implode('', $subRegulationList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $regulation['regulation_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $regulation['regulation_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $regulation['regulation_title'] . '</h4></div></br><div>' . $regulation['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                  
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $regulationCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $regulationHtml = '<div id="' . $regulation['regulation_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $regulation['regulation_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $regulation['regulation_title'] . '</h4></div></br><div>' . $regulation['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $regulationCss . $regulationHtml;
                         }        
                     }
 
                     if(!empty($item['lists'])){
-                        foreach ($item['lists'] as $list) { // assuming sections are directly nested in $item
-                        $subListList = [];
-                        if (!empty($list['sub_list_model'])){
-                            foreach ($list['sub_list_model'] as $subList) {
-                                    $subListList[] = '<div style="display:flex!important;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
-                            }
-                        }
-                      
-
-                        $footnoteList = [];
-
-                        if(!empty($list['footnote_model'])){
-                            foreach ($list['footnote_model'] as $footnote) {
-                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
-                            }
-                        }
-                      
-
-                        $subListString = implode('', $subListList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $list['list_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $list['list_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $list['list_title'] . '</h4></div></br><div>' . $list['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
-                    }
-
-                    if(!empty($item['part'])){
-                        foreach ($item['part'] as $part) { // assuming sections are directly nested in $item
-                            $subPartList = [];
-                            if (!empty($part['sub_part_model'])){
-                                foreach ($part['sub_part_model'] as $subPartsOfPart) {
-                                        $subPartList[] = '<div style="display:flex!important;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
-                                }
-                            }
-                            
-    
-                            $footnoteList = [];
-                            if (!empty($part['footnote_model'])){
-                                foreach ($part['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
-                                }
-                            }
-                            
-    
-                            $subPartString = implode('', $subPartList);
-                            $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $part['part_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $part['part_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $part['part_title'] . '</h4></div></br><div>' . $part['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        
-                        }        
-                    }
-
-                    if(!empty($item['appendices'])){
-                        foreach ($item['appendices'] as $appendices) { // assuming sections are directly nested in $item
-                        $subAppendiceList = [];
-                        if (!empty($appendices['sub_appendices_model'])){
-                            foreach ($appendices['sub_appendices_model'] as $subAppendice) {
-                                    $subAppendiceList[] = '<div style="display:flex!important;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
-                            }
-                        }
-                      
-
-                        $footnoteList = [];
-                        if(!empty($appendices['footnote_model'])){
-                            foreach ($appendices['footnote_model'] as $footnote) {
-                                    $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
-                            }
-                        }
-                       
-
-                        $subAppendiceString = implode('', $subAppendiceList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $appendices['appendices_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $appendices['appendices_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $appendices['appendices_title'] . '</h4></div></br><div>' . $appendices['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
-                    }
-
-                    if(!empty($item['order'])){
-                        foreach ($item['order'] as $order) { // assuming sections are directly nested in $item
-                        $subOrderList = [];
-                        if (!empty($order['sub_order_model'])){
-                            foreach ($order['sub_order_model'] as $subOrder) {
-                                    $subOrderList[] = '<div style="display:flex!important;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
-                            }    
-                        }
-                      
-                        $footnoteList = [];
-                        if (!empty($order['footnote_model'])){
-                            foreach ($order['footnote_model'] as $footnote) {
-                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
-                            }
-                        }
-                       
-
-                        $subOrderString = implode('', $subOrderList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $order['order_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $order['order_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $order['order_title'] . '</h4></div></br><div>' . $order['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
-                    }
-
-                    if(!empty($item['annexure'])){
-                        foreach ($item['annexure'] as $annexure) { // assuming sections are directly nested in $item
-                            $subAnnexureList = [];
-                            if (!empty($annexure['sub_annexure_model'])){
-                                foreach ($annexure['sub_annexure_model'] as $subAnnexure) {
-                                        $subAnnexureList[] = '<div style="display:flex!important;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                        foreach ($item['lists'] as $list) {
+                            $subListList = [];
+                            if (!empty($list['sub_list_model'])) {
+                                foreach ($list['sub_list_model'] as $subList) {
+                                    $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
                                 }
                             }
                           
-    
                             $footnoteList = [];
-                            if (!empty($annexure['footnote_model'])){
-                                foreach ($annexure['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            if (!empty($list['footnote_model'])) {
+                                foreach ($list['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
-    
+                        
+                            $subListString = implode('', $subListList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $listCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $listHtml = '<div id="' . $list['list_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $list['list_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $list['list_title'] . '</h4></div></br><div>' . $list['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $listCss . $listHtml;
+                        }      
+                    }
+
+                    if(!empty($item['part'])){
+                        foreach ($item['part'] as $part) {
+                            $subPartList = [];
+                            if (!empty($part['sub_part_model'])) {
+                                foreach ($part['sub_part_model'] as $subPartsOfPart) {
+                                    $subPartList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($part['footnote_model'])) {
+                                foreach ($part['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
+                            $subPartString = implode('', $subPartList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $partCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $partHtml = '<div id="' . $part['part_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $part['part_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $part['part_title'] . '</h4></div></br><div>' . $part['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $partCss . $partHtml;
+                        }      
+                    }
+
+                    if(!empty($item['appendices'])){
+                        foreach ($item['appendices'] as $appendices) {
+                            $subAppendiceList = [];
+                            if (!empty($appendices['sub_appendices_model'])) {
+                                foreach ($appendices['sub_appendices_model'] as $subAppendice) {
+                                    $subAppendiceList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($appendices['footnote_model'])) {
+                                foreach ($appendices['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
+                            $subAppendiceString = implode('', $subAppendiceList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $appendicesCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $appendicesHtml = '<div id="' . $appendices['appendices_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $appendices['appendices_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $appendices['appendices_title'] . '</h4></div></br><div>' . $appendices['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $appendicesCss . $appendicesHtml;
+                        }         
+                    }
+
+                    if(!empty($item['order'])){
+                          
+                        foreach ($item['order'] as $order) {
+                            $subOrderList = [];
+                            if (!empty($order['sub_order_model'])) {
+                                foreach ($order['sub_order_model'] as $subOrder) {
+                                    $subOrderList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($order['footnote_model'])) {
+                                foreach ($order['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
+                            $subOrderString = implode('', $subOrderList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $orderCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $orderHtml = '<div id="' . $order['order_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $order['order_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $order['order_title'] . '</h4></div></br><div>' . $order['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $orderCss . $orderHtml;
+                        } 
+                    }
+
+                    if(!empty($item['annexure'])){
+                        foreach ($item['annexure'] as $annexure) {
+                            $subAnnexureList = [];
+                            if (!empty($annexure['sub_annexure_model'])) {
+                                foreach ($annexure['sub_annexure_model'] as $subAnnexure) {
+                                    $subAnnexureList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($annexure['footnote_model'])) {
+                                foreach ($annexure['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
                             $subAnnexureString = implode('', $subAnnexureList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $annexure['annexure_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $annexure['annexure_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $annexure['annexure_title'] . '</h4></div></br><div>' . $annexure['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                         
-                        }        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $annexureCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $annexureHtml = '<div id="' . $annexure['annexure_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $annexure['annexure_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $annexure['annexure_title'] . '</h4></div></br><div>' . $annexure['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $annexureCss . $annexureHtml;
+                        }         
                     }
                    
                     if(!empty($item['stschedule'])){
-                        foreach ($item['stschedule'] as $stschedule) { // assuming sections are directly nested in $item
+                        foreach ($item['stschedule'] as $stschedule) {
                             $subStscheduleList = [];
-                            if (!empty($stschedule['sub_stschedule_model'])){
+                            if (!empty($stschedule['sub_stschedule_model'])) {
                                 foreach ($stschedule['sub_stschedule_model'] as $subStschedule) {
-                                        $subStscheduleList[] = '<div style="display:flex!important;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
+                                    $subStscheduleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
                                 }
                             }
-                            
-    
+                          
                             $footnoteList = [];
-                            if(!empty($stschedule['footnote_model'])){
+                            if (!empty($stschedule['footnote_model'])) {
                                 foreach ($stschedule['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                           
-    
+                        
                             $subStscheduleString = implode('', $subStscheduleList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $stschedule['stschedule_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $stschedule['stschedule_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $stschedule['stschedule_title'] . '</h4></div></br><div>' . $stschedule['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                           
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $stscheduleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $stscheduleHtml = '<div id="' . $stschedule['stschedule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $stschedule['stschedule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $stschedule['stschedule_title'] . '</h4></div></br><div>' . $stschedule['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $stscheduleCss . $stscheduleHtml;
                         }        
                     }
 
@@ -1895,252 +2008,303 @@ class MainActController extends Controller
             
                     $Data = [];
                     if (!empty($item['sections'])) {
-                        foreach ($item['sections'] as $section) {
+                         foreach ($item['sections'] as $section) {
                             $subSectionsList = [];
-                            if(!empty($section['subsection_model'])){
+                            if (!empty($section['subsection_model'])) {
                                 foreach ($section['subsection_model'] as $subsection) {
-                                    $subSectionsList[] = '<div style="display:flex!important;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
+                                    $subSectionsList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
                                 }
                             }
                           
                             $footnoteList = [];
-                            if (!empty($section['footnote_model'])){
+                            if (!empty($section['footnote_model'])) {
                                 foreach ($section['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                          
-            
+                        
                             $subSectionString = implode('', $subSectionsList);
                             $footnoteString = implode('', $footnoteList);
-            
-                            $Data[] = '<div id="' . $section['section_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $section['section_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $section['section_title'] . '</h4></div></br><div>' . $section['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $sectionCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $sectionHtml = '<div id="' . $section['section_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $section['section_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $section['section_title'] . '</h4></div></br><div>' . $section['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $sectionCss . $sectionHtml;
                         }
                     }
                 
                     if(!empty($item['articles'])){
-                        foreach ($item['articles'] as $article) { // assuming sections are directly nested in $item
-                        $subArticleList = [];
-                        if (!empty($article['sub_article_model'])){
-                            foreach ($article['sub_article_model'] as $subarticle) {
-                                    $subArticleList[] = '<div style="display:flex!important;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';  
+                        foreach ($item['articles'] as $article) {
+                            $subArticleList = [];
+                            if (!empty($article['sub_article_model'])) {
+                                foreach ($article['sub_article_model'] as $subarticle) {
+                                    $subArticleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-                        $footnoteList = [];
-                        if (!empty($article['footnote_model'])){
-                            foreach ($article['footnote_model'] as $footnote) {
+                          
+                            $footnoteList = [];
+                            if (!empty($article['footnote_model'])) {
+                                foreach ($article['footnote_model'] as $footnote) {
                                     $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
-                        }
-                       
-                        $subArticleString = implode('', $subArticleList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $article['article_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $article['article_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $article['article_title'] . '</h4></div></br><div>' . $article['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
+                        
+                            $subArticleString = implode('', $subArticleList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $articleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $articleHtml = '<div id="' . $article['article_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $article['article_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $article['article_title'] . '</h4></div></br><div>' . $article['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $articleCss . $articleHtml;
+                        }       
                     }
 
                     if(!empty($item['rules'])){
-                        foreach ($item['rules'] as $rule) { // assuming sections are directly nested in $item
+                        foreach ($item['rules'] as $rule) {
                             $subRuleList = [];
-                            if (!empty($rule['subrule_model'])){
+                            if (!empty($rule['subrule_model'])) {
                                 foreach ($rule['subrule_model'] as $subrule) {
-                                        $subRuleList[] = '<div style="display:flex!important;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
-                                }   
-                            }
-                           
-    
-                            $footnoteList = [];
-                            if (!empty($rule['footnote_model'])){
-                                foreach ($rule['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $subRuleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
                                 }
                             }
-    
+                          
+                            $footnoteList = [];
+                            if (!empty($rule['footnote_model'])) {
+                                foreach ($rule['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
                             $subRuleString = implode('', $subRuleList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $rule['rule_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $rule['rule_title'] . '</h4></div></br><div>' . $rule['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';    
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $ruleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $ruleHtml = '<div id="' . $rule['rule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $rule['rule_title'] . '</h4></div></br><div>' . $rule['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $ruleCss . $ruleHtml;
                         }        
                     }
 
                     if(!empty($item['regulation'])){
-                        foreach ($item['regulation'] as $regulation) { // assuming sections are directly nested in $item
+                        foreach ($item['regulation'] as $regulation) {
                             $subRegulationList = [];
-                            if(!empty($regulation['sub_regulation_model'])){
+                            if (!empty($regulation['sub_regulation_model'])) {
                                 foreach ($regulation['sub_regulation_model'] as $subRegulation) {
-                                        $subRegulationList[] = '<div style="display:flex!important;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                                    $subRegulationList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
                                 }
                             }
                           
-    
                             $footnoteList = [];
-                            if (!empty($regulation['footnote_model'])){
+                            if (!empty($regulation['footnote_model'])) {
                                 foreach ($regulation['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
+                        
                             $subRegulationString = implode('', $subRegulationList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $regulation['regulation_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $regulation['regulation_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $regulation['regulation_title'] . '</h4></div></br><div>' . $regulation['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                  
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $regulationCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $regulationHtml = '<div id="' . $regulation['regulation_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $regulation['regulation_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $regulation['regulation_title'] . '</h4></div></br><div>' . $regulation['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $regulationCss . $regulationHtml;
                         }        
                     }
 
                     if(!empty($item['lists'])){
-                        foreach ($item['lists'] as $list) { // assuming sections are directly nested in $item
-                        $subListList = [];
-                        if (!empty($list['sub_list_model'])){
-                            foreach ($list['sub_list_model'] as $subList) {
-                                    $subListList[] = '<div style="display:flex!important;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                        foreach ($item['lists'] as $list) {
+                            $subListList = [];
+                            if (!empty($list['sub_list_model'])) {
+                                foreach ($list['sub_list_model'] as $subList) {
+                                    $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-
-                        $footnoteList = [];
-
-                        if(!empty($list['footnote_model'])){
-                            foreach ($list['footnote_model'] as $footnote) {
-                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                          
+                            $footnoteList = [];
+                            if (!empty($list['footnote_model'])) {
+                                foreach ($list['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
-                        }
-                      
-
-                        $subListString = implode('', $subListList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $list['list_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $list['list_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $list['list_title'] . '</h4></div></br><div>' . $list['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
+                        
+                            $subListString = implode('', $subListList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $listCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $listHtml = '<div id="' . $list['list_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $list['list_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $list['list_title'] . '</h4></div></br><div>' . $list['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $listCss . $listHtml;
+                        }       
                     }
 
                     if(!empty($item['part'])){
-                        foreach ($item['part'] as $part) { // assuming sections are directly nested in $item
+                        foreach ($item['part'] as $part) {
                             $subPartList = [];
-                            if (!empty($part['sub_part_model'])){
+                            if (!empty($part['sub_part_model'])) {
                                 foreach ($part['sub_part_model'] as $subPartsOfPart) {
-                                        $subPartList[] = '<div style="display:flex!important;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
+                                    $subPartList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
                                 }
                             }
-                            
-    
+                          
                             $footnoteList = [];
-                            if (!empty($part['footnote_model'])){
+                            if (!empty($part['footnote_model'])) {
                                 foreach ($part['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
-    
+                        
                             $subPartString = implode('', $subPartList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $part['part_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $part['part_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $part['part_title'] . '</h4></div></br><div>' . $part['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                         
-                        }        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $partCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $partHtml = '<div id="' . $part['part_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $part['part_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $part['part_title'] . '</h4></div></br><div>' . $part['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $partCss . $partHtml;
+                        }       
                     }
 
                     if(!empty($item['appendices'])){
-                        foreach ($item['appendices'] as $appendices) { // assuming sections are directly nested in $item
-                        $subAppendiceList = [];
-                        if (!empty($appendices['sub_appendices_model'])){
-                            foreach ($appendices['sub_appendices_model'] as $subAppendice) {
-                                    $subAppendiceList[] = '<div style="display:flex!important;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                        foreach ($item['appendices'] as $appendices) {
+                            $subAppendiceList = [];
+                            if (!empty($appendices['sub_appendices_model'])) {
+                                foreach ($appendices['sub_appendices_model'] as $subAppendice) {
+                                    $subAppendiceList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-
-                        $footnoteList = [];
-                        if(!empty($appendices['footnote_model'])){
-                            foreach ($appendices['footnote_model'] as $footnote) {
-                                    $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                          
+                            $footnoteList = [];
+                            if (!empty($appendices['footnote_model'])) {
+                                foreach ($appendices['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
-                        }
-                       
-
-                        $subAppendiceString = implode('', $subAppendiceList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $appendices['appendices_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $appendices['appendices_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $appendices['appendices_title'] . '</h4></div></br><div>' . $appendices['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            $subAppendiceString = implode('', $subAppendiceList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $appendicesCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $appendicesHtml = '<div id="' . $appendices['appendices_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $appendices['appendices_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $appendices['appendices_title'] . '</h4></div></br><div>' . $appendices['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $appendicesCss . $appendicesHtml;
                         }        
                     }
 
                     if(!empty($item['order'])){
-                        foreach ($item['order'] as $order) { // assuming sections are directly nested in $item
-                        $subOrderList = [];
-                        if (!empty($order['sub_order_model'])){
-                            foreach ($order['sub_order_model'] as $subOrder) {
-                                    $subOrderList[] = '<div style="display:flex!important;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
-                            }    
-                        }
-                      
-                        $footnoteList = [];
-                        if (!empty($order['footnote_model'])){
-                            foreach ($order['footnote_model'] as $footnote) {
-                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
-                            }
-                        }
-                       
-
-                        $subOrderString = implode('', $subOrderList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $order['order_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $order['order_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $order['order_title'] . '</h4></div></br><div>' . $order['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
-                    }
-
-                    if(!empty($item['annexure'])){
-                        foreach ($item['annexure'] as $annexure) { // assuming sections are directly nested in $item
-                            $subAnnexureList = [];
-                            if (!empty($annexure['sub_annexure_model'])){
-                                foreach ($annexure['sub_annexure_model'] as $subAnnexure) {
-                                        $subAnnexureList[] = '<div style="display:flex!important;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                        foreach ($item['order'] as $order) {
+                            $subOrderList = [];
+                            if (!empty($order['sub_order_model'])) {
+                                foreach ($order['sub_order_model'] as $subOrder) {
+                                    $subOrderList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
                                 }
                             }
                           
-    
                             $footnoteList = [];
-                            if (!empty($annexure['footnote_model'])){
-                                foreach ($annexure['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            if (!empty($order['footnote_model'])) {
+                                foreach ($order['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
-    
+                        
+                            $subOrderString = implode('', $subOrderList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $orderCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $orderHtml = '<div id="' . $order['order_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $order['order_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $order['order_title'] . '</h4></div></br><div>' . $order['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $orderCss . $orderHtml;
+                        }         
+                    }
+
+                    if(!empty($item['annexure'])){
+                        foreach ($item['annexure'] as $annexure) {
+                            $subAnnexureList = [];
+                            if (!empty($annexure['sub_annexure_model'])) {
+                                foreach ($annexure['sub_annexure_model'] as $subAnnexure) {
+                                    $subAnnexureList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($annexure['footnote_model'])) {
+                                foreach ($annexure['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
                             $subAnnexureString = implode('', $subAnnexureList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $annexure['annexure_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $annexure['annexure_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $annexure['annexure_title'] . '</h4></div></br><div>' . $annexure['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                         
-                        }        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $annexureCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $annexureHtml = '<div id="' . $annexure['annexure_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $annexure['annexure_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $annexure['annexure_title'] . '</h4></div></br><div>' . $annexure['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $annexureCss . $annexureHtml;
+                        }       
                     }
                    
                     if(!empty($item['stschedule'])){
-                        foreach ($item['stschedule'] as $stschedule) { // assuming sections are directly nested in $item
+                        foreach ($item['stschedule'] as $stschedule) {
                             $subStscheduleList = [];
-                            if (!empty($stschedule['sub_stschedule_model'])){
+                            if (!empty($stschedule['sub_stschedule_model'])) {
                                 foreach ($stschedule['sub_stschedule_model'] as $subStschedule) {
-                                        $subStscheduleList[] = '<div style="display:flex!important;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
+                                    $subStscheduleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
                                 }
                             }
-                            
-    
+                          
                             $footnoteList = [];
-                            if(!empty($stschedule['footnote_model'])){
+                            if (!empty($stschedule['footnote_model'])) {
                                 foreach ($stschedule['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                           
-    
+                        
                             $subStscheduleString = implode('', $subStscheduleList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $stschedule['stschedule_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $stschedule['stschedule_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $stschedule['stschedule_title'] . '</h4></div></br><div>' . $stschedule['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                           
-                        }        
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $stscheduleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $stscheduleHtml = '<div id="' . $stschedule['stschedule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $stschedule['stschedule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $stschedule['stschedule_title'] . '</h4></div></br><div>' . $stschedule['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $stscheduleCss . $stscheduleHtml;
+                        }         
                     }
 
                     $sectionString = implode('', $Data);
@@ -2152,252 +2316,303 @@ class MainActController extends Controller
             
                     $Data = [];
                     if (!empty($item['sections'])) {
-                        foreach ($item['sections'] as $section) {
+                         foreach ($item['sections'] as $section) {
                             $subSectionsList = [];
-                            if(!empty($section['subsection_model'])){
+                            if (!empty($section['subsection_model'])) {
                                 foreach ($section['subsection_model'] as $subsection) {
-                                    $subSectionsList[] = '<div style="display:flex!important;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
+                                    $subSectionsList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
                                 }
                             }
                           
                             $footnoteList = [];
-                            if (!empty($section['footnote_model'])){
+                            if (!empty($section['footnote_model'])) {
                                 foreach ($section['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                          
-            
+                        
                             $subSectionString = implode('', $subSectionsList);
                             $footnoteString = implode('', $footnoteList);
-            
-                            $Data[] = '<div id="' . $section['section_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $section['section_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $section['section_title'] . '</h4></div></br><div>' . $section['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $sectionCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $sectionHtml = '<div id="' . $section['section_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $section['section_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $section['section_title'] . '</h4></div></br><div>' . $section['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $sectionCss . $sectionHtml;
                         }
                     }
                 
                     if(!empty($item['articles'])){
-                        foreach ($item['articles'] as $article) { // assuming sections are directly nested in $item
-                        $subArticleList = [];
-                        if (!empty($article['sub_article_model'])){
-                            foreach ($article['sub_article_model'] as $subarticle) {
-                                    $subArticleList[] = '<div style="display:flex!important;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';  
-                            }
-                        }
-                      
-                        $footnoteList = [];
-                        if (!empty($article['footnote_model'])){
-                            foreach ($article['footnote_model'] as $footnote) {
-                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
-                            }
-                        }
-                       
-                        $subArticleString = implode('', $subArticleList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $article['article_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $article['article_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $article['article_title'] . '</h4></div></br><div>' . $article['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
-                    }
-
-                    if(!empty($item['rules'])){
-                        foreach ($item['rules'] as $rule) { // assuming sections are directly nested in $item
-                            $subRuleList = [];
-                            if (!empty($rule['subrule_model'])){
-                                foreach ($rule['subrule_model'] as $subrule) {
-                                        $subRuleList[] = '<div style="display:flex!important;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
-                                }   
-                            }
-                           
-    
-                            $footnoteList = [];
-                            if (!empty($rule['footnote_model'])){
-                                foreach ($rule['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
-                                }
-                            }
-    
-                            $subRuleString = implode('', $subRuleList);
-                            $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $rule['rule_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $rule['rule_title'] . '</h4></div></br><div>' . $rule['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';    
-                        }        
-                    }
-
-                    if(!empty($item['regulation'])){
-                        foreach ($item['regulation'] as $regulation) { // assuming sections are directly nested in $item
-                            $subRegulationList = [];
-                            if(!empty($regulation['sub_regulation_model'])){
-                                foreach ($regulation['sub_regulation_model'] as $subRegulation) {
-                                        $subRegulationList[] = '<div style="display:flex!important;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                       foreach ($item['articles'] as $article) {
+                            $subArticleList = [];
+                            if (!empty($article['sub_article_model'])) {
+                                foreach ($article['sub_article_model'] as $subarticle) {
+                                    $subArticleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';
                                 }
                             }
                           
-    
                             $footnoteList = [];
-                            if (!empty($regulation['footnote_model'])){
-                                foreach ($regulation['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            if (!empty($article['footnote_model'])) {
+                                foreach ($article['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
+                        
+                            $subArticleString = implode('', $subArticleList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $articleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $articleHtml = '<div id="' . $article['article_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $article['article_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $article['article_title'] . '</h4></div></br><div>' . $article['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $articleCss . $articleHtml;
+                        }       
+                    }
+
+                    if(!empty($item['rules'])){
+                        foreach ($item['rules'] as $rule) {
+                            $subRuleList = [];
+                            if (!empty($rule['subrule_model'])) {
+                                foreach ($rule['subrule_model'] as $subrule) {
+                                    $subRuleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($rule['footnote_model'])) {
+                                foreach ($rule['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
+                            $subRuleString = implode('', $subRuleList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $ruleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $ruleHtml = '<div id="' . $rule['rule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $rule['rule_title'] . '</h4></div></br><div>' . $rule['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $ruleCss . $ruleHtml;
+                        }       
+                    }
+
+                    if(!empty($item['regulation'])){
+                        foreach ($item['regulation'] as $regulation) {
+                            $subRegulationList = [];
+                            if (!empty($regulation['sub_regulation_model'])) {
+                                foreach ($regulation['sub_regulation_model'] as $subRegulation) {
+                                    $subRegulationList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                                }
+                            }
+                          
+                            $footnoteList = [];
+                            if (!empty($regulation['footnote_model'])) {
+                                foreach ($regulation['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
                             $subRegulationString = implode('', $subRegulationList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $regulation['regulation_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $regulation['regulation_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $regulation['regulation_title'] . '</h4></div></br><div>' . $regulation['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                  
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $regulationCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $regulationHtml = '<div id="' . $regulation['regulation_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $regulation['regulation_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $regulation['regulation_title'] . '</h4></div></br><div>' . $regulation['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $regulationCss . $regulationHtml;
                         }        
                     }
 
                     if(!empty($item['lists'])){
-                        foreach ($item['lists'] as $list) { // assuming sections are directly nested in $item
-                        $subListList = [];
-                        if (!empty($list['sub_list_model'])){
-                            foreach ($list['sub_list_model'] as $subList) {
-                                    $subListList[] = '<div style="display:flex!important;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                        foreach ($item['lists'] as $list) {
+                            $subListList = [];
+                            if (!empty($list['sub_list_model'])) {
+                                foreach ($list['sub_list_model'] as $subList) {
+                                    $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-
-                        $footnoteList = [];
-
-                        if(!empty($list['footnote_model'])){
-                            foreach ($list['footnote_model'] as $footnote) {
-                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                          
+                            $footnoteList = [];
+                            if (!empty($list['footnote_model'])) {
+                                foreach ($list['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
-                        }
-                      
-
-                        $subListString = implode('', $subListList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $list['list_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $list['list_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $list['list_title'] . '</h4></div></br><div>' . $list['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
+                        
+                            $subListString = implode('', $subListList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $listCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $listHtml = '<div id="' . $list['list_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $list['list_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $list['list_title'] . '</h4></div></br><div>' . $list['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $listCss . $listHtml;
+                        }     
                     }
 
                     if(!empty($item['part'])){
-                        foreach ($item['part'] as $part) { // assuming sections are directly nested in $item
+                        foreach ($item['part'] as $part) {
                             $subPartList = [];
-                            if (!empty($part['sub_part_model'])){
+                            if (!empty($part['sub_part_model'])) {
                                 foreach ($part['sub_part_model'] as $subPartsOfPart) {
-                                        $subPartList[] = '<div style="display:flex!important;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
+                                    $subPartList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
                                 }
                             }
-                            
-    
+                          
                             $footnoteList = [];
-                            if (!empty($part['footnote_model'])){
+                            if (!empty($part['footnote_model'])) {
                                 foreach ($part['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
-    
+                        
                             $subPartString = implode('', $subPartList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $part['part_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $part['part_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $part['part_title'] . '</h4></div></br><div>' . $part['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                         
-                        }        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $partCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $partHtml = '<div id="' . $part['part_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $part['part_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $part['part_title'] . '</h4></div></br><div>' . $part['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $partCss . $partHtml;
+                        }       
                     }
 
                     if(!empty($item['appendices'])){
-                        foreach ($item['appendices'] as $appendices) { // assuming sections are directly nested in $item
-                        $subAppendiceList = [];
-                        if (!empty($appendices['sub_appendices_model'])){
-                            foreach ($appendices['sub_appendices_model'] as $subAppendice) {
-                                    $subAppendiceList[] = '<div style="display:flex!important;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                        foreach ($item['appendices'] as $appendices) {
+                            $subAppendiceList = [];
+                            if (!empty($appendices['sub_appendices_model'])) {
+                                foreach ($appendices['sub_appendices_model'] as $subAppendice) {
+                                    $subAppendiceList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-
-                        $footnoteList = [];
-                        if(!empty($appendices['footnote_model'])){
-                            foreach ($appendices['footnote_model'] as $footnote) {
-                                    $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                          
+                            $footnoteList = [];
+                            if (!empty($appendices['footnote_model'])) {
+                                foreach ($appendices['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
-                        }
-                       
-
-                        $subAppendiceString = implode('', $subAppendiceList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $appendices['appendices_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $appendices['appendices_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $appendices['appendices_title'] . '</h4></div></br><div>' . $appendices['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            $subAppendiceString = implode('', $subAppendiceList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $appendicesCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $appendicesHtml = '<div id="' . $appendices['appendices_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $appendices['appendices_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $appendices['appendices_title'] . '</h4></div></br><div>' . $appendices['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $appendicesCss . $appendicesHtml;
                         }        
                     }
 
                     if(!empty($item['order'])){
-                        foreach ($item['order'] as $order) { // assuming sections are directly nested in $item
-                        $subOrderList = [];
-                        if (!empty($order['sub_order_model'])){
-                            foreach ($order['sub_order_model'] as $subOrder) {
-                                    $subOrderList[] = '<div style="display:flex!important;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
-                            }    
-                        }
-                      
-                        $footnoteList = [];
-                        if (!empty($order['footnote_model'])){
-                            foreach ($order['footnote_model'] as $footnote) {
-                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        foreach ($item['order'] as $order) {
+                            $subOrderList = [];
+                            if (!empty($order['sub_order_model'])) {
+                                foreach ($order['sub_order_model'] as $subOrder) {
+                                    $subOrderList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
+                                }
                             }
-                        }
-                       
-
-                        $subOrderString = implode('', $subOrderList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $order['order_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $order['order_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $order['order_title'] . '</h4></div></br><div>' . $order['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                          
+                            $footnoteList = [];
+                            if (!empty($order['footnote_model'])) {
+                                foreach ($order['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
+                            $subOrderString = implode('', $subOrderList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $orderCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $orderHtml = '<div id="' . $order['order_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $order['order_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $order['order_title'] . '</h4></div></br><div>' . $order['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $orderCss . $orderHtml;
                         }        
                     }
 
                     if(!empty($item['annexure'])){
-                        foreach ($item['annexure'] as $annexure) { // assuming sections are directly nested in $item
+                        foreach ($item['annexure'] as $annexure) {
                             $subAnnexureList = [];
-                            if (!empty($annexure['sub_annexure_model'])){
+                            if (!empty($annexure['sub_annexure_model'])) {
                                 foreach ($annexure['sub_annexure_model'] as $subAnnexure) {
-                                        $subAnnexureList[] = '<div style="display:flex!important;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                                    $subAnnexureList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
                                 }
                             }
                           
-    
                             $footnoteList = [];
-                            if (!empty($annexure['footnote_model'])){
+                            if (!empty($annexure['footnote_model'])) {
                                 foreach ($annexure['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
-    
+                        
                             $subAnnexureString = implode('', $subAnnexureList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $annexure['annexure_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $annexure['annexure_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $annexure['annexure_title'] . '</h4></div></br><div>' . $annexure['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                         
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $annexureCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $annexureHtml = '<div id="' . $annexure['annexure_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $annexure['annexure_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $annexure['annexure_title'] . '</h4></div></br><div>' . $annexure['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $annexureCss . $annexureHtml;
                         }        
                     }
                    
                     if(!empty($item['stschedule'])){
-                        foreach ($item['stschedule'] as $stschedule) { // assuming sections are directly nested in $item
+                        foreach ($item['stschedule'] as $stschedule) {
                             $subStscheduleList = [];
-                            if (!empty($stschedule['sub_stschedule_model'])){
+                            if (!empty($stschedule['sub_stschedule_model'])) {
                                 foreach ($stschedule['sub_stschedule_model'] as $subStschedule) {
-                                        $subStscheduleList[] = '<div style="display:flex!important;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
+                                    $subStscheduleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
                                 }
                             }
-                            
-    
+                          
                             $footnoteList = [];
-                            if(!empty($stschedule['footnote_model'])){
+                            if (!empty($stschedule['footnote_model'])) {
                                 foreach ($stschedule['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                           
-    
+                        
                             $subStscheduleString = implode('', $subStscheduleList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $stschedule['stschedule_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $stschedule['stschedule_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $stschedule['stschedule_title'] . '</h4></div></br><div>' . $stschedule['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                           
-                        }        
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $stscheduleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $stscheduleHtml = '<div id="' . $stschedule['stschedule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $stschedule['stschedule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $stschedule['stschedule_title'] . '</h4></div></br><div>' . $stschedule['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $stscheduleCss . $stscheduleHtml;
+                        }         
                     }
 
                     $sectionString = implode('', $Data);
@@ -2411,249 +2626,303 @@ class MainActController extends Controller
                     if (!empty($item['sections'])) {
                         foreach ($item['sections'] as $section) {
                             $subSectionsList = [];
-                            if(!empty($section['subsection_model'])){
+                            if (!empty($section['subsection_model'])) {
                                 foreach ($section['subsection_model'] as $subsection) {
-                                    $subSectionsList[] = '<div style="display:flex!important;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
+                                    $subSectionsList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
                                 }
                             }
                           
                             $footnoteList = [];
-                            if (!empty($section['footnote_model'])){
+                            if (!empty($section['footnote_model'])) {
                                 foreach ($section['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                          
-            
+                        
                             $subSectionString = implode('', $subSectionsList);
                             $footnoteString = implode('', $footnoteList);
-            
-                            $Data[] = '<div id="' . $section['section_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $section['section_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $section['section_title'] . '</h4></div></br><div>' . $section['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $sectionCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $sectionHtml = '<div id="' . $section['section_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $section['section_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $section['section_title'] . '</h4></div></br><div>' . $section['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $sectionCss . $sectionHtml;
                         }
                     }
                 
                     if(!empty($item['articles'])){
-                        foreach ($item['articles'] as $article) { // assuming sections are directly nested in $item
-                        $subArticleList = [];
-                        if (!empty($article['sub_article_model'])){
-                            foreach ($article['sub_article_model'] as $subarticle) {
-                                    $subArticleList[] = '<div style="display:flex!important;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';  
+                        foreach ($item['articles'] as $article) {
+                            $subArticleList = [];
+                            if (!empty($article['sub_article_model'])) {
+                                foreach ($article['sub_article_model'] as $subarticle) {
+                                    $subArticleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-                        $footnoteList = [];
-                        if (!empty($article['footnote_model'])){
-                            foreach ($article['footnote_model'] as $footnote) {
+                          
+                            $footnoteList = [];
+                            if (!empty($article['footnote_model'])) {
+                                foreach ($article['footnote_model'] as $footnote) {
                                     $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
-                        }
-                       
-                        $subArticleString = implode('', $subArticleList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $article['article_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $article['article_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $article['article_title'] . '</h4></div></br><div>' . $article['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
+                        
+                            $subArticleString = implode('', $subArticleList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $articleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $articleHtml = '<div id="' . $article['article_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $article['article_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $article['article_title'] . '</h4></div></br><div>' . $article['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $articleCss . $articleHtml;
+                        }       
                     }
 
                     if(!empty($item['rules'])){
-                        foreach ($item['rules'] as $rule) { // assuming sections are directly nested in $item
+                        foreach ($item['rules'] as $rule) {
                             $subRuleList = [];
-                            if (!empty($rule['subrule_model'])){
+                            if (!empty($rule['subrule_model'])) {
                                 foreach ($rule['subrule_model'] as $subrule) {
-                                        $subRuleList[] = '<div style="display:flex!important;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
-                                }   
-                            }
-                           
-    
-                            $footnoteList = [];
-                            if (!empty($rule['footnote_model'])){
-                                foreach ($rule['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $subRuleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
                                 }
                             }
-    
+                          
+                            $footnoteList = [];
+                            if (!empty($rule['footnote_model'])) {
+                                foreach ($rule['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
                             $subRuleString = implode('', $subRuleList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $rule['rule_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $rule['rule_title'] . '</h4></div></br><div>' . $rule['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';    
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $ruleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $ruleHtml = '<div id="' . $rule['rule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $rule['rule_title'] . '</h4></div></br><div>' . $rule['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $ruleCss . $ruleHtml;
                         }        
                     }
 
                     if(!empty($item['regulation'])){
-                        foreach ($item['regulation'] as $regulation) { // assuming sections are directly nested in $item
+                        foreach ($item['regulation'] as $regulation) {
                             $subRegulationList = [];
-                            if(!empty($regulation['sub_regulation_model'])){
+                            if (!empty($regulation['sub_regulation_model'])) {
                                 foreach ($regulation['sub_regulation_model'] as $subRegulation) {
-                                        $subRegulationList[] = '<div style="display:flex!important;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                                    $subRegulationList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
                                 }
                             }
                           
-    
                             $footnoteList = [];
-                            if (!empty($regulation['footnote_model'])){
+                            if (!empty($regulation['footnote_model'])) {
                                 foreach ($regulation['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
+                        
                             $subRegulationString = implode('', $subRegulationList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $regulation['regulation_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $regulation['regulation_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $regulation['regulation_title'] . '</h4></div></br><div>' . $regulation['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                  
-                        }        
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $regulationCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $regulationHtml = '<div id="' . $regulation['regulation_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $regulation['regulation_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $regulation['regulation_title'] . '</h4></div></br><div>' . $regulation['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $regulationCss . $regulationHtml;
+                        }       
                     }
 
                     if(!empty($item['lists'])){
-                        foreach ($item['lists'] as $list) { // assuming sections are directly nested in $item
-                        $subListList = [];
-                        if (!empty($list['sub_list_model'])){
-                            foreach ($list['sub_list_model'] as $subList) {
-                                    $subListList[] = '<div style="display:flex!important;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                        foreach ($item['lists'] as $list) {
+                            $subListList = [];
+                            if (!empty($list['sub_list_model'])) {
+                                foreach ($list['sub_list_model'] as $subList) {
+                                    $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-
-                        $footnoteList = [];
-
-                        if(!empty($list['footnote_model'])){
-                            foreach ($list['footnote_model'] as $footnote) {
-                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                          
+                            $footnoteList = [];
+                            if (!empty($list['footnote_model'])) {
+                                foreach ($list['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
-                        }
-                      
-
-                        $subListString = implode('', $subListList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $list['list_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $list['list_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $list['list_title'] . '</h4></div></br><div>' . $list['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
+                        
+                            $subListString = implode('', $subListList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $listCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $listHtml = '<div id="' . $list['list_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $list['list_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $list['list_title'] . '</h4></div></br><div>' . $list['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $listCss . $listHtml;
+                        }       
                     }
 
                     if(!empty($item['part'])){
-                        foreach ($item['part'] as $part) { // assuming sections are directly nested in $item
+                        foreach ($item['part'] as $part) {
                             $subPartList = [];
-                            if (!empty($part['sub_part_model'])){
+                            if (!empty($part['sub_part_model'])) {
                                 foreach ($part['sub_part_model'] as $subPartsOfPart) {
-                                        $subPartList[] = '<div style="display:flex!important;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
+                                    $subPartList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
                                 }
                             }
-                            
-    
+                          
                             $footnoteList = [];
-                            if (!empty($part['footnote_model'])){
+                            if (!empty($part['footnote_model'])) {
                                 foreach ($part['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
-    
+                        
                             $subPartString = implode('', $subPartList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $part['part_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $part['part_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $part['part_title'] . '</h4></div></br><div>' . $part['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                         
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $partCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $partHtml = '<div id="' . $part['part_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $part['part_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $part['part_title'] . '</h4></div></br><div>' . $part['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $partCss . $partHtml;
                         }        
                     }
 
                     if(!empty($item['appendices'])){
-                        foreach ($item['appendices'] as $appendices) { // assuming sections are directly nested in $item
-                        $subAppendiceList = [];
-                        if (!empty($appendices['sub_appendices_model'])){
-                            foreach ($appendices['sub_appendices_model'] as $subAppendice) {
-                                    $subAppendiceList[] = '<div style="display:flex!important;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                        
+                        foreach ($item['appendices'] as $appendices) {
+                            $subAppendiceList = [];
+                            if (!empty($appendices['sub_appendices_model'])) {
+                                foreach ($appendices['sub_appendices_model'] as $subAppendice) {
+                                    $subAppendiceList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                                }
                             }
-                        }
-                      
-
-                        $footnoteList = [];
-                        if(!empty($appendices['footnote_model'])){
-                            foreach ($appendices['footnote_model'] as $footnote) {
-                                    $footnoteList[] = '<div>' . $footnote->footnote_content . '</div>';
+                          
+                            $footnoteList = [];
+                            if (!empty($appendices['footnote_model'])) {
+                                foreach ($appendices['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
                             }
-                        }
-                       
-
-                        $subAppendiceString = implode('', $subAppendiceList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $appendices['appendices_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $appendices['appendices_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $appendices['appendices_title'] . '</h4></div></br><div>' . $appendices['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                        }        
+                        
+                            $subAppendiceString = implode('', $subAppendiceList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $appendicesCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $appendicesHtml = '<div id="' . $appendices['appendices_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $appendices['appendices_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $appendices['appendices_title'] . '</h4></div></br><div>' . $appendices['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $appendicesCss . $appendicesHtml;
+                        }   
+                        
+                        
                     }
 
                     if(!empty($item['order'])){
-                        foreach ($item['order'] as $order) { // assuming sections are directly nested in $item
-                        $subOrderList = [];
-                        if (!empty($order['sub_order_model'])){
-                            foreach ($order['sub_order_model'] as $subOrder) {
-                                    $subOrderList[] = '<div style="display:flex!important;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
-                            }    
-                        }
-                      
-                        $footnoteList = [];
-                        if (!empty($order['footnote_model'])){
-                            foreach ($order['footnote_model'] as $footnote) {
-                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        foreach ($item['order'] as $order) {
+                            $subOrderList = [];
+                            if (!empty($order['sub_order_model'])) {
+                                foreach ($order['sub_order_model'] as $subOrder) {
+                                    $subOrderList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
+                                }
                             }
-                        }
-                       
-
-                        $subOrderString = implode('', $subOrderList);
-                        $footnoteString = implode('', $footnoteList);
-
-                        $Data[] = '<div id="' . $order['order_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $order['order_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $order['order_title'] . '</h4></div></br><div>' . $order['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                          
+                            $footnoteList = [];
+                            if (!empty($order['footnote_model'])) {
+                                foreach ($order['footnote_model'] as $footnote) {
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                }
+                            }
+                        
+                            $subOrderString = implode('', $subOrderList);
+                            $footnoteString = implode('', $footnoteList);
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $orderCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $orderHtml = '<div id="' . $order['order_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $order['order_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $order['order_title'] . '</h4></div></br><div>' . $order['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $orderCss . $orderHtml;
                         }        
                     }
 
                     if(!empty($item['annexure'])){
-                        foreach ($item['annexure'] as $annexure) { // assuming sections are directly nested in $item
+                        foreach ($item['annexure'] as $annexure) {
                             $subAnnexureList = [];
-                            if (!empty($annexure['sub_annexure_model'])){
+                            if (!empty($annexure['sub_annexure_model'])) {
                                 foreach ($annexure['sub_annexure_model'] as $subAnnexure) {
-                                        $subAnnexureList[] = '<div style="display:flex!important;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                                    $subAnnexureList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
                                 }
                             }
                           
-    
                             $footnoteList = [];
-                            if (!empty($annexure['footnote_model'])){
+                            if (!empty($annexure['footnote_model'])) {
                                 foreach ($annexure['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                            
-    
+                        
                             $subAnnexureString = implode('', $subAnnexureList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $annexure['annexure_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $annexure['annexure_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $annexure['annexure_title'] . '</h4></div></br><div>' . $annexure['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
                         
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $annexureCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $annexureHtml = '<div id="' . $annexure['annexure_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $annexure['annexure_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $annexure['annexure_title'] . '</h4></div></br><div>' . $annexure['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $annexureCss . $annexureHtml;
                         }        
                     }
                    
                     if(!empty($item['stschedule'])){
-                        foreach ($item['stschedule'] as $stschedule) { // assuming sections are directly nested in $item
+                        foreach ($item['stschedule'] as $stschedule) {
                             $subStscheduleList = [];
-                            if (!empty($stschedule['sub_stschedule_model'])){
+                            if (!empty($stschedule['sub_stschedule_model'])) {
                                 foreach ($stschedule['sub_stschedule_model'] as $subStschedule) {
-                                        $subStscheduleList[] = '<div style="display:flex!important;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
+                                    $subStscheduleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
                                 }
                             }
-                            
-    
+                          
                             $footnoteList = [];
-                            if(!empty($stschedule['footnote_model'])){
+                            if (!empty($stschedule['footnote_model'])) {
                                 foreach ($stschedule['footnote_model'] as $footnote) {
-                                        $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                                    $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
                                 }
                             }
-                           
-    
+                        
                             $subStscheduleString = implode('', $subStscheduleList);
                             $footnoteString = implode('', $footnoteList);
-    
-                            $Data[] = '<div id="' . $stschedule['stschedule_id'] . '"><div style="display:flex!important"><h4 class="font-weight-bold mb-3">' . $stschedule['stschedule_no'] . '</h4><h4 class="font-weight-bold mb-3">' . $stschedule['stschedule_title'] . '</h4></div></br><div>' . $stschedule['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
-                           
+                        
+                            // Custom CSS to modify the line-height of <p> inside .judgement-text
+                            $stscheduleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                        
+                            // Construct the HTML content including the custom CSS
+                            $stscheduleHtml = '<div id="' . $stschedule['stschedule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $stschedule['stschedule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $stschedule['stschedule_title'] . '</h4></div></br><div>' . $stschedule['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                            // Append the custom CSS and generated section HTML to $Data array
+                            $Data[] = $stscheduleCss . $stscheduleHtml;
                         }        
                     }
 
@@ -2672,7 +2941,12 @@ class MainActController extends Controller
                 'status' => 200,
                 'data' => [
                     'actId' => $act->act_id,
+                    'Act No.' => $act->act_no,
                     'actName' => $act->act_title,
+                    'Enactment Date' => $act->enactment_date,
+                    'Enforcement Date' => $act->enforcement_date,
+                    'Ministry' => $act->ministry,
+                    'Preamble' => $act->act_description,
                     'actDescription' => '<h1 id=""><strong>' . $act->act_title . '</strong> </h1><div><strong>' . $act->act_no . '</strong></div><div><strong>' . $act->act_date . '</strong></div>' . implode('', $MainList) . '',
                     'sideBarList' => $sideBarList,
                 ]
@@ -2702,371 +2976,321 @@ class MainActController extends Controller
             $options = new Options();
             $options->set('isHtml5ParserEnabled', true);
             $dompdf = new Dompdf($options);
-            $chapters = Chapter::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
+            $mainsequence = MainTable::where('act_id', $id)
+            ->with([
+                'chapters' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'parts' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'priliminarys' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'schedules' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'appendixes' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->with([
+                'mainOrders' => function ($query) {
+                    $query->with([
+                        'Sections' => function ($query) {
+                            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('section_rank');
+                        },
+                        'Articles' => function ($query) {
+                            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('article_rank');
+                        },
+                        'Rules' => function ($query) {
+                            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('rule_rank');
+                        },
+                        'Regulation' => function ($query) {
+                            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('regulation_rank');
+                        },
+                        'Lists' => function ($query) {
+                            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('list_rank');
+                        },
+                        'Part' => function ($query) {
+                            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('part_rank');
+                        },
+                        'Appendices' => function ($query) {
+                            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('appendices_rank');
+                        },
+                        'Order' => function ($query) {
+                            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('order_rank');
+                        },
+                        'Annexure' => function ($query) {
+                            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('annexure_rank');
+                        },
+                        'Stschedule' => function ($query) {
+                            $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
+                                ->orderBy('stschedule_rank');
+                        },
+                    ]);
+                }
+            ])
+            ->orderBy('main_rank')
             ->get();
-
-
-            $parts = Parts::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-
-
-            $priliminarys = Priliminary::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-            
-            
-            $schedules = Schedule::where('act_id', $id)
-           ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-
-            $appendixes = Appendix::where('act_id', $id)
-            ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-            
-            $mainOrders = MainOrder::where('act_id', $id)
-           ->with(['Sections' => function ($query) {
-                $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('section_rank');
-                    
-            }])
-            ->with(['Articles' => function ($query) {
-                $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('article_rank');
-                   
-            }])
-            ->with(['Rules' => function ($query) {
-                $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('rule_rank');
-                    
-            }])
-            ->with(['Regulation' => function ($query) {
-                $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('regulation_rank');
-                    
-            }])
-            ->with(['Lists' => function ($query) {
-                $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('list_rank');
-                    
-            }])
-            ->with(['Part' => function ($query) {
-                $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('part_rank');
-                  
-            }])
-            ->with(['Appendices' => function ($query) {
-                $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('appendices_rank');
-                    
-            }])
-            ->with(['Order' => function ($query) {
-                $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('order_rank');
-                   
-            }])
-            ->with(['Annexure' => function ($query) {
-                $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('annexure_rank');
-                   
-            }])
-            ->with(['Stschedule' => function ($query) {
-                 $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                    ->orderBy('stschedule_rank');
-                    
-            }])
-            ->orderBy('serial_no')
-            ->get();
-
-
-
-
-          $combinedItems = [];
-
-                foreach ($chapters as $chapter) {
+    
+                
+            $combinedItems = collect([]);
+    
+            foreach ($mainsequence as $mainItem) {
+                foreach ($mainItem->chapters as $chapter) {
                     $chapterData = $chapter->toArray();
-                    $combinedItems[$chapter->serial_no] = $chapterData;
+                    $combinedItems->push($chapterData);
                 }
-
-                foreach ($parts as $part) {
+            
+                foreach ($mainItem->parts as $part) {
                     $partData = $part->toArray();
-                    $combinedItems[$part->serial_no] = $partData;
+                    $combinedItems->push($partData);
                 }
-
-                foreach ($priliminarys as $priliminary) {
-                    $priliminaryData = $priliminary->toArray();
-                    $combinedItems[$priliminary->serial_no] = $priliminaryData;
+            
+                foreach ($mainItem->priliminarys as $preliminary) {
+                    $preliminaryData = $preliminary->toArray();
+                    $combinedItems->push($preliminaryData);
                 }
-
-                foreach ($schedules as $schedule) {
+            
+                foreach ($mainItem->schedules as $schedule) {
                     $scheduleData = $schedule->toArray();
-                    $combinedItems[$schedule->serial_no] = $scheduleData;
+                    $combinedItems->push($scheduleData);
                 }
-
-                foreach ($appendixes as $appendix) {
+            
+                foreach ($mainItem->appendixes as $appendix) {
                     $appendixData = $appendix->toArray();
-                    $combinedItems[$appendix->serial_no] = $appendixData;
+                    $combinedItems->push($appendixData);
                 }
-
-                foreach ($mainOrders as $mainOrder) {
+            
+                foreach ($mainItem->mainOrders as $mainOrder) {
                     $mainOrderData = $mainOrder->toArray();
-                    $combinedItems[$mainOrder->serial_no] = $mainOrderData;
+                    $combinedItems->push($mainOrderData);
                 }
+            }
 
-
-            // Sort the combined items by their serial_no
-            ksort($combinedItems);
 
             // dd($combinedItems);
             // die();

@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{ $article->act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="{{ url('/get_act_section/' . $article->act_id . '?page=' . $currentPage) }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                                                     <div class="float-right">
                                                         <span style="font-size: small;"
                                                             class="px-2 text-uppercase font-weight-bold">
-                                                            (Add footnote for Article)
+                                                            (footnote)
                                                         </span>
                                                         <button type="button"
                                                             class="btn btn-sm social facebook p-0 add-multi-footnote">
@@ -125,7 +125,7 @@
                                                         </button>
                                                         <button type="button"
                                                             class="btn btn-sm social youtube p-0 remove-multi-footnote">
-                                                            <i class="fa fa-minus"></i>
+                                                            <i class="fa fa-trash"></i>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -135,28 +135,26 @@
                                         </div>
 
                                         <!-- If there are no subsections or footnotes, show the default section -->
+                                       
+
                                         <div class="multi-addition-container col-md-12 px-0">
                                             <div class="multi-addition">
-                                               
                                                 <div class="col-md-12 px-0 py-3">
                                                     <div class="float-right">
                                                         <span style="font-size: small;"
                                                             class="px-2 text-uppercase font-weight-bold">
-                                                            (for add and remove Sub-Article and Footnote)
+                                                           (SUB ARTICLE)
                                                         </span>
                                                         <button type="button"
                                                             class="btn btn-sm social facebook p-0 add-multi-addition">
                                                             <i class="fa fa-plus"></i>
                                                         </button>
-                                                        <button type="button"
-                                                            class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                            <i class="fa fa-minus"></i>
-                                                        </button>
                                                     </div>
                                                 </div>
+                                                
                                             </div>
                                         </div>
-
+                                        
                                     </div>
 
                                     <div class="form-group form-default" id="orderDiv" style="display: none">
@@ -221,7 +219,7 @@
 
 
 
-            let articleCounter = 1;
+            let articleCounter = 0;
             let sub_articleCounter = 0;
             let subArticleIndex = 0;
             let currentIndex;
@@ -247,6 +245,10 @@
                 var newArticle = `
                                 <div class="multi-addition">
                                     <div class="border col-md-12 p-3">
+                                        <button type="button"
+                                                            class="btn btn-sm social youtube p-0 remove-multi-addition">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
                                         <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                             <label class="float-label">
                                             Add Sub-Article
@@ -268,7 +270,7 @@
                                                                 <div class="float-right">
                                                                     <span style="font-size: small;"
                                                                         class="px-2 text-uppercase font-weight-bold">
-                                                                        (Add footnote for sub-article)
+                                                                        (Add footnote)
                                                                     </span>
                                                                     <button type="button"
                                                                         class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -276,23 +278,10 @@
                                                                     </button>
                                                                     <button type="button"
                                                                         class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                        <i class="fa fa-minus"></i>
+                                                                        <i class="fa fa-trash"></i>
                                                                     </button>
                                                                 </div>
                                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 px-0 py-3">
-                                        <div class="float-right">
-                                            <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                            ( for add and remove Sub-Article and Footnote )
-                                            </span>
-                                            <button type="button" class="btn btn-sm social facebook p-0 add-multi-addition">
-                                            <i class="fa fa-plus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                            <i class="fa fa-minus"></i>
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -300,8 +289,8 @@
 
 
                   // $('.multi-addition-container').append(newSection);
-                  var $clickedElement = $(this).closest('.multi-addition');
-                $clickedElement.after(newArticle);
+                //   var $clickedElement = $(this).closest('.multi-addition');
+                  $('.multi-addition').last().after(newArticle);
 
 
                 CKEDITOR.replace($('.multi-addition:last').find('.ckeditor-replace')[0]);
@@ -309,7 +298,7 @@
               
                 // Update sub_section_no and sub_section_content names in all elements
                 $('.multi-addition').each(function(index) {
-                    var newIndex = index + 1;
+                    var newIndex = index;
                     $(this).find(`[name^="sub_article_no["]`).attr('name',
                         `sub_article_no[${newIndex}]`);
                     $(this).find(`[name^="sub_article_content["]`).attr('name',
@@ -370,6 +359,7 @@
                     var footnote2AdditionContainer = multiAdditionContainer.find(
                         '.footnote2-addition-container');
                     footnote2AdditionContainer.append(newArticle);
+                    $(this).hide();
 
                     CKEDITOR.replace(footnote2AdditionContainer.find('.footnote2-addition:last').find(
                         '.ckeditor-replace')[0]);
@@ -381,10 +371,20 @@
             });
 
             $(document).on('click', '.remove-multi-footnote2', function() {
-                if ($('.footnote2-addition').length > 0) {
-                    $('.footnote2-addition:last').remove();
-                }
-            });
+            // Find the container for the current footnote2 addition
+            var footnote2AdditionContainer = $(this).closest('.footnote2-addition-container');
+            
+            // Find the last footnote2 addition within the current container
+            var lastFootnote2Addition = footnote2AdditionContainer.find('.footnote2-addition:last');
+
+            if (lastFootnote2Addition.length > 0) {
+                // Remove the last footnote2 addition
+                lastFootnote2Addition.remove();
+                
+                // Show the corresponding "+ Add Footnote" button for this sub-section
+                footnote2AdditionContainer.siblings('.col-md-12').find('.add-multi-footnote2').show();
+            }
+        });
 
             // for section footnote 
             $(document).on('click', '.add-multi-footnote', function() {
@@ -407,6 +407,7 @@
                                 `;
 
                 $('.footnote-addition-container').append(newArticle);
+                $(this).hide();
 
                 CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[0]);
                 // CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[1]);
@@ -417,6 +418,7 @@
             $(document).on('click', '.remove-multi-footnote', function() {
                 if ($('.footnote-addition').length > 0) {
                     $('.footnote-addition:last').remove();
+                    $('.add-multi-footnote').show();
                 }
             });
 

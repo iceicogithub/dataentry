@@ -14,6 +14,7 @@ use App\Http\Controllers\RegulationController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\stscheduleController;
+use App\Http\Controllers\MainRuleController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -71,8 +72,9 @@ Route::get('/delete_prilimiary/{id}', [ActController::class, 'delete_priliminary
 Route::get('/delete_schedule/{id}', [ActController::class, 'delete_schedule'])->name('delete_schedule');
 Route::get('/delete_appendix/{id}', [ActController::class, 'delete_appendix'])->name('delete_appendix');
 Route::get('/delete_main_order/{id}', [ActController::class, 'delete_main_order'])->name('delete_main_order');
-Route::post('/add_new_main_type/{id}', [ActController::class, 'add_new_main_type'])->name('add_new_main_type');
-Route::get('/add_below_new_parts/{id}/{parts_id}', [ActController::class, 'add_new_parts_name'])->name('add_new_parts_name');
+// Route::post('/add_below_new_maintype/{id}', [ActController::class, 'store_new_main_type'])->name('add_new_main_type');
+Route::get('/add_below_new_maintype/{act_id}/{main_id}/{id}', [ActController::class, 'add_new_main_type'])->name('add_new_main_type');
+Route::post('/add_new_main_type/{id}', [ActController::class, 'store_new_main_type'])->name('store_new_main_type');
 
 
 // section 
@@ -86,6 +88,7 @@ Route::post('/update_all_section/{id}', [SectionController::class, 'update']);
 Route::get('/delete_sub_section/{id}', [SectionController::class, 'destroy_sub_section']);
 Route::get('/delete_section/{id}', [SectionController::class, 'destroy']);
 Route::get('/add_below_new_section/{id}/{section_id}', [SectionController::class, 'add_below_new_section'])->name('add_below_new_section');
+Route::post('/add_new_section', [SectionController::class, 'add_new_section'])->name('add_new_section');
 
 
 // chapter 
@@ -184,3 +187,9 @@ Route::get('/delete_annexure/{id}', [AnnexureController::class, 'destroy']);
 Route::get('/view-sub-annexure/{id}', [AnnexureController::class, 'view_sub_annexure'])->name('view_sub_annexure');
 Route::get('/delete_sub_annexure/{id}', [AnnexureController::class, 'destroy_sub_annexure']);
 Route::get('/delete_footnote/{id}', [AnnexureController::class, 'delete_footnote']);
+
+
+
+//Main Rule
+Route::get('/get_rule/{id}',[MainRuleController::class,'index']);
+Route::get('/add-rule/{id}',[MainRuleController::class,'create']);

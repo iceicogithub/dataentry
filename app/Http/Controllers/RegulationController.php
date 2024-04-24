@@ -133,19 +133,21 @@ class RegulationController extends Controller
 
 
             if ($request->has('regulation_footnote_content')) {
-                foreach ($request->regulation_footnote_content as $key => $items) {
-                    // Check if the key exists before using it
-                    foreach ($items as $kys => $item) {
-                        // Check if the sec_footnote_id exists at the specified index
-                        if (isset($request->regulation_footnote_id[$key][$kys])) {
-                            // Use first() instead of get() to get a single model instance
-                            $foot = Footnote::find($request->regulation_footnote_id[$key][$kys]);
-
-                            if ($foot) {
-                                $foot->update([
-                                    'footnote_content' => $item ?? null,
-                                    'footnote_no' => $request->regulation_footnote_no[$key][$kys] ?? null,
-                                ]);
+                $item = $request->regulation_footnote_content;
+               
+                        if ($request->has('regulation_footnote_id')) {
+                            $footnote_id = $request->regulation_footnote_id;
+                            if (isset($footnote_id)) {
+                           
+                                // Use first() instead of get() to get a single model instance
+                                $foot = Footnote::find($footnote_id);
+    
+    
+                
+                                if ($foot) {
+                                    $foot->footnote_content = $item ?? null;
+                                    $foot->update();
+                                }
                             }
                         } else {
                             // Create a new footnote
@@ -162,96 +164,173 @@ class RegulationController extends Controller
                             $footnote->footnote_content = $item ?? null;
                             $footnote->save();
                         }
-                    }
-                }
+                    
+                
             }
         }
 
         // Store Sub-Sections
 
+        // if ($request->has('sub_regulation_no')) {
+        //     foreach ($request->sub_regulation_no as $key => $item) {
+        //         // Check if sub_section_id is present in the request
+        //         if ($request->filled('sub_regulation_id') && is_array($request->sub_regulation_id) && array_key_exists($key, $request->sub_regulation_id)) {
+
+        //             $sub_regulation = SubRegulation::find($request->sub_regulation_id[$key]);
+
+        //             // Check if $sub_section is found in the database and the IDs match
+        //             if ($sub_regulation && $sub_regulation->sub_regulation_id == $request->sub_regulation_id[$key]) {
+        //                 $sub_regulation->sub_regulation_no = $item ?? null;
+        //                 $sub_regulation->sub_regulation_content = $request->sub_regulation_content[$key] ?? null;
+        //                 $sub_regulation->update();
+
+        //                 if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+        //                     foreach ($request->sub_footnote_content[$key] as $kys => $item) {
+        //                         // Check if the sec_footnote_id exists at the specified index
+        //                         if (isset($request->sub_footnote_id[$key][$kys])) {
+        //                             // Use first() instead of get() to get a single model instance
+        //                             $foot = Footnote::find($request->sub_footnote_id[$key][$kys]);
+
+        //                             if ($foot) {
+        //                                 $foot->update([
+        //                                     'footnote_content' => $item ?? null,
+        //                                 ]);
+        //                             }
+        //                         } else {
+        //                             // Create a new footnote only if sub_footnote_id does not exist
+        //                             $footnote = new Footnote();
+        //                             $footnote->sub_regulation_id = $sub_regulation->sub_regulation_id;
+        //                             $footnote->regulation_id = $id ?? null;
+        //                             $footnote->act_id = $regulation->act_id ?? null;
+        //                             $footnote->chapter_id = $regulation->chapter_id ?? null;
+        //                             $footnote->main_order_id = $regulation->main_order_id ?? null;
+        //                             $footnote->parts_id = $regulation->parts_id ?? null;
+        //                             $footnote->priliminary_id = $regulation->priliminary_id ?? null;
+        //                             $footnote->schedule_id = $regulation->schedule_id ?? null;
+        //                             $footnote->appendix_id = $regulation->appendix_id ?? null;
+        //                             $footnote->footnote_content = $item ?? null;
+        //                             $footnote->save();
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         } else {
+        //             // Existing subsection not found, create a new one
+        //             $subregulation = new SubRegulation();
+        //             $subregulation->regulation_id = $id ?? null;
+        //             $subregulation->sub_regulation_no = $item ?? null;
+        //             $subregulation->regulation_no = $regulation->regulation_no ?? null;
+        //             $subregulation->act_id = $regulation->act_id ?? null;
+        //             $subregulation->chapter_id = $regulation->chapter_id ?? null;
+        //             $subregulation->main_order_id = $regulation->main_order_id ?? null;
+        //             $subregulation->parts_id = $regulation->parts_id ?? null;
+        //             $subregulation->priliminary_id = $regulation->priliminary_id ?? null;
+        //             $subregulation->schedule_id = $regulation->schedule_id ?? null;
+        //             $subregulation->appendix_id = $regulation->appendix_id ?? null;
+        //             $subregulation->sub_regulation_content = $request->sub_regulation_content[$key] ?? null;
+        //             $subregulation->save();
+
+        //             if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+        //                 foreach ($request->sub_footnote_content[$key] as $kys => $item) {
+        //                     // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
+        //                     if (isset($request->sub_footnote_content[$key][$kys])) {
+        //                         // Create a new footnote for the newly created subsection
+        //                         $footnote = new Footnote();
+        //                         $footnote->sub_regulation_id = $subregulation->sub_regulation_id;
+        //                         $footnote->regulation_id = $id ?? null;
+        //                         $footnote->act_id = $regulation->act_id ?? null;
+        //                         $footnote->chapter_id = $regulation->chapter_id ?? null;
+        //                         $footnote->main_order_id = $regulation->main_order_id ?? null;
+        //                         $footnote->parts_id = $regulation->parts_id ?? null;
+        //                         $footnote->priliminary_id = $regulation->priliminary_id ?? null;
+        //                         $footnote->schedule_id = $regulation->schedule_id ?? null;
+        //                         $footnote->appendix_id = $regulation->appendix_id ?? null;
+        //                         $footnote->footnote_content = $item ?? null;
+        //                         $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
+        //                         $footnote->save();
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
         if ($request->has('sub_regulation_no')) {
             foreach ($request->sub_regulation_no as $key => $item) {
-                // Check if sub_section_id is present in the request
-                if ($request->filled('sub_regulation_id') && is_array($request->sub_regulation_id) && array_key_exists($key, $request->sub_regulation_id)) {
-
-                    $sub_regulation = SubRegulation::find($request->sub_regulation_id[$key]);
-
-                    // Check if $sub_section is found in the database and the IDs match
-                    if ($sub_regulation && $sub_regulation->sub_regulation_id == $request->sub_regulation_id[$key]) {
-                        $sub_regulation->sub_regulation_no = $item ?? null;
-                        $sub_regulation->sub_regulation_content = $request->sub_regulation_content[$key] ?? null;
-                        $sub_regulation->update();
-
-                        if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                            foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                                // Check if the sec_footnote_id exists at the specified index
-                                if (isset($request->sub_footnote_id[$key][$kys])) {
-                                    // Use first() instead of get() to get a single model instance
-                                    $foot = Footnote::find($request->sub_footnote_id[$key][$kys]);
-
-                                    if ($foot) {
-                                        $foot->update([
-                                            'footnote_content' => $item ?? null,
-                                        ]);
-                                    }
-                                } else {
-                                    // Create a new footnote only if sub_footnote_id does not exist
-                                    $footnote = new Footnote();
-                                    $footnote->sub_regulation_id = $sub_regulation->sub_regulation_id;
-                                    $footnote->regulation_id = $id ?? null;
-                                    $footnote->act_id = $regulation->act_id ?? null;
-                                    $footnote->chapter_id = $regulation->chapter_id ?? null;
-                                    $footnote->main_order_id = $regulation->main_order_id ?? null;
-                                    $footnote->parts_id = $regulation->parts_id ?? null;
-                                    $footnote->priliminary_id = $regulation->priliminary_id ?? null;
-                                    $footnote->schedule_id = $regulation->schedule_id ?? null;
-                                    $footnote->appendix_id = $regulation->appendix_id ?? null;
-                                    $footnote->footnote_content = $item ?? null;
-                                    $footnote->save();
-                                }
+                // Initialize variables for reuse
+                $sub_regulation_id = $request->sub_regulation_id[$key] ?? null;
+                $sub_regulation_content = $request->sub_regulation_content[$key] ?? null;
+                
+                // Check if sub_regulation_id is present and valid
+                if ($sub_regulation_id && $existingSubRegulation = SubRegulation::find($sub_regulation_id)) {
+                    $existingSubRegulation->update([
+                        'sub_regulation_no' => $item,
+                        'sub_regulation_content' => $sub_regulation_content,
+                    ]);
+            
+                    // Handle footnotes
+                    if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                        foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
+                            $footnote_id = $request->sub_footnote_id[$key][$kys] ?? null;
+                            if ($footnote_id && $foot = Footnote::find($footnote_id)) {
+                                $foot->update(['footnote_content' => $footnote_content]);
+                            } else {
+                                // Create new footnote if ID is not provided or invalid
+                                $footnote = new Footnote([
+                                    'sub_regulation_id' => $sub_regulation_id,
+                                    'regulation_id' => $id ?? null,
+                                    'act_id' => $regulation->act_id ?? null,
+                                    'chapter_id' => $regulation->chapter_id ?? null,
+                                    'main_order_id' => $regulation->main_order_id ?? null,
+                                    'parts_id' => $regulation->parts_id ?? null,
+                                    'priliminary_id' => $regulation->priliminary_id ?? null,
+                                    'schedule_id' => $regulation->schedule_id ?? null,
+                                    'appendix_id' => $regulation->appendix_id ?? null,
+                                    'footnote_content' => $footnote_content ?? null,
+                                ]);
+                                $footnote->save();
                             }
                         }
                     }
                 } else {
-                    // Existing subsection not found, create a new one
-                    $subregulation = new SubRegulation();
-                    $subregulation->regulation_id = $id ?? null;
-                    $subregulation->sub_regulation_no = $item ?? null;
-                    $subregulation->regulation_no = $regulation->regulation_no ?? null;
-                    $subregulation->act_id = $regulation->act_id ?? null;
-                    $subregulation->chapter_id = $regulation->chapter_id ?? null;
-                    $subregulation->main_order_id = $regulation->main_order_id ?? null;
-                    $subregulation->parts_id = $regulation->parts_id ?? null;
-                    $subregulation->priliminary_id = $regulation->priliminary_id ?? null;
-                    $subregulation->schedule_id = $regulation->schedule_id ?? null;
-                    $subregulation->appendix_id = $regulation->appendix_id ?? null;
-                    $subregulation->sub_regulation_content = $request->sub_regulation_content[$key] ?? null;
-                    $subregulation->save();
-
-                    if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                        foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                            // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
-                            if (isset($request->sub_footnote_content[$key][$kys])) {
-                                // Create a new footnote for the newly created subsection
-                                $footnote = new Footnote();
-                                $footnote->sub_regulation_id = $subregulation->sub_regulation_id;
-                                $footnote->regulation_id = $id ?? null;
-                                $footnote->act_id = $regulation->act_id ?? null;
-                                $footnote->chapter_id = $regulation->chapter_id ?? null;
-                                $footnote->main_order_id = $regulation->main_order_id ?? null;
-                                $footnote->parts_id = $regulation->parts_id ?? null;
-                                $footnote->priliminary_id = $regulation->priliminary_id ?? null;
-                                $footnote->schedule_id = $regulation->schedule_id ?? null;
-                                $footnote->appendix_id = $regulation->appendix_id ?? null;
-                                $footnote->footnote_content = $item ?? null;
-                                $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
-                                $footnote->save();
-                            }
+                    // Create a new sub_regulation
+                    $sub_regulation = new SubRegulation([
+                        'regulation_id' => $id ?? null,
+                        'sub_regulation_no' => $item,
+                        'regulation_no' => $regulation->regulation_no ?? null,
+                        'act_id' => $regulation->act_id ?? null,
+                        'chapter_id' => $regulation->chapter_id ?? null,
+                        'main_order_id' => $regulation->main_order_id ?? null,
+                        'parts_id' => $regulation->parts_id ?? null,
+                        'priliminary_id' => $regulation->priliminary_id ?? null,
+                        'schedule_id' => $regulation->schedule_id ?? null,
+                        'appendix_id' => $regulation->appendix_id ?? null,
+                        'sub_regulation_content' => $sub_regulation_content,
+                    ]);
+                    $sub_regulation->save();
+                    
+                    // Handle footnotes for the new sub_regulation
+                    if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                        foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
+                            $footnote = new Footnote([
+                                'sub_regulation_id' => $sub_regulation->sub_regulation_id,
+                                'regulation_id' => $id ?? null,
+                                'act_id' => $regulation->act_id ?? null,
+                                'chapter_id' => $regulation->chapter_id ?? null,
+                                'main_order_id' => $regulation->main_order_id ?? null,
+                                'parts_id' => $regulation->parts_id ?? null,
+                                'priliminary_id' => $regulation->priliminary_id ?? null,
+                                'schedule_id' => $regulation->schedule_id ?? null,
+                                'appendix_id' => $regulation->appendix_id ?? null,
+                                'footnote_content' => $footnote_content ?? null,
+                            ]);
+                            $footnote->save();
                         }
                     }
                 }
             }
         }
+        
 
 
 

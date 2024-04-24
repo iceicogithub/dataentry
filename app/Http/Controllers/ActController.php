@@ -422,31 +422,37 @@ class ActController extends Controller
         foreach ($mainsequence as $mainItem) {
             foreach ($mainItem->chapters as $chapter) {
                 $chapterData = $chapter->toArray();
+                $chapterData['main_id'] = $mainItem->main_id;
                 $combinedItems->push($chapterData);
             }
         
             foreach ($mainItem->parts as $part) {
                 $partData = $part->toArray();
+                $partData['main_id'] = $mainItem->main_id;
                 $combinedItems->push($partData);
             }
         
             foreach ($mainItem->priliminarys as $preliminary) {
                 $preliminaryData = $preliminary->toArray();
+                $preliminaryData['main_id'] = $mainItem->main_id;
                 $combinedItems->push($preliminaryData);
             }
         
             foreach ($mainItem->schedules as $schedule) {
                 $scheduleData = $schedule->toArray();
+                $scheduleData['main_id'] = $mainItem->main_id;
                 $combinedItems->push($scheduleData);
             }
         
             foreach ($mainItem->appendixes as $appendix) {
                 $appendixData = $appendix->toArray();
+                $appendixData['main_id'] = $mainItem->main_id;
                 $combinedItems->push($appendixData);
             }
         
             foreach ($mainItem->mainOrders as $mainOrder) {
                 $mainOrderData = $mainOrder->toArray();
+                $mainOrderData['main_id'] = $mainItem->main_id;
                 $combinedItems->push($mainOrderData);
             }
         }
@@ -464,7 +470,6 @@ class ActController extends Controller
             $paginatedCollection->appends(['perPage' => $perPage]);
 
             $paginatedCollection->withPath(request()->url());
-            
             
             return view('admin.section.index', compact('paginatedCollection', 'act_id', 'act', 'act_footnote_titles', 'act_footnote_descriptions')); 
         }
@@ -2277,393 +2282,7 @@ class ActController extends Controller
     public function view(Request $request, $id)
     {
         $export = Act::where('act_id', $id)->get();
-        $chapters = Chapter::where('act_id', $id)
-        ->with(['Sections' => function ($query) {
-            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('section_rank');
-                
-        }])
-        ->with(['Articles' => function ($query) {
-            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('article_rank');
-               
-        }])
-        ->with(['Rules' => function ($query) {
-            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('rule_rank');
-                
-        }])
-        ->with(['Regulation' => function ($query) {
-            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('regulation_rank');
-                
-        }])
-        ->with(['Lists' => function ($query) {
-            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('list_rank');
-                
-        }])
-        ->with(['Part' => function ($query) {
-            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('part_rank');
-              
-        }])
-        ->with(['Appendices' => function ($query) {
-            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('appendices_rank');
-                
-        }])
-        ->with(['Order' => function ($query) {
-            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('order_rank');
-               
-        }])
-        ->with(['Annexure' => function ($query) {
-            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('annexure_rank');
-               
-        }])
-        ->with(['Stschedule' => function ($query) {
-             $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('stschedule_rank');
-                
-        }])
-        ->orderBy('serial_no')
-        ->get();
-
-
-        $parts = Parts::where('act_id', $id)
-        ->with(['Sections' => function ($query) {
-            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('section_rank');
-                
-        }])
-        ->with(['Articles' => function ($query) {
-            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('article_rank');
-               
-        }])
-        ->with(['Rules' => function ($query) {
-            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('rule_rank');
-                
-        }])
-        ->with(['Regulation' => function ($query) {
-            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('regulation_rank');
-                
-        }])
-        ->with(['Lists' => function ($query) {
-            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('list_rank');
-                
-        }])
-        ->with(['Part' => function ($query) {
-            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('part_rank');
-              
-        }])
-        ->with(['Appendices' => function ($query) {
-            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('appendices_rank');
-                
-        }])
-        ->with(['Order' => function ($query) {
-            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('order_rank');
-               
-        }])
-        ->with(['Annexure' => function ($query) {
-            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('annexure_rank');
-               
-        }])
-        ->with(['Stschedule' => function ($query) {
-             $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('stschedule_rank');
-                
-        }])
-        ->orderBy('serial_no')
-        ->get();
-
-
-        $priliminarys = Priliminary::where('act_id', $id)
-        ->with(['Sections' => function ($query) {
-            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('section_rank');
-                
-        }])
-        ->with(['Articles' => function ($query) {
-            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('article_rank');
-               
-        }])
-        ->with(['Rules' => function ($query) {
-            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('rule_rank');
-                
-        }])
-        ->with(['Regulation' => function ($query) {
-            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('regulation_rank');
-                
-        }])
-        ->with(['Lists' => function ($query) {
-            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('list_rank');
-                
-        }])
-        ->with(['Part' => function ($query) {
-            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('part_rank');
-              
-        }])
-        ->with(['Appendices' => function ($query) {
-            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('appendices_rank');
-                
-        }])
-        ->with(['Order' => function ($query) {
-            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('order_rank');
-               
-        }])
-        ->with(['Annexure' => function ($query) {
-            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('annexure_rank');
-               
-        }])
-        ->with(['Stschedule' => function ($query) {
-             $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('stschedule_rank');
-                
-        }])
-        ->orderBy('serial_no')
-        ->get();
-        
-        
-        $schedules = Schedule::where('act_id', $id)
-       ->with(['Sections' => function ($query) {
-            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('section_rank');
-                
-        }])
-        ->with(['Articles' => function ($query) {
-            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('article_rank');
-               
-        }])
-        ->with(['Rules' => function ($query) {
-            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('rule_rank');
-                
-        }])
-        ->with(['Regulation' => function ($query) {
-            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('regulation_rank');
-                
-        }])
-        ->with(['Lists' => function ($query) {
-            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('list_rank');
-                
-        }])
-        ->with(['Part' => function ($query) {
-            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('part_rank');
-              
-        }])
-        ->with(['Appendices' => function ($query) {
-            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('appendices_rank');
-                
-        }])
-        ->with(['Order' => function ($query) {
-            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('order_rank');
-               
-        }])
-        ->with(['Annexure' => function ($query) {
-            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('annexure_rank');
-               
-        }])
-        ->with(['Stschedule' => function ($query) {
-             $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('stschedule_rank');
-                
-        }])
-        ->orderBy('serial_no')
-        ->get();
-
-        $appendixes = Appendix::where('act_id', $id)
-        ->with(['Sections' => function ($query) {
-            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('section_rank');
-                
-        }])
-        ->with(['Articles' => function ($query) {
-            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('article_rank');
-               
-        }])
-        ->with(['Rules' => function ($query) {
-            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('rule_rank');
-                
-        }])
-        ->with(['Regulation' => function ($query) {
-            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('regulation_rank');
-                
-        }])
-        ->with(['Lists' => function ($query) {
-            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('list_rank');
-                
-        }])
-        ->with(['Part' => function ($query) {
-            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('part_rank');
-              
-        }])
-        ->with(['Appendices' => function ($query) {
-            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('appendices_rank');
-                
-        }])
-        ->with(['Order' => function ($query) {
-            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('order_rank');
-               
-        }])
-        ->with(['Annexure' => function ($query) {
-            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('annexure_rank');
-               
-        }])
-        ->with(['Stschedule' => function ($query) {
-             $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('stschedule_rank');
-                
-        }])
-        ->orderBy('serial_no')
-        ->get();
-        
-        $mainOrders = MainOrder::where('act_id', $id)
-       ->with(['Sections' => function ($query) {
-            $query->with('subsectionModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('section_rank');
-                
-        }])
-        ->with(['Articles' => function ($query) {
-            $query->with('subArticleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('article_rank');
-               
-        }])
-        ->with(['Rules' => function ($query) {
-            $query->with('subruleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('rule_rank');
-                
-        }])
-        ->with(['Regulation' => function ($query) {
-            $query->with('subRegulationModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('regulation_rank');
-                
-        }])
-        ->with(['Lists' => function ($query) {
-            $query->with('subListModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('list_rank');
-                
-        }])
-        ->with(['Part' => function ($query) {
-            $query->with('subPartModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('part_rank');
-              
-        }])
-        ->with(['Appendices' => function ($query) {
-            $query->with('subAppendicesModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('appendices_rank');
-                
-        }])
-        ->with(['Order' => function ($query) {
-            $query->with('subOrderModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('order_rank');
-               
-        }])
-        ->with(['Annexure' => function ($query) {
-            $query->with('subAnnexureModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('annexure_rank');
-               
-        }])
-        ->with(['Stschedule' => function ($query) {
-             $query->with('subStscheduleModel', 'footnoteModel', 'MainTypeModel')
-                ->orderBy('stschedule_rank');
-                
-        }])
-        ->orderBy('serial_no')
-        ->get();
-        // dd($parts);
-        // die();
-
-
-
-    $combinedItems = collect([]);
-
-    foreach ($chapters as $chapter) {
-        $chapterData = $chapter->toArray();
-        $combinedItems->put($chapter->serial_no, $chapterData);
-    }
-
-    foreach ($parts as $part) {
-        $partData = $part->toArray();
-        $combinedItems->put($part->serial_no, $partData);
-    }
-
-    foreach ($priliminarys as $priliminary) {
-        $priliminaryData = $priliminary->toArray();
-        $combinedItems->put($priliminary->serial_no, $priliminaryData);
-    }
-
-    foreach ($schedules as $schedule) {
-        $scheduleData = $schedule->toArray();
-        $combinedItems->put($schedule->serial_no, $scheduleData);
-    }
-
-    foreach ($appendixes as $appendix) {
-        $appendixData = $appendix->toArray();
-        $combinedItems->put($appendix->serial_no, $appendixData);
-    }
-
-    foreach ($mainOrders as $mainOrder) {
-        $mainOrderData = $mainOrder->toArray();
-        $combinedItems->put($mainOrder->serial_no, $mainOrderData);
-    }
-
-    // Sort the combined items by their serial_no
-    $combinedItems = $combinedItems->sortBy(function ($item, $key) {
-        return $key;
-    });
-
-
-    
-    $perPage = request()->get('perPage') ?: 10; // Get the perPage value from the request
-    $page = request()->get('page') ?: 1;
-    
-    // Paginate the merged collection directly
-    $paginatedItems = new LengthAwarePaginator(
-        $combinedItems->forPage($page, $perPage),
-        $combinedItems->count(),
-        $perPage,
-        $page
-    );
-    
-    // Append perPage parameter to pagination links
-    $paginatedItems->appends(['perPage' => $perPage]);
-    
-    $paginatedItems->withPath(request()->url());
-    
-    return view('admin.act.view', compact('export','paginatedItems'));
+    return view('admin.act.view', compact('export'));
     }
     public function update_main_act(Request $request, $id)
     {
@@ -2883,1753 +2502,1783 @@ class ActController extends Controller
         }
     }
 
-    public function add_new_main_type(Request $request, $id){
-        {
+    public function store_new_main_type(Request $request, $id)  {
 
-            try {
-                
-                $currentPage = $request->currentPage;
-                $act = Act::find($id);
+        // dd($request);
+        // die();
+
+        try {
+
+            $act = Act::find($id);
+          
+            $act->update([
+                'category_id' => $request->category_id,
+                'state_id' => $request->state_id ?? null,
+                'act_title' => $request->act_title,
+                'act_content' => $request->act_content ?? null,
+            ]);
+
+           $lastSerialNo = $request->click_serial_no;          
+           $k = $request->click_main_rank; 
+            foreach ($request->maintype_id as $key => $maintypeId) {
               
-                $act->update([
-                    'category_id' => $request->category_id,
-                    'state_id' => $request->state_id ?? null,
-                    'act_title' => $request->act_title,
-                    'act_content' => $request->act_content ?? null,
-                ]);
-    
-               $sectionSerialNo = Section::where('act_id',$id)->pluck('serial_no')->last();
-               $articleSerialNo = Article::where('act_id',$id)->pluck('serial_no')->last();
-               $ruleSerialNo = Rules::where('act_id',$id)->pluck('serial_no')->last();
-               $regulationSerialNo = Regulation::where('act_id',$id)->pluck('serial_no')->last();
-               $listSerialNo = Lists::where('act_id',$id)->pluck('serial_no')->last();
-               $partSerialNo = Part::where('act_id',$id)->pluck('serial_no')->last();
-               $appendicesSerialNo = Appendices::where('act_id',$id)->pluck('serial_no')->last();
-               $orderSerialNo = Orders::where('act_id',$id)->pluck('serial_no')->last();
-               $annexureSerialNo = Annexure::where('act_id',$id)->pluck('serial_no')->last();
-               $stscheduleSerialNo = Stschedule::where('act_id',$id)->pluck('serial_no')->last();
-            //    $lastSerialNo = max(0, $sectionSerialNo, $articleSerialNo, $ruleSerialNo,$regulationSerialNo,$listSerialNo,$partSerialNo,$appendicesSerialNo,$orderSerialNo,$annexureSerialNo,$stscheduleSerialNo);
-              
-            $lastSerialNo = $request->serial_no;
-            $oldSectionRank = $request->click_section_rank;
-                $j = 0;
-                foreach ($request->maintype_id as $key => $maintypeId) {
-                    if ($maintypeId == "1") {
-                        $oldSectionRank = $request->click_section_rank;
-                        //     $nextSectionRank = $oldSectionRank + 0.01;
-                    
-                        if($lastRank){
-                       
-                            $j = $lastRank;
-                         }
+                if ($maintypeId == "1") {
+                    $chapt = new Chapter();
+                    $chapt->act_id = $act->act_id ?? null;
+                    $chapt->maintype_id = $maintypeId;
+                    $chapt->chapter_title = $request->chapter_title[$key] ?? null;
+                    $chapt->serial_no = $lastSerialNo;
+                    $chapt->save();
 
-                        //  dd($j);
-                        //  die();
+                    MainTable::create([
+                        'main_rank' =>  $k + 0.1,
+                        'act_id' => $act->act_id,
+                        'maintype_id' => $maintypeId,
+                        'serial_no' => $lastSerialNo,
+                        'chapter_id' =>$chapt->chapter_id
+                    ]);
 
-                        $chapt = new Chapter();
-                        $chapt->chapter_rank = $j + 1;
-                        $chapt->act_id = $act->act_id ?? null;
-                        $chapt->maintype_id = $maintypeId;
-                        $chapt->chapter_title = $request->chapter_title[$key] ?? null;
-                        $chapt->serial_no = $lastSerialNo;
-                        $chapt->save();
     
-                        if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-    
-                            $i = $oldSectionRank ?? 0; 
-                            foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                                if (
-                                    isset($request->section_no[$key][$index]) &&
-                                    is_string($request->section_no[$key][$index])
-                                ) {
-                                    $currentSectionNo = $request->section_no[$key][$index];
-    
-                                    $lastSection = Section::max('section_rank');
-                                    $lastSection = ceil(floatval($lastSection));
-                                    $lastSection = max(0, $lastSection);
-                                    $lastSection = (int) $lastSection;
-                                    if($lastSection){
-                                   
-                                        $i = $lastSection;
-                                     }
-         
 
-                                    
-                                    $section = Section::create([
-                                        'section_rank' => $i + 0.01,
-                                        'section_no' => $currentSectionNo,
-                                        'act_id' => $act->act_id,
-                                        'maintype_id' => $maintypeId,
-                                        'chapter_id' => $chapt->chapter_id,
-                                        'subtypes_id' => $subtypes_id,
-                                        'section_title' => $sectiontitle,
-                                        'serial_no' => $lastSerialNo
-                                    ]);
-                                    $i += 0.01;
-                                }
-                            }
-                        } elseif ($request->subtypes_id[$key] == 2) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->article_title[$key] as $index => $articletitle) {
-                                $currentArticleNo = $request->article_no[$key][$index];
-                                $lastSection = Article::max('article_rank');
+
+                    if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+
+                        $i = 0;
+                        foreach ($request->section_title[$key] as $index => $sectiontitle) {
+                            if (
+                                isset($request->section_no[$key][$index]) &&
+                                is_string($request->section_no[$key][$index])
+                            ) {
+                                $currentSectionNo = $request->section_no[$key][$index];
+
+                                $lastSection = Section::max('section_rank');
                                 $lastSection = ceil(floatval($lastSection));
                                 $lastSection = max(0, $lastSection);
                                 $lastSection = (int) $lastSection;
-    
+
                                 if($lastSection){
                                    
                                    $i = $lastSection;
-                                }
-    
-    
-                                $article = Article::create([
-                                    'article_rank' => $i + 1,
-                                    'article_no' => $currentArticleNo,
+                                }       
+                                $section = Section::create([
+                                    'section_rank' => $i + 1,
+                                    'section_no' => $currentSectionNo,
                                     'act_id' => $act->act_id,
                                     'maintype_id' => $maintypeId,
                                     'chapter_id' => $chapt->chapter_id,
                                     'subtypes_id' => $subtypes_id,
-                                    'article_title' => $articletitle,
+                                    'section_title' => $sectiontitle,
                                     'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 3) {
-                            $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->rule_title[$key] as $index => $ruletitle) {
-                                $currentRuleNo = $request->rule_no[$key][$index];
-    
-                                $lastSection = Rules::max('rule_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $rule = Rules::create([
-                                    'rule_rank' => $i + 1,
-                                    'rule_no' => $currentRuleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'chapter_id' => $chapt->chapter_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'rule_title' => $ruletitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 4) {
-                             $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
-                                $currentRegulationNo = $request->regulation_no[$key][$index];
-                                  
-                                
-                                $lastSection = Regulation::max('regulation_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $regulation = Regulation::create([
-                                    'regulation_rank' => $i + 1,
-                                    'regulation_no' => $currentRegulationNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'chapter_id' => $chapt->chapter_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'regulation_title' => $regulationtitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-    
-                                // $regulationId = $regulation->regulation_id;
-    
-                                // $form = Form::create([
-                                //     'regulation_id' => $regulationId,
-                                //     'act_id' => $act->act_id,
-                                //     'form_title' => $request->form_title,
-                                // ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 5) {
-                            $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->list_title[$key] as $index => $listtitle) {
-                                $currentListNo = $request->list_no[$key][$index];
-                                $lastSection = Lists::max('list_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $list = Lists::create([
-                                    'list_rank' => $i + 1,
-                                    'list_no' => $currentListNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'chapter_id' => $chapt->chapter_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'list_title' => $listtitle,
-                                    'serial_no' =>$lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 6) {
-                                 $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->part_title[$key] as $index => $parttitle) {
-                                $currentPartNo = $request->part_no[$key][$index];
-    
-                                $lastSection = Part::max('part_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $part = Part::create([
-                                    'part_rank'=> $i +1,
-                                    'part_no' => $currentPartNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'chapter_id' => $chapt->chapter_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'part_title' => $parttitle,
-                                    'serial_no' =>$lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 7) {
-                             $i =0; 
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
-                                $currentAppendicesNo = $request->appendices_no[$key][$index];
-    
-                                $lastSection = Appendices::max('appendices_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $appendices = Appendices::create([
-                                    'appendices_rank' => $i +1,
-                                    'appendices_no' => $currentAppendicesNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'chapter_id' => $chapt->chapter_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'appendices_title' => $appendicestitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 8) {
-                             $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->order_title[$key] as $index => $ordertitle) {
-                                $currentOrderNo = $request->order_no[$key][$index];
-                                $lastSection = Orders::max('order_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $order = Orders::create([
-                                    'order_rank' => $i +1 ,
-                                    'order_no' => $currentOrderNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'chapter_id' => $chapt->chapter_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'order_title' => $ordertitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 9) {
-                               $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
-                                $currentAnnexureNo = $request->annexure_no[$key][$index];
-                                $lastSection = Annexure::max('annexure_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $annexure = Annexure::create([
-                                    'annexure_rank' => $i +1,
-                                    'annexure_no' => $currentAnnexureNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'chapter_id' => $chapt->chapter_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'annexure_title' => $annexuretitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 10) {
-                             $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
-                                $currentStscheduleNo = $request->stschedule_no[$key][$index];
-    
-                                $lastSection = Stschedule::max('stschedule_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $stschedule = Stschedule::create([
-                                    'stschedule_rank'=> $i + 1,
-                                    'stschedule_no' => $currentStscheduleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'chapter_id' => $chapt->chapter_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'stschedule_title' => $stscheduletitle,
-                                    'serial_no' =>$lastSerialNo 
                                 ]);
                             }
                         }
-                    } elseif ($maintypeId == "2") {
-                        $parts = new Parts();
-                        $parts->act_id = $act->act_id ?? null;
-                        $parts->maintype_id = $maintypeId;
-                        $parts->partstype_id = $request->partstype_id[$key] ?? null;
-                        $parts->parts_title = $request->parts_title[$key] ?? null;
-                        $parts->serial_no = $lastSerialNo;
-                        $parts->save();
-                      
-                        if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                                if (
-                                    isset($request->section_no[$key][$index]) &&
-                                    is_string($request->section_no[$key][$index])
-                                ) {
-                                    $currentSectionNo = $request->section_no[$key][$index];
-    
-                                    $lastSection = Section::max('section_rank');
-                                    $lastSection = ceil(floatval($lastSection));
-                                    $lastSection = max(0, $lastSection);
-                                    $lastSection = (int) $lastSection;
-    
-                                    if($lastSection){
-                                       
-                                       $i = $lastSection;
-                                    }       
-                                    $section = Section::create([
-                                        'section_rank' => $i + 1,
-                                        'section_no' => $currentSectionNo,
-                                        'act_id' => $act->act_id,
-                                        'maintype_id' => $maintypeId,
-                                        'parts_id' => $parts->parts_id,
-                                        'subtypes_id' => $subtypes_id,
-                                        'section_title' => $sectiontitle,
-                                        'serial_no' => $lastSerialNo
-                                    ]);
-                                }
+                    } elseif ($request->subtypes_id[$key] == 2) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->article_title[$key] as $index => $articletitle) {
+                            $currentArticleNo = $request->article_no[$key][$index];
+                            $lastSection = Article::max('article_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){
+                               
+                               $i = $lastSection;
                             }
-                        } elseif ($request->subtypes_id[$key] == 2) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->article_title[$key] as $index => $articletitle) {
-                                $currentArticleNo = $request->article_no[$key][$index];
-                                $lastSection = Article::max('article_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){
-                                   
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $article = Article::create([
-                                    'article_rank' => $i +1,
-                                    'article_no' => $currentArticleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'parts_id' => $parts->parts_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'article_title' => $articletitle,
-                                    'serial_no'=> $lastSerialNo,
-                                ]);
+
+
+                            $article = Article::create([
+                                'article_rank' => $i + 1,
+                                'article_no' => $currentArticleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'chapter_id' => $chapt->chapter_id,
+                                'subtypes_id' => $subtypes_id,
+                                'article_title' => $articletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 3) {
+                        $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->rule_title[$key] as $index => $ruletitle) {
+                            $currentRuleNo = $request->rule_no[$key][$index];
+
+                            $lastSection = Rules::max('rule_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
                             }
-                        } elseif ($request->subtypes_id[$key] == 3) {
-                            $i=0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->rule_title[$key] as $index => $ruletitle) {
-                                $currentRuleNo = $request->rule_no[$key][$index];
-                                $lastSection = Rules::max('rule_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $rule = Rules::create([
-                                    'rule_rank'=> $i +1,
-                                    'rule_no' => $currentRuleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'parts_id' => $parts->parts_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'rule_title' => $ruletitle,
-                                    'serial_no' =>$lastSerialNo,
-                                ]);
+
+
+                            $rule = Rules::create([
+                                'rule_rank' => $i + 1,
+                                'rule_no' => $currentRuleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'chapter_id' => $chapt->chapter_id,
+                                'subtypes_id' => $subtypes_id,
+                                'rule_title' => $ruletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 4) {
+                         $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
+                            $currentRegulationNo = $request->regulation_no[$key][$index];
+                              
+                            
+                            $lastSection = Regulation::max('regulation_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
                             }
-                        } elseif ($request->subtypes_id[$key] == 4) {
-                             $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
-                                $currentRegulationNo = $request->regulation_no[$key][$index];
-                                $lastSection = Regulation::max('regulation_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $regulation = Regulation::create([
-                                    'regulation_rank'=> $i +1,
-                                    'regulation_no' => $currentRegulationNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'parts_id' => $parts->parts_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'regulation_title' => $regulationtitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-    
-                                // $regulationId = $regulation->regulation_id;
-    
-                                // $form = Form::create([
-                                //     'regulation_id' => $regulationId,
-                                //     'act_id' => $act->act_id,
-                                //     'form_title' => $request->form_title,
-                                // ]);
+
+                            $regulation = Regulation::create([
+                                'regulation_rank' => $i + 1,
+                                'regulation_no' => $currentRegulationNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'chapter_id' => $chapt->chapter_id,
+                                'subtypes_id' => $subtypes_id,
+                                'regulation_title' => $regulationtitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+
+                            // $regulationId = $regulation->regulation_id;
+
+                            // $form = Form::create([
+                            //     'regulation_id' => $regulationId,
+                            //     'act_id' => $act->act_id,
+                            //     'form_title' => $request->form_title,
+                            // ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 5) {
+                        $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->list_title[$key] as $index => $listtitle) {
+                            $currentListNo = $request->list_no[$key][$index];
+                            $lastSection = Lists::max('list_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
                             }
-                        } elseif ($request->subtypes_id[$key] == 5) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->list_title[$key] as $index => $listtitle) {
-                                $currentListNo = $request->list_no[$key][$index];
-                                $lastSection = Lists::max('list_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $list = Lists::create([
-                                    'list_rank'=>$i + 1,
-                                    'list_no' => $currentListNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'parts_id' => $parts->parts_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'list_title' => $listtitle,
-                                    'serial_no'=>$lastSerialNo
-                                ]);
+
+
+                            $list = Lists::create([
+                                'list_rank' => $i + 1,
+                                'list_no' => $currentListNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'chapter_id' => $chapt->chapter_id,
+                                'subtypes_id' => $subtypes_id,
+                                'list_title' => $listtitle,
+                                'serial_no' =>$lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 6) {
+                             $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->part_title[$key] as $index => $parttitle) {
+                            $currentPartNo = $request->part_no[$key][$index];
+
+                            $lastSection = Part::max('part_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
                             }
-                        } elseif ($request->subtypes_id[$key] == 6) {
+
+                            $part = Part::create([
+                                'part_rank'=> $i +1,
+                                'part_no' => $currentPartNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'chapter_id' => $chapt->chapter_id,
+                                'subtypes_id' => $subtypes_id,
+                                'part_title' => $parttitle,
+                                'serial_no' =>$lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 7) {
+                         $i =0; 
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
+                            $currentAppendicesNo = $request->appendices_no[$key][$index];
+
+                            $lastSection = Appendices::max('appendices_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $appendices = Appendices::create([
+                                'appendices_rank' => $i +1,
+                                'appendices_no' => $currentAppendicesNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'chapter_id' => $chapt->chapter_id,
+                                'subtypes_id' => $subtypes_id,
+                                'appendices_title' => $appendicestitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 8) {
+                         $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->order_title[$key] as $index => $ordertitle) {
+                            $currentOrderNo = $request->order_no[$key][$index];
+                            $lastSection = Orders::max('order_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $order = Orders::create([
+                                'order_rank' => $i +1 ,
+                                'order_no' => $currentOrderNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'chapter_id' => $chapt->chapter_id,
+                                'subtypes_id' => $subtypes_id,
+                                'order_title' => $ordertitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 9) {
                            $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->part_title[$key] as $index => $parttitle) {
-                                $currentPartNo = $request->part_no[$key][$index];
-                                $lastSection = Part::max('part_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $part = Part::create([
-                                    'part_rank' => $i + 1,
-                                    'part_no' => $currentPartNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'parts_id' => $parts->parts_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'part_title' => $parttitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
+                            $currentAnnexureNo = $request->annexure_no[$key][$index];
+                            $lastSection = Annexure::max('annexure_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
                             }
-                        } elseif ($request->subtypes_id[$key] == 7) {
-                              $i=0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
-                                $currentAppendicesNo = $request->appendices_no[$key][$index];
-                                $lastSection = Appendices::max('appendices_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $appendices = Appendices::create([
-                                    'appendices_rank' => $i + 1,
-                                    'appendices_no' => $currentAppendicesNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'parts_id' => $parts->parts_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'appendices_title' => $appendicestitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 8) {
-                              $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->order_title[$key] as $index => $ordertitle) {
-                                $currentOrderNo = $request->order_no[$key][$index];
-                                $lastSection = Orders::max('order_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $order = Orders::create([
-                                    'order_rank' => $i + 1,
-                                    'order_no' => $currentOrderNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'parts_id' => $parts->parts_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'order_title' => $ordertitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 9) {
-                              $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
-                                $currentAnnexureNo = $request->annexure_no[$key][$index];
-                                $lastSection = Annexure::max('annexure_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $annexure = Annexure::create([
-                                    'annexure_rank' => $i + 1,
-                                    'annexure_no' => $currentAnnexureNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'parts_id' => $parts->parts_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'annexure_title' => $annexuretitle,
-                                    'serial_no'=> $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 10) {
-                             $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
-                                $currentStscheduleNo = $request->stschedule_no[$key][$index];
-                                $lastSection = Stschedule::max('stschedule_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $stschedule = Stschedule::create([
-                                    'stschedule_rank' => $i + 1,
-                                    'stschedule_no' => $currentStscheduleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'parts_id' => $parts->parts_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'stschedule_title' => $stscheduletitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
+
+                            $annexure = Annexure::create([
+                                'annexure_rank' => $i +1,
+                                'annexure_no' => $currentAnnexureNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'chapter_id' => $chapt->chapter_id,
+                                'subtypes_id' => $subtypes_id,
+                                'annexure_title' => $annexuretitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
                         }
-                    } elseif ($maintypeId == "3") {
-                        $priliminary = new Priliminary();
-                        $priliminary->act_id = $act->act_id ?? null;
-                        $priliminary->maintype_id = $maintypeId;
-                        $priliminary->priliminary_title = $request->priliminary_title[$key] ?? null;
-                        $priliminary->serial_no = $lastSerialNo;
-                        $priliminary->save();
-    
-                        if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                                if (
-                                    isset($request->section_no[$key][$index]) &&
-                                    is_string($request->section_no[$key][$index])
-                                ) {
-                                    $currentSectionNo = $request->section_no[$key][$index];
-                                    $lastSection = Section::max('section_rank');
-                                    $lastSection = ceil(floatval($lastSection));
-                                    $lastSection = max(0, $lastSection);
-                                    $lastSection = (int) $lastSection;
-    
-                                    if($lastSection){
-                                       
-                                       $i = $lastSection;
-                                    }     
-                                    $section = Section::create([
-                                        'section_rank' => $i + 1,
-                                        'section_no' => $currentSectionNo,
-                                        'act_id' => $act->act_id,
-                                        'maintype_id' => $maintypeId,
-                                        'priliminary_id' => $priliminary->priliminary_id,
-                                        'subtypes_id' => $subtypes_id,
-                                        'section_title' => $sectiontitle,
-                                        'serial_no' => $lastSerialNo
-                                    ]);
-                                }
+                    } elseif ($request->subtypes_id[$key] == 10) {
+                         $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
+                            $currentStscheduleNo = $request->stschedule_no[$key][$index];
+
+                            $lastSection = Stschedule::max('stschedule_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
                             }
-                        } elseif ($request->subtypes_id[$key] == 2) {
-                            $i= 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->article_title[$key] as $index => $articletitle) {
-                                $currentArticleNo = $request->article_no[$key][$index];
-                                $lastSection = Article::max('article_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){
-                                   
-                                   $i = $lastSection;
-                                }
-                                $article = Article::create([
-                                    'article_rank' => $i + 1,
-                                    'article_no' => $currentArticleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'priliminary_id' => $priliminary->priliminary_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'article_title' => $articletitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 3) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->rule_title[$key] as $index => $ruletitle) {
-                                $currentRuleNo = $request->rule_no[$key][$index];
-    
-                                $lastSection = Rules::max('rule_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $rule = Rules::create([
-                                    'rule_rank'=> $i + 1,
-                                    'rule_no' => $currentRuleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'priliminary_id' => $priliminary->priliminary_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'rule_title' => $ruletitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 4) {
-                             $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
-                                $currentRegulationNo = $request->regulation_no[$key][$index];
-       
-                                $lastSection = Regulation::max('regulation_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $regulation = Regulation::create([
-                                    'regulation_rank' => $i + 1,
-                                    'regulation_no' => $currentRegulationNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'priliminary_id' => $priliminary->priliminary_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'regulation_title' => $regulationtitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-    
-                                // $regulationId = $regulation->regulation_id;
-    
-                                // $form = Form::create([
-                                //     'regulation_id' => $regulationId,
-                                //     'act_id' => $act->act_id,
-                                //     'form_title' => $request->form_title,
-                                // ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 5) {
-                           $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->list_title[$key] as $index => $listtitle) {
-                                $currentListNo = $request->list_no[$key][$index];
-                                $lastSection = Lists::max('list_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $list = Lists::create([
-                                    'list_rank'=> $i + 1,
-                                    'list_no' => $currentListNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'priliminary_id' => $priliminary->priliminary_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'list_title' => $listtitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 6) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->part_title[$key] as $index => $parttitle) {
-                                $currentPartNo = $request->part_no[$key][$index];
-    
-                                $lastSection = Part::max('part_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-                                $part = Part::create([
-                                    'part_rank' => $i + 1,
-                                    'part_no' => $currentPartNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'priliminary_id' => $priliminary->priliminary_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'part_title' => $parttitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 7) {
-                                $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
-                                $currentAppendicesNo = $request->appendices_no[$key][$index];
-    
-                                $lastSection = Appendices::max('appendices_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-                                $appendices = Appendices::create([
-                                    'appendices_rank' => $i + 1,
-                                    'appendices_no' => $currentAppendicesNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'priliminary_id' => $priliminary->priliminary_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'appendices_title' => $appendicestitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 8) {
-                              $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->order_title[$key] as $index => $ordertitle) {
-                                $currentOrderNo = $request->order_no[$key][$index];
-                                $lastSection = Orders::max('order_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $order = Orders::create([
-                                    'order_rank' => $i + 1,
-                                    'order_no' => $currentOrderNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'priliminary_id' => $priliminary->priliminary_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'order_title' => $ordertitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 9) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
-                                $currentAnnexureNo = $request->annexure_no[$key][$index];
-    
-                                $lastSection = Annexure::max('annexure_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-                                $annexure = Annexure::create([
-                                    'annexure_rank' => $i + 1,
-                                    'annexure_no' => $currentAnnexureNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'priliminary_id' => $priliminary->priliminary_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'annexure_title' => $annexuretitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        }elseif ($request->subtypes_id[$key] == 10) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
-                                $currentStscheduleNo = $request->stschedule_no[$key][$index];
-                                $lastSection = Stschedule::max('stschedule_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $stschedule = Stschedule::create([
-                                    'stschedule_rank' => $i + 1,
-                                    'stschedule_no' => $currentStscheduleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'priliminary_id' => $priliminary->priliminary_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'stschedule_title' => $stscheduletitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        }
-                    } elseif ($maintypeId == "4") {
-                        $schedule = new Schedule();
-                        $schedule->act_id = $act->act_id ?? null;
-                        $schedule->maintype_id = $maintypeId;
-                        $schedule->schedule_title = $request->schedule_title[$key] ?? null;
-                        $schedule->serial_no = $lastSerialNo;
-                        $schedule->save();
-    
-                        if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                                if (
-                                    isset($request->section_no[$key][$index]) &&
-                                    is_string($request->section_no[$key][$index])
-                                ) {
-                                    $currentSectionNo = $request->section_no[$key][$index];
-    
-                                    $lastSection = Section::max('section_rank');
-                                    $lastSection = ceil(floatval($lastSection));
-                                    $lastSection = max(0, $lastSection);
-                                    $lastSection = (int) $lastSection;
-    
-                                    if($lastSection){
-                                       
-                                       $i = $lastSection;
-                                    }       
-                                    $section = Section::create([
-                                        'section_rank' => $i + 1,
-                                        'section_no' => $currentSectionNo,
-                                        'act_id' => $act->act_id,
-                                        'maintype_id' => $maintypeId,
-                                        'schedule_id' => $schedule->schedule_id,
-                                        'subtypes_id' => $subtypes_id,
-                                        'section_title' => $sectiontitle,
-                                        'serial_no' => $lastSerialNo
-                                    ]);
-                                }
-                            }
-                        } elseif ($request->subtypes_id[$key] == 2) {
-                            $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->article_title[$key] as $index => $articletitle) {
-                                $currentArticleNo = $request->article_no[$key][$index];
-                                $lastSection = Article::max('article_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){
-                                   
-                                   $i = $lastSection;
-                                }
-    
-                                $article = Article::create([
-                                    'article_rank' => $i + 1,
-                                    'article_no' => $currentArticleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'schedule_id' => $schedule->schedule_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'article_title' => $articletitle,
-                                    'serial_no'=> $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 3) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->rule_title[$key] as $index => $ruletitle) {
-                                $currentRuleNo = $request->rule_no[$key][$index];
-                                $lastSection = Rules::max('rule_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $rule = Rules::create([
-                                    'rule_rank' => $i + 1,
-                                    'rule_no' => $currentRuleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'schedule_id' => $schedule->schedule_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'rule_title' => $ruletitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 4) {
-                           $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
-                                $currentRegulationNo = $request->regulation_no[$key][$index];
-                                $lastSection = Regulation::max('regulation_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $regulation = Regulation::create([
-                                    'regulation_rank' => $i + 1,
-                                    'regulation_no' => $currentRegulationNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'schedule_id' => $schedule->schedule_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'regulation_title' => $regulationtitle,
-                                    'serial_no' => $lastSerialNo,
-                                ]);
-    
-                                // $regulationId = $regulation->regulation_id;
-    
-                                // $form = Form::create([
-                                //     'regulation_id' => $regulationId,
-                                //     'act_id' => $act->act_id,
-                                //     'form_title' => $request->form_title,
-                                // ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 5) {
-                            $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->list_title[$key] as $index => $listtitle) {
-                                $currentListNo = $request->list_no[$key][$index];
-                                $lastSection = Lists::max('list_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $list = Lists::create([
-                                    'list_rank' => $i + 1,
-                                    'list_no' => $currentListNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'schedule_id' => $schedule->schedule_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'list_title' => $listtitle,
-                                    'serial_no' => $lastSerialNo,
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 6) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->part_title[$key] as $index => $parttitle) {
-                                $currentPartNo = $request->part_no[$key][$index];
-                                $lastSection = Part::max('part_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $part = Part::create([
-                                    'part_rank' => $i + 1,
-                                    'part_no' => $currentPartNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'schedule_id' => $schedule->schedule_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'part_title' => $parttitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 7) {
-                               $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
-                                $currentAppendicesNo = $request->appendices_no[$key][$index];
-    
-                                
-                                $lastSection = Appendices::max('appendices_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-                                $appendices = Appendices::create([
-                                    'appendices_rank'=> $i + 1,
-                                    'appendices_no' => $currentAppendicesNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'schedule_id' => $schedule->schedule_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'appendices_title' => $appendicestitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 8) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->order_title[$key] as $index => $ordertitle) {
-                                $currentOrderNo = $request->order_no[$key][$index];
-                                $lastSection = Orders::max('order_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $order = Orders::create([
-                                    'order_rank' => $i + 1,
-                                    'order_no' => $currentOrderNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'schedule_id' => $schedule->schedule_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'order_title' => $ordertitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 9) {
-                           $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
-                                $currentAnnexureNo = $request->annexure_no[$key][$index];
-                                $lastSection = Annexure::max('annexure_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $annexure = Annexure::create([
-                                    'annexure_rank' => $i + 1,
-                                    'annexure_no' => $currentAnnexureNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'schedule_id' => $schedule->schedule_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'annexure_title' => $annexuretitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        }elseif ($request->subtypes_id[$key] == 10) {
-                              $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
-                                $currentStscheduleNo = $request->stschedule_no[$key][$index];
-                                $lastSection = Stschedule::max('stschedule_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $stschedule = Stschedule::create([
-                                    'stschedule_rank' => $i + 1,
-                                    'stschedule_no' => $currentStscheduleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'schedule_id' => $schedule->schedule_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'stschedule_title' => $stscheduletitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        }
-                    } elseif ($maintypeId == "5") {
-                        $appendix = new Appendix();
-                        $appendix->act_id = $act->act_id ?? null;
-                        $appendix->maintype_id = $maintypeId;
-                        $appendix->appendix_title = $request->appendix_title[$key] ?? null;
-                        $appendix->serial_no = $lastSerialNo;
-                        $appendix->save();
-    
-                        if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                                if (
-                                    isset($request->section_no[$key][$index]) &&
-                                    is_string($request->section_no[$key][$index])
-                                ) {
-                                    $currentSectionNo = $request->section_no[$key][$index];
-    
-                                    $lastSection = Section::max('section_rank');
-                                    $lastSection = ceil(floatval($lastSection));
-                                    $lastSection = max(0, $lastSection);
-                                    $lastSection = (int) $lastSection;
-    
-                                    if($lastSection){   
-                                       $i = $lastSection;
-                                    }     
-                                    $section = Section::create([
-                                        'section_rank' => $i + 1,
-                                        'section_no' => $currentSectionNo,
-                                        'act_id' => $act->act_id,
-                                        'maintype_id' => $maintypeId,
-                                        'appendix_id' => $appendix->appendix_id,
-                                        'subtypes_id' => $subtypes_id,
-                                        'section_title' => $sectiontitle,
-                                        'serial_no' => $lastSerialNo,
-                                    ]);
-                                }
-                            }
-                        } elseif ($request->subtypes_id[$key] == 2) {
-                            $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->article_title[$key] as $index => $articletitle) {
-                                $currentArticleNo = $request->article_no[$key][$index];
-                                $lastSection = Article::max('article_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){
-                                   
-                                   $i = $lastSection;
-                                }
-    
-                                $article = Article::create([
-                                    'article_rank' => $i + 1,
-                                    'article_no' => $currentArticleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'appendix_id' => $appendix->appendix_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'article_title' => $articletitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 3) {
-                            $i=0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->rule_title[$key] as $index => $ruletitle) {
-                                $currentRuleNo = $request->rule_no[$key][$index];
-                                $lastSection = Rules::max('rule_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $rule = Rules::create([
-                                    'rule_rank' => $i + 1,
-                                    'rule_no' => $currentRuleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'appendix_id' => $appendix->appendix_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'rule_title' => $ruletitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 4) {
-                               $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
-                                $currentRegulationNo = $request->regulation_no[$key][$index];
-                                $lastSection = Regulation::max('regulation_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $regulation = Regulation::create([
-                                    'regulation_rank' => $i + 1,
-                                    'regulation_no' => $currentRegulationNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'appendix_id' => $appendix->appendix_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'regulation_title' => $regulationtitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-    
-                                // $regulationId = $regulation->regulation_id;
-    
-                                // $form = Form::create([
-                                //     'regulation_id' => $regulationId,
-                                //     'act_id' => $act->act_id,
-                                //     'form_title' => $request->form_title,
-                                // ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 5) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->list_title[$key] as $index => $listtitle) {
-                                $currentListNo = $request->list_no[$key][$index];
-                                $lastSection = Lists::max('list_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $list = Lists::create([
-                                    'list_rank' => $i + 1,
-                                    'list_no' => $currentListNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'appendix_id' => $appendix->appendix_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'list_title' => $listtitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 6) {
-                           $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->part_title[$key] as $index => $parttitle) {
-                                $currentPartNo = $request->part_no[$key][$index];
-                                $lastSection = Part::max('part_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $part = Part::create([
-                                    'part_rank' => $i + 1,
-                                    'part_no' => $currentPartNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'appendix_id' => $appendix->appendix_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'part_title' => $parttitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 7) {
-                              $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
-                                $currentAppendicesNo = $request->appendices_no[$key][$index];
-                                $lastSection = Appendices::max('appendices_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $appendices = Appendices::create([
-                                    'appendices_rank' => $i + 1,
-                                    'appendices_no' => $currentAppendicesNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'appendix_id' => $appendix->appendix_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'appendices_title' => $appendicestitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 8) {
-                              $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->order_title[$key] as $index => $ordertitle) {
-                                $currentOrderNo = $request->order_no[$key][$index];
-                                $lastSection = Orders::max('order_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $order = Orders::create([
-                                    'order_rank' => $i + 1,
-                                    'order_no' => $currentOrderNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'appendix_id' => $appendix->appendix_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'order_title' => $ordertitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 9) {
-                            $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
-                                $currentAnnexureNo = $request->annexure_no[$key][$index];
-    
-                                $lastSection = Annexure::max('annexure_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-                                $annexure = Annexure::create([
-                                    'annexure_rank' => $i + 1,
-                                    'annexure_no' => $currentAnnexureNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'appendix_id' => $appendix->appendix_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'annexure_title' => $annexuretitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        }elseif ($request->subtypes_id[$key] == 10) {
-                            $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
-                                $currentStscheduleNo = $request->stschedule_no[$key][$index];
-                                $lastSection = Stschedule::max('stschedule_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $stschedule = Stschedule::create([
-                                    'stschedule_rank' => $i + 1,
-                                    'stschedule_no' => $currentStscheduleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'appendix_id' => $appendix->appendix_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'stschedule_title' => $stscheduletitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        }
-                    } elseif ($maintypeId == "6") {
-                        $main_order = new MainOrder();
-                        $main_order->act_id = $act->act_id ?? null;
-                        $main_order->maintype_id = $maintypeId;
-                        $main_order->main_order_title = $request->main_order_title[$key] ?? null;
-                        $main_order->serial_no = $lastSerialNo;
-                        $main_order->save();
-    
-                        if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-    
-                            $i = 0;
-                            foreach ($request->section_title[$key] as $index => $sectiontitle) {
-                                if (
-                                    isset($request->section_no[$key][$index]) &&
-                                    is_string($request->section_no[$key][$index])
-                                ) {
-                                    $currentSectionNo = $request->section_no[$key][$index];
-    
-                                    $lastSection = Section::max('section_rank');
-                                    $lastSection = ceil(floatval($lastSection));
-                                    $lastSection = max(0, $lastSection);
-                                    $lastSection = (int) $lastSection;
-    
-                                    if($lastSection){
-                                       
-                                       $i = $lastSection;
-                                    }       
-                                    $section = Section::create([
-                                        'section_rank' => $i + 1,
-                                        'section_no' => $currentSectionNo,
-                                        'act_id' => $act->act_id,
-                                        'maintype_id' => $maintypeId,
-                                        'main_order_id' => $main_order->main_order_id,
-                                        'subtypes_id' => $subtypes_id,
-                                        'section_title' => $sectiontitle,
-                                        'serial_no' => $lastSerialNo
-                                    ]);
-                                }
-                            }
-                        } elseif ($request->subtypes_id[$key] == 2) {
-                            $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->article_title[$key] as $index => $articletitle) {
-                                $currentArticleNo = $request->article_no[$key][$index];
-                                $lastSection = Article::max('article_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){
-                                   
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $article = Article::create([
-                                    'article_rank' => $i + 1,
-                                    'article_no' => $currentArticleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'main_order_id' => $main_order->main_order_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'article_title' => $articletitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 3) {
-                            $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->rule_title[$key] as $index => $ruletitle) {
-                                $currentRuleNo = $request->rule_no[$key][$index];
-    
-                                $lastSection = Rules::max('rule_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $rule = Rules::create([
-                                    'rule_rank' => $i + 1,
-                                    'rule_no' => $currentRuleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'main_order_id' => $main_order->main_order_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'rule_title' => $ruletitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 4) {
-                             $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
-                                $currentRegulationNo = $request->regulation_no[$key][$index];
-                                  
-                                
-                                $lastSection = Regulation::max('regulation_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $regulation = Regulation::create([
-                                    'regulation_rank' => $i + 1,
-                                    'regulation_no' => $currentRegulationNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'main_order_id' => $main_order->main_order_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'regulation_title' => $regulationtitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-    
-                                // $regulationId = $regulation->regulation_id;
-    
-                                // $form = Form::create([
-                                //     'regulation_id' => $regulationId,
-                                //     'act_id' => $act->act_id,
-                                //     'form_title' => $request->form_title,
-                                // ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 5) {
-                            $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->list_title[$key] as $index => $listtitle) {
-                                $currentListNo = $request->list_no[$key][$index];
-                                $lastSection = Lists::max('list_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-    
-                                $list = Lists::create([
-                                    'list_rank' => $i + 1,
-                                    'list_no' => $currentListNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'main_order_id' => $main_order->main_order_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'list_title' => $listtitle,
-                                    'serial_no' =>$lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 6) {
-                                 $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->part_title[$key] as $index => $parttitle) {
-                                $currentPartNo = $request->part_no[$key][$index];
-    
-                                $lastSection = Part::max('part_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $part = Part::create([
-                                    'part_rank'=> $i +1,
-                                    'part_no' => $currentPartNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'main_order_id' => $main_order->main_order_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'part_title' => $parttitle,
-                                    'serial_no' =>$lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 7) {
-                             $i =0; 
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
-                                $currentAppendicesNo = $request->appendices_no[$key][$index];
-    
-                                $lastSection = Appendices::max('appendices_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $appendices = Appendices::create([
-                                    'appendices_rank' => $i +1,
-                                    'appendices_no' => $currentAppendicesNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'main_order_id' => $main_order->main_order_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'appendices_title' => $appendicestitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 8) {
-                             $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->order_title[$key] as $index => $ordertitle) {
-                                $currentOrderNo = $request->order_no[$key][$index];
-                                $lastSection = Orders::max('order_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $order = Orders::create([
-                                    'order_rank' => $i +1 ,
-                                    'order_no' => $currentOrderNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'main_order_id' => $main_order->main_order_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'order_title' => $ordertitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 9) {
-                               $i = 0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
-                                $currentAnnexureNo = $request->annexure_no[$key][$index];
-                                $lastSection = Annexure::max('annexure_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $annexure = Annexure::create([
-                                    'annexure_rank' => $i +1,
-                                    'annexure_no' => $currentAnnexureNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'main_order_id' => $main_order->main_order_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'annexure_title' => $annexuretitle,
-                                    'serial_no' => $lastSerialNo
-                                ]);
-                            }
-                        } elseif ($request->subtypes_id[$key] == 10) {
-                             $i =0;
-                            $subtypes_id = $request->subtypes_id[$key] ?? null;
-                            foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
-                                $currentStscheduleNo = $request->stschedule_no[$key][$index];
-    
-                                $lastSection = Stschedule::max('stschedule_rank');
-                                $lastSection = ceil(floatval($lastSection));
-                                $lastSection = max(0, $lastSection);
-                                $lastSection = (int) $lastSection;
-    
-                                if($lastSection){ 
-                                   $i = $lastSection;
-                                }
-    
-                                $stschedule = Stschedule::create([
-                                    'stschedule_rank'=> $i + 1,
-                                    'stschedule_no' => $currentStscheduleNo,
-                                    'act_id' => $act->act_id,
-                                    'maintype_id' => $maintypeId,
-                                    'main_order_id' => $main_order->main_order_id,
-                                    'subtypes_id' => $subtypes_id,
-                                    'stschedule_title' => $stscheduletitle,
-                                    'serial_no' =>$lastSerialNo 
-                                ]);
-                            }
+
+                            $stschedule = Stschedule::create([
+                                'stschedule_rank'=> $i + 1,
+                                'stschedule_no' => $currentStscheduleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'chapter_id' => $chapt->chapter_id,
+                                'subtypes_id' => $subtypes_id,
+                                'stschedule_title' => $stscheduletitle,
+                                'serial_no' =>$lastSerialNo 
+                            ]);
                         }
                     }
-                    
-                    
-                    else {
-                        dd("something went wrong - right now we are working only in chapter and parts");
+                } elseif ($maintypeId == "2") {
+                    $parts = new Parts();
+                    $parts->act_id = $act->act_id ?? null;
+                    $parts->maintype_id = $maintypeId;
+                    $parts->partstype_id = $request->partstype_id[$key] ?? null;
+                    $parts->parts_title = $request->parts_title[$key] ?? null;
+                    $parts->serial_no = $lastSerialNo;
+                    $parts->save();
+                  
+                    MainTable::create([
+                        'main_rank' =>  $k + 0.1,
+                        'act_id' => $act->act_id,
+                        'maintype_id' => $maintypeId,
+                        'serial_no' => $lastSerialNo,
+                        'parts_id' =>$parts->parts_id
+                    ]);
+                    if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->section_title[$key] as $index => $sectiontitle) {
+                            if (
+                                isset($request->section_no[$key][$index]) &&
+                                is_string($request->section_no[$key][$index])
+                            ) {
+                                $currentSectionNo = $request->section_no[$key][$index];
+
+                                $lastSection = Section::max('section_rank');
+                                $lastSection = ceil(floatval($lastSection));
+                                $lastSection = max(0, $lastSection);
+                                $lastSection = (int) $lastSection;
+
+                                if($lastSection){
+                                   
+                                   $i = $lastSection;
+                                }       
+                                $section = Section::create([
+                                    'section_rank' => $i + 1,
+                                    'section_no' => $currentSectionNo,
+                                    'act_id' => $act->act_id,
+                                    'maintype_id' => $maintypeId,
+                                    'parts_id' => $parts->parts_id,
+                                    'subtypes_id' => $subtypes_id,
+                                    'section_title' => $sectiontitle,
+                                    'serial_no' => $lastSerialNo
+                                ]);
+                            }
+                        }
+                    } elseif ($request->subtypes_id[$key] == 2) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->article_title[$key] as $index => $articletitle) {
+                            $currentArticleNo = $request->article_no[$key][$index];
+                            $lastSection = Article::max('article_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){
+                               
+                               $i = $lastSection;
+                            }
+
+
+                            $article = Article::create([
+                                'article_rank' => $i +1,
+                                'article_no' => $currentArticleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'article_title' => $articletitle,
+                                'serial_no'=> $lastSerialNo,
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 3) {
+                        $i=0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->rule_title[$key] as $index => $ruletitle) {
+                            $currentRuleNo = $request->rule_no[$key][$index];
+                            $lastSection = Rules::max('rule_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $rule = Rules::create([
+                                'rule_rank'=> $i +1,
+                                'rule_no' => $currentRuleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'rule_title' => $ruletitle,
+                                'serial_no' =>$lastSerialNo,
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 4) {
+                         $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
+                            $currentRegulationNo = $request->regulation_no[$key][$index];
+                            $lastSection = Regulation::max('regulation_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $regulation = Regulation::create([
+                                'regulation_rank'=> $i +1,
+                                'regulation_no' => $currentRegulationNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'regulation_title' => $regulationtitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+
+                            // $regulationId = $regulation->regulation_id;
+
+                            // $form = Form::create([
+                            //     'regulation_id' => $regulationId,
+                            //     'act_id' => $act->act_id,
+                            //     'form_title' => $request->form_title,
+                            // ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 5) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->list_title[$key] as $index => $listtitle) {
+                            $currentListNo = $request->list_no[$key][$index];
+                            $lastSection = Lists::max('list_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+
+                            $list = Lists::create([
+                                'list_rank'=>$i + 1,
+                                'list_no' => $currentListNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'list_title' => $listtitle,
+                                'serial_no'=>$lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 6) {
+                       $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->part_title[$key] as $index => $parttitle) {
+                            $currentPartNo = $request->part_no[$key][$index];
+                            $lastSection = Part::max('part_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $part = Part::create([
+                                'part_rank' => $i + 1,
+                                'part_no' => $currentPartNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'part_title' => $parttitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 7) {
+                          $i=0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
+                            $currentAppendicesNo = $request->appendices_no[$key][$index];
+                            $lastSection = Appendices::max('appendices_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $appendices = Appendices::create([
+                                'appendices_rank' => $i + 1,
+                                'appendices_no' => $currentAppendicesNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'appendices_title' => $appendicestitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 8) {
+                          $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->order_title[$key] as $index => $ordertitle) {
+                            $currentOrderNo = $request->order_no[$key][$index];
+                            $lastSection = Orders::max('order_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $order = Orders::create([
+                                'order_rank' => $i + 1,
+                                'order_no' => $currentOrderNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'order_title' => $ordertitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 9) {
+                          $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
+                            $currentAnnexureNo = $request->annexure_no[$key][$index];
+                            $lastSection = Annexure::max('annexure_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $annexure = Annexure::create([
+                                'annexure_rank' => $i + 1,
+                                'annexure_no' => $currentAnnexureNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'annexure_title' => $annexuretitle,
+                                'serial_no'=> $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 10) {
+                         $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
+                            $currentStscheduleNo = $request->stschedule_no[$key][$index];
+                            $lastSection = Stschedule::max('stschedule_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+
+                            $stschedule = Stschedule::create([
+                                'stschedule_rank' => $i + 1,
+                                'stschedule_no' => $currentStscheduleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'parts_id' => $parts->parts_id,
+                                'subtypes_id' => $subtypes_id,
+                                'stschedule_title' => $stscheduletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    }
+                } elseif ($maintypeId == "3") {
+                    $priliminary = new Priliminary();
+                    $priliminary->act_id = $act->act_id ?? null;
+                    $priliminary->maintype_id = $maintypeId;
+                    $priliminary->priliminary_title = $request->priliminary_title[$key] ?? null;
+                    $priliminary->serial_no = $lastSerialNo;
+                    $priliminary->save();
+
+                    MainTable::create([
+                        'main_rank' =>  $k + 0.1,
+                        'act_id' => $act->act_id,
+                        'maintype_id' => $maintypeId,
+                        'serial_no' => $lastSerialNo,
+                        'priliminary_id' =>$priliminary->priliminary_id 
+                    ]);
+
+                    if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->section_title[$key] as $index => $sectiontitle) {
+                            if (
+                                isset($request->section_no[$key][$index]) &&
+                                is_string($request->section_no[$key][$index])
+                            ) {
+                                $currentSectionNo = $request->section_no[$key][$index];
+                                $lastSection = Section::max('section_rank');
+                                $lastSection = ceil(floatval($lastSection));
+                                $lastSection = max(0, $lastSection);
+                                $lastSection = (int) $lastSection;
+
+                                if($lastSection){
+                                   
+                                   $i = $lastSection;
+                                }     
+                                $section = Section::create([
+                                    'section_rank' => $i + 1,
+                                    'section_no' => $currentSectionNo,
+                                    'act_id' => $act->act_id,
+                                    'maintype_id' => $maintypeId,
+                                    'priliminary_id' => $priliminary->priliminary_id,
+                                    'subtypes_id' => $subtypes_id,
+                                    'section_title' => $sectiontitle,
+                                    'serial_no' => $lastSerialNo
+                                ]);
+                            }
+                        }
+                    } elseif ($request->subtypes_id[$key] == 2) {
+                        $i= 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->article_title[$key] as $index => $articletitle) {
+                            $currentArticleNo = $request->article_no[$key][$index];
+                            $lastSection = Article::max('article_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){
+                               
+                               $i = $lastSection;
+                            }
+                            $article = Article::create([
+                                'article_rank' => $i + 1,
+                                'article_no' => $currentArticleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'article_title' => $articletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 3) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->rule_title[$key] as $index => $ruletitle) {
+                            $currentRuleNo = $request->rule_no[$key][$index];
+
+                            $lastSection = Rules::max('rule_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $rule = Rules::create([
+                                'rule_rank'=> $i + 1,
+                                'rule_no' => $currentRuleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'rule_title' => $ruletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 4) {
+                         $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
+                            $currentRegulationNo = $request->regulation_no[$key][$index];
+   
+                            $lastSection = Regulation::max('regulation_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $regulation = Regulation::create([
+                                'regulation_rank' => $i + 1,
+                                'regulation_no' => $currentRegulationNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'regulation_title' => $regulationtitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+
+                            // $regulationId = $regulation->regulation_id;
+
+                            // $form = Form::create([
+                            //     'regulation_id' => $regulationId,
+                            //     'act_id' => $act->act_id,
+                            //     'form_title' => $request->form_title,
+                            // ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 5) {
+                       $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->list_title[$key] as $index => $listtitle) {
+                            $currentListNo = $request->list_no[$key][$index];
+                            $lastSection = Lists::max('list_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+
+                            $list = Lists::create([
+                                'list_rank'=> $i + 1,
+                                'list_no' => $currentListNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'list_title' => $listtitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 6) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->part_title[$key] as $index => $parttitle) {
+                            $currentPartNo = $request->part_no[$key][$index];
+
+                            $lastSection = Part::max('part_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+                            $part = Part::create([
+                                'part_rank' => $i + 1,
+                                'part_no' => $currentPartNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'part_title' => $parttitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 7) {
+                            $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
+                            $currentAppendicesNo = $request->appendices_no[$key][$index];
+
+                            $lastSection = Appendices::max('appendices_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+                            $appendices = Appendices::create([
+                                'appendices_rank' => $i + 1,
+                                'appendices_no' => $currentAppendicesNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'appendices_title' => $appendicestitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 8) {
+                          $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->order_title[$key] as $index => $ordertitle) {
+                            $currentOrderNo = $request->order_no[$key][$index];
+                            $lastSection = Orders::max('order_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+
+                            $order = Orders::create([
+                                'order_rank' => $i + 1,
+                                'order_no' => $currentOrderNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'order_title' => $ordertitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 9) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
+                            $currentAnnexureNo = $request->annexure_no[$key][$index];
+
+                            $lastSection = Annexure::max('annexure_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+                            $annexure = Annexure::create([
+                                'annexure_rank' => $i + 1,
+                                'annexure_no' => $currentAnnexureNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'annexure_title' => $annexuretitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    }elseif ($request->subtypes_id[$key] == 10) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
+                            $currentStscheduleNo = $request->stschedule_no[$key][$index];
+                            $lastSection = Stschedule::max('stschedule_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $stschedule = Stschedule::create([
+                                'stschedule_rank' => $i + 1,
+                                'stschedule_no' => $currentStscheduleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'priliminary_id' => $priliminary->priliminary_id,
+                                'subtypes_id' => $subtypes_id,
+                                'stschedule_title' => $stscheduletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    }
+                } elseif ($maintypeId == "4") {
+                    $schedule = new Schedule();
+                    $schedule->act_id = $act->act_id ?? null;
+                    $schedule->maintype_id = $maintypeId;
+                    $schedule->schedule_title = $request->schedule_title[$key] ?? null;
+                    $schedule->serial_no = $lastSerialNo;
+                    $schedule->save();
+
+                    MainTable::create([
+                        'main_rank' =>  $k + 0.1,
+                        'act_id' => $act->act_id,
+                        'maintype_id' => $maintypeId,
+                        'serial_no' => $lastSerialNo,
+                        'schedule_id' =>$schedule->schedule_id
+                    ]);
+
+                    if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->section_title[$key] as $index => $sectiontitle) {
+                            if (
+                                isset($request->section_no[$key][$index]) &&
+                                is_string($request->section_no[$key][$index])
+                            ) {
+                                $currentSectionNo = $request->section_no[$key][$index];
+
+                                $lastSection = Section::max('section_rank');
+                                $lastSection = ceil(floatval($lastSection));
+                                $lastSection = max(0, $lastSection);
+                                $lastSection = (int) $lastSection;
+
+                                if($lastSection){
+                                   
+                                   $i = $lastSection;
+                                }       
+                                $section = Section::create([
+                                    'section_rank' => $i + 1,
+                                    'section_no' => $currentSectionNo,
+                                    'act_id' => $act->act_id,
+                                    'maintype_id' => $maintypeId,
+                                    'schedule_id' => $schedule->schedule_id,
+                                    'subtypes_id' => $subtypes_id,
+                                    'section_title' => $sectiontitle,
+                                    'serial_no' => $lastSerialNo
+                                ]);
+                            }
+                        }
+                    } elseif ($request->subtypes_id[$key] == 2) {
+                        $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->article_title[$key] as $index => $articletitle) {
+                            $currentArticleNo = $request->article_no[$key][$index];
+                            $lastSection = Article::max('article_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){
+                               
+                               $i = $lastSection;
+                            }
+
+                            $article = Article::create([
+                                'article_rank' => $i + 1,
+                                'article_no' => $currentArticleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'article_title' => $articletitle,
+                                'serial_no'=> $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 3) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->rule_title[$key] as $index => $ruletitle) {
+                            $currentRuleNo = $request->rule_no[$key][$index];
+                            $lastSection = Rules::max('rule_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $rule = Rules::create([
+                                'rule_rank' => $i + 1,
+                                'rule_no' => $currentRuleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'rule_title' => $ruletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 4) {
+                       $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
+                            $currentRegulationNo = $request->regulation_no[$key][$index];
+                            $lastSection = Regulation::max('regulation_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+
+                            $regulation = Regulation::create([
+                                'regulation_rank' => $i + 1,
+                                'regulation_no' => $currentRegulationNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'regulation_title' => $regulationtitle,
+                                'serial_no' => $lastSerialNo,
+                            ]);
+
+                            // $regulationId = $regulation->regulation_id;
+
+                            // $form = Form::create([
+                            //     'regulation_id' => $regulationId,
+                            //     'act_id' => $act->act_id,
+                            //     'form_title' => $request->form_title,
+                            // ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 5) {
+                        $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->list_title[$key] as $index => $listtitle) {
+                            $currentListNo = $request->list_no[$key][$index];
+                            $lastSection = Lists::max('list_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+
+                            $list = Lists::create([
+                                'list_rank' => $i + 1,
+                                'list_no' => $currentListNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'list_title' => $listtitle,
+                                'serial_no' => $lastSerialNo,
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 6) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->part_title[$key] as $index => $parttitle) {
+                            $currentPartNo = $request->part_no[$key][$index];
+                            $lastSection = Part::max('part_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $part = Part::create([
+                                'part_rank' => $i + 1,
+                                'part_no' => $currentPartNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'part_title' => $parttitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 7) {
+                           $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
+                            $currentAppendicesNo = $request->appendices_no[$key][$index];
+
+                            
+                            $lastSection = Appendices::max('appendices_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+                            $appendices = Appendices::create([
+                                'appendices_rank'=> $i + 1,
+                                'appendices_no' => $currentAppendicesNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'appendices_title' => $appendicestitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 8) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->order_title[$key] as $index => $ordertitle) {
+                            $currentOrderNo = $request->order_no[$key][$index];
+                            $lastSection = Orders::max('order_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $order = Orders::create([
+                                'order_rank' => $i + 1,
+                                'order_no' => $currentOrderNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'order_title' => $ordertitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 9) {
+                       $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
+                            $currentAnnexureNo = $request->annexure_no[$key][$index];
+                            $lastSection = Annexure::max('annexure_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $annexure = Annexure::create([
+                                'annexure_rank' => $i + 1,
+                                'annexure_no' => $currentAnnexureNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'annexure_title' => $annexuretitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    }elseif ($request->subtypes_id[$key] == 10) {
+                          $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
+                            $currentStscheduleNo = $request->stschedule_no[$key][$index];
+                            $lastSection = Stschedule::max('stschedule_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+
+                            $stschedule = Stschedule::create([
+                                'stschedule_rank' => $i + 1,
+                                'stschedule_no' => $currentStscheduleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'schedule_id' => $schedule->schedule_id,
+                                'subtypes_id' => $subtypes_id,
+                                'stschedule_title' => $stscheduletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    }
+                } elseif ($maintypeId == "5") {
+                    $appendix = new Appendix();
+                    $appendix->act_id = $act->act_id ?? null;
+                    $appendix->maintype_id = $maintypeId;
+                    $appendix->appendix_title = $request->appendix_title[$key] ?? null;
+                    $appendix->serial_no = $lastSerialNo;
+                    $appendix->save();
+
+                    MainTable::create([
+                        'main_rank' =>  $k + 0.1,
+                        'act_id' => $act->act_id,
+                        'maintype_id' => $maintypeId,
+                        'serial_no' => $lastSerialNo,
+                        'appendix_id' =>$appendix->appendix_id
+                    ]);
+
+                    if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->section_title[$key] as $index => $sectiontitle) {
+                            if (
+                                isset($request->section_no[$key][$index]) &&
+                                is_string($request->section_no[$key][$index])
+                            ) {
+                                $currentSectionNo = $request->section_no[$key][$index];
+
+                                $lastSection = Section::max('section_rank');
+                                $lastSection = ceil(floatval($lastSection));
+                                $lastSection = max(0, $lastSection);
+                                $lastSection = (int) $lastSection;
+
+                                if($lastSection){   
+                                   $i = $lastSection;
+                                }     
+                                $section = Section::create([
+                                    'section_rank' => $i + 1,
+                                    'section_no' => $currentSectionNo,
+                                    'act_id' => $act->act_id,
+                                    'maintype_id' => $maintypeId,
+                                    'appendix_id' => $appendix->appendix_id,
+                                    'subtypes_id' => $subtypes_id,
+                                    'section_title' => $sectiontitle,
+                                    'serial_no' => $lastSerialNo,
+                                ]);
+                            }
+                        }
+                    } elseif ($request->subtypes_id[$key] == 2) {
+                        $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->article_title[$key] as $index => $articletitle) {
+                            $currentArticleNo = $request->article_no[$key][$index];
+                            $lastSection = Article::max('article_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){
+                               
+                               $i = $lastSection;
+                            }
+
+                            $article = Article::create([
+                                'article_rank' => $i + 1,
+                                'article_no' => $currentArticleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendix_id' => $appendix->appendix_id,
+                                'subtypes_id' => $subtypes_id,
+                                'article_title' => $articletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 3) {
+                        $i=0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->rule_title[$key] as $index => $ruletitle) {
+                            $currentRuleNo = $request->rule_no[$key][$index];
+                            $lastSection = Rules::max('rule_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $rule = Rules::create([
+                                'rule_rank' => $i + 1,
+                                'rule_no' => $currentRuleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendix_id' => $appendix->appendix_id,
+                                'subtypes_id' => $subtypes_id,
+                                'rule_title' => $ruletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 4) {
+                           $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
+                            $currentRegulationNo = $request->regulation_no[$key][$index];
+                            $lastSection = Regulation::max('regulation_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $regulation = Regulation::create([
+                                'regulation_rank' => $i + 1,
+                                'regulation_no' => $currentRegulationNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendix_id' => $appendix->appendix_id,
+                                'subtypes_id' => $subtypes_id,
+                                'regulation_title' => $regulationtitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+
+                            // $regulationId = $regulation->regulation_id;
+
+                            // $form = Form::create([
+                            //     'regulation_id' => $regulationId,
+                            //     'act_id' => $act->act_id,
+                            //     'form_title' => $request->form_title,
+                            // ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 5) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->list_title[$key] as $index => $listtitle) {
+                            $currentListNo = $request->list_no[$key][$index];
+                            $lastSection = Lists::max('list_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+
+                            $list = Lists::create([
+                                'list_rank' => $i + 1,
+                                'list_no' => $currentListNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendix_id' => $appendix->appendix_id,
+                                'subtypes_id' => $subtypes_id,
+                                'list_title' => $listtitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 6) {
+                       $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->part_title[$key] as $index => $parttitle) {
+                            $currentPartNo = $request->part_no[$key][$index];
+                            $lastSection = Part::max('part_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+
+                            $part = Part::create([
+                                'part_rank' => $i + 1,
+                                'part_no' => $currentPartNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendix_id' => $appendix->appendix_id,
+                                'subtypes_id' => $subtypes_id,
+                                'part_title' => $parttitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 7) {
+                          $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
+                            $currentAppendicesNo = $request->appendices_no[$key][$index];
+                            $lastSection = Appendices::max('appendices_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $appendices = Appendices::create([
+                                'appendices_rank' => $i + 1,
+                                'appendices_no' => $currentAppendicesNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendix_id' => $appendix->appendix_id,
+                                'subtypes_id' => $subtypes_id,
+                                'appendices_title' => $appendicestitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 8) {
+                          $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->order_title[$key] as $index => $ordertitle) {
+                            $currentOrderNo = $request->order_no[$key][$index];
+                            $lastSection = Orders::max('order_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+
+                            $order = Orders::create([
+                                'order_rank' => $i + 1,
+                                'order_no' => $currentOrderNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendix_id' => $appendix->appendix_id,
+                                'subtypes_id' => $subtypes_id,
+                                'order_title' => $ordertitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 9) {
+                        $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
+                            $currentAnnexureNo = $request->annexure_no[$key][$index];
+
+                            $lastSection = Annexure::max('annexure_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+                            $annexure = Annexure::create([
+                                'annexure_rank' => $i + 1,
+                                'annexure_no' => $currentAnnexureNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendix_id' => $appendix->appendix_id,
+                                'subtypes_id' => $subtypes_id,
+                                'annexure_title' => $annexuretitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    }elseif ($request->subtypes_id[$key] == 10) {
+                        $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
+                            $currentStscheduleNo = $request->stschedule_no[$key][$index];
+                            $lastSection = Stschedule::max('stschedule_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $stschedule = Stschedule::create([
+                                'stschedule_rank' => $i + 1,
+                                'stschedule_no' => $currentStscheduleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'appendix_id' => $appendix->appendix_id,
+                                'subtypes_id' => $subtypes_id,
+                                'stschedule_title' => $stscheduletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    }
+                } elseif ($maintypeId == "6") {
+                    $main_order = new MainOrder();
+                    $main_order->act_id = $act->act_id ?? null;
+                    $main_order->maintype_id = $maintypeId;
+                    $main_order->main_order_title = $request->main_order_title[$key] ?? null;
+                    $main_order->serial_no = $lastSerialNo;
+                    $main_order->save();
+
+                    MainTable::create([
+                        'main_rank' =>  $k + 0.1,
+                        'act_id' => $act->act_id,
+                        'maintype_id' => $maintypeId,
+                        'serial_no' => $lastSerialNo,
+                        'main_order_id' =>$main_order->main_order_id
+                    ]);
+
+                    if (isset($request->subtypes_id[$key]) && $request->subtypes_id[$key] == 1) {
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+
+                        $i = 0;
+                        foreach ($request->section_title[$key] as $index => $sectiontitle) {
+                            if (
+                                isset($request->section_no[$key][$index]) &&
+                                is_string($request->section_no[$key][$index])
+                            ) {
+                                $currentSectionNo = $request->section_no[$key][$index];
+
+                                $lastSection = Section::max('section_rank');
+                                $lastSection = ceil(floatval($lastSection));
+                                $lastSection = max(0, $lastSection);
+                                $lastSection = (int) $lastSection;
+
+                                if($lastSection){
+                                   
+                                   $i = $lastSection;
+                                }       
+                                $section = Section::create([
+                                    'section_rank' => $i + 1,
+                                    'section_no' => $currentSectionNo,
+                                    'act_id' => $act->act_id,
+                                    'maintype_id' => $maintypeId,
+                                    'main_order_id' => $main_order->main_order_id,
+                                    'subtypes_id' => $subtypes_id,
+                                    'section_title' => $sectiontitle,
+                                    'serial_no' => $lastSerialNo
+                                ]);
+                            }
+                        }
+                    } elseif ($request->subtypes_id[$key] == 2) {
+                        $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->article_title[$key] as $index => $articletitle) {
+                            $currentArticleNo = $request->article_no[$key][$index];
+                            $lastSection = Article::max('article_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){
+                               
+                               $i = $lastSection;
+                            }
+
+
+                            $article = Article::create([
+                                'article_rank' => $i + 1,
+                                'article_no' => $currentArticleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'main_order_id' => $main_order->main_order_id,
+                                'subtypes_id' => $subtypes_id,
+                                'article_title' => $articletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 3) {
+                        $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->rule_title[$key] as $index => $ruletitle) {
+                            $currentRuleNo = $request->rule_no[$key][$index];
+
+                            $lastSection = Rules::max('rule_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+
+                            $rule = Rules::create([
+                                'rule_rank' => $i + 1,
+                                'rule_no' => $currentRuleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'main_order_id' => $main_order->main_order_id,
+                                'subtypes_id' => $subtypes_id,
+                                'rule_title' => $ruletitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 4) {
+                         $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->regulation_title[$key] as $index => $regulationtitle) {
+                            $currentRegulationNo = $request->regulation_no[$key][$index];
+                              
+                            
+                            $lastSection = Regulation::max('regulation_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $regulation = Regulation::create([
+                                'regulation_rank' => $i + 1,
+                                'regulation_no' => $currentRegulationNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'main_order_id' => $main_order->main_order_id,
+                                'subtypes_id' => $subtypes_id,
+                                'regulation_title' => $regulationtitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+
+                            // $regulationId = $regulation->regulation_id;
+
+                            // $form = Form::create([
+                            //     'regulation_id' => $regulationId,
+                            //     'act_id' => $act->act_id,
+                            //     'form_title' => $request->form_title,
+                            // ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 5) {
+                        $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->list_title[$key] as $index => $listtitle) {
+                            $currentListNo = $request->list_no[$key][$index];
+                            $lastSection = Lists::max('list_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+
+                            $list = Lists::create([
+                                'list_rank' => $i + 1,
+                                'list_no' => $currentListNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'main_order_id' => $main_order->main_order_id,
+                                'subtypes_id' => $subtypes_id,
+                                'list_title' => $listtitle,
+                                'serial_no' =>$lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 6) {
+                             $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->part_title[$key] as $index => $parttitle) {
+                            $currentPartNo = $request->part_no[$key][$index];
+
+                            $lastSection = Part::max('part_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $part = Part::create([
+                                'part_rank'=> $i +1,
+                                'part_no' => $currentPartNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'main_order_id' => $main_order->main_order_id,
+                                'subtypes_id' => $subtypes_id,
+                                'part_title' => $parttitle,
+                                'serial_no' =>$lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 7) {
+                         $i =0; 
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->appendices_title[$key] as $index => $appendicestitle) {
+                            $currentAppendicesNo = $request->appendices_no[$key][$index];
+
+                            $lastSection = Appendices::max('appendices_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $appendices = Appendices::create([
+                                'appendices_rank' => $i +1,
+                                'appendices_no' => $currentAppendicesNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'main_order_id' => $main_order->main_order_id,
+                                'subtypes_id' => $subtypes_id,
+                                'appendices_title' => $appendicestitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 8) {
+                         $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->order_title[$key] as $index => $ordertitle) {
+                            $currentOrderNo = $request->order_no[$key][$index];
+                            $lastSection = Orders::max('order_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $order = Orders::create([
+                                'order_rank' => $i +1 ,
+                                'order_no' => $currentOrderNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'main_order_id' => $main_order->main_order_id,
+                                'subtypes_id' => $subtypes_id,
+                                'order_title' => $ordertitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 9) {
+                           $i = 0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->annexure_title[$key] as $index => $annexuretitle) {
+                            $currentAnnexureNo = $request->annexure_no[$key][$index];
+                            $lastSection = Annexure::max('annexure_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $annexure = Annexure::create([
+                                'annexure_rank' => $i +1,
+                                'annexure_no' => $currentAnnexureNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'main_order_id' => $main_order->main_order_id,
+                                'subtypes_id' => $subtypes_id,
+                                'annexure_title' => $annexuretitle,
+                                'serial_no' => $lastSerialNo
+                            ]);
+                        }
+                    } elseif ($request->subtypes_id[$key] == 10) {
+                         $i =0;
+                        $subtypes_id = $request->subtypes_id[$key] ?? null;
+                        foreach ($request->stschedule_title[$key] as $index => $stscheduletitle) {
+                            $currentStscheduleNo = $request->stschedule_no[$key][$index];
+
+                            $lastSection = Stschedule::max('stschedule_rank');
+                            $lastSection = ceil(floatval($lastSection));
+                            $lastSection = max(0, $lastSection);
+                            $lastSection = (int) $lastSection;
+
+                            if($lastSection){ 
+                               $i = $lastSection;
+                            }
+
+                            $stschedule = Stschedule::create([
+                                'stschedule_rank'=> $i + 1,
+                                'stschedule_no' => $currentStscheduleNo,
+                                'act_id' => $act->act_id,
+                                'maintype_id' => $maintypeId,
+                                'main_order_id' => $main_order->main_order_id,
+                                'subtypes_id' => $subtypes_id,
+                                'stschedule_title' => $stscheduletitle,
+                                'serial_no' =>$lastSerialNo 
+                            ]);
+                        }
                     }
                 }
-    
-                return redirect()->route('get_act_section', ['id' => $id,'page' => $currentPage])->with('success', 'Index added successfully');
-    
-            } catch (\Exception $e) {
-                \Log::error('Error creating Act: ' . $e->getMessage());
-    
-                return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
+                
+                
+                else {
+                    dd("something went wrong - right now we are working only in chapter and parts");
+                }
             }
+
+            return redirect()->route('get_act_section', ['id' => $id])->with('success', 'Index added successfully');
+
+        } catch (\Exception $e) {
+            \Log::error('Error creating Act: ' . $e->getMessage());
+
+            return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
         }
     }
 
     
-    public function add_new_parts_name($id, $parts_id){
-        $parts = Parts::where(['act_id' => $id, 'parts_id' => $parts_id])->get();
-          dd($parts);
-          die();
+    public function add_new_main_type(Request $request, $act_id, $main_id, $id){
+        $category = Category::all();
+        $status = Status::all();
+        $states = State::all();
+        $mtype = MainType::all();
+        $stype = SubType::all();
+        $parts = PartsType::all();
 
-          return view('admin.act.add_new_maintype');
+        $act = Act::where('act_id', $act_id)->first();
+        $showFormTitle = ($act->act_summary && in_array('6', json_decode($act->act_summary, true)));
+        $data = MainTable::where('main_id',$main_id)->first();
+        
+          return view('admin.act.add_new_maintype', compact('data','category', 'status', 'states', 'mtype', 'parts', 'stype', 'act', 'showFormTitle'));
         
 
     }

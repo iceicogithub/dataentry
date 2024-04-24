@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{ $sections->act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="{{ url('/get_act_section/' . $sections->act_id . '?perPage=10&page=' . $currentPage) }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                                         @elseif($sections->maintype_id == 3)
                                             <label class="float-label font-weight-bold">Priliminary :</label>
 
-                                            <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="pr_title">{{ $sections->Priliminarymodel->priliminary_title }}</textarea>
+                                            <textarea name="priliminary_title" class="form-control mb-3 priliminary_title" placeholder="Enter Priliminary Title" id="pr_title">{{ $sections->Priliminarymodel->priliminary_title }}</textarea>
                                         @elseif($sections->maintype_id == 4)
                                             <label class="float-label font-weight-bold">Schedule :</label>
 
@@ -81,7 +81,7 @@
                                             <label class="float-label font-weight-bold">Order :</label>
 
                                             <textarea name="main_order_title" class="form-control mb-3 main_order_title" placeholder="Enter Order Title"
-                                                id="a_title">{{ $sections->MainOrderModel->main_order_title }}</textarea>
+                                                id="m_title">{{ $sections->MainOrderModel->main_order_title }}</textarea>
                                         @else
                                             null
                                         @endif
@@ -132,10 +132,10 @@
                                                                     <div class="show-footnote" style="display: block">
                                                                         {{-- footnote for section --}}
                                                                         <input type="hidden"
-                                                                            name="sec_footnote_id[{{ $s }}][{{ $f }}]"
+                                                                            name="sec_footnote_id"
                                                                             value="{{ $footnote->footnote_id }}">
 
-                                                                        <textarea type="text" name="sec_footnote_content[{{ $s }}][{{ $f }}]"
+                                                                        <textarea type="text" name="sec_footnote_content"
                                                                             class="form-control ckeditor-replace footnote">{{ $footnote->footnote_content }}</textarea>
                                                                     </div>
                                                                 </div>
@@ -149,7 +149,7 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (Add footnote for section)
+                                                                (footnote)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-footnote">
@@ -157,20 +157,19 @@
                                                             </button>
                                                             <button type="button"
                                                                 class="btn btn-sm social youtube p-0 remove-multi-footnote">
-                                                                <i class="fa fa-minus"></i>
+                                                                <i class="fa fa-trash"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                 @endif
 
                                             </div>
-                                            @if ($sub_section_f->count() > 0 || $count > 0)
+                                            {{-- @if ($sub_section_f->count() > 0 || $count > 0)
                                                 <div class="col-md-12 px-0 py-3">
                                                     <div class="float-right">
                                                         <span style="font-size: small;"
                                                             class="px-2 text-uppercase font-weight-bold">
-                                                            (for add and remove Sub-Section and
-                                                            Footnote)
+                                                          
                                                         </span>
                                                         <button type="button"
                                                             class="btn btn-sm social facebook p-0 add-multi-addition">
@@ -182,7 +181,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            @endif --}}
                                         </div>
 
 
@@ -202,7 +201,7 @@
                                                                         <button type="button"
                                                                             class="btn btn-sm social facebook p-0 add-sub_section">
                                                                             <i
-                                                                                class="fa {{ $subSectionItem->sub_section_no ? 'fa-plus' : 'fa-minus' }}"></i>
+                                                                                class="fa {{ $subSectionItem->sub_section_no ? 'fa-minus' : 'fa-plus' }}"></i>
                                                                         </button>
                                                                     </span>
                                                                 </label>
@@ -214,15 +213,15 @@
                                                                             value="{{ $subSectionItem->sub_section_no ?? '' }}"
                                                                             placeholder="Enter Sub-Section No."
                                                                             style="width: 20%;"
-                                                                            data-index="{{ $k }}"">
+                                                                            data-index="{{ $k }}">
 
                                                                     </span>
                                                                     <textarea type="text" name="sub_section_content[{{ $k }}]"
                                                                         class="form-control ckeditor-replace sub_section">{{ $subSectionItem->sub_section_content ?? '' }}</textarea>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        @if (count($subSectionItem->footnoteModel) > 0)
+
+                                                             @if (count($subSectionItem->footnoteModel) > 0)
                                                             @foreach ($subSectionItem->footnoteModel as $a => $footnoteItem)
                                                                 <input type="hidden"
                                                                     name="sub_footnote_id[{{ $k }}][{{ $a }}]"
@@ -261,7 +260,7 @@
                                                                     <div class="float-right">
                                                                         <span style="font-size: small;"
                                                                             class="px-2 text-uppercase font-weight-bold">
-                                                                            (add Footnote for sub-section)
+                                                                            (FOOTNOTE)
                                                                         </span>
                                                                         <button type="button"
                                                                             class="btn btn-sm social facebook p-0 add-multi-footnote2">
@@ -269,70 +268,54 @@
                                                                         </button>
                                                                         <button type="button"
                                                                             class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                            <i class="fa fa-minus"></i>
+                                                                            <i class="fa fa-trash"></i>
                                                                         </button>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         @endif
 
-                                                        <div class="col-md-12 px-0 py-3">
+                                                        </div>
+                                                       
+                                                        {{-- <div class="col-md-12 px-0 py-3">
                                                             <div class="float-right">
                                                                 <span style="font-size: small;"
                                                                     class="px-2 text-uppercase font-weight-bold">
-                                                                    (for add and remove Sub-Section and
-                                                                    Footnote)
+                                                                    
                                                                 </span>
                                                                 <button type="button"
                                                                     class="btn btn-sm social facebook p-0 add-multi-addition">
                                                                     <i class="fa fa-plus"></i>
                                                                 </button>
-                                                                {{-- <button type="button"
+                                                                <button type="button"
                                                                     class="btn btn-sm social youtube p-0 remove-multi-addition">
                                                                     <i class="fa fa-minus"></i>
-                                                                </button> --}}
+                                                                </button>
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
                                                     </div>
                                                 </div>
                                             @endforeach
-                                        @else
-                                            <!-- If there are no subsections or footnotes, show the default section -->
+                                        @endif
                                             <div class="multi-addition-container col-md-12 px-0">
                                                 <div class="multi-addition">
                                                     <div class="col-md-12 px-0 py-3">
-                                                        <div class="float-right">
+                                                        <div class="float-right sub_section">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (for add and remove Sub-Section and
-                                                                Footnote)
+                                                               (Sub section)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-addition">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
-                                                            <button type="button"
-                                                                class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                                <i class="fa fa-minus"></i>
-                                                            </button>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
+                                     
 
-                                    </div>
-
-                                    <div class="form-group form-default" id="articleDiv" style="display: none">
-                                        <input type="text" class="form-control mb-3"
-                                            placeholder="Enter Article Title">
-                                        <textarea type="text" id="article" name="article" class="form-control ckeditor-replace article"></textarea>
-                                    </div>
-
-                                    <div class="form-group form-default" id="orderDiv" style="display: none">
-                                        <input type="text" class="form-control mb-3"
-                                            placeholder="Enter Order & Rules Title">
-                                        <textarea type="text" id="order" name="order" class="form-control ckeditor-replace order"></textarea>
                                     </div>
                                     <button class="btn btn-success">Submit</button>
                                 </div>
@@ -353,6 +336,9 @@
             CKEDITOR.replace('c_title');
             CKEDITOR.replace('p_title');
             CKEDITOR.replace('m_title');
+            CKEDITOR.replace('pr_title');
+            CKEDITOR.replace('a_title');
+            CKEDITOR.replace('s_title');
             CKEDITOR.replace('section');
             CKEDITOR.replace('section_title');
             CKEDITOR.replace('state_amendment');
@@ -409,6 +395,7 @@
                 var lastInput = $('[data-index]:last').data('index');
                 // Find the clicked element's index
                 var clickedIndex = $(this).closest('.multi-addition').index();
+                console.log(clickedIndex);
 
                 // Find the maximum sectionCounterIndex among all elements
                 var maxSectionCounterIndex = 0;
@@ -426,61 +413,57 @@
 
                 var newSection = `
                                 <div class="multi-addition">
-                                    <div class="border col-md-12 p-3">
-                                        <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                                            <label class="float-label">
-                                            Add Sub-Section
-                                            <span class="pl-2">
-                                                <button type="button" class="btn btn-sm social facebook p-0 add-sub_section">
-                                                <i class="fa fa-plus"></i>
-                                                </button>
-                                            </span>
-                                            </label>
-                                            <div class="show-sub_section" style="display: none">
-                                                <span class="d-flex"><input type="text" name="sub_section_no[${sectionCounterIndex}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Section No." data-index="${sectionCounterIndex}">  </span>
-                                                <textarea type="text" name="sub_section_content[${sectionCounterIndex}]" class="form-control ckeditor-replace sub_section" placeholder="Enter Sub-Section Ttile"></textarea>
+                                    <div class="border col-md-12 p-3 sub_section_box">
+                                        <button type="button"
+                                            class="btn btn-sm social youtube p-0 remove-multi-addition">
+                                                 <i class="fa fa-trash"></i>
+                                         </button>
+
+                                        <div>
+                                            <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
+                                                <label class="float-label">
+                                                Add Sub-Section
+                                                <span class="pl-2">
+                                                    <button type="button" class="btn btn-sm social facebook p-0 add-sub_section">
+                                                    <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </span>
+                                                </label>
+                                                <div class="show-sub_section" style="display: none">
+                                                    <span class="d-flex"><input type="text" name="sub_section_no[${sectionCounterIndex}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Section No." data-index="${sectionCounterIndex}">  </span>
+                                                    <textarea type="text" name="sub_section_content[${sectionCounterIndex}]" class="form-control ckeditor-replace sub_section" placeholder="Enter Sub-Section Ttile"></textarea>
+                                                </div>
                                             </div>
                                         </div>
                                     
                                         <div class="footnote2-addition-container">
-                                                            <div class="col-md-12 px-0 py-3">
-                                                                <div class="float-right">
-                                                                    <span style="font-size: small;"
-                                                                        class="px-2 text-uppercase font-weight-bold">
-                                                                        (Add footnote for sub-section)
-                                                                    </span>
-                                                                    <button type="button"
-                                                                        class="btn btn-sm social facebook p-0 add-multi-footnote2">
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                        <i class="fa fa-minus"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
+                                            <div class="col-md-12 px-0 py-3">
+                                                <div class="float-right">
+                                                    <span style="font-size: small;"
+                                                        class="px-2 text-uppercase font-weight-bold">
+                                                        (footnote)
+                                                    </span>
+                                                    <button type="button"
+                                                        class="btn btn-sm social facebook p-0 add-multi-footnote2">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                    <button type="button"
+                                                        class="btn btn-sm social youtube p-0 remove-multi-footnote2">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 px-0 py-3">
-                                        <div class="float-right">
-                                            <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                            ( for add and remove Sub-Section and Footnote )
-                                            </span>
-                                            <button type="button" class="btn btn-sm social facebook p-0 add-multi-addition">
-                                            <i class="fa fa-plus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                            <i class="fa fa-minus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                                 `;
 
+                              
 
                 // $('.multi-addition-container').append(newSection);
-                var $clickedElement = $(this).closest('.multi-addition');
-                $clickedElement.after(newSection);
+                // var $clickedElement = $(this).closest('.multi-addition');
+                $('.multi-addition').last().after(newSection);
 
 
 
@@ -489,7 +472,7 @@
 
                 // Update sub_section_no and sub_section_content names in all elements
                 $('.multi-addition').each(function(index) {
-                    var newIndex = index + 1;
+                    var newIndex = index;
                     $(this).find(`[name^="sub_section_no["]`).attr('name',
                         `sub_section_no[${newIndex}]`);
                     $(this).find(`[name^="sub_section_content["]`).attr('name',
@@ -501,18 +484,10 @@
                 sub_sectionCounter = 0;
 
             });
-
             $(document).on('click', '.remove-multi-addition', function() {
-                var $clickedElement = $(this).closest('.multi-addition');
-
-                if ($('.multi-addition').length > 0) {
-                    $clickedElement.remove();
-
-                    // Find the index of the clicked element
-                    var index = $('.multi-addition').index($clickedElement);
-                }
+                $(this).closest('.multi-addition').remove();
+            
             });
-
             //  for sub section footnote 
             $(document).on('click', '.add-multi-footnote2', function() {
                 // Find the closest multi-addition container
@@ -551,6 +526,7 @@
                     var footnote2AdditionContainer = multiAdditionContainer.find(
                         '.footnote2-addition-container');
                     footnote2AdditionContainer.append(newSection);
+                    $(this).hide();
 
                     // CKEDITOR.replace(footnote2AdditionContainer.find('.footnote2-addition:last').find(
                     //     '.ckeditor-replace')[0]);
@@ -567,20 +543,26 @@
             });
 
             $(document).on('click', '.remove-multi-footnote2', function() {
-                if ($('.footnote2-addition').length > 0) {
-                    $('.footnote2-addition:last').remove();
+                // Find the container for the current footnote2 addition
+                var footnote2AdditionContainer = $(this).closest('.footnote2-addition-container');
+                
+                // Find the last footnote2 addition within the current container
+                var lastFootnote2Addition = footnote2AdditionContainer.find('.footnote2-addition:last');
+
+                if (lastFootnote2Addition.length > 0) {
+                    // Remove the last footnote2 addition
+                    lastFootnote2Addition.remove();
+                    
+                    // Check if there are any remaining footnotes in this sub-section
+                    if (footnote2AdditionContainer.find('.footnote2-addition').length === 0) {
+                        // Show the corresponding "+ Add Footnote" button for this sub-section
+                        footnote2AdditionContainer.find('.add-multi-footnote2').show();
+                    }
                 }
             });
 
             // for section footnote 
             $(document).on('click', '.add-multi-footnote', function() {
-
-                var lastInputFoot = $('[data-footsecindex]:last').data('footsecindex');
-                var lastInputSec = $('[data-secindex]:last').data('secindex');
-                // console.log(lastInputFoot);
-                var footCounterIndex = parseInt(lastInputFoot) + 1;
-                // console.log(footCounterIndex);
-
                 var newSection = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
                                         <label class="float-label">
                                         Add Footnote
@@ -591,25 +573,22 @@
                                         </span>
                                         </label>
                                         <div class="show-footnote" style="display: none">
-                                            <textarea type="text" name="sec_footnote_content[${lastInputSec}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
+                                            <textarea type="text" name="sec_footnote_content" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
-                                   
-                                       
-                                    </div>
-                                    
-                                `;
+                                    </div>`;
 
-                $('.footnote-addition-container').append(newSection);
+                        $('.footnote-addition-container').html(newSection); // Replace existing content with new section
+                        $(this).hide();
 
-                CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[0]);
-                // CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[1]);
+                        CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[0]);
 
-                sectionCounter++; // Increment the counter for the next section
+                        sectionCounter++; // Increment the counter for the next section
             });
 
             $(document).on('click', '.remove-multi-footnote', function() {
                 if ($('.footnote-addition').length > 0) {
                     $('.footnote-addition:last').remove();
+                    $('.add-multi-footnote').show();
                 }
             });
 

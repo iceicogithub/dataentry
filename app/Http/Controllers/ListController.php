@@ -41,8 +41,8 @@ class ListController extends Controller
 
    public function update(Request $request, $id)
    {
-       // dd($request);
-       // die();
+    //    dd($request);
+    //    die();
 
        // try {
            $currentPage = $request->currentPage;
@@ -116,20 +116,21 @@ class ListController extends Controller
 
 
                if ($request->has('list_footnote_content')) {
-                   foreach ($request->list_footnote_content as $key => $items) {
-                       // Check if the key exists before using it
-                       foreach ($items as $kys => $item) {
+                $item = $request->list_footnote_content;
                            // Check if the sec_footnote_id exists at the specified index
-                           if (isset($request->list_footnote_id[$key][$kys])) {
+                           if ($request->has('list_footnote_id')) {
+                            $footnote_id = $request->list_footnote_id;
                                // Use first() instead of get() to get a single model instance
-                               $foot = Footnote::find($request->list_footnote_id[$key][$kys]);
+                               if (isset($footnote_id)) {
+                                $foot = Footnote::find($footnote_id);
 
-                               if ($foot) {
-                                   $foot->update([
-                                       'footnote_content' => $item ?? null,
-                                       'footnote_no' => $request->list_footnote_no[$key][$kys] ?? null,
-                                   ]);
-                               }
+                                    if ($foot) {
+                                        $foot->update([
+                                            'footnote_content' => $item ?? null,
+                                            'footnote_no' => $request->list_footnote_no ?? null,
+                                        ]);
+                                    }
+                                } 
                            } else {
                                // Create a new footnote
                                $footnote = new Footnote();
@@ -145,8 +146,6 @@ class ListController extends Controller
                                $footnote->footnote_content = $item ?? null;
                                $footnote->save();
                            }
-                       }
-                   }
                }
            }
 
@@ -154,33 +153,25 @@ class ListController extends Controller
 
            if ($request->has('sub_list_no')) {
                foreach ($request->sub_list_no as $key => $item) {
+                $sub_list_id = $request->sub_list_id[$key] ?? null;
+                $sub_list_content = $request->sub_list_content[$key] ?? null;
                    // Check if sub_section_id is present in the request
-                   if ($request->filled('sub_list_id') && is_array($request->sub_list_id) && array_key_exists($key, $request->sub_list_id)) {
+                   if ($sub_list_id && $existingSubList = SubLists::find($sub_list_id)) {
+                        $existingSubList->update([
+                            'sub_list_no' => $item,
+                            'sub_list_content' => $sub_list_content,
+                        ]);
 
-                       $sub_list = SubLists::find($request->sub_list_id[$key]);
+                           if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                               foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
 
-                       // Check if $sub_section is found in the database and the IDs match
-                       if ($sub_list && $sub_list->sub_list_id == $request->sub_list_id[$key]) {
-                           $sub_list->sub_list_no = $item ?? null;
-                           $sub_list->sub_list_content = $request->sub_list_content[$key] ?? null;
-                           $sub_list->update();
-
-                           if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                               foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                                   // Check if the sec_footnote_id exists at the specified index
-                                   if (isset($request->sub_footnote_id[$key][$kys])) {
-                                       // Use first() instead of get() to get a single model instance
-                                       $foot = Footnote::find($request->sub_footnote_id[$key][$kys]);
-
-                                       if ($foot) {
-                                           $foot->update([
-                                               'footnote_content' => $item ?? null,
-                                           ]);
-                                       }
-                                   } else {
-                                       // Create a new footnote only if sub_footnote_id does not exist
+                                $footnote_id = $request->sub_footnote_id[$key][$kys] ?? null;
+                                if ($footnote_id && $foot = Footnote::find($footnote_id)) {
+                                    $foot->update(['footnote_content' => $footnote_content]);
+                                }
+                                else {
                                        $footnote = new Footnote();
-                                       $footnote->sub_list_id = $sub_list->sub_list_id;
+                                       $footnote->sub_list_id = $sub_list_id;
                                        $footnote->list_id = $id ?? null;
                                        $footnote->act_id = $list->act_id ?? null;
                                        $footnote->chapter_id = $list->chapter_id ?? null;
@@ -191,10 +182,11 @@ class ListController extends Controller
                                        $footnote->appendix_id = $list->appendix_id ?? null;
                                        $footnote->footnote_content = $item ?? null;
                                        $footnote->save();
-                                   }
+                                }
+                                   // Check if the sec_footnote_id exists at the specified index
+                                   
                                }
                            }
-                       }
                    } else {
                        // Existing subsection not found, create a new one
                        $sublist = new SubLists();
@@ -208,14 +200,12 @@ class ListController extends Controller
                        $sublist->priliminary_id = $list->priliminary_id ?? null;
                        $sublist->schedule_id = $list->schedule_id ?? null;
                        $sublist->appendix_id = $list->appendix_id ?? null;
-                       $sublist->sub_list_content = $request->sub_list_content[$key] ?? null;
+                       $sublist->sub_list_content = $sub_list_content ?? null;
                        $sublist->save();
 
-                       if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                           foreach ($request->sub_footnote_content[$key] as $kys => $item) {
+                       if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                           foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
                                // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
-                               if (isset($request->sub_footnote_content[$key][$kys])) {
-                                   // Create a new footnote for the newly created subsection
                                    $footnote = new Footnote();
                                    $footnote->sub_list_id = $sublist->sub_list_id;
                                    $footnote->list_id = $id ?? null;
@@ -226,10 +216,8 @@ class ListController extends Controller
                                    $footnote->priliminary_id = $list->priliminary_id ?? null;
                                    $footnote->schedule_id = $list->schedule_id ?? null;
                                    $footnote->appendix_id = $list->appendix_id ?? null;
-                                   $footnote->footnote_content = $item ?? null;
-                                   $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
+                                   $footnote->footnote_content = $footnote_content ?? null;
                                    $footnote->save();
-                               }
                            }
                        }
                    }

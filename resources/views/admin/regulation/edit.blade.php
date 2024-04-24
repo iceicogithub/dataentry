@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/get_act_section/{{ $regulation->act_id }}"><button class="btn btn-success">Back</button></a>
+                        <a href="{{ url('/get_act_section/' . $regulation->act_id . '?perPage=10&page=' . $currentPage) }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                                             @elseif($regulation->maintype_id == 3)
                                                 <label class="float-label font-weight-bold">Priliminary :</label>
 
-                                                <textarea name="parts_title" class="form-control mb-3 parts_title" placeholder="Enter Parts Title" id="pr_title">{{ $regulation->Priliminarymodel->priliminary_title }}</textarea>
+                                                <textarea name="priliminary_title" class="form-control mb-3 priliminary_title" placeholder="Enter Priliminary Title" id="pr_title">{{ $regulation->Priliminarymodel->priliminary_title }}</textarea>
                                             @elseif($regulation->maintype_id == 4)
                                                 <label class="float-label font-weight-bold">Schedule :</label>
 
@@ -131,10 +131,10 @@
                                                                     <div class="show-footnote" style="display: block">
                                                                         {{-- footnote for section --}}
                                                                         <input type="hidden"
-                                                                            name="regulation_footnote_id[{{ $s }}][{{ $f }}]"
+                                                                            name="regulation_footnote_id"
                                                                             value="{{ $footnote->footnote_id }}">
 
-                                                                        <textarea type="text" name="regulation_footnote_content[{{ $s }}][{{ $f }}]"
+                                                                        <textarea type="text" name="regulation_footnote_content"
                                                                             class="form-control ckeditor-replace footnote">{{ $footnote->footnote_content }}</textarea>
                                                                     </div>
                                                                 </div>
@@ -148,7 +148,7 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (Add footnote for regulation)
+                                                                (FOOTNOTE)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-footnote">
@@ -156,20 +156,19 @@
                                                             </button>
                                                             <button type="button"
                                                                 class="btn btn-sm social youtube p-0 remove-multi-footnote">
-                                                                <i class="fa fa-minus"></i>
+                                                                <i class="fa fa-trash"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                 @endif
 
                                             </div>
-                                            @if ($sub_regulation_f->count() > 0 || $count > 0)
+                                            {{-- @if ($sub_regulation_f->count() > 0 || $count > 0)
                                                 <div class="col-md-12 px-0 py-3">
                                                     <div class="float-right">
                                                         <span style="font-size: small;"
                                                             class="px-2 text-uppercase font-weight-bold">
-                                                            (for add and remove Sub-Regulation and
-                                                            Footnote)
+                                                           
                                                         </span>
                                                         <button type="button"
                                                             class="btn btn-sm social facebook p-0 add-multi-addition">
@@ -181,7 +180,7 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            @endif --}}
                                         </div>
 
 
@@ -220,82 +219,65 @@
                                                                         class="form-control ckeditor-replace sub_section">{{ $subRegulationItem->sub_regulation_content ?? '' }}</textarea>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        @if (count($subRegulationItem->footnoteModel) > 0)
-                                                            @foreach ($subRegulationItem->footnoteModel as $a => $footnoteItem)
-                                                                <input type="hidden"
-                                                                    name="sub_footnote_id[{{ $k }}][{{ $a }}]"
-                                                                    value="{{ $footnoteItem->footnote_id }}">
-                                                                <div class="border col-md-12 p-3">
-                                                                    <div
-                                                                        class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                                                                        <div class="d-flex justify-content-between">
-                                                                            <label class="float-label">
-                                                                                Add Footnote
-                                                                                <span class="pl-2">
-                                                                                    <button type="button"
-                                                                                        class="btn btn-sm social facebook p-0 add-footnote">
-                                                                                        <i
-                                                                                            class="fa {{ !empty($footnoteItem->footnote_content) ? 'fa-minus' : 'fa-plus' }}"></i>
-                                                                                    </button>
-                                                                                </span>
-                                                                            </label>
-                                                                            <div>
-                                                                                <a href="{{ url('/delete_footnote/' . $footnoteItem->footnote_id) }}"
-                                                                                    onclick="return confirm('Are you sure ?')"><i
-                                                                                        class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
+                                                            @if (count($subRegulationItem->footnoteModel) > 0)
+                                                                @foreach ($subRegulationItem->footnoteModel as $a => $footnoteItem)
+                                                                    <input type="hidden"
+                                                                        name="sub_footnote_id[{{ $k }}][{{ $a }}]"
+                                                                        value="{{ $footnoteItem->footnote_id }}">
+                                                                    <div class="border col-md-12 p-3">
+                                                                        <div
+                                                                            class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <label class="float-label">
+                                                                                    Add Footnote
+                                                                                    <span class="pl-2">
+                                                                                        <button type="button"
+                                                                                            class="btn btn-sm social facebook p-0 add-footnote">
+                                                                                            <i
+                                                                                                class="fa {{ !empty($footnoteItem->footnote_content) ? 'fa-minus' : 'fa-plus' }}"></i>
+                                                                                        </button>
+                                                                                    </span>
+                                                                                </label>
+                                                                                <div>
+                                                                                    <a href="{{ url('/delete_footnote/' . $footnoteItem->footnote_id) }}"
+                                                                                        onclick="return confirm('Are you sure ?')"><i
+                                                                                            class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="show-footnote">
+                                                                                <textarea type="text" name="sub_footnote_content[{{ $k }}][{{ $a }}]"
+                                                                                    class="form-control ckeditor-replace footnote">{{ $footnoteItem->footnote_content ?? '' }}</textarea>
                                                                             </div>
                                                                         </div>
-
-                                                                        <div class="show-footnote">
-                                                                            <textarea type="text" name="sub_footnote_content[{{ $k }}][{{ $a }}]"
-                                                                                class="form-control ckeditor-replace footnote">{{ $footnoteItem->footnote_content ?? '' }}</textarea>
+                                                                    </div>
+                                                                @endforeach
+                                                            @else
+                                                                <div class="footnote2-addition-container">
+                                                                    <div class="col-md-12 px-0 py-3">
+                                                                        <div class="float-right">
+                                                                            <span style="font-size: small;"
+                                                                                class="px-2 text-uppercase font-weight-bold">
+                                                                                (FOOTNOTE)
+                                                                            </span>
+                                                                            <button type="button"
+                                                                                class="btn btn-sm social facebook p-0 add-multi-footnote2">
+                                                                                <i class="fa fa-plus"></i>
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                class="btn btn-sm social youtube p-0 remove-multi-footnote2">
+                                                                                <i class="fa fa-trash"></i>
+                                                                            </button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            @endforeach
-                                                        @else
-                                                            <div class="footnote2-addition-container">
-                                                                <div class="col-md-12 px-0 py-3">
-                                                                    <div class="float-right">
-                                                                        <span style="font-size: small;"
-                                                                            class="px-2 text-uppercase font-weight-bold">
-                                                                            (add Footnote for sub-regulation)
-                                                                        </span>
-                                                                        <button type="button"
-                                                                            class="btn btn-sm social facebook p-0 add-multi-footnote2">
-                                                                            <i class="fa fa-plus"></i>
-                                                                        </button>
-                                                                        <button type="button"
-                                                                            class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                            <i class="fa fa-minus"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        @endif
-
-                                                        <div class="col-md-12 px-0 py-3">
-                                                            <div class="float-right">
-                                                                <span style="font-size: small;"
-                                                                    class="px-2 text-uppercase font-weight-bold">
-                                                                    (for add and remove Sub-Regulation and
-                                                                    Footnote)
-                                                                </span>
-                                                                <button type="button"
-                                                                    class="btn btn-sm social facebook p-0 add-multi-addition">
-                                                                    <i class="fa fa-plus"></i>
-                                                                </button>
-                                                                {{-- <button type="button"
-                                                                    class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                                    <i class="fa fa-minus"></i>
-                                                                </button> --}}
-                                                            </div>
+                                                            @endif
                                                         </div>
+                                                    
                                                     </div>
                                                 </div>
                                             @endforeach
-                                        @else
+                                        @endif
                                             <!-- If there are no subsections or footnotes, show the default section -->
                                             <div class="multi-addition-container col-md-12 px-0">
                                                 <div class="multi-addition">
@@ -303,22 +285,18 @@
                                                         <div class="float-right">
                                                             <span style="font-size: small;"
                                                                 class="px-2 text-uppercase font-weight-bold">
-                                                                (for add and remove Sub-Regulation and
-                                                                Footnote)
+                                                               (SUB REGULATION)
                                                             </span>
                                                             <button type="button"
                                                                 class="btn btn-sm social facebook p-0 add-multi-addition">
                                                                 <i class="fa fa-plus"></i>
                                                             </button>
-                                                            <button type="button"
-                                                                class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                                                <i class="fa fa-minus"></i>
-                                                            </button>
+                                                           
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endif
+                                       
 
                                     </div>
 
@@ -396,19 +374,18 @@
                 initializeCKEditor();
             });
 
-            let regulationCounter = 1;
+            let regulationCounter = 0;
             let sub_regulationCounter = 0;
             let subRegulationIndex = 0;
-            let currentIndex;
 
-            // for adding sub section and footnote
+          // for adding sub regulation and footnote
             $(document).on('click', '.add-multi-addition', function() {
                 var lastInput = $('[data-index]:last').data('index');
                 // Find the clicked element's index
                 var clickedIndex = $(this).closest('.multi-addition').index();
 
-                // Find the maximum sectionCounterIndex among all elements
-                var maxRegulationCounterIndex = 0;
+                // Find the maximum regulationCounterIndex among all elements
+                var maxRegulationCounterIndex = $('.multi-addition').length > 0 ? 0 : -1;
 
                 $('.multi-addition').each(function() {
                     var index = parseInt($(this).find('[data-index]').data('index'));
@@ -417,87 +394,71 @@
                     }
                 });
 
-                // Calculate the new sectionCounterIndex based on the clicked index
-                var RegulationCounterIndex = Math.max(clickedIndex, maxRegulationCounterIndex) + 1;
-
+                // Calculate the new regulationCounterIndex based on the clicked index
+                var regulationCounterIndex = maxRegulationCounterIndex + 1;
 
                 var newRegulation = `
-                                <div class="multi-addition">
-                                    <div class="border col-md-12 p-3">
-                                        <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
-                                            <label class="float-label">
-                                            Add Sub-Regulation
-                                            <span class="pl-2">
-                                                <button type="button" class="btn btn-sm social facebook p-0 add-sub_regulation">
-                                                <i class="fa fa-plus"></i>
-                                                </button>
-                                            </span>
-                                            </label>
-                                            <div class="show-sub_regulation" style="display: none">
-                                                <span class="d-flex"><input type="text" name="sub_regulation_no[${RegulationCounterIndex}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Regulation No." data-index="${RegulationCounterIndex}">  </span>
-                                                <textarea type="text" name="sub_regulation_content[${RegulationCounterIndex}]" class="form-control ckeditor-replace sub_regulation" placeholder="Enter Sub-Regulation Ttile"></textarea>
-                                            </div>
-                                        </div>
-                                    
-                                        <div class="footnote2-addition-container">
-                                                            <div class="col-md-12 px-0 py-3">
-                                                                <div class="float-right">
-                                                                    <span style="font-size: small;"
-                                                                        class="px-2 text-uppercase font-weight-bold">
-                                                                        (Add footnote for sub-regulation)
-                                                                    </span>
-                                                                    <button type="button"
-                                                                        class="btn btn-sm social facebook p-0 add-multi-footnote2">
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="btn btn-sm social youtube p-0 remove-multi-footnote2">
-                                                                        <i class="fa fa-minus"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 px-0 py-3">
-                                        <div class="float-right">
-                                            <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
-                                            ( for add and remove Sub-Regulation and Footnote )
-                                            </span>
-                                            <button type="button" class="btn btn-sm social facebook p-0 add-multi-addition">
+                    <div class="multi-addition">
+                        <div class="border col-md-12 p-3">
+                            <button type="button" class="btn btn-sm social youtube p-0 remove-multi-addition">
+                                <i class="fa fa-trash   "></i>
+                                </button>
+                            <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
+                                <label class="float-label">
+                                    Add Sub-Regulation
+                                    <span class="pl-2">
+                                        <button type="button" class="btn btn-sm social facebook p-0 add-sub_regulation">
+                                        <i class="fa fa-plus"></i>
+                                        </button>
+                                    </span>
+                                </label>
+                                <div class="show-sub_regulation" style="display: none">
+                                    <span class="d-flex"><input type="text" name="sub_regulation_no[${regulationCounterIndex}]" class="form-control mb-3" style="width: 20%" placeholder="Enter Sub-Regulation No." data-index="${regulationCounterIndex}">  </span>
+                                    <textarea type="text" name="sub_regulation_content[${regulationCounterIndex}]" class="form-control ckeditor-replace sub_regulation" placeholder="Enter Sub-Regulation Ttile"></textarea>
+                                </div>
+                            </div>
+                        
+                            <div class="footnote2-addition-container">
+                                <div class="col-md-12 px-0 py-3">
+                                    <div class="float-right">
+                                        <span style="font-size: small;" class="px-2 text-uppercase font-weight-bold">
+                                            (Add footnote)
+                                        </span>
+                                        <button type="button" class="btn btn-sm social facebook p-0 add-multi-footnote2">
                                             <i class="fa fa-plus"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-sm social youtube p-0 remove-multi-addition">
-                                            <i class="fa fa-minus"></i>
-                                            </button>
-                                        </div>
+                                        </button>
+                                        <button type="button" class="btn btn-sm social youtube p-0 remove-multi-footnote2">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
                                     </div>
                                 </div>
-                                `;
-
+                            </div>
+                        </div>
+                        
+                    </div>
+                `;
 
                 // $('.multi-addition-container').append(newSection);
-                var $clickedElement = $(this).closest('.multi-addition');
-                $clickedElement.after(newRegulation);
-
+                // var $clickedElement = $(this).closest('.multi-addition');
+                $('.multi-addition').last().after(newRegulation);
 
 
                 CKEDITOR.replace($('.multi-addition:last').find('.ckeditor-replace')[0]);
                 CKEDITOR.replace($('.multi-addition:last').find('.ckeditor-replace')[1]);
 
-                // Update sub_section_no and sub_section_content names in all elements
+                // Update sub_regulation_no and sub_regulation_content names in all elements
                 $('.multi-addition').each(function(index) {
-                    var newIndex = index + 1;
-                    $(this).find(`[name^="sub_regulation_no["]`).attr('name',
-                        `sub_regulation_no[${newIndex}]`);
-                    $(this).find(`[name^="sub_regulation_content["]`).attr('name',
-                        `sub_regulation_content[${newIndex}]`);
+                    var newIndex = index;
+                    $(this).find(`[name^="sub_regulation_no["]`).attr('name', `sub_regulation_no[${newIndex}]`);
+                    $(this).find(`[name^="sub_regulation_content["]`).attr('name', `sub_regulation_content[${newIndex}]`);
                     $(this).find('[data-index]').attr('data-index', newIndex);
                 });
 
-                regulationCounter++;
+                subRegulationIndex++;
                 sub_regulationCounter = 0;
-
             });
+
+
 
             $(document).on('click', '.remove-multi-addition', function() {
                 var $clickedElement = $(this).closest('.multi-addition');
@@ -548,6 +509,7 @@
                     var footnote2AdditionContainer = multiAdditionContainer.find(
                         '.footnote2-addition-container');
                     footnote2AdditionContainer.append(newRegulation);
+                    $(this).hide();
 
                     // CKEDITOR.replace(footnote2AdditionContainer.find('.footnote2-addition:last').find(
                     //     '.ckeditor-replace')[0]);
@@ -564,18 +526,26 @@
             });
 
             $(document).on('click', '.remove-multi-footnote2', function() {
-                if ($('.footnote2-addition').length > 0) {
-                    $('.footnote2-addition:last').remove();
+                // Find the container for the current footnote2 addition
+                var footnote2AdditionContainer = $(this).closest('.footnote2-addition-container');
+                
+                // Find the last footnote2 addition within the current container
+                var lastFootnote2Addition = footnote2AdditionContainer.find('.footnote2-addition:last');
+
+                if (lastFootnote2Addition.length > 0) {
+                    // Remove the last footnote2 addition
+                    lastFootnote2Addition.remove();
+                    
+                    // Check if there are any remaining footnotes in this sub-section
+                    if (footnote2AdditionContainer.find('.footnote2-addition').length === 0) {
+                        // Show the corresponding "+ Add Footnote" button for this sub-section
+                        footnote2AdditionContainer.find('.add-multi-footnote2').show();
+                    }
                 }
             });
 
             // for section footnote 
             $(document).on('click', '.add-multi-footnote', function() {
-
-                var lastInputFoot = $('[data-footregulationindex]:last').data('footregulationindex');
-                var lastInputRegulation = $('[data-regulationindex]:last').data('regulationindex');
-                // console.log(lastInputFoot);
-                var footCounterIndex = parseInt(lastInputFoot) + 1;
                 // console.log(footCounterIndex);
 
                 var newRegulation = `<div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12 footnote-addition">
@@ -588,7 +558,7 @@
                                         </span>
                                         </label>
                                         <div class="show-footnote" style="display: none">
-                                            <textarea type="text" name="regulation_footnote_content[${lastInputRegulation}][${footCounterIndex}]" class="form-control ckeditor-replace footnote"></textarea>
+                                            <textarea type="text" name="regulation_footnote_content" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                    
                                        
@@ -597,6 +567,7 @@
                                 `;
 
                 $('.footnote-addition-container').append(newRegulation);
+                $(this).hide();
 
                 CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[0]);
                 // CKEDITOR.replace($('.footnote-addition:last').find('.ckeditor-replace')[1]);
@@ -607,6 +578,7 @@
             $(document).on('click', '.remove-multi-footnote', function() {
                 if ($('.footnote-addition').length > 0) {
                     $('.footnote-addition:last').remove();
+                    $('.add-multi-footnote').show();
                 }
             });
 

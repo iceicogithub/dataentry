@@ -116,18 +116,17 @@ class RulesController extends Controller
 
 
             if ($request->has('rule_footnote_content')) {
-                foreach ($request->rule_footnote_content as $key => $items) {
-                    // Check if the key exists before using it
-                    foreach ($items as $kys => $item) {
+                $item = $request->rule_footnote_content;
+            
                         // Check if the sec_footnote_id exists at the specified index
-                        if (isset($request->rule_footnote_id[$key][$kys])) {
-                            // Use first() instead of get() to get a single model instance
-                            $foot = Footnote::find($request->rule_footnote_id[$key][$kys]);
+                        if ($request->has('rule_footnote_id')) {
+                            $footnote_id = $request->rule_footnote_id;
+                            $foot = Footnote::find($footnote_id);
 
                             if ($foot) {
                                 $foot->update([
                                     'footnote_content' => $item ?? null,
-                                    'footnote_no' => $request->rule_footnote_no[$key][$kys] ?? null,
+                                    'footnote_no' => $request->rule_footnote_no?? null,
                                 ]);
                             }
                         } else {
@@ -135,102 +134,174 @@ class RulesController extends Controller
                             $footnote = new Footnote();
                             $footnote->rule_id = $id ?? null;
                             $footnote->rule_no = $rules->rule_no ?? null;
-                            $footnote->act_id = $part->act_id ?? null;
-                            $footnote->chapter_id = $part->chapter_id ?? null;
-                            $footnote->main_order_id = $part->main_order_id ?? null;
-                            $footnote->parts_id = $part->parts_id ?? null;
-                            $footnote->priliminary_id = $part->priliminary_id ?? null;
-                            $footnote->schedule_id = $part->schedule_id ?? null;
-                            $footnote->appendix_id = $part->appendix_id ?? null;
+                            $footnote->act_id = $rules->act_id ?? null;
+                            $footnote->chapter_id = $rules->chapter_id ?? null;
+                            $footnote->main_order_id = $rules->main_order_id ?? null;
+                            $footnote->parts_id = $rules->parts_id ?? null;
+                            $footnote->priliminary_id = $rules->priliminary_id ?? null;
+                            $footnote->schedule_id = $rules->schedule_id ?? null;
+                            $footnote->appendix_id = $rules->appendix_id ?? null;
                             $footnote->footnote_content = $item ?? null;
-                            $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
+                            $footnote->footnote_no = $request->sub_footnote_no ?? null;
                             $footnote->save();
                         }
-                    }
-                }
             }
         }
 
         // Store Sub-Sections
 
+        // if ($request->has('sub_rule_no')) {
+        //     foreach ($request->sub_rule_no as $key => $item) {
+        //         // Check if sub_section_id is present in the request
+        //         if ($request->filled('sub_rule_id') && is_array($request->sub_rule_id) && array_key_exists($key, $request->sub_rule_id)) {
+
+        //             $sub_rule = SubRules::find($request->sub_rule_id[$key]);
+
+        //             // Check if $sub_section is found in the database and the IDs match
+        //             if ($sub_rule && $sub_rule->sub_rule_id == $request->sub_rule_id[$key]) {
+        //                 $sub_rule->sub_rule_no = $item ?? null;
+        //                 $sub_rule->sub_rule_content = $request->sub_rule_content[$key] ?? null;
+        //                 $sub_rule->update();
+
+        //                 if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+        //                     foreach ($request->sub_footnote_content[$key] as $kys => $item) {
+        //                         // Check if the sec_footnote_id exists at the specified index
+        //                         if (isset($request->sub_footnote_id[$key][$kys])) {
+        //                             // Use first() instead of get() to get a single model instance
+        //                             $foot = Footnote::find($request->sub_footnote_id[$key][$kys]);
+
+        //                             if ($foot) {
+        //                                 $foot->update([
+        //                                     'footnote_content' => $item ?? null,
+        //                                     'footnote_no' => $request->sub_footnote_no[$key][$kys] ?? null,
+        //                                 ]);
+        //                             }
+        //                         } else {
+        //                             $footnote = new Footnote();
+        //                             $footnote->sub_rule_id = $sub_rule->sub_rule_id;
+        //                             $footnote->rule_id = $id ?? null;
+        //                             $footnote->act_id = $part->act_id ?? null;
+        //                             $footnote->chapter_id = $part->chapter_id ?? null;
+        //                             $footnote->main_order_id = $part->main_order_id ?? null;
+        //                             $footnote->parts_id = $part->parts_id ?? null;
+        //                             $footnote->priliminary_id = $part->priliminary_id ?? null;
+        //                             $footnote->schedule_id = $part->schedule_id ?? null;
+        //                             $footnote->appendix_id = $part->appendix_id ?? null;
+        //                             $footnote->footnote_content = $item ?? null;
+        //                             $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
+        //                             $footnote->save();
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         } else {
+        //             // Existing subsection not found, create a new one
+        //             $subrule = new SubRules();
+        //             $subrule->rule_id = $id ?? null;
+        //             $subrule->sub_rule_no = $item ?? null;
+        //             $subrule->rule_no = $rules->rule_no ?? null;
+        //             $subrule->act_id = $part->act_id ?? null;
+        //             $subrule->chapter_id = $part->chapter_id ?? null;
+        //             $subrule->main_order_id = $part->main_order_id ?? null;
+        //             $subrule->parts_id = $part->parts_id ?? null;
+        //             $subrule->priliminary_id = $part->priliminary_id ?? null;
+        //             $subrule->schedule_id = $part->schedule_id ?? null;
+        //             $subrule->appendix_id = $part->appendix_id ?? null;
+        //             $subrule->sub_rule_content = $request->sub_rule_content[$key] ?? null;
+        //             $subrule->save();
+
+        //             if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+        //                 foreach ($request->sub_footnote_content[$key] as $kys => $item) {
+        //                     // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
+        //                     if (isset($request->sub_footnote_content[$key][$kys])) {
+        //                         // Create a new footnote for the newly created subsection
+        //                         $footnote = new Footnote();
+        //                         $footnote->sub_rule_id = $subrule->sub_rule_id;
+        //                         $footnote->rule_id = $id ?? null;
+        //                         $footnote->act_id = $rules->act_id ?? null;
+        //                         $footnote->chapter_id = $rules->chapter_id ?? null;
+        //                         $footnote->main_order_id = $rules->main_order_id ?? null;
+        //                         $footnote->parts_id = $rules->parts_id ?? null;
+        //                         $footnote->priliminary_id = $rules->priliminary_id ?? null;
+        //                         $footnote->schedule_id = $rules->schedule_id ?? null;
+        //                         $footnote->appendix_id = $rules->appendix_id ?? null;
+        //                         $footnote->footnote_content = $item ?? null;
+        //                         $footnote->save();
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
         if ($request->has('sub_rule_no')) {
             foreach ($request->sub_rule_no as $key => $item) {
-                // Check if sub_section_id is present in the request
-                if ($request->filled('sub_rule_id') && is_array($request->sub_rule_id) && array_key_exists($key, $request->sub_rule_id)) {
-
-                    $sub_rule = SubRules::find($request->sub_rule_id[$key]);
-
-                    // Check if $sub_section is found in the database and the IDs match
-                    if ($sub_rule && $sub_rule->sub_rule_id == $request->sub_rule_id[$key]) {
-                        $sub_rule->sub_rule_no = $item ?? null;
-                        $sub_rule->sub_rule_content = $request->sub_rule_content[$key] ?? null;
-                        $sub_rule->update();
-
-                        if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                            foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                                // Check if the sec_footnote_id exists at the specified index
-                                if (isset($request->sub_footnote_id[$key][$kys])) {
-                                    // Use first() instead of get() to get a single model instance
-                                    $foot = Footnote::find($request->sub_footnote_id[$key][$kys]);
-
-                                    if ($foot) {
-                                        $foot->update([
-                                            'footnote_content' => $item ?? null,
-                                            'footnote_no' => $request->sub_footnote_no[$key][$kys] ?? null,
-                                        ]);
-                                    }
-                                } else {
-                                    $footnote = new Footnote();
-                                    $footnote->sub_rule_id = $sub_rule->sub_rule_id;
-                                    $footnote->rule_id = $id ?? null;
-                                    $footnote->act_id = $part->act_id ?? null;
-                                    $footnote->chapter_id = $part->chapter_id ?? null;
-                                    $footnote->main_order_id = $part->main_order_id ?? null;
-                                    $footnote->parts_id = $part->parts_id ?? null;
-                                    $footnote->priliminary_id = $part->priliminary_id ?? null;
-                                    $footnote->schedule_id = $part->schedule_id ?? null;
-                                    $footnote->appendix_id = $part->appendix_id ?? null;
-                                    $footnote->footnote_content = $item ?? null;
-                                    $footnote->footnote_no = $request->sub_footnote_no[$key][$kys] ?? null;
-                                    $footnote->save();
-                                }
+                // Initialize variables for reuse
+                $sub_rule_id = $request->sub_rule_id[$key] ?? null;
+                $sub_rule_content = $request->sub_rule_content[$key] ?? null;
+                
+                // Check if sub_rule_id is present and valid
+                if ($sub_rule_id && $existingSubRule = SubRules::find($sub_rule_id)) {
+                    $existingSubRule->update([
+                        'sub_rule_no' => $item,
+                        'sub_rule_content' => $sub_rule_content,
+                    ]);
+        
+                    // Handle footnotes
+                    if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                        foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
+                            // Check if the footnote with the given ID exists
+                            $footnote_id = $request->sub_footnote_id[$key][$kys] ?? null;
+                            if ($footnote_id && $foot = Footnote::find($footnote_id)) {
+                                $foot->update(['footnote_content' => $footnote_content]);
+                            } else {
+                                // Create new footnote if ID is not provided or invalid
+                                $footnote = new Footnote();
+                                $footnote->sub_rule_id = $sub_rule_id;
+                                $footnote->rule_id = $id ?? null;
+                                $footnote->act_id = $rules->act_id ?? null;
+                                $footnote->chapter_id = $rules->chapter_id ?? null;
+                                $footnote->main_order_id = $rules->main_order_id ?? null;
+                                $footnote->parts_id = $rules->parts_id ?? null;
+                                $footnote->priliminary_id = $rules->priliminary_id ?? null;
+                                $footnote->schedule_id = $rules->schedule_id ?? null;
+                                $footnote->appendix_id = $rules->appendix_id ?? null;
+                                $footnote->footnote_content = $footnote_content ?? null;
+                                $footnote->save();
                             }
                         }
                     }
                 } else {
-                    // Existing subsection not found, create a new one
-                    $subrule = new SubRules();
-                    $subrule->rule_id = $id ?? null;
-                    $subrule->sub_rule_no = $item ?? null;
-                    $subrule->rule_no = $rules->rule_no ?? null;
-                    $subrule->act_id = $part->act_id ?? null;
-                    $subrule->chapter_id = $part->chapter_id ?? null;
-                    $subrule->main_order_id = $part->main_order_id ?? null;
-                    $subrule->parts_id = $part->parts_id ?? null;
-                    $subrule->priliminary_id = $part->priliminary_id ?? null;
-                    $subrule->schedule_id = $part->schedule_id ?? null;
-                    $subrule->appendix_id = $part->appendix_id ?? null;
-                    $subrule->sub_rule_content = $request->sub_rule_content[$key] ?? null;
-                    $subrule->save();
-
-                    if ($request->has('sub_footnote_content') && is_array($request->sub_footnote_content) && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
-                        foreach ($request->sub_footnote_content[$key] as $kys => $item) {
-                            // Check if the key exists in both sub_footnote_no and sub_footnote_content arrays
-                            if (isset($request->sub_footnote_content[$key][$kys])) {
-                                // Create a new footnote for the newly created subsection
-                                $footnote = new Footnote();
-                                $footnote->sub_rule_id = $subrule->sub_rule_id;
-                                $footnote->rule_id = $id ?? null;
-                                $footnote->act_id = $part->act_id ?? null;
-                                $footnote->chapter_id = $part->chapter_id ?? null;
-                                $footnote->main_order_id = $part->main_order_id ?? null;
-                                $footnote->parts_id = $part->parts_id ?? null;
-                                $footnote->priliminary_id = $part->priliminary_id ?? null;
-                                $footnote->schedule_id = $part->schedule_id ?? null;
-                                $footnote->appendix_id = $part->appendix_id ?? null;
-                                $footnote->footnote_content = $item ?? null;
-                                $footnote->save();
-                            }
+                    // Create a new sub_rule
+                    $sub_rule = new SubRules();
+                    $sub_rule->rule_id = $id ?? null;
+                    $sub_rule->rule_no = $rules->rule_no ?? null;
+                    $sub_rule->act_id = $part->act_id ?? null;
+                    $sub_rule->chapter_id = $part->chapter_id ?? null;
+                    $sub_rule->main_order_id = $part->main_order_id ?? null;
+                    $sub_rule->parts_id = $part->parts_id ?? null;
+                    $sub_rule->priliminary_id = $part->priliminary_id ?? null;
+                    $sub_rule->schedule_id = $part->schedule_id ?? null;
+                    $sub_rule->appendix_id = $part->appendix_id ?? null;
+                    $sub_rule->sub_rule_no = $item;
+                    $sub_rule->sub_rule_content = $sub_rule_content;
+                    $sub_rule->save();
+        
+                    // Handle footnotes for the new sub_rule
+                    if ($request->has('sub_footnote_content') && isset($request->sub_footnote_content[$key]) && is_array($request->sub_footnote_content[$key])) {
+                        foreach ($request->sub_footnote_content[$key] as $kys => $footnote_content) {
+                            $footnote = new Footnote();
+                            $footnote->sub_rule_id = $sub_rule->sub_rule_id; // or whatever the primary key is
+                            $footnote->rule_id = $id ?? null;
+                            $footnote->act_id = $rules->act_id ?? null;
+                            $footnote->chapter_id = $rules->chapter_id ?? null;
+                            $footnote->main_order_id = $rules->main_order_id ?? null;
+                            $footnote->parts_id = $rules->parts_id ?? null;
+                            $footnote->priliminary_id = $rules->priliminary_id ?? null;
+                            $footnote->schedule_id = $rules->schedule_id ?? null;
+                            $footnote->appendix_id = $rules->appendix_id ?? null;
+                            $footnote->footnote_content = $footnote_content ?? null;
+                            $footnote->save();
                         }
                     }
                 }
