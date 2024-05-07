@@ -400,7 +400,7 @@ class MainActController extends Controller
             foreach($combinedItems as $item) {
                 if(isset($item['parts_id'])) {
                     $Data = [
-                        'PartsId' => $item['parts_id'],
+                        'ChapterId' => $item['parts_id'],
                         'Name' => $item['parts_title'],
                         'SubString' => [] // Array to store sections for the current chapter
                     ];
@@ -418,9 +418,9 @@ class MainActController extends Controller
                     if(!empty($item['articles'])){
                         foreach ($item['articles'] as $article) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'ArticleId' => $article['article_id'],
-                                'ArticleNo' => $article['article_no'],
-                                'ArticleName' => $article['article_title'],
+                                'SectionId' => $article['article_id'],
+                                'SectionNo' => $article['article_no'],
+                                'SectionName' => $article['article_title'],
                             ];
                         }        
                     }
@@ -428,9 +428,9 @@ class MainActController extends Controller
                     if(!empty($item['rules'])){
                         foreach ($item['rules'] as $rule) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'RuleId' => $rule['rule_id'],
-                                'RuleNo' => $rule['rule_no'],
-                                'RuleName' => $rule['rule_title'],
+                                'SectionId' => $rule['rule_id'],
+                                'SectionNo' => $rule['rule_no'],
+                                'SectionName' => $rule['rule_title'],
                             ];
                         }        
                     }
@@ -438,9 +438,9 @@ class MainActController extends Controller
                     if(!empty($item['regulation'])){
                         foreach ($item['regulation'] as $regulation) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'RegulationId' => $regulation['regulation_id'],
-                                'RegulationNo' => $regulation['regulation_no'],
-                                'RegulationName' => $regulation['regulation_title'],
+                                'SectionId' => $regulation['regulation_id'],
+                                'SectionNo' => $regulation['regulation_no'],
+                                'SectionName' => $regulation['regulation_title'],
                             ];
                         }        
                     }
@@ -448,9 +448,9 @@ class MainActController extends Controller
                     if(!empty($item['lists'])){
                         foreach ($item['lists'] as $list) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'ListId' => $list['list_id'],
-                                'ListNo' => $list['list_no'],
-                                'ListName' => $list['list_title'],
+                                'SectionId' => $list['list_id'],
+                                'SectionNo' => $list['list_no'],
+                                'SectionName' => $list['list_title'],
                             ];
                         }        
                     }
@@ -458,9 +458,9 @@ class MainActController extends Controller
                     if(!empty($item['part'])){
                         foreach ($item['part'] as $part) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'PartId' => $part['part_id'],
-                                'PartNo' => $part['part_no'],
-                                'PartName' => $part['part_title'],
+                                'SectionId' => $part['part_id'],
+                                'SectionNo' => $part['part_no'],
+                                'SectionName' => $part['part_title'],
                             ];
                         }        
                     }
@@ -468,9 +468,9 @@ class MainActController extends Controller
                     if(!empty($item['appendices'])){
                         foreach ($item['appendices'] as $appedices) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'AppedicesId' => $appedices['appendices_id'],
-                                'AppedicesNo' => $appedices['appendices_no'],
-                                'AppedicesName' => $appedices['appendices_title'],
+                                'SectionId' => $appedices['appendices_id'],
+                                'SectionNo' => $appedices['appendices_no'],
+                                'SectionName' => $appedices['appendices_title'],
                             ];
                         }        
                     }
@@ -478,9 +478,9 @@ class MainActController extends Controller
                     if(!empty($item['order'])){
                         foreach ($item['order'] as $order) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'OrderId' => $order['order_id'],
-                                'OrderNo' => $order['order_no'],
-                                'OrderName' => $order['order_title'],
+                                'SectionId' => $order['order_id'],
+                                'SectionNo' => $order['order_no'],
+                                'SectionName' => $order['order_title'],
                             ];
                         }        
                     }
@@ -488,9 +488,9 @@ class MainActController extends Controller
                     if(!empty($item['annexure'])){
                         foreach ($item['annexure'] as $annexure) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'AnnexureId' => $annexure['annexure_id'],
-                                'AnnexureNo' => $annexure['annexure_no'],
-                                'AnnexureName' => $annexure['annexure_title'],
+                                'SectionId' => $annexure['annexure_id'],
+                                'SectionNo' => $annexure['annexure_no'],
+                                'SectionName' => $annexure['annexure_title'],
                             ];
                         }        
                     }
@@ -498,9 +498,9 @@ class MainActController extends Controller
                     if(!empty($item['stschedule'])){
                         foreach ($item['stschedule'] as $stschedule) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'StscheduleId' => $stschedule['stschedule_id'],
-                                'StscheduleNo' => $stschedule['stschedule_no'],
-                                'StscheduleName' => $stschedule['stschedule_title'],
+                                'SectionId' => $stschedule['stschedule_id'],
+                                'SectionNo' => $stschedule['stschedule_no'],
+                                'SectionName' => $stschedule['stschedule_title'],
                             ];
                         }        
                     }
@@ -529,9 +529,9 @@ class MainActController extends Controller
                     if(!empty($item['articles'])){
                         foreach ($item['articles'] as $article) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'ArticleId' => $article['article_id'],
-                                'ArticleNo' => $article['article_no'],
-                                'ArticleName' => $article['article_title'],
+                                'SectionId' => $article['article_id'],
+                                'SectionNo' => $article['article_no'],
+                                'SectionName' => $article['article_title'],
                             ];
                         }        
                     }
@@ -539,9 +539,9 @@ class MainActController extends Controller
                     if(!empty($item['rules'])){
                         foreach ($item['rules'] as $rule) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'RuleId' => $rule['rule_id'],
-                                'RuleNo' => $rule['rule_no'],
-                                'RuleName' => $rule['rule_title'],
+                                'SectionId' => $rule['rule_id'],
+                                'SectionNo' => $rule['rule_no'],
+                                'SectionName' => $rule['rule_title'],
                             ];
                         }        
                     }
@@ -549,9 +549,9 @@ class MainActController extends Controller
                     if(!empty($item['regulation'])){
                         foreach ($item['regulation'] as $regulation) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'RegulationId' => $regulation['regulation_id'],
-                                'RegulationNo' => $regulation['regulation_no'],
-                                'RegulationName' => $regulation['regulation_title'],
+                                'SectionId' => $regulation['regulation_id'],
+                                'SectionNo' => $regulation['regulation_no'],
+                                'SectionName' => $regulation['regulation_title'],
                             ];
                         }        
                     }
@@ -559,9 +559,9 @@ class MainActController extends Controller
                     if(!empty($item['lists'])){
                         foreach ($item['lists'] as $list) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'ListId' => $list['list_id'],
-                                'ListNo' => $list['list_no'],
-                                'ListName' => $list['list_title'],
+                                'SectionId' => $list['list_id'],
+                                'SectionNo' => $list['list_no'],
+                                'SectionName' => $list['list_title'],
                             ];
                         }        
                     }
@@ -569,9 +569,9 @@ class MainActController extends Controller
                     if(!empty($item['part'])){
                         foreach ($item['part'] as $part) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'PartId' => $part['part_id'],
-                                'PartNo' => $part['part_no'],
-                                'PartName' => $part['part_title'],
+                                'SectionId' => $part['part_id'],
+                                'SectionNo' => $part['part_no'],
+                                'SectionName' => $part['part_title'],
                             ];
                         }        
                     }
@@ -579,9 +579,9 @@ class MainActController extends Controller
                     if(!empty($item['appendices'])){
                         foreach ($item['appendices'] as $appedices) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'AppedicesId' => $appedices['appendices_id'],
-                                'AppedicesNo' => $appedices['appendices_no'],
-                                'AppedicesName' => $appedices['appendices_title'],
+                                'SectionId' => $appedices['appendices_id'],
+                                'SectionNo' => $appedices['appendices_no'],
+                                'SectionName' => $appedices['appendices_title'],
                             ];
                         }        
                     }
@@ -589,9 +589,9 @@ class MainActController extends Controller
                     if(!empty($item['order'])){
                         foreach ($item['order'] as $order) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'OrderId' => $order['order_id'],
-                                'OrderNo' => $order['order_no'],
-                                'OrderName' => $order['order_title'],
+                                'SectionId' => $order['order_id'],
+                                'SectionNo' => $order['order_no'],
+                                'SectionName' => $order['order_title'],
                             ];
                         }        
                     }
@@ -599,9 +599,9 @@ class MainActController extends Controller
                     if(!empty($item['annexure'])){
                         foreach ($item['annexure'] as $annexure) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'AnnexureId' => $annexure['annexure_id'],
-                                'AnnexureNo' => $annexure['annexure_no'],
-                                'AnnexureName' => $annexure['annexure_title'],
+                                'SectionId' => $annexure['annexure_id'],
+                                'SectionNo' => $annexure['annexure_no'],
+                                'SectionName' => $annexure['annexure_title'],
                             ];
                         }        
                     }
@@ -609,9 +609,9 @@ class MainActController extends Controller
                     if(!empty($item['stschedule'])){
                         foreach ($item['stschedule'] as $stschedule) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'StscheduleId' => $stschedule['stschedule_id'],
-                                'StscheduleNo' => $stschedule['stschedule_no'],
-                                'StscheduleName' => $stschedule['stschedule_title'],
+                                'SectionId' => $stschedule['stschedule_id'],
+                                'SectionNo' => $stschedule['stschedule_no'],
+                                'SectionName' => $stschedule['stschedule_title'],
                             ];
                         }        
                     }
@@ -622,7 +622,7 @@ class MainActController extends Controller
 
                 if(isset($item['priliminary_id'])) {
                     $Data = [
-                        'PrilimiaryId' => $item['priliminary_id'],
+                        'ChapterId' => $item['priliminary_id'],
                         'Name' => $item['priliminary_title'],
                         'SubString' => [] // Array to store sections for the current chapter
                     ];
@@ -640,9 +640,9 @@ class MainActController extends Controller
                     if(!empty($item['articles'])){
                         foreach ($item['articles'] as $article) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'ArticleId' => $article['article_id'],
-                                'ArticleNo' => $article['article_no'],
-                                'ArticleName' => $article['article_title'],
+                                'SectionId' => $article['article_id'],
+                                'SectionNo' => $article['article_no'],
+                                'SectionName' => $article['article_title'],
                             ];
                         }        
                     }
@@ -650,9 +650,9 @@ class MainActController extends Controller
                     if(!empty($item['rules'])){
                         foreach ($item['rules'] as $rule) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'RuleId' => $rule['rule_id'],
-                                'RuleNo' => $rule['rule_no'],
-                                'RuleName' => $rule['rule_title'],
+                                'SectionId' => $rule['rule_id'],
+                                'SectionNo' => $rule['rule_no'],
+                                'SectionName' => $rule['rule_title'],
                             ];
                         }        
                     }
@@ -660,9 +660,9 @@ class MainActController extends Controller
                     if(!empty($item['regulation'])){
                         foreach ($item['regulation'] as $regulation) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'RegulationId' => $regulation['regulation_id'],
-                                'RegulationNo' => $regulation['regulation_no'],
-                                'RegulationName' => $regulation['regulation_title'],
+                                'SectionId' => $regulation['regulation_id'],
+                                'SectionNo' => $regulation['regulation_no'],
+                                'SectionName' => $regulation['regulation_title'],
                             ];
                         }        
                     }
@@ -670,9 +670,9 @@ class MainActController extends Controller
                     if(!empty($item['lists'])){
                         foreach ($item['lists'] as $list) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'ListId' => $list['list_id'],
-                                'ListNo' => $list['list_no'],
-                                'ListName' => $list['list_title'],
+                                'SectionId' => $list['list_id'],
+                                'SectionNo' => $list['list_no'],
+                                'SectionName' => $list['list_title'],
                             ];
                         }        
                     }
@@ -680,9 +680,9 @@ class MainActController extends Controller
                     if(!empty($item['part'])){
                         foreach ($item['part'] as $part) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'PartId' => $part['part_id'],
-                                'PartNo' => $part['part_no'],
-                                'PartName' => $part['part_title'],
+                                'SectionId' => $part['part_id'],
+                                'SectionNo' => $part['part_no'],
+                                'SectionName' => $part['part_title'],
                             ];
                         }        
                     }
@@ -690,9 +690,9 @@ class MainActController extends Controller
                     if(!empty($item['appendices'])){
                         foreach ($item['appendices'] as $appedices) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'AppedicesId' => $appedices['appendices_id'],
-                                'AppedicesNo' => $appedices['appendices_no'],
-                                'AppedicesName' => $appedices['appendices_title'],
+                                'SectionId' => $appedices['appendices_id'],
+                                'SectionNo' => $appedices['appendices_no'],
+                                'SectionName' => $appedices['appendices_title'],
                             ];
                         }        
                     }
@@ -700,9 +700,9 @@ class MainActController extends Controller
                     if(!empty($item['order'])){
                         foreach ($item['order'] as $order) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'OrderId' => $order['order_id'],
-                                'OrderNo' => $order['order_no'],
-                                'OrderName' => $order['order_title'],
+                                'SectionId' => $order['order_id'],
+                                'SectionNo' => $order['order_no'],
+                                'SectionName' => $order['order_title'],
                             ];
                         }        
                     }
@@ -710,9 +710,9 @@ class MainActController extends Controller
                     if(!empty($item['annexure'])){
                         foreach ($item['annexure'] as $annexure) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'AnnexureId' => $annexure['annexure_id'],
-                                'AnnexureNo' => $annexure['annexure_no'],
-                                'AnnexureName' => $annexure['annexure_title'],
+                                'SectionId' => $annexure['annexure_id'],
+                                'SectionNo' => $annexure['annexure_no'],
+                                'SectionName' => $annexure['annexure_title'],
                             ];
                         }        
                     }
@@ -720,9 +720,9 @@ class MainActController extends Controller
                     if(!empty($item['stschedule'])){
                         foreach ($item['stschedule'] as $stschedule) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'StscheduleId' => $stschedule['stschedule_id'],
-                                'StscheduleNo' => $stschedule['stschedule_no'],
-                                'StscheduleName' => $stschedule['stschedule_title'],
+                                'SectionId' => $stschedule['stschedule_id'],
+                                'SectionNo' => $stschedule['stschedule_no'],
+                                'SectionName' => $stschedule['stschedule_title'],
                             ];
                         }        
                     }
@@ -733,7 +733,7 @@ class MainActController extends Controller
 
                 if(isset($item['schedule_id'])) {
                     $Data = [
-                        'ScheduleId' => $item['schedule_id'],
+                        'ChapterId' => $item['schedule_id'],
                         'Name' => $item['schedule_title'],
                         'SubString' => [] // Array to store sections for the current chapter
                     ];
@@ -751,9 +751,9 @@ class MainActController extends Controller
                     if(!empty($item['articles'])){
                         foreach ($item['articles'] as $article) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'ArticleId' => $article['article_id'],
-                                'ArticleNo' => $article['article_no'],
-                                'ArticleName' => $article['article_title'],
+                                'SectionId' => $article['article_id'],
+                                'SectionNo' => $article['article_no'],
+                                'SectionName' => $article['article_title'],
                             ];
                         }        
                     }
@@ -761,9 +761,9 @@ class MainActController extends Controller
                     if(!empty($item['rules'])){
                         foreach ($item['rules'] as $rule) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'RuleId' => $rule['rule_id'],
-                                'RuleNo' => $rule['rule_no'],
-                                'RuleName' => $rule['rule_title'],
+                                'SectionId' => $rule['rule_id'],
+                                'SectionNo' => $rule['rule_no'],
+                                'SectionName' => $rule['rule_title'],
                             ];
                         }        
                     }
@@ -771,9 +771,9 @@ class MainActController extends Controller
                     if(!empty($item['regulation'])){
                         foreach ($item['regulation'] as $regulation) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'RegulationId' => $regulation['regulation_id'],
-                                'RegulationNo' => $regulation['regulation_no'],
-                                'RegulationName' => $regulation['regulation_title'],
+                                'SectionId' => $regulation['regulation_id'],
+                                'SectionNo' => $regulation['regulation_no'],
+                                'SectionName' => $regulation['regulation_title'],
                             ];
                         }        
                     }
@@ -781,9 +781,9 @@ class MainActController extends Controller
                     if(!empty($item['lists'])){
                         foreach ($item['lists'] as $list) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'ListId' => $list['list_id'],
-                                'ListNo' => $list['list_no'],
-                                'ListName' => $list['list_title'],
+                                'SectionId' => $list['list_id'],
+                                'SectionNo' => $list['list_no'],
+                                'SectionName' => $list['list_title'],
                             ];
                         }        
                     }
@@ -791,9 +791,9 @@ class MainActController extends Controller
                     if(!empty($item['part'])){
                         foreach ($item['part'] as $part) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'PartId' => $part['part_id'],
-                                'PartNo' => $part['part_no'],
-                                'PartName' => $part['part_title'],
+                                'SectionId' => $part['part_id'],
+                                'SectionNo' => $part['part_no'],
+                                'SectionName' => $part['part_title'],
                             ];
                         }        
                     }
@@ -801,9 +801,9 @@ class MainActController extends Controller
                     if(!empty($item['appendices'])){
                         foreach ($item['appendices'] as $appedices) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'AppedicesId' => $appedices['appendices_id'],
-                                'AppedicesNo' => $appedices['appendices_no'],
-                                'AppedicesName' => $appedices['appendices_title'],
+                                'SectionId' => $appedices['appendices_id'],
+                                'SectionNo' => $appedices['appendices_no'],
+                                'SectionName' => $appedices['appendices_title'],
                             ];
                         }        
                     }
@@ -811,9 +811,9 @@ class MainActController extends Controller
                     if(!empty($item['order'])){
                         foreach ($item['order'] as $order) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'OrderId' => $order['order_id'],
-                                'OrderNo' => $order['order_no'],
-                                'OrderName' => $order['order_title'],
+                                'SectionId' => $order['order_id'],
+                                'SectionNo' => $order['order_no'],
+                                'SectionName' => $order['order_title'],
                             ];
                         }        
                     }
@@ -821,9 +821,9 @@ class MainActController extends Controller
                     if(!empty($item['annexure'])){
                         foreach ($item['annexure'] as $annexure) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'AnnexureId' => $annexure['annexure_id'],
-                                'AnnexureNo' => $annexure['annexure_no'],
-                                'AnnexureName' => $annexure['annexure_title'],
+                                'SectionId' => $annexure['annexure_id'],
+                                'SectionNo' => $annexure['annexure_no'],
+                                'SectionName' => $annexure['annexure_title'],
                             ];
                         }        
                     }
@@ -831,9 +831,9 @@ class MainActController extends Controller
                     if(!empty($item['stschedule'])){
                         foreach ($item['stschedule'] as $stschedule) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'StscheduleId' => $stschedule['stschedule_id'],
-                                'StscheduleNo' => $stschedule['stschedule_no'],
-                                'StscheduleName' => $stschedule['stschedule_title'],
+                                'SectionId' => $stschedule['stschedule_id'],
+                                'SectionNo' => $stschedule['stschedule_no'],
+                                'SectionName' => $stschedule['stschedule_title'],
                             ];
                         }        
                     }
@@ -844,7 +844,7 @@ class MainActController extends Controller
 
                 if(isset($item['appendix_id'])) {
                     $Data = [
-                        'AppendixId' => $item['appendix_id'],
+                        'ChapterId' => $item['appendix_id'],
                         'Name' => $item['appendix_title'],
                         'SubString' => [] // Array to store sections for the current chapter
                     ];
@@ -862,9 +862,9 @@ class MainActController extends Controller
                     if(!empty($item['articles'])){
                         foreach ($item['articles'] as $article) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'ArticleId' => $article['article_id'],
-                                'ArticleNo' => $article['article_no'],
-                                'ArticleName' => $article['article_title'],
+                                'SectionId' => $article['article_id'],
+                                'SectionNo' => $article['article_no'],
+                                'SectionName' => $article['article_title'],
                             ];
                         }        
                     }
@@ -872,9 +872,9 @@ class MainActController extends Controller
                     if(!empty($item['rules'])){
                         foreach ($item['rules'] as $rule) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'RuleId' => $rule['rule_id'],
-                                'RuleNo' => $rule['rule_no'],
-                                'RuleName' => $rule['rule_title'],
+                                'SectionId' => $rule['rule_id'],
+                                'SectionNo' => $rule['rule_no'],
+                                'SectionName' => $rule['rule_title'],
                             ];
                         }        
                     }
@@ -882,9 +882,9 @@ class MainActController extends Controller
                     if(!empty($item['regulation'])){
                         foreach ($item['regulation'] as $regulation) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'RegulationId' => $regulation['regulation_id'],
-                                'RegulationNo' => $regulation['regulation_no'],
-                                'RegulationName' => $regulation['regulation_title'],
+                                'SectionId' => $regulation['regulation_id'],
+                                'SectionNo' => $regulation['regulation_no'],
+                                'SectionName' => $regulation['regulation_title'],
                             ];
                         }        
                     }
@@ -892,9 +892,9 @@ class MainActController extends Controller
                     if(!empty($item['lists'])){
                         foreach ($item['lists'] as $list) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'ListId' => $list['list_id'],
-                                'ListNo' => $list['list_no'],
-                                'ListName' => $list['list_title'],
+                                'SectionId' => $list['list_id'],
+                                'SectionNo' => $list['list_no'],
+                                'SectionName' => $list['list_title'],
                             ];
                         }        
                     }
@@ -902,9 +902,9 @@ class MainActController extends Controller
                     if(!empty($item['part'])){
                         foreach ($item['part'] as $part) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'PartId' => $part['part_id'],
-                                'PartNo' => $part['part_no'],
-                                'PartName' => $part['part_title'],
+                                'SectionId' => $part['part_id'],
+                                'SectionNo' => $part['part_no'],
+                                'SectionName' => $part['part_title'],
                             ];
                         }        
                     }
@@ -912,9 +912,9 @@ class MainActController extends Controller
                     if(!empty($item['appendices'])){
                         foreach ($item['appendices'] as $appedices) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'AppedicesId' => $appedices['appendices_id'],
-                                'AppedicesNo' => $appedices['appendices_no'],
-                                'AppedicesName' => $appedices['appendices_title'],
+                                'SectionId' => $appedices['appendices_id'],
+                                'SectionNo' => $appedices['appendices_no'],
+                                'SectionName' => $appedices['appendices_title'],
                             ];
                         }        
                     }
@@ -922,9 +922,9 @@ class MainActController extends Controller
                     if(!empty($item['order'])){
                         foreach ($item['order'] as $order) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'OrderId' => $order['order_id'],
-                                'OrderNo' => $order['order_no'],
-                                'OrderName' => $order['order_title'],
+                                'SectionId' => $order['order_id'],
+                                'SectionNo' => $order['order_no'],
+                                'SectionName' => $order['order_title'],
                             ];
                         }        
                     }
@@ -932,9 +932,9 @@ class MainActController extends Controller
                     if(!empty($item['annexure'])){
                         foreach ($item['annexure'] as $annexure) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'AnnexureId' => $annexure['annexure_id'],
-                                'AnnexureNo' => $annexure['annexure_no'],
-                                'AnnexureName' => $annexure['annexure_title'],
+                                'SectionId' => $annexure['annexure_id'],
+                                'SectionNo' => $annexure['annexure_no'],
+                                'SectionName' => $annexure['annexure_title'],
                             ];
                         }        
                     }
@@ -942,9 +942,9 @@ class MainActController extends Controller
                     if(!empty($item['stschedule'])){
                         foreach ($item['stschedule'] as $stschedule) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'StscheduleId' => $stschedule['stschedule_id'],
-                                'StscheduleNo' => $stschedule['stschedule_no'],
-                                'StscheduleName' => $stschedule['stschedule_title'],
+                                'SectionId' => $stschedule['stschedule_id'],
+                                'SectionNo' => $stschedule['stschedule_no'],
+                                'SectionName' => $stschedule['stschedule_title'],
                             ];
                         }        
                     }
@@ -955,7 +955,7 @@ class MainActController extends Controller
 
                 if(isset($item['main_order_id'])) {
                     $Data = [
-                        'MainOrderId' => $item['main_order_id'],
+                        'ChapterId' => $item['main_order_id'],
                         'Name' => $item['main_order_title'],
                         'SubString' => [] // Array to store sections for the current chapter
                     ];
@@ -973,9 +973,9 @@ class MainActController extends Controller
                     if(!empty($item['articles'])){
                         foreach ($item['articles'] as $article) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'ArticleId' => $article['article_id'],
-                                'ArticleNo' => $article['article_no'],
-                                'ArticleName' => $article['article_title'],
+                                'SectionId' => $article['article_id'],
+                                'SectionNo' => $article['article_no'],
+                                'SectionName' => $article['article_title'],
                             ];
                         }        
                     }
@@ -983,9 +983,9 @@ class MainActController extends Controller
                     if(!empty($item['rules'])){
                         foreach ($item['rules'] as $rule) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'RuleId' => $rule['rule_id'],
-                                'RuleNo' => $rule['rule_no'],
-                                'RuleName' => $rule['rule_title'],
+                                'SectionId' => $rule['rule_id'],
+                                'SectionNo' => $rule['rule_no'],
+                                'SectionName' => $rule['rule_title'],
                             ];
                         }        
                     }
@@ -993,9 +993,9 @@ class MainActController extends Controller
                     if(!empty($item['regulation'])){
                         foreach ($item['regulation'] as $regulation) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'RegulationId' => $regulation['regulation_id'],
-                                'RegulationNo' => $regulation['regulation_no'],
-                                'RegulationName' => $regulation['regulation_title'],
+                                'SectionId' => $regulation['regulation_id'],
+                                'SectionNo' => $regulation['regulation_no'],
+                                'SectionName' => $regulation['regulation_title'],
                             ];
                         }        
                     }
@@ -1003,9 +1003,9 @@ class MainActController extends Controller
                     if(!empty($item['lists'])){
                         foreach ($item['lists'] as $list) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'ListId' => $list['list_id'],
-                                'ListNo' => $list['list_no'],
-                                'ListName' => $list['list_title'],
+                                'SectionId' => $list['list_id'],
+                                'SectionNo' => $list['list_no'],
+                                'SectionName' => $list['list_title'],
                             ];
                         }        
                     }
@@ -1013,9 +1013,9 @@ class MainActController extends Controller
                     if(!empty($item['part'])){
                         foreach ($item['part'] as $part) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'PartId' => $part['part_id'],
-                                'PartNo' => $part['part_no'],
-                                'PartName' => $part['part_title'],
+                                'SectionId' => $part['part_id'],
+                                'SectionNo' => $part['part_no'],
+                                'SectionName' => $part['part_title'],
                             ];
                         }        
                     }
@@ -1023,9 +1023,9 @@ class MainActController extends Controller
                     if(!empty($item['appendices'])){
                         foreach ($item['appendices'] as $appedices) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'AppedicesId' => $appedices['appendices_id'],
-                                'AppedicesNo' => $appedices['appendices_no'],
-                                'AppedicesName' => $appedices['appendices_title'],
+                                'SectionId' => $appedices['appendices_id'],
+                                'SectionNo' => $appedices['appendices_no'],
+                                'SectionName' => $appedices['appendices_title'],
                             ];
                         }        
                     }
@@ -1033,9 +1033,9 @@ class MainActController extends Controller
                     if(!empty($item['order'])){
                         foreach ($item['order'] as $order) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'OrderId' => $order['order_id'],
-                                'OrderNo' => $order['order_no'],
-                                'OrderName' => $order['order_title'],
+                                'SectionId' => $order['order_id'],
+                                'SectionNo' => $order['order_no'],
+                                'SectionName' => $order['order_title'],
                             ];
                         }        
                     }
@@ -1043,9 +1043,9 @@ class MainActController extends Controller
                     if(!empty($item['annexure'])){
                         foreach ($item['annexure'] as $annexure) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'AnnexureId' => $annexure['annexure_id'],
-                                'AnnexureNo' => $annexure['annexure_no'],
-                                'AnnexureName' => $annexure['annexure_title'],
+                                'SectionId' => $annexure['annexure_id'],
+                                'SectionNo' => $annexure['annexure_no'],
+                                'SectionName' => $annexure['annexure_title'],
                             ];
                         }        
                     }
@@ -1053,9 +1053,9 @@ class MainActController extends Controller
                     if(!empty($item['stschedule'])){
                         foreach ($item['stschedule'] as $stschedule) { // assuming sections are directly nested in $item
                             $Data['SubString'][] = [
-                                'StscheduleId' => $stschedule['stschedule_id'],
-                                'StscheduleNo' => $stschedule['stschedule_no'],
-                                'StscheduleName' => $stschedule['stschedule_title'],
+                                'SectionId' => $stschedule['stschedule_id'],
+                                'SectionNo' => $stschedule['stschedule_no'],
+                                'SectionName' => $stschedule['stschedule_title'],
                             ];
                         }        
                     }
@@ -1064,11 +1064,6 @@ class MainActController extends Controller
                     
                 }
             }
-
-            // dd($sideBarList);
-            // die();
-           
-           
 
             $MainList = [];
             foreach ($combinedItems as $item) {
@@ -2941,10 +2936,10 @@ class MainActController extends Controller
                 'status' => 200,
                 'data' => [
                     'actId' => $act->act_id,
-                    'Act No.' => $act->act_no,
+                    'actNo' => $act->act_no,
                     'actName' => $act->act_title,
-                    'Enactment Date' => $act->enactment_date,
-                    'Enforcement Date' => $act->enforcement_date,
+                    'enactmentDate' => $act->enactment_date,
+                    'enforcementDate' => $act->enforcement_date,
                     'Ministry' => $act->ministry,
                     'Preamble' => $act->act_description,
                     'actDescription' => '<h1 id=""><strong>' . $act->act_title . '</strong> </h1><div><strong>' . $act->act_no . '</strong></div><div><strong>' . $act->act_date . '</strong></div>' . implode('', $MainList) . '',

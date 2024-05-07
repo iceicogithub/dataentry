@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="/edit_new_rule/{{ $newRule->new_rule_id }}"><button class="btn btn-danger">Back</button></a>
+                        <a href="/edit_new_rule/{{ $mainRule->new_rule_id }}"><button class="btn btn-danger">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card p-5">
-                    <form id="form" action="/store_rule/{{ $newRule->new_rule_id }}" method="post"
+                    <form id="form" action="/store_rule_maintype" method="post"
                         enctype="multipart/form-data" class="form form-horizontal">
                         @csrf
                         <!-- Your Blade View -->
@@ -34,16 +34,17 @@
 
                         @if (session('error'))
                             <div class="alert alert-success">
-                                {{ session('error') }}
+                                {{ session('error') }}      
                             </div>
                         @endif
-
+                        <input type="hidden" name="new_rule_id" value="{{ $mainRule->new_rule_id }}">
+                        <input type="hidden" name="click_main_rank" value="{{ $mainRule->rule_main_rank }}">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group form-default">
                                     <label class="float-label">Rule <span class="text-danger">*</span></label>
                                     <input type="text" name="new_rule_title" class="form-control mb-3"
-                                        placeholder="Enter Rule Title" value="{{ $newRule->new_rule_title }}">
+                                        placeholder="Enter Rule Title" value="{{ $mainRule->newRule->new_rule_title }}">
                                 </div>
                             </div>
                             <div class="section-set-container col-md-12">

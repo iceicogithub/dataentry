@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card p-5">
-                    <form id="form" action="/store_new_act" method="post" enctype="multipart/form-data"
+                    <form id="form" action="/update_legislation/{{$legislation->act_id}}" method="post" enctype="multipart/form-data"
                         class="form form-horizontal">
                         @csrf
                         <!-- Your Blade View -->
@@ -43,23 +43,24 @@
                                 <div class="form-group">
                                     <label for="role" class=" form-control-label">Select Category<span
                                             class="text-danger">*</span></label>
-                                    <select class="select form-control text-capitalize category" name="category_id" required>
-                                        <option value="" selected disabled>Select Category</option>
-                                        @foreach ($category as $value)
-                                            <option value="{{ $value->category_id }}" class="text-capitalize">
-                                                {{ $value->category }}</option>
-                                        @endforeach
-                                    </select>
+                                        <select class="select form-control text-capitalize category" name="category_id" required>
+                                            <option value="" disabled>Select Category</option>
+                                            @foreach ($category as $value)
+                                                <option value="{{ $value->category_id }}" class="text-capitalize" {{ $legislation->category_id == $value->category_id ? 'selected' : '' }}>
+                                                    {{ $value->category }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                 </div>
                             </div>
-                            <div class="col-md-6 state" style="display: none;">
+                            <div class="col-md-6 state" style="{{ $legislation->category_id == 2 ? 'display: block;' : 'display: none;' }}">
                                 <div class="form-group">
                                     <label for="state" class=" form-control-label">Select state<span
                                             class="text-danger">*</span></label>
                                     <select class="select form-control text-capitalize" name="state_id" >
                                         <option value="" selected disabled>Select State</option>
                                         @foreach ($states as $item)
-                                            <option value="{{ $item->state_id }}" class="text-capitalize">
+                                            <option value="{{ $item->state_id }}" class="text-capitalize" {{ $legislation->state_id == $item->state_id ? 'selected' : '' }}>
                                                 {{ $item->name }}</option>
                                         @endforeach
                                     </select>
@@ -69,7 +70,7 @@
                                 <div class="form-group form-default">
                                     <label class="float-label"> Legislation <span class="text-danger">*</span></label>
                                     <input type="text" name="legislation_name" class="form-control mb-3"
-                                        placeholder="Enter legislation Title" required>
+                                        placeholder="Enter legislation Title" value="{{$legislation->legislation_name}}" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -88,16 +89,28 @@
 <script src="https://cdn.ckeditor.com/4.16.2/full-all/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // for category type
-            $(document).on('change', '.category', function() {
-                if ($(this).val() === '2') {
-                    $('.state').show();
-                } else {
-                    $('.state').hide();
-                }
-            });
+         $(document).ready(function() {
+        var categorySelect = $('.category');
+        var stateDiv = $('.state');
+        var stateSelect = $('[name="state_id"]');
+        
+        // Initial visibility based on selected category
+        if (categorySelect.val() == 2) {
+            stateDiv.show();
+        } else {
+            stateDiv.hide();
+            stateSelect.val(''); // Clear state selection
+        }
 
+        // Change event listener for category select
+        categorySelect.change(function() {
+            if ($(this).val() == 2) {
+                stateDiv.show();
+            } else {
+                stateDiv.hide();
+                stateSelect.val(''); // Clear state selection
+            }
         });
+    });
     </script>
 @endsection

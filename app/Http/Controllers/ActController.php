@@ -2332,7 +2332,7 @@ class ActController extends Controller
             $act = new Act();
             $act->category_id = $request->category_id;
             $act->state_id = $request->state_id ?? null;
-            $act->act_title = $request->act_title;
+            $act->legislation_name = $request->legislation_name;
             $actSummaries = ActSummary::pluck('id')->map(function ($id) {
                 return (string) $id;
             })->toArray();
@@ -4279,9 +4279,29 @@ class ActController extends Controller
         $data = MainTable::where('main_id',$main_id)->first();
         
           return view('admin.act.add_new_maintype', compact('data','category', 'status', 'states', 'mtype', 'parts', 'stype', 'act', 'showFormTitle'));
-        
-
     }
 
+    public function edit_legislation_name($id){
+       $legislation = Act::find($id);
+       $category = Category::all();
+       $states = State::all();
+       return view('admin.act.edit_legislation',compact('legislation','category','states'));
+    }
+
+    public function update_legislation(Request $request, $id){
+        
+        try {
+            $legislation = Act::findOrFail($id); // Use findOrFail to throw an exception if the Act is not found
+            $legislation->category_id = $request->category_id;
+            $legislation->state_id = $request->has('state_id') ? $request->state_id : null;
+            $legislation->legislation_name = $request->legislation_name;
+            $legislation->update();
+            
+            return redirect()->route('act')->with('success', 'Legislation updated successfully');
+        } catch (\Exception $e) {
+            // Redirect to the same route if an exception occurs
+            return redirect()->route('act')->with('error', 'Failed to update legislation: ' . $e->getMessage());
+        }
+    }
 
 }

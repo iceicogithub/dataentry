@@ -33,7 +33,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-title">Rules Table</strong>
+                        <strong class="card-title">Regulation Table</strong>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered text-center" id="myTable">

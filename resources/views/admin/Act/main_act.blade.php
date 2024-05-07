@@ -62,7 +62,7 @@
                                                 @elseif ($item->id === 5)
                                                     <a href="/get_rule/{{ $act_id }}">{{ $item->title }}</a>
                                                 @elseif ($item->id === 6)
-                                                    <a href="/get_act_regulation/{{ $act_id }}">{{ $item->title }}</a>
+                                                    <a href="/get_regulation/{{ $act_id }}">{{ $item->title }}</a>
                                                 @elseif ($item->id === 7)
                                                     <a href="/get_orders/{{ $act_id }}">{{ $item->title }}</a>
                                                 @elseif ($item->id === 8)

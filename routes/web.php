@@ -15,6 +15,7 @@ use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\stscheduleController;
 use App\Http\Controllers\MainRuleController;
+use App\Http\Controllers\MainRegulationController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +76,8 @@ Route::get('/delete_main_order/{id}', [ActController::class, 'delete_main_order'
 // Route::post('/add_below_new_maintype/{id}', [ActController::class, 'store_new_main_type'])->name('add_new_main_type');
 Route::get('/add_below_new_maintype/{act_id}/{main_id}/{id}', [ActController::class, 'add_new_main_type'])->name('add_new_main_type');
 Route::post('/add_new_main_type/{id}', [ActController::class, 'store_new_main_type'])->name('store_new_main_type');
+Route::get('/edit_legislation_name/{id}', [ActController::class, 'edit_legislation_name'])->name('edit_legislation_name');
+Route::post('/update_legislation/{id}', [ActController::class, 'update_legislation'])->name('update_legislation');
 
 
 // section 
@@ -191,5 +194,25 @@ Route::get('/delete_footnote/{id}', [AnnexureController::class, 'delete_footnote
 
 
 //Main Rule
-Route::get('/get_rule/{id}',[MainRuleController::class,'index']);
+Route::get('/get_rule/{id}',[MainRuleController::class,'index'])->name('get_rule');
 Route::get('/add-rule/{id}',[MainRuleController::class,'create']);
+Route::post('/store_rule/{id}',[MainRuleController::class,'store']);
+Route::get('/edit-rule-sub/{id}',[MainRuleController::class,'edit']);
+Route::get('/new_rule/{id}',[MainRuleController::class,'add_new_rule'])->name('new_rule');
+Route::post('/store_new_rule',[MainRuleController::class,'store_new_rule'])->name('store_new_rule');
+Route::get('/edit_new_rule/{id}',[MainRuleController::class,'edit_new_rule'])->name('edit_new_rule');
+Route::get('/add_below_new_rule_maintype/{newRuleId}/{id}',[MainRuleController::class,'add_below_new_rule_maintype'])->name('add_below_new_rule_maintype');
+Route::post('/store_rule_maintype',[MainRuleController::class,'store_rule_maintype'])->name('store_rule_maintype');
+Route::get('/delete_rule_maintype/{id}',[MainRuleController::class,'delete_rule_maintype'])->name('delete_rule_maintype');
+Route::get('/edit_ruleTable/{id}',[MainRuleController::class,'edit_ruleTable'])->name('edit_ruleTable');
+Route::post('/update_main_rule/{id}',[MainRuleController::class,'update_main_rule'])->name('update_main_rule');
+Route::get('/view_rule_sub/{id}',[MainRuleController::class,'view_rule_sub'])->name('view_rule_sub');
+Route::get('/delete_rule_sub/{id}',[MainRuleController::class,'delete_rule_sub'])->name('delete_rule_sub');
+Route::get('/delete_rulestbl/{id}',[MainRuleController::class,'delete_rulestbl'])->name('delete_rulestbl');
+Route::get('/add_below_new_ruletbl/{ruleMainId}/{id}',[MainRuleController::class,'add_below_new_ruletbl'])->name('add_below_new_ruletbl');
+Route::post('/add_new_ruletbl',[MainRuleController::class,'add_new_ruletbl'])->name('add_new_ruletbl');
+Route::get('/delete_new_rule/{id}',[MainRuleController::class,'delete_new_rule'])->name('delete_new_rule');
+
+
+//Regulation
+Route::get('/get_regulation/{id}',[MainRegulationController::class,'index'])->name('get_regulation');

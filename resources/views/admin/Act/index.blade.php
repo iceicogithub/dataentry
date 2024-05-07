@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="{{ Route('new_act') }}"><button class="btn btn-success">Add Act</button></a>
+                        <a href="{{ Route('new_act') }}"><button class="btn btn-success">Add Legislation</button></a>
                     </ol>
                 </div>
             </div>
@@ -30,14 +30,14 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong class="card-title">Act Table</strong>
+                        <strong class="card-title">Legislation Table</strong>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered text-center" id="myTable">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">Sr .No</th>
-                                    <th scope="col">Act</th>
+                                    <th scope="col">Legislation</th>
                                     <th scope="col">Category</th>
                                     <th scope="col">State</th>
                                     <th scope="col">Last Date Of Edited</th>
@@ -50,7 +50,10 @@
                                 @foreach ($act as $item)
                                     <tr>
                                         <td scope="row">@php echo $a++; @endphp</td>
-                                        <td class="text-capitalize">{{ $item->act_title }}</td>
+                                        <td class="text-capitalize">
+                                            
+                                            
+                                            {{ $item->legislation_name }}</td>
                                         <td class="text-capitalize">{{ $item->CategoryModel->category }}</td>
                                         <td class="text-capitalize">All</td>
                                         <td class="text-capitalize">{{ $item->updated_at }}</td>
@@ -67,6 +70,9 @@
                                                     class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
                                             <a href="/delete-act/{{$item->act_id}}" onclick="return confirm('Are you sure ?')" title="Delete" class="px-1"><i
                                                     class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
+
+                                            <a href="/edit_legislation_name/{{$item->act_id}}" title="Edit Legislation" class="px-1"><i
+                                                class="bg-success btn-sm fa fa-edit p-1 text-white"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

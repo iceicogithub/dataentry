@@ -12,7 +12,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="{{ Route('act') }}"><button class="btn btn-success">Back</button></a>
+                        <a href="{{ Route('get_rule',['id' => $id]) }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>
@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card p-5">
-                    <form id="form" action="/store_new_act" method="post" enctype="multipart/form-data"
+                    <form id="form" action="/store_new_rule" method="post" enctype="multipart/form-data"
                         class="form form-horizontal">
                         @csrf
                         <!-- Your Blade View -->
@@ -37,39 +37,14 @@
                                 {{ session('error') }}
                             </div>
                         @endif
-
+                       <input type="hidden" name="act_id" id="act_id" value="{{$id}}">
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="role" class=" form-control-label">Select Category<span
-                                            class="text-danger">*</span></label>
-                                    <select class="select form-control text-capitalize category" name="category_id" required>
-                                        <option value="" selected disabled>Select Category</option>
-                                        @foreach ($category as $value)
-                                            <option value="{{ $value->category_id }}" class="text-capitalize">
-                                                {{ $value->category }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6 state" style="display: none;">
-                                <div class="form-group">
-                                    <label for="state" class=" form-control-label">Select state<span
-                                            class="text-danger">*</span></label>
-                                    <select class="select form-control text-capitalize" name="state_id" >
-                                        <option value="" selected disabled>Select State</option>
-                                        @foreach ($states as $item)
-                                            <option value="{{ $item->state_id }}" class="text-capitalize">
-                                                {{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
+                            
                             <div class="col-md-12">
                                 <div class="form-group form-default">
-                                    <label class="float-label"> Legislation <span class="text-danger">*</span></label>
-                                    <input type="text" name="legislation_name" class="form-control mb-3"
-                                        placeholder="Enter legislation Title" required>
+                                    <label class="float-label">Add Rule <span class="text-danger">*</span></label>
+                                    <input type="text" name="new_rule_title" class="form-control mb-3"
+                                        placeholder="Enter Rule Title" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
