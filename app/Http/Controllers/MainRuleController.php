@@ -16,6 +16,10 @@ use App\Models\MainRuleFootnote;
 use App\Models\RuleSub;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class MainRuleController extends Controller
 {
@@ -28,7 +32,7 @@ class MainRuleController extends Controller
         $act = Act::where('act_id', $act_id)->first();
        $new_rule = NewRule::where('act_id', $act_id)->get();
       
-       $perPage = request()->get('perPage') ?: 10;
+        $perPage = request()->get('perPage') ?: 10;
         $page = request()->get('page') ?: 1;
         $slicedItems = array_slice($new_rule->toArray(), ($page - 1) * $perPage, $perPage);
 
@@ -52,7 +56,7 @@ class MainRuleController extends Controller
      public function add_new_rule($id){
         $category = Category::all();
         $states = State::all();
-       return view('admin.MainRule.new_rule', compact('id','category','states',));
+       return view('admin.MainRule.new_rule', compact('id','category','states'));
      }
 
 
@@ -76,11 +80,7 @@ class MainRuleController extends Controller
     {
         $new_rule_id = $id;
         $newRule = NewRule::where('new_rule_id', $new_rule_id)->first();
-        if ($newRule) {
-            $new_rule_footnote_title = json_decode($newRule->new_rule_footnote_title, true);
-            $new_rule_footnote_description = json_decode($newRule->new_rule_footnote_description, true);
-        }
-
+       
         $mainsequence = RuleMain::where('new_rule_id', $id)
         ->with('mainTypeRule') 
         ->get()
@@ -109,7 +109,30 @@ class MainRuleController extends Controller
         $paginatedCollection->withPath(request()->url());
             
         
-        return view('admin.MainRule.show', compact('newRule','new_rule_footnote_title','new_rule_footnote_description','paginatedCollection'));     
+        return view('admin.MainRule.show', compact('newRule','paginatedCollection'));     
+    }
+
+    public function update_new_rule(Request $request, $id){
+        try {
+           
+            $newRule = NewRule::find($id);
+            $newRule->new_rule_title = $request->new_rule_title;
+            $newRule->ministry = $request->ministry;
+            $newRule->new_rule_no = $request->new_rule_no ?? null;
+            $newRule->new_rule_date = $request->new_rule_date ?? null;
+            $newRule->enactment_date = $request->enactment_date ?? null;
+            $newRule->enforcement_date = $request->enforcement_date ?? null;
+            $newRule->new_rule_description = $request->new_rule_description ?? null;
+            $newRule->new_rule_footnote_description = $request->new_rule_footnote_description;
+            $newRule->update();
+
+
+            return redirect()->back()->with('success', 'Rule Updated Successfully');
+        } catch (\Exception $e) {
+            \Log::error('Error creating Act: ' . $e->getMessage());
+
+            return redirect()->back()->withErrors(['error' => 'Failed to create Act. Please try again.' . $e->getMessage()]);
+        }
     }
 
 
@@ -177,6 +200,7 @@ class MainRuleController extends Controller
                                    $i = $lastRuleRank;
                                 }       
                                 $section = RuleTable::create([
+                                    'new_rule_id' => $newRule->new_rule_id,
                                     'rules_rank' => $i + 1,
                                     'rules_no' => $currentSectionNo,
                                     'rule_main_id' => $ruleMain->rule_main_id,
@@ -199,6 +223,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentArticleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -220,6 +245,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRuleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -242,6 +268,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRegulationNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -263,6 +290,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentListNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -285,6 +313,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentPartNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -306,6 +335,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAppendicesNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -328,6 +358,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentOrderNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -349,6 +380,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAnnexureNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -370,6 +402,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentStscheduleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -391,6 +424,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentFormNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -427,6 +461,7 @@ class MainRuleController extends Controller
                                    $i = $lastRuleRank;
                                 }       
                                 $section = RuleTable::create([
+                                    'new_rule_id' => $newRule->new_rule_id,
                                     'rules_rank' => $i + 1,
                                     'rules_no' => $currentSectionNo,
                                     'rule_main_id' => $ruleMain->rule_main_id,
@@ -449,6 +484,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentArticleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -470,6 +506,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRuleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -492,6 +529,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRegulationNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -513,6 +551,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentListNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -535,6 +574,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentPartNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -556,6 +596,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAppendicesNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -578,6 +619,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentOrderNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -599,6 +641,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAnnexureNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -620,6 +663,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentStscheduleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -641,6 +685,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentFormNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -677,6 +722,7 @@ class MainRuleController extends Controller
                                    $i = $lastRuleRank;
                                 }       
                                 $section = RuleTable::create([
+                                    'new_rule_id' => $newRule->new_rule_id,
                                     'rules_rank' => $i + 1,
                                     'rules_no' => $currentSectionNo,
                                     'rule_main_id' => $ruleMain->rule_main_id,
@@ -699,6 +745,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentArticleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -720,6 +767,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRuleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -742,6 +790,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRegulationNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -763,6 +812,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentListNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -785,6 +835,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentPartNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -806,6 +857,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAppendicesNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -828,6 +880,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentOrderNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -849,6 +902,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAnnexureNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -870,6 +924,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentStscheduleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -891,6 +946,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentFormNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -927,6 +983,7 @@ class MainRuleController extends Controller
                                    $i = $lastRuleRank;
                                 }       
                                 $section = RuleTable::create([
+                                    'new_rule_id' => $newRule->new_rule_id,
                                     'rules_rank' => $i + 1,
                                     'rules_no' => $currentSectionNo,
                                     'rule_main_id' => $ruleMain->rule_main_id,
@@ -949,6 +1006,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentArticleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -970,6 +1028,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRuleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -992,6 +1051,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRegulationNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1013,6 +1073,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentListNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1035,6 +1096,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentPartNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1056,6 +1118,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAppendicesNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1078,6 +1141,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentOrderNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1099,6 +1163,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAnnexureNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1120,6 +1185,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentStscheduleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1141,6 +1207,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentFormNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1177,6 +1244,7 @@ class MainRuleController extends Controller
                                    $i = $lastRuleRank;
                                 }       
                                 $section = RuleTable::create([
+                                    'new_rule_id' => $newRule->new_rule_id,
                                     'rules_rank' => $i + 1,
                                     'rules_no' => $currentSectionNo,
                                     'rule_main_id' => $ruleMain->rule_main_id,
@@ -1199,6 +1267,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentArticleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1220,6 +1289,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRuleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1242,6 +1312,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRegulationNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1263,6 +1334,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentListNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1285,6 +1357,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentPartNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1306,6 +1379,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAppendicesNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1328,6 +1402,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentOrderNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1349,6 +1424,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAnnexureNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1370,6 +1446,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentStscheduleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1391,6 +1468,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentFormNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1427,6 +1505,7 @@ class MainRuleController extends Controller
                                    $i = $lastRuleRank;
                                 }       
                                 $section = RuleTable::create([
+                                    'new_rule_id' => $newRule->new_rule_id,
                                     'rules_rank' => $i + 1,
                                     'rules_no' => $currentSectionNo,
                                     'rule_main_id' => $ruleMain->rule_main_id,
@@ -1449,6 +1528,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentArticleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1470,6 +1550,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRuleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1492,6 +1573,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRegulationNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1513,6 +1595,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentListNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1535,6 +1618,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentPartNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1556,6 +1640,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAppendicesNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1578,6 +1663,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentOrderNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1599,6 +1685,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAnnexureNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1620,6 +1707,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentStscheduleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1641,6 +1729,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentFormNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1685,9 +1774,7 @@ class MainRuleController extends Controller
                 'state_id' => $request->state_id ?? null,
                 'new_rule_title' => $request->new_rule_title,
             ]);
-
-        
-         
+ 
             foreach ($request->rule_maintype_id as $key => $rulemaintypeid) {
                
 
@@ -1719,6 +1806,7 @@ class MainRuleController extends Controller
                                    $i = $lastRuleRank;
                                 }       
                                 $section = RuleTable::create([
+                                    'new_rule_id' => $newRule->new_rule_id,
                                     'rules_rank' => $i + 1,
                                     'rules_no' => $currentSectionNo,
                                     'rule_main_id' => $ruleMain->rule_main_id,
@@ -1741,6 +1829,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentArticleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1762,6 +1851,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRuleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1784,6 +1874,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRegulationNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1805,6 +1896,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentListNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1827,6 +1919,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentPartNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1848,6 +1941,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAppendicesNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1870,6 +1964,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentOrderNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1891,6 +1986,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAnnexureNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1912,6 +2008,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentStscheduleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1933,6 +2030,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentFormNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -1969,6 +2067,7 @@ class MainRuleController extends Controller
                                    $i = $lastRuleRank;
                                 }       
                                 $section = RuleTable::create([
+                                    'new_rule_id' => $newRule->new_rule_id,
                                     'rules_rank' => $i + 1,
                                     'rules_no' => $currentSectionNo,
                                     'rule_main_id' => $ruleMain->rule_main_id,
@@ -1991,6 +2090,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentArticleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2012,6 +2112,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRuleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2034,6 +2135,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRegulationNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2055,6 +2157,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentListNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2077,6 +2180,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentPartNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2098,6 +2202,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAppendicesNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2120,6 +2225,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentOrderNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2141,6 +2247,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAnnexureNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2162,6 +2269,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentStscheduleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2183,6 +2291,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentFormNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2219,6 +2328,7 @@ class MainRuleController extends Controller
                                    $i = $lastRuleRank;
                                 }       
                                 $section = RuleTable::create([
+                                    'new_rule_id' => $newRule->new_rule_id,
                                     'rules_rank' => $i + 1,
                                     'rules_no' => $currentSectionNo,
                                     'rule_main_id' => $ruleMain->rule_main_id,
@@ -2241,6 +2351,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentArticleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2262,6 +2373,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRuleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2284,6 +2396,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRegulationNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2305,6 +2418,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentListNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2327,6 +2441,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentPartNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2348,6 +2463,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAppendicesNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2370,6 +2486,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentOrderNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2391,6 +2508,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAnnexureNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2412,6 +2530,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentStscheduleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2433,6 +2552,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentFormNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2469,6 +2589,7 @@ class MainRuleController extends Controller
                                    $i = $lastRuleRank;
                                 }       
                                 $section = RuleTable::create([
+                                    'new_rule_id' => $newRule->new_rule_id,
                                     'rules_rank' => $i + 1,
                                     'rules_no' => $currentSectionNo,
                                     'rule_main_id' => $ruleMain->rule_main_id,
@@ -2491,6 +2612,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentArticleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2512,6 +2634,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRuleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2534,6 +2657,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRegulationNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2555,6 +2679,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentListNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2577,6 +2702,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentPartNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2598,6 +2724,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAppendicesNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2620,6 +2747,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentOrderNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2641,6 +2769,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAnnexureNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2662,6 +2791,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentStscheduleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2683,6 +2813,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentFormNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2719,6 +2850,7 @@ class MainRuleController extends Controller
                                    $i = $lastRuleRank;
                                 }       
                                 $section = RuleTable::create([
+                                    'new_rule_id' => $newRule->new_rule_id,
                                     'rules_rank' => $i + 1,
                                     'rules_no' => $currentSectionNo,
                                     'rule_main_id' => $ruleMain->rule_main_id,
@@ -2741,6 +2873,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentArticleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2762,6 +2895,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRuleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2784,6 +2918,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRegulationNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2805,6 +2940,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentListNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2827,6 +2963,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentPartNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2848,6 +2985,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAppendicesNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2870,6 +3008,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentOrderNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2891,6 +3030,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAnnexureNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2912,6 +3052,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentStscheduleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2933,6 +3074,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentFormNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -2969,6 +3111,7 @@ class MainRuleController extends Controller
                                    $i = $lastRuleRank;
                                 }       
                                 $section = RuleTable::create([
+                                    'new_rule_id' => $newRule->new_rule_id,
                                     'rules_rank' => $i + 1,
                                     'rules_no' => $currentSectionNo,
                                     'rule_main_id' => $ruleMain->rule_main_id,
@@ -2991,6 +3134,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentArticleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -3012,6 +3156,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRuleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -3034,6 +3179,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentRegulationNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -3055,6 +3201,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentListNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -3077,6 +3224,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentPartNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -3098,6 +3246,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAppendicesNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -3120,6 +3269,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentOrderNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -3141,6 +3291,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentAnnexureNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -3162,6 +3313,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentStscheduleNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -3183,6 +3335,7 @@ class MainRuleController extends Controller
                                $i = $lastRuleRank;
                             }       
                             $section = RuleTable::create([
+                                'new_rule_id' => $newRule->new_rule_id,
                                 'rules_rank' => $i + 1,
                                 'rules_no' => $currentFormNo,
                                 'rule_main_id' => $ruleMain->rule_main_id,
@@ -3461,6 +3614,7 @@ class MainRuleController extends Controller
             }
 
             $rulet = new RuleTable;
+            $rulet->new_rule_id = $new_rule_id;
             $rulet->rule_main_id = $rule_main_id;
             $rulet->rule_subtypes_id = $rule_subtypes_id;
             $rulet->rules_content = $request->rules_content ?? null;
@@ -3540,6 +3694,61 @@ class MainRuleController extends Controller
         return redirect()->back()->with('flash_timeout', 10);
     }
 
+    public function delete_rule_footnote(Request $request, $id){
+        try {
+            $ruleFootnote = MainRuleFootnote::findOrFail($id);
+            $ruleFootnote->delete();
+            Session::flash('success', 'deleted successfully.');
+        } catch (\Exception $e) {
+            Session::flash('error', 'Failed to delete RuleMain.');
+        }
+        return redirect()->back()->with('flash_timeout', 10);
+    }
+
+
+    public function view_new_rule(Request $request, $id){
+        $currentPage = $request->query('page');
+        $newRule = NewRule::findOrFail($id);
+        return view('admin.MainRule.view_new_rule', compact('newRule','currentPage'));  
+    }
+
+    public function export_rule_pdf(Request $request, $id){
+        try {
+
+            // dd($request);
+            // die();
+            ini_set('memory_limit', '1024M');
+            
+            // Create Dompdf instance with options
+            $options = new Options();
+            $options->set('isHtml5ParserEnabled', true);
+            $options->set('isJavascriptEnabled', true);
+            $dompdf = new Dompdf($options);
+
+
+            $newRule = NewRule::where('new_rule_id', $id)
+            ->with([
+                'ruleMain' => function ($query) {
+                    $query->with(['ruletbl' => function ($query) {
+                        $query->orderBy('rules_rank');
+                    }])->orderBy('rule_main_rank'); // Sort ruleMain by rule_main_rank
+                },
+                'ruleMain.ruletbl.ruleSub',
+                'ruleMain.ruletbl.ruleFootnoteModel',
+                'ruleMain.ruletbl.ruleSub.ruleSubFootnoteModel'
+            ])
+            ->get();
+         
+            // Load view and generate PDF
+            $pdf = FacadePdf::loadView('admin.MainRule.pdf', ['combinedItems' => $newRule]);
+
+            // Download PDF with a meaningful file name
+            return $pdf->download("{$newRule[0]->new_rule_title}.pdf");
+        } catch (\Exception $e) {
+            // Handle any errors
+            return redirect()->back()->with('error', 'An error occurred while generating PDF: ' . $e->getMessage());
+        }
+    }
     
     public function edit(string $id)
     {

@@ -1,7 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers;
 use App\Models\Act;
 use App\Models\Chapter;
 use App\Models\Footnote;
@@ -39,9 +39,11 @@ class PdfExportController extends Controller
     public function exportToPdf(Request $request, $id)
     {
         try {
-
+            
+            ini_set('memory_limit', '1024M');
             $options = new Options();
             $options->set('isHtml5ParserEnabled', true);
+            $options->set('isJavascriptEnabled', true);
             $dompdf = new Dompdf($options);
             $mainsequence = MainTable::where('act_id', $id)
             ->with([

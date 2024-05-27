@@ -39,6 +39,7 @@ use App\Models\MainTable;
 use App\Models\SubRules;
 use App\Models\SubStschedule;
 use App\Models\SubType;
+use App\Models\ActSummaryRelation;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
@@ -49,10 +50,12 @@ use Illuminate\Support\Collection;
 class ActController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $act = Act::with('CategoryModel')->orderBy('act_id', 'desc')->get();
-        return view('admin.act.index', compact('act'));
+        $currentPage = $request->query('page', 1);   
+        $acts = Act::with('CategoryModel')->orderBy('act_id', 'desc')->get();
+            
+        return view('admin.act.index', compact('acts','currentPage'));
     }
 
     public function get_act_section(Request $request, $id)
@@ -2281,8 +2284,10 @@ class ActController extends Controller
 
     public function view(Request $request, $id)
     {
+        $currentPage = $request->query('page', 1); 
+      
         $export = Act::where('act_id', $id)->get();
-    return view('admin.act.view', compact('export'));
+       return view('admin.act.view', compact('export','currentPage'));
     }
     public function update_main_act(Request $request, $id)
     {
@@ -2320,9 +2325,9 @@ class ActController extends Controller
 
     public function new_act()
     {
+        $actSummary = ActSummary::all();
         $category = Category::all();
         $states = State::all();
-        $actSummary = ActSummary::all();
         return view('admin.act.new_act', compact('category', 'states', 'actSummary'));
     }
 
@@ -2333,11 +2338,14 @@ class ActController extends Controller
             $act->category_id = $request->category_id;
             $act->state_id = $request->state_id ?? null;
             $act->legislation_name = $request->legislation_name;
-            $actSummaries = ActSummary::pluck('id')->map(function ($id) {
-                return (string) $id;
-            })->toArray();
-            $act->act_summary = json_encode($actSummaries);
             $act->save();
+
+            foreach ($request->act_summary_id as $act_summary_id) {
+                ActSummaryRelation::create([
+                    'act_id' => $act->act_id,
+                    'act_summary_id' => $act_summary_id,
+                ]);
+            }
 
             return redirect()->route('act')->with('success', 'Act created successfully');
         } catch (\Exception $e) {
@@ -2353,8 +2361,12 @@ class ActController extends Controller
         $act_id = $id;
         $mainact = ActSummary::all();
         $act = Act::find($act_id);
+        $relatedActSummaries = ActSummaryRelation::where('act_id', $act_id)->with('actSummary')->get();
+        // dd($relatedActSummaries);
+        // die();
+      
 
-        return view('admin.act.main_act', compact('act_id', 'mainact', 'act'));
+        return view('admin.act.main_act', compact('act_id', 'mainact', 'act','relatedActSummaries'));
     }
 
 
@@ -4285,7 +4297,9 @@ class ActController extends Controller
        $legislation = Act::find($id);
        $category = Category::all();
        $states = State::all();
-       return view('admin.act.edit_legislation',compact('legislation','category','states'));
+       $actSummary = ActSummary::all();
+       $actSummaryRltn = ActSummaryRelation::where('act_id',$id)->get();
+       return view('admin.act.edit_legislation',compact('legislation','category','states','actSummary','actSummaryRltn'));
     }
 
     public function update_legislation(Request $request, $id){
@@ -4296,6 +4310,17 @@ class ActController extends Controller
             $legislation->state_id = $request->has('state_id') ? $request->state_id : null;
             $legislation->legislation_name = $request->legislation_name;
             $legislation->update();
+            ActSummaryRelation::where('act_id', $id)->delete();
+
+            // Create new ActSummaryRelation records based on the selected Act summaries
+            if ($request->has('act_summary_id') && is_array($request->act_summary_id)) {
+                foreach ($request->act_summary_id as $act_summary_id) {
+                    ActSummaryRelation::create([
+                        'act_id' => $legislation->act_id, // Use $legislation->act_id instead of $act->act_id
+                        'act_summary_id' => $act_summary_id,
+                    ]);
+                }
+            }
             
             return redirect()->route('act')->with('success', 'Legislation updated successfully');
         } catch (\Exception $e) {

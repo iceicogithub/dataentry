@@ -10,7 +10,7 @@ class RuleTable extends Model
     use HasFactory;
     protected $primaryKey = 'rules_id';
     protected $table = 'rule_table';
-    protected $fillable = ['rule_main_id', 'rules_rank', 'act_id', 'rule_subtypes_id','rules_no','rules_title','rules_content'];
+    protected $fillable = ['new_rule_id','rule_main_id', 'rules_rank', 'act_id', 'rule_subtypes_id','rules_no','rules_title','rules_content'];
     protected $casts = [
         'rules_rank' => 'float',
     ];

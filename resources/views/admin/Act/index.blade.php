@@ -32,7 +32,7 @@
                     <div class="card-header">
                         <strong class="card-title">Legislation Table</strong>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body">  
                         <table class="table table-bordered text-center" id="myTable">
                             <thead class="thead-light">
                                 <tr>
@@ -47,7 +47,7 @@
                             <tbody>
 
                                 @php $a=1; @endphp
-                                @foreach ($act as $item)
+                                @foreach ($acts as $item)
                                     <tr>
                                         <td scope="row">@php echo $a++; @endphp</td>
                                         <td class="text-capitalize">
@@ -63,20 +63,16 @@
                                             </span>
                                         </td>
                                          --}}
-                                        <td class="text-capitalize d-flex">
-                                            <a href="/edit-main-act/{{$item->act_id}}" title="Edit" class="px-1"><i
-                                                    class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
-                                            <a href="/view-main-act/{{$item->act_id}}" title="View" class="px-1"><i
-                                                    class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
-                                            <a href="/delete-act/{{$item->act_id}}" onclick="return confirm('Are you sure ?')" title="Delete" class="px-1"><i
-                                                    class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
-
-                                            <a href="/edit_legislation_name/{{$item->act_id}}" title="Edit Legislation" class="px-1"><i
-                                                class="bg-success btn-sm fa fa-edit p-1 text-white"></i></a>
+                                         <td class="text-capitalize d-flex">
+                                            <a href="/edit-main-act/{{$item->act_id}}?page=1" title="Edit" class="px-1 edit-link"><i class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
+                                            <a href="/view-main-act/{{$item->act_id}}?page=1" title="View" class="px-1 view-link"><i class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
+                                            <a href="/delete-act/{{$item->act_id}}?page=1" onclick="return confirm('Are you sure ?')" title="Delete" class="px-1 delete-link"><i class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
+                                            <a href="/edit_legislation_name/{{$item->act_id}}?page=1" title="Edit Legislation" class="px-1 edit-legislation-link"><i class="bg-success btn-sm fa fa-edit p-1 text-white"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
+                          
                         </table>
                     </div>
                 </div>
@@ -84,3 +80,50 @@
         </div>
     </div>
 @endsection
+@section('script')
+<script>
+$(document).ready(function() {
+    var table = $('#myTable').DataTable({
+        "paging": true,
+        "searching": true,
+        "ordering": true,
+        "pageLength": 10, // Set the number of records per page (adjust as needed)
+        "start": {{ ($currentPage - 1) * 10 }} // Calculate the start index based on the current page number and page length
+    });
+
+
+    function updateLinks() {
+        var pageInfo = table.page.info();
+        var currentPage = pageInfo.page + 1; // DataTables pages are 0-indexed
+        $('.edit-link').each(function() {
+            var url = new URL($(this).attr('href'), window.location.origin);
+            url.searchParams.set('page', currentPage);
+            $(this).attr('href', url.toString());
+        });
+        $('.view-link').each(function() {
+            var url = new URL($(this).attr('href'), window.location.origin);
+            url.searchParams.set('page', currentPage);
+            $(this).attr('href', url.toString());
+        });
+        $('.delete-link').each(function() {
+            var url = new URL($(this).attr('href'), window.location.origin);
+            url.searchParams.set('page', currentPage);
+            $(this).attr('href', url.toString());
+        });
+        $('.edit-legislation-link').each(function() {
+            var url = new URL($(this).attr('href'), window.location.origin);
+            url.searchParams.set('page', currentPage);
+            $(this).attr('href', url.toString());
+        });
+    }
+
+    table.on('draw', function() {
+        updateLinks();
+    });
+
+    updateLinks(); // Initial update
+
+});
+</script>
+@endsection
+

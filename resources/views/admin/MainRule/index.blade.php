@@ -36,7 +36,19 @@
                         <strong class="card-title">Rules Table</strong>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered text-center" id="myTable">
+                        <div class="pagination-links">
+                            <form action="{{ request()->url() }}" method="GET" class="form-inline">
+                                <label for="perPage">Show:</label>
+                                <select name="perPage" id="perPage" class="form-control mx-2" onchange="this.form.submit()">
+                                    <option value="10" {{ request()->get('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="25" {{ request()->get('perPage') == 25 ? 'selected' : '' }}>25</option>
+                                    <option value="50" {{ request()->get('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                    <option value="100" {{ request()->get('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                </select>
+                                <span>entries</span>
+                            </form>
+                        </div>
+                        <table class="table table-bordered text-center" id="">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">Sr .No</th>
@@ -55,15 +67,17 @@
                                         <td class="text-capitalize d-flex">
                                             <a href="/edit_new_rule/{{$item['new_rule_id']}}" title="Edit" class="px-1"><i
                                                     class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
-                                            <a href="/view-main-act/{{$item['new_rule_id']}}" title="View" class="px-1"><i
-                                                    class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
+                                                    <a href="/view_new_rule/{{$item['new_rule_id']}}?page={{ $paginatedCollection->currentPage() }}" title="View" class="px-1"><i
+                                                        class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
                                             <a href="/delete_new_rule/{{$item['new_rule_id']}}?page={{ $paginatedCollection->currentPage() }}" onclick="return confirm('Are you sure ?')" title="Delete" class="px-1"><i
                                                     class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
+                           
                         </table>
+                         {{ $paginatedCollection->links() }}
                     </div>
                 </div>
             </div>

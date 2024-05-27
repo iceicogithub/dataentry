@@ -17,6 +17,11 @@ class NewRule extends Model
         return $this->hasMany(RuleMain::class, 'new_rule_id', 'new_rule_id');
     }
 
+    // public function ruletbl()
+    // {
+    //     return $this->hasManyThrough(RuleTable::class, RuleMain::class, 'new_rule_id', 'rule_main_id');
+    // }
+
     protected static function boot()
     {
         parent::boot();

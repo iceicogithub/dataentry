@@ -73,6 +73,22 @@
                                         placeholder="Enter legislation Title" value="{{$legislation->legislation_name}}" required>
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class=" form-control-label">Select<span class="text-danger">*</span></label>
+                                    <div class="checkbox-list">
+                                        @foreach ($actSummary as $item)
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="act_summary_id[]" value="{{ $item->id }}" {{ $actSummaryRltn->contains('act_summary_id', $item->id) ? 'checked' : '' }}>
+                                                {{ $item->title }}
+                                            </label>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <button type="submit" class="btn  btn-success">Save</button>

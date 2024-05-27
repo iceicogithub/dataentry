@@ -2421,20 +2421,25 @@
         </script>
     @endif
     <script>
-        CKEDITOR.replace('act_no');
-        CKEDITOR.replace('act_description');
-        CKEDITOR.replace('act_footnote');
 
-
-        $(document).on('click', '.add-footnote', function() {
-            var icon = $(this).find('i');
-            var section = $(this).closest('.form-default').find('.show-footnote');
-            section.slideToggle();
-            icon.toggleClass('fa-plus fa-minus');
-
-            // Initialize CKEditor for the new textarea
-            CKEDITOR.replace(section.find('.ckeditor-replace.footnote')[0]);
+    $(document).ready(function() {
+        CKEDITOR.replace('act_description', {
+            toolbar: 'Full'
         });
+        CKEDITOR.replace('act_no', {
+            toolbar: 'Full'
+        });
+    });
+
+    $(document).on('click', '.add-footnote', function() {
+        var icon = $(this).find('i');
+        var section = $(this).closest('.form-default').find('.show-footnote');
+        section.slideToggle();
+        icon.toggleClass('fa-plus fa-minus');
+
+        // Initialize CKEditor for the new textarea
+        CKEDITOR.replace(section.find('.ckeditor-replace.footnote')[0]);
+    });
     </script>
     <script>
         $(document).ready(function() {

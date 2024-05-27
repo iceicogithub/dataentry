@@ -152,7 +152,7 @@
                                                                             </span>
                                                                         </label>
                                                                         <div>
-                                                                            <a href="{{ url('/delete_footnote/' . $footnote->rule_footnote_id ) }}"
+                                                                            <a href="{{ url('/delete_rule_footnote/' . $footnote->rule_footnote_id ) }}"
                                                                                 onclick="return confirm('Are you sure ?')"><i
                                                                                     class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
                                                                         </div>
@@ -259,7 +259,7 @@
                                                             @foreach ($ruleSubs->ruleSubFootnoteModel as $a => $footnoteItem)
                                                                 <input type="hidden"
                                                                     name="sub_footnote_id[{{ $k }}][{{ $a }}]"
-                                                                    value="{{ $footnoteItem->footnote_id }}">
+                                                                    value="{{ $footnoteItem->rule_footnote_id }}">
                                                                 <div class="border col-md-12 p-3">
                                                                     <div
                                                                         class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
@@ -275,7 +275,7 @@
                                                                                 </span>
                                                                             </label>
                                                                             <div>
-                                                                                <a href="{{ url('/delete_footnote/' . $footnoteItem->footnote_id) }}"
+                                                                                <a href="{{ url('/delete_rule_footnote/' . $footnoteItem->rule_footnote_id) }}"
                                                                                     onclick="return confirm('Are you sure ?')"><i
                                                                                         class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
                                                                             </div>

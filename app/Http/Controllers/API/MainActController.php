@@ -394,6 +394,10 @@ class MainActController extends Controller
                 }
             }
 
+
+
+            //  dd($combinedItems);
+            // die();
            
             $sideBarList = [];
 
@@ -1377,7 +1381,7 @@ class MainActController extends Controller
                     }
 
                     $sectionString = implode('', $Data);
-                    $MainList[] = '<h2 style="text-align:center!important;" id=""><strong>' . $item['parts_title'] . '</strong></h2>'. $sectionString;
+                    $MainList[] = '<h2  id="ch-'.$item['parts_id'].'" style="text-align:center!important;" ><strong>' . $item['parts_title'] . '</strong></h2>'. $sectionString;
                             
                 }
 
@@ -1507,8 +1511,7 @@ class MainActController extends Controller
                     if(!empty($item['lists'])){
                         foreach ($item['lists'] as $list) {
                             $subListList = [];
-                            if (!empty($list['
-                            '])) {
+                            if (!empty($list['sub_list_model']))  {
                                 foreach ($list['sub_list_model'] as $subList) {
                                     $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
                                 }
@@ -1686,7 +1689,7 @@ class MainActController extends Controller
                     }
 
                     $sectionString = implode('', $Data);
-                    $MainList[] = '<h2 style="text-align:center!important;" id=""><strong>' . $item['chapter_title'] . '</strong></h2>'. $sectionString;
+                    $MainList[] = '<h2 id="ch-'.$item['chapter_id'].'" style="text-align:center!important;" ><strong>' . $item['chapter_title'] . '</strong></h2>'. $sectionString;
                             
                 }
 
@@ -1995,7 +1998,7 @@ class MainActController extends Controller
                     }
 
                     $sectionString = implode('', $Data);
-                    $MainList[] = '<h2 style="text-align:center!important;" id=""><strong>' . $item['priliminary_title'] . '</strong></h2>'. $sectionString;
+                    $MainList[] = '<h2  id="ch-'.$item['priliminary_id'].'" style="text-align:center!important;"><strong>' . $item['priliminary_title'] . '</strong></h2>'. $sectionString;
                             
                 }
 
@@ -2303,7 +2306,7 @@ class MainActController extends Controller
                     }
 
                     $sectionString = implode('', $Data);
-                    $MainList[] = '<h2 style="text-align:center!important;" id=""><strong>' . $item['schedule_title'] . '</strong></h2>'. $sectionString;
+                    $MainList[] = '<h2 id="ch-'.$item['schedule_id'].'" style="text-align:center!important;"><strong>' . $item['schedule_title'] . '</strong></h2>'. $sectionString;
                             
                 }
 
@@ -2611,7 +2614,7 @@ class MainActController extends Controller
                     }
 
                     $sectionString = implode('', $Data);
-                    $MainList[] = '<h2 style="text-align:center!important;" id=""><strong>' . $item['appendix_title'] . '</strong></h2>'. $sectionString;
+                    $MainList[] = '<h2 id="ch-'.$item['appendix_id'].'" style="text-align:center!important;" id=""><strong>' . $item['appendix_title'] . '</strong></h2>'. $sectionString;
                             
                 }
 
@@ -2922,30 +2925,1794 @@ class MainActController extends Controller
                     }
 
                     $sectionString = implode('', $Data);
-                    $MainList[] = '<h2 style="text-align:center!important;" id=""><strong>' . $item['main_order_title'] . '</strong></h2>'. $sectionString;
+                    $MainList[] = '<h2 id="ch-'.$item['main_order_id'].'" style="text-align:center!important;"><strong>' . $item['main_order_title'] . '</strong></h2>'. $sectionString;
                             
                 }
              
             }
-          
-             
-    
-              
 
-            return response()->json([
-                'status' => 200,
-                'data' => [
-                    'actId' => $act->act_id,
-                    'actNo' => $act->act_no,
-                    'actName' => $act->act_title,
-                    'enactmentDate' => $act->enactment_date,
-                    'enforcementDate' => $act->enforcement_date,
-                    'Ministry' => $act->ministry,
-                    'Preamble' => $act->act_description,
-                    'actDescription' => '<h1 id=""><strong>' . $act->act_title . '</strong> </h1><div><strong>' . $act->act_no . '</strong></div><div><strong>' . $act->act_date . '</strong></div>' . implode('', $MainList) . '',
-                    'sideBarList' => $sideBarList,
-                ]
-            ]);
+            $firstItem = $combinedItems->first();
+            $firstSubtype = null;
+            
+            // Define an array to hold the keys that you want to check
+            $subtypeKeys = ['sections', 'articles', 'rules', 'regulation', 'lists', 'part', 'appendices', 'order', 'annexure', 'stschedule'];
+            
+            // Iterate through each subtype key
+            foreach ($subtypeKeys as $key) {
+                // Check if the current key is not empty
+                if (!empty($firstItem[$key])) {
+                    // Assign the first non-empty subtype to $firstSubtype
+                    $firstSubtype = reset($firstItem[$key]);
+                    // Break the loop as we found the first non-empty subtype
+                    break;
+                }
+            }
+            
+            // Create a new array to hold the first subtype
+            $firstSubtypeArray = [$firstSubtype];
+            
+            // Add other keys from $firstItem except for the subtype keys
+            foreach ($firstItem as $itemKey => $itemValue) {
+                if (!in_array($itemKey, $subtypeKeys)) {
+                    $firstSubtypeArray[$itemKey] = $itemValue;
+                }
+            }
+
+        //    dd($firstSubtypeArray);
+        //    die();
+
+         $mainFirstList = [];
+         if (!empty($firstSubtypeArray['chapter_id'])) {
+
+            $Data = []; // Initialize an empty array to store processed data
+
+            foreach ($firstSubtypeArray as $item) {
+
+                if (!empty($item['section_id'])) {
+                    $subSectionsList = [];
+                    if (!empty($item['subsection_model'])) {
+                        foreach ($item['subsection_model'] as $subsection) {
+                            $subSectionsList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
+                        }
+                    }
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subSectionString = implode('', $subSectionsList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $sectionCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $sectionHtml = '<div id="' . $item['section_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['section_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['section_title'] . '</h4></div></br><div>' . $item['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $sectionCss . $sectionHtml;
+                }
+                if (!empty($item['article_id'])) {
+                    $subArticleList = [];
+                    if (!empty($item['sub_article_model'])) {
+                        foreach ($item['sub_article_model'] as $subarticle) {
+                            $subArticleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subArticleString = implode('', $subArticleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $articleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $articleHtml = '<div id="' . $item['article_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['article_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['article_title'] . '</h4></div></br><div>' . $item['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $articleCss . $articleHtml;
+                }
+
+                if (!empty($item['rule_id'])) {
+                    $subRuleList = [];
+                    if (!empty($item['subrule_model'])) {
+                        foreach ($item['subrule_model'] as $subrule) {
+                            $subRuleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subRuleString = implode('', $subRuleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $ruleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $ruleHtml = '<div id="' . $item['rule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['rule_title'] . '</h4></div></br><div>' . $item['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $ruleCss . $ruleHtml;
+                }
+
+                if (!empty($item['regulation_id'])) {
+                        $subRegulationList = [];
+                        if (!empty($item['sub_regulation_model'])) {
+                            foreach ($item['sub_regulation_model'] as $subRegulation) {
+                                $subRegulationList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                            }
+                        }
+                      
+                        $footnoteList = [];
+                        if (!empty($item['footnote_model'])) {
+                            foreach ($item['footnote_model'] as $footnote) {
+                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            }
+                        }
+                    
+                        $subRegulationString = implode('', $subRegulationList);
+                        $footnoteString = implode('', $footnoteList);
+                    
+                        // Custom CSS to modify the line-height of <p> inside .judgement-text
+                        $regulationCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                    
+                        // Construct the HTML content including the custom CSS
+                        $regulationHtml = '<div id="' . $item['regulation_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['regulation_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['regulation_title'] . '</h4></div></br><div>' . $item['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    
+                        $Data[] = $regulationCss . $regulationHtml;       
+                }
+
+                if (!empty($item['list_id'])) {
+                    $subListList = [];
+                    if (!empty($item['sub_list_model']))  {
+                        foreach ($item['sub_list_model'] as $subList) {
+                            $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subListString = implode('', $subListList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $listCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $listHtml = '<div id="' . $item['list_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['list_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['list_title'] . '</h4></div></br><div>' . $item['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $listCss . $listHtml;       
+                }
+                
+                if (!empty($item['part_id'])) {
+                    $subPartList = [];
+                    if (!empty($item['sub_part_model'])) {
+                        foreach ($item['sub_part_model'] as $subPartsOfPart) {
+                            $subPartList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subPartString = implode('', $subPartList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $partCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $partHtml = '<div id="' . $item['part_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['part_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['part_title'] . '</h4></div></br><div>' . $item['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $partCss . $partHtml;       
+                }
+
+                if (!empty($item['appendices_id'])) {
+                    $subAppendiceList = [];
+                    if (!empty($item['sub_appendices_model'])) {
+                        foreach ($item['sub_appendices_model'] as $subAppendice) {
+                            $subAppendiceList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subAppendiceString = implode('', $subAppendiceList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $appendicesCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $appendicesHtml = '<div id="' . $item['appendices_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['appendices_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['appendices_title'] . '</h4></div></br><div>' . $item['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $appendicesCss . $appendicesHtml;       
+                }
+
+                if (!empty($item['order_id'])) {
+                    $subOrderList = [];
+                    if (!empty($item['sub_order_model'])) {
+                        foreach ($item['sub_order_model'] as $subOrder) {
+                            $subOrderList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subOrderString = implode('', $subOrderList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $orderCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $orderHtml = '<div id="' . $item['order_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['order_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['order_title'] . '</h4></div></br><div>' . $item['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $orderCss . $orderHtml;       
+                }
+
+                if (!empty($item['annexure_id'])) {
+                    $subAnnexureList = [];
+                    if (!empty($item['sub_annexure_model'])) {
+                        foreach ($item['sub_annexure_model'] as $subAnnexure) {
+                            $subAnnexureList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subAnnexureString = implode('', $subAnnexureList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $annexureCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $annexureHtml = '<div id="' . $item['annexure_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['annexure_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['annexure_title'] . '</h4></div></br><div>' . $item['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $annexureCss . $annexureHtml;    
+                }
+
+                if (!empty($item['stschedule_id'])) {
+                    $subStscheduleList = [];
+                    if (!empty($item['sub_stschedule_model'])) {
+                        foreach ($item['sub_stschedule_model'] as $subStschedule) {
+                            $subStscheduleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subStscheduleString = implode('', $subStscheduleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $stscheduleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $stscheduleHtml = '<div id="' . $item['stschedule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['stschedule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['stschedule_title'] . '</h4></div></br><div>' . $item['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $stscheduleCss . $stscheduleHtml;      
+                }
+                  
+            }
+            $sectionString = implode('', $Data);
+            $mainFirstList[] = '<h2 id="ch-'.$firstSubtypeArray['chapter_id'].'" style="text-align:center!important;" ><strong>' . $firstSubtypeArray['chapter_title'] . '</strong></h2>'. $sectionString;           
+        }
+
+        if (!empty($firstSubtypeArray['parts_id'])) {
+            $Data = []; // Initialize an empty array to store processed data
+            foreach ($firstSubtypeArray as $item) {
+
+                if (!empty($item['section_id'])) {
+                    $subSectionsList = [];
+                    if (!empty($item['subsection_model'])) {
+                        foreach ($item['subsection_model'] as $subsection) {
+                            $subSectionsList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
+                        }
+                    }
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subSectionString = implode('', $subSectionsList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $sectionCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $sectionHtml = '<div id="' . $item['section_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['section_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['section_title'] . '</h4></div></br><div>' . $item['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $sectionCss . $sectionHtml;
+                }
+                if (!empty($item['article_id'])) {
+                    $subArticleList = [];
+                    if (!empty($item['sub_article_model'])) {
+                        foreach ($item['sub_article_model'] as $subarticle) {
+                            $subArticleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subArticleString = implode('', $subArticleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $articleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $articleHtml = '<div id="' . $item['article_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['article_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['article_title'] . '</h4></div></br><div>' . $item['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $articleCss . $articleHtml;
+                }
+
+                if (!empty($item['rule_id'])) {
+                    $subRuleList = [];
+                    if (!empty($item['subrule_model'])) {
+                        foreach ($item['subrule_model'] as $subrule) {
+                            $subRuleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subRuleString = implode('', $subRuleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $ruleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $ruleHtml = '<div id="' . $item['rule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['rule_title'] . '</h4></div></br><div>' . $item['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $ruleCss . $ruleHtml;
+                }
+
+                if (!empty($item['regulation_id'])) {
+                        $subRegulationList = [];
+                        if (!empty($item['sub_regulation_model'])) {
+                            foreach ($item['sub_regulation_model'] as $subRegulation) {
+                                $subRegulationList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                            }
+                        }
+                      
+                        $footnoteList = [];
+                        if (!empty($item['footnote_model'])) {
+                            foreach ($item['footnote_model'] as $footnote) {
+                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            }
+                        }
+                    
+                        $subRegulationString = implode('', $subRegulationList);
+                        $footnoteString = implode('', $footnoteList);
+                    
+                        // Custom CSS to modify the line-height of <p> inside .judgement-text
+                        $regulationCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                    
+                        // Construct the HTML content including the custom CSS
+                        $regulationHtml = '<div id="' . $item['regulation_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['regulation_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['regulation_title'] . '</h4></div></br><div>' . $item['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    
+                        $Data[] = $regulationCss . $regulationHtml;       
+                }
+
+                if (!empty($item['list_id'])) {
+                    $subListList = [];
+                    if (!empty($item['sub_list_model']))  {
+                        foreach ($item['sub_list_model'] as $subList) {
+                            $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subListString = implode('', $subListList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $listCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $listHtml = '<div id="' . $item['list_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['list_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['list_title'] . '</h4></div></br><div>' . $item['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $listCss . $listHtml;       
+                }
+                
+                if (!empty($item['part_id'])) {
+                    $subPartList = [];
+                    if (!empty($item['sub_part_model'])) {
+                        foreach ($item['sub_part_model'] as $subPartsOfPart) {
+                            $subPartList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subPartString = implode('', $subPartList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $partCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $partHtml = '<div id="' . $item['part_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['part_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['part_title'] . '</h4></div></br><div>' . $item['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $partCss . $partHtml;       
+                }
+
+                if (!empty($item['appendices_id'])) {
+                    $subAppendiceList = [];
+                    if (!empty($item['sub_appendices_model'])) {
+                        foreach ($item['sub_appendices_model'] as $subAppendice) {
+                            $subAppendiceList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subAppendiceString = implode('', $subAppendiceList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $appendicesCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $appendicesHtml = '<div id="' . $item['appendices_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['appendices_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['appendices_title'] . '</h4></div></br><div>' . $item['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $appendicesCss . $appendicesHtml;       
+                }
+
+                if (!empty($item['order_id'])) {
+                    $subOrderList = [];
+                    if (!empty($item['sub_order_model'])) {
+                        foreach ($item['sub_order_model'] as $subOrder) {
+                            $subOrderList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subOrderString = implode('', $subOrderList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $orderCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $orderHtml = '<div id="' . $item['order_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['order_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['order_title'] . '</h4></div></br><div>' . $item['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $orderCss . $orderHtml;       
+                }
+
+                if (!empty($item['annexure_id'])) {
+                    $subAnnexureList = [];
+                    if (!empty($item['sub_annexure_model'])) {
+                        foreach ($item['sub_annexure_model'] as $subAnnexure) {
+                            $subAnnexureList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subAnnexureString = implode('', $subAnnexureList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $annexureCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $annexureHtml = '<div id="' . $item['annexure_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['annexure_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['annexure_title'] . '</h4></div></br><div>' . $item['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $annexureCss . $annexureHtml;    
+                }
+
+                if (!empty($item['stschedule_id'])) {
+                    $subStscheduleList = [];
+                    if (!empty($item['sub_stschedule_model'])) {
+                        foreach ($item['sub_stschedule_model'] as $subStschedule) {
+                            $subStscheduleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subStscheduleString = implode('', $subStscheduleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $stscheduleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $stscheduleHtml = '<div id="' . $item['stschedule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['stschedule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['stschedule_title'] . '</h4></div></br><div>' . $item['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $stscheduleCss . $stscheduleHtml;      
+                }
+                  
+            }
+            $sectionString = implode('', $Data);
+            $mainFirstList[] = '<h2 id="ch-'.$firstSubtypeArray['parts_id'].'" style="text-align:center!important;" ><strong>' . $firstSubtypeArray['parts_title'] . '</strong></h2>'. $sectionString;            
+        }
+
+       
+        if (!empty($firstSubtypeArray['priliminary_id'])) {
+
+            $Data = []; // Initialize an empty array to store processed data
+
+            foreach ($firstSubtypeArray as $item) {
+
+                if (!empty($item['section_id'])) {
+                    $subSectionsList = [];
+                    if (!empty($item['subsection_model'])) {
+                        foreach ($item['subsection_model'] as $subsection) {
+                            $subSectionsList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
+                        }
+                    }
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subSectionString = implode('', $subSectionsList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $sectionCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $sectionHtml = '<div id="' . $item['section_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['section_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['section_title'] . '</h4></div></br><div>' . $item['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $sectionCss . $sectionHtml;
+                }
+                if (!empty($item['article_id'])) {
+                    $subArticleList = [];
+                    if (!empty($item['sub_article_model'])) {
+                        foreach ($item['sub_article_model'] as $subarticle) {
+                            $subArticleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subArticleString = implode('', $subArticleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $articleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $articleHtml = '<div id="' . $item['article_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['article_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['article_title'] . '</h4></div></br><div>' . $item['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $articleCss . $articleHtml;
+                }
+
+                if (!empty($item['rule_id'])) {
+                    $subRuleList = [];
+                    if (!empty($item['subrule_model'])) {
+                        foreach ($item['subrule_model'] as $subrule) {
+                            $subRuleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subRuleString = implode('', $subRuleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $ruleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $ruleHtml = '<div id="' . $item['rule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['rule_title'] . '</h4></div></br><div>' . $item['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $ruleCss . $ruleHtml;
+                }
+
+                if (!empty($item['regulation_id'])) {
+                        $subRegulationList = [];
+                        if (!empty($item['sub_regulation_model'])) {
+                            foreach ($item['sub_regulation_model'] as $subRegulation) {
+                                $subRegulationList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                            }
+                        }
+                      
+                        $footnoteList = [];
+                        if (!empty($item['footnote_model'])) {
+                            foreach ($item['footnote_model'] as $footnote) {
+                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            }
+                        }
+                    
+                        $subRegulationString = implode('', $subRegulationList);
+                        $footnoteString = implode('', $footnoteList);
+                    
+                        // Custom CSS to modify the line-height of <p> inside .judgement-text
+                        $regulationCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                    
+                        // Construct the HTML content including the custom CSS
+                        $regulationHtml = '<div id="' . $item['regulation_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['regulation_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['regulation_title'] . '</h4></div></br><div>' . $item['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    
+                        $Data[] = $regulationCss . $regulationHtml;       
+                }
+
+                if (!empty($item['list_id'])) {
+                    $subListList = [];
+                    if (!empty($item['sub_list_model']))  {
+                        foreach ($item['sub_list_model'] as $subList) {
+                            $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subListString = implode('', $subListList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $listCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $listHtml = '<div id="' . $item['list_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['list_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['list_title'] . '</h4></div></br><div>' . $item['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $listCss . $listHtml;       
+                }
+                
+                if (!empty($item['part_id'])) {
+                    $subPartList = [];
+                    if (!empty($item['sub_part_model'])) {
+                        foreach ($item['sub_part_model'] as $subPartsOfPart) {
+                            $subPartList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subPartString = implode('', $subPartList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $partCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $partHtml = '<div id="' . $item['part_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['part_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['part_title'] . '</h4></div></br><div>' . $item['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $partCss . $partHtml;       
+                }
+
+                if (!empty($item['appendices_id'])) {
+                    $subAppendiceList = [];
+                    if (!empty($item['sub_appendices_model'])) {
+                        foreach ($item['sub_appendices_model'] as $subAppendice) {
+                            $subAppendiceList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subAppendiceString = implode('', $subAppendiceList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $appendicesCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $appendicesHtml = '<div id="' . $item['appendices_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['appendices_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['appendices_title'] . '</h4></div></br><div>' . $item['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $appendicesCss . $appendicesHtml;       
+                }
+
+                if (!empty($item['order_id'])) {
+                    $subOrderList = [];
+                    if (!empty($item['sub_order_model'])) {
+                        foreach ($item['sub_order_model'] as $subOrder) {
+                            $subOrderList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subOrderString = implode('', $subOrderList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $orderCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $orderHtml = '<div id="' . $item['order_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['order_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['order_title'] . '</h4></div></br><div>' . $item['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $orderCss . $orderHtml;       
+                }
+
+                if (!empty($item['annexure_id'])) {
+                    $subAnnexureList = [];
+                    if (!empty($item['sub_annexure_model'])) {
+                        foreach ($item['sub_annexure_model'] as $subAnnexure) {
+                            $subAnnexureList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subAnnexureString = implode('', $subAnnexureList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $annexureCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $annexureHtml = '<div id="' . $item['annexure_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['annexure_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['annexure_title'] . '</h4></div></br><div>' . $item['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $annexureCss . $annexureHtml;    
+                }
+
+                if (!empty($item['stschedule_id'])) {
+                    $subStscheduleList = [];
+                    if (!empty($item['sub_stschedule_model'])) {
+                        foreach ($item['sub_stschedule_model'] as $subStschedule) {
+                            $subStscheduleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subStscheduleString = implode('', $subStscheduleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $stscheduleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $stscheduleHtml = '<div id="' . $item['stschedule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['stschedule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['stschedule_title'] . '</h4></div></br><div>' . $item['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $stscheduleCss . $stscheduleHtml;      
+                }
+                  
+            }
+            $sectionString = implode('', $Data);
+            $mainFirstList[] = '<h2 id="ch-'.$firstSubtypeArray['priliminary_id'].'" style="text-align:center!important;" ><strong>' . $firstSubtypeArray['priliminary_title'] . '</strong></h2>'. $sectionString;
+                     
+        }
+
+        if (!empty($firstSubtypeArray['schedule_id'])) {
+            $Data = []; // Initialize an empty array to store processed data
+
+            foreach ($firstSubtypeArray as $item) {
+
+                if (!empty($item['section_id'])) {
+                    $subSectionsList = [];
+                    if (!empty($item['subsection_model'])) {
+                        foreach ($item['subsection_model'] as $subsection) {
+                            $subSectionsList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
+                        }
+                    }
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subSectionString = implode('', $subSectionsList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $sectionCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $sectionHtml = '<div id="' . $item['section_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['section_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['section_title'] . '</h4></div></br><div>' . $item['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $sectionCss . $sectionHtml;
+                }
+                if (!empty($item['article_id'])) {
+                    $subArticleList = [];
+                    if (!empty($item['sub_article_model'])) {
+                        foreach ($item['sub_article_model'] as $subarticle) {
+                            $subArticleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subArticleString = implode('', $subArticleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $articleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $articleHtml = '<div id="' . $item['article_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['article_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['article_title'] . '</h4></div></br><div>' . $item['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $articleCss . $articleHtml;
+                }
+
+                if (!empty($item['rule_id'])) {
+                    $subRuleList = [];
+                    if (!empty($item['subrule_model'])) {
+                        foreach ($item['subrule_model'] as $subrule) {
+                            $subRuleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subRuleString = implode('', $subRuleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $ruleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $ruleHtml = '<div id="' . $item['rule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['rule_title'] . '</h4></div></br><div>' . $item['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $ruleCss . $ruleHtml;
+                }
+
+                if (!empty($item['regulation_id'])) {
+                        $subRegulationList = [];
+                        if (!empty($item['sub_regulation_model'])) {
+                            foreach ($item['sub_regulation_model'] as $subRegulation) {
+                                $subRegulationList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                            }
+                        }
+                      
+                        $footnoteList = [];
+                        if (!empty($item['footnote_model'])) {
+                            foreach ($item['footnote_model'] as $footnote) {
+                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            }
+                        }
+                    
+                        $subRegulationString = implode('', $subRegulationList);
+                        $footnoteString = implode('', $footnoteList);
+                    
+                        // Custom CSS to modify the line-height of <p> inside .judgement-text
+                        $regulationCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                    
+                        // Construct the HTML content including the custom CSS
+                        $regulationHtml = '<div id="' . $item['regulation_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['regulation_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['regulation_title'] . '</h4></div></br><div>' . $item['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    
+                        $Data[] = $regulationCss . $regulationHtml;       
+                }
+
+                if (!empty($item['list_id'])) {
+                    $subListList = [];
+                    if (!empty($item['sub_list_model']))  {
+                        foreach ($item['sub_list_model'] as $subList) {
+                            $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subListString = implode('', $subListList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $listCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $listHtml = '<div id="' . $item['list_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['list_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['list_title'] . '</h4></div></br><div>' . $item['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $listCss . $listHtml;       
+                }
+                
+                if (!empty($item['part_id'])) {
+                    $subPartList = [];
+                    if (!empty($item['sub_part_model'])) {
+                        foreach ($item['sub_part_model'] as $subPartsOfPart) {
+                            $subPartList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subPartString = implode('', $subPartList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $partCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $partHtml = '<div id="' . $item['part_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['part_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['part_title'] . '</h4></div></br><div>' . $item['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $partCss . $partHtml;       
+                }
+
+                if (!empty($item['appendices_id'])) {
+                    $subAppendiceList = [];
+                    if (!empty($item['sub_appendices_model'])) {
+                        foreach ($item['sub_appendices_model'] as $subAppendice) {
+                            $subAppendiceList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subAppendiceString = implode('', $subAppendiceList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $appendicesCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $appendicesHtml = '<div id="' . $item['appendices_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['appendices_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['appendices_title'] . '</h4></div></br><div>' . $item['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $appendicesCss . $appendicesHtml;       
+                }
+
+                if (!empty($item['order_id'])) {
+                    $subOrderList = [];
+                    if (!empty($item['sub_order_model'])) {
+                        foreach ($item['sub_order_model'] as $subOrder) {
+                            $subOrderList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subOrderString = implode('', $subOrderList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $orderCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $orderHtml = '<div id="' . $item['order_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['order_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['order_title'] . '</h4></div></br><div>' . $item['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $orderCss . $orderHtml;       
+                }
+
+                if (!empty($item['annexure_id'])) {
+                    $subAnnexureList = [];
+                    if (!empty($item['sub_annexure_model'])) {
+                        foreach ($item['sub_annexure_model'] as $subAnnexure) {
+                            $subAnnexureList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subAnnexureString = implode('', $subAnnexureList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $annexureCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $annexureHtml = '<div id="' . $item['annexure_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['annexure_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['annexure_title'] . '</h4></div></br><div>' . $item['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $annexureCss . $annexureHtml;    
+                }
+
+                if (!empty($item['stschedule_id'])) {
+                    $subStscheduleList = [];
+                    if (!empty($item['sub_stschedule_model'])) {
+                        foreach ($item['sub_stschedule_model'] as $subStschedule) {
+                            $subStscheduleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subStscheduleString = implode('', $subStscheduleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $stscheduleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $stscheduleHtml = '<div id="' . $item['stschedule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['stschedule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['stschedule_title'] . '</h4></div></br><div>' . $item['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $stscheduleCss . $stscheduleHtml;      
+                }
+                  
+            }
+            $sectionString = implode('', $Data);
+            $mainFirstList[] = '<h2 id="ch-'.$firstSubtypeArray['schedule_id'].'" style="text-align:center!important;" ><strong>' . $firstSubtypeArray['schedule_title'] . '</strong></h2>'. $sectionString;
+                     
+        }
+
+        if (!empty($firstSubtypeArray['appendix_id'])) {
+            $Data = []; // Initialize an empty array to store processed data
+
+            foreach ($firstSubtypeArray as $item) {
+
+                if (!empty($item['section_id'])) {
+                    $subSectionsList = [];
+                    if (!empty($item['subsection_model'])) {
+                        foreach ($item['subsection_model'] as $subsection) {
+                            $subSectionsList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
+                        }
+                    }
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subSectionString = implode('', $subSectionsList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $sectionCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $sectionHtml = '<div id="' . $item['section_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['section_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['section_title'] . '</h4></div></br><div>' . $item['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $sectionCss . $sectionHtml;
+                }
+                if (!empty($item['article_id'])) {
+                    $subArticleList = [];
+                    if (!empty($item['sub_article_model'])) {
+                        foreach ($item['sub_article_model'] as $subarticle) {
+                            $subArticleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subArticleString = implode('', $subArticleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $articleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $articleHtml = '<div id="' . $item['article_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['article_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['article_title'] . '</h4></div></br><div>' . $item['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $articleCss . $articleHtml;
+                }
+
+                if (!empty($item['rule_id'])) {
+                    $subRuleList = [];
+                    if (!empty($item['subrule_model'])) {
+                        foreach ($item['subrule_model'] as $subrule) {
+                            $subRuleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subRuleString = implode('', $subRuleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $ruleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $ruleHtml = '<div id="' . $item['rule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['rule_title'] . '</h4></div></br><div>' . $item['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $ruleCss . $ruleHtml;
+                }
+
+                if (!empty($item['regulation_id'])) {
+                        $subRegulationList = [];
+                        if (!empty($item['sub_regulation_model'])) {
+                            foreach ($item['sub_regulation_model'] as $subRegulation) {
+                                $subRegulationList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                            }
+                        }
+                      
+                        $footnoteList = [];
+                        if (!empty($item['footnote_model'])) {
+                            foreach ($item['footnote_model'] as $footnote) {
+                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            }
+                        }
+                    
+                        $subRegulationString = implode('', $subRegulationList);
+                        $footnoteString = implode('', $footnoteList);
+                    
+                        // Custom CSS to modify the line-height of <p> inside .judgement-text
+                        $regulationCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                    
+                        // Construct the HTML content including the custom CSS
+                        $regulationHtml = '<div id="' . $item['regulation_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['regulation_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['regulation_title'] . '</h4></div></br><div>' . $item['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    
+                        $Data[] = $regulationCss . $regulationHtml;       
+                }
+
+                if (!empty($item['list_id'])) {
+                    $subListList = [];
+                    if (!empty($item['sub_list_model']))  {
+                        foreach ($item['sub_list_model'] as $subList) {
+                            $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subListString = implode('', $subListList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $listCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $listHtml = '<div id="' . $item['list_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['list_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['list_title'] . '</h4></div></br><div>' . $item['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $listCss . $listHtml;       
+                }
+                
+                if (!empty($item['part_id'])) {
+                    $subPartList = [];
+                    if (!empty($item['sub_part_model'])) {
+                        foreach ($item['sub_part_model'] as $subPartsOfPart) {
+                            $subPartList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subPartString = implode('', $subPartList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $partCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $partHtml = '<div id="' . $item['part_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['part_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['part_title'] . '</h4></div></br><div>' . $item['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $partCss . $partHtml;       
+                }
+
+                if (!empty($item['appendices_id'])) {
+                    $subAppendiceList = [];
+                    if (!empty($item['sub_appendices_model'])) {
+                        foreach ($item['sub_appendices_model'] as $subAppendice) {
+                            $subAppendiceList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subAppendiceString = implode('', $subAppendiceList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $appendicesCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $appendicesHtml = '<div id="' . $item['appendices_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['appendices_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['appendices_title'] . '</h4></div></br><div>' . $item['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $appendicesCss . $appendicesHtml;       
+                }
+
+                if (!empty($item['order_id'])) {
+                    $subOrderList = [];
+                    if (!empty($item['sub_order_model'])) {
+                        foreach ($item['sub_order_model'] as $subOrder) {
+                            $subOrderList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subOrderString = implode('', $subOrderList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $orderCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $orderHtml = '<div id="' . $item['order_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['order_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['order_title'] . '</h4></div></br><div>' . $item['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $orderCss . $orderHtml;       
+                }
+
+                if (!empty($item['annexure_id'])) {
+                    $subAnnexureList = [];
+                    if (!empty($item['sub_annexure_model'])) {
+                        foreach ($item['sub_annexure_model'] as $subAnnexure) {
+                            $subAnnexureList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subAnnexureString = implode('', $subAnnexureList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $annexureCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $annexureHtml = '<div id="' . $item['annexure_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['annexure_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['annexure_title'] . '</h4></div></br><div>' . $item['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $annexureCss . $annexureHtml;    
+                }
+
+                if (!empty($item['stschedule_id'])) {
+                    $subStscheduleList = [];
+                    if (!empty($item['sub_stschedule_model'])) {
+                        foreach ($item['sub_stschedule_model'] as $subStschedule) {
+                            $subStscheduleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subStscheduleString = implode('', $subStscheduleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $stscheduleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $stscheduleHtml = '<div id="' . $item['stschedule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['stschedule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['stschedule_title'] . '</h4></div></br><div>' . $item['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $stscheduleCss . $stscheduleHtml;      
+                }
+                  
+            }
+            $sectionString = implode('', $Data);
+            $mainFirstList[] = '<h2 id="ch-'.$firstSubtypeArray['appendix_id'].'" style="text-align:center!important;" ><strong>' . $firstSubtypeArray['appendix_title'] . '</strong></h2>'. $sectionString;
+                     
+        }
+
+
+        if (!empty($firstSubtypeArray['main_order_id'])) {
+            $Data = []; // Initialize an empty array to store processed data
+
+            foreach ($firstSubtypeArray as $item) {
+
+                if (!empty($item['section_id'])) {
+                    $subSectionsList = [];
+                    if (!empty($item['subsection_model'])) {
+                        foreach ($item['subsection_model'] as $subsection) {
+                            $subSectionsList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subsection['sub_section_no'] . '</div><div>' . $subsection['sub_section_content'] . '</div></div>';
+                        }
+                    }
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subSectionString = implode('', $subSectionsList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $sectionCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $sectionHtml = '<div id="' . $item['section_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['section_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['section_title'] . '</h4></div></br><div>' . $item['section_content'] . '</div><div>' . $subSectionString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                        
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $sectionCss . $sectionHtml;
+                }
+                if (!empty($item['article_id'])) {
+                    $subArticleList = [];
+                    if (!empty($item['sub_article_model'])) {
+                        foreach ($item['sub_article_model'] as $subarticle) {
+                            $subArticleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subarticle['sub_article_no'] . '</div><div>' . $subarticle['sub_article_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subArticleString = implode('', $subArticleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $articleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $articleHtml = '<div id="' . $item['article_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['article_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['article_title'] . '</h4></div></br><div>' . $item['article_content'] . '</div><div>' . $subArticleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $articleCss . $articleHtml;
+                }
+
+                if (!empty($item['rule_id'])) {
+                    $subRuleList = [];
+                    if (!empty($item['subrule_model'])) {
+                        foreach ($item['subrule_model'] as $subrule) {
+                            $subRuleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subrule['sub_rule_no'] . '</div><div>' . $subrule['sub_rule_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subRuleString = implode('', $subRuleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $ruleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $ruleHtml = '<div id="' . $item['rule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $rule['rule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['rule_title'] . '</h4></div></br><div>' . $item['rule_content'] . '</div><div>' . $subRuleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $ruleCss . $ruleHtml;
+                }
+
+                if (!empty($item['regulation_id'])) {
+                        $subRegulationList = [];
+                        if (!empty($item['sub_regulation_model'])) {
+                            foreach ($item['sub_regulation_model'] as $subRegulation) {
+                                $subRegulationList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subRegulation['sub_regulation_no'] . '</div><div>' . $subRegulation['sub_regulation_content'] . '</div></div>';
+                            }
+                        }
+                      
+                        $footnoteList = [];
+                        if (!empty($item['footnote_model'])) {
+                            foreach ($item['footnote_model'] as $footnote) {
+                                $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                            }
+                        }
+                    
+                        $subRegulationString = implode('', $subRegulationList);
+                        $footnoteString = implode('', $footnoteList);
+                    
+                        // Custom CSS to modify the line-height of <p> inside .judgement-text
+                        $regulationCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                    
+                        // Construct the HTML content including the custom CSS
+                        $regulationHtml = '<div id="' . $item['regulation_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['regulation_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['regulation_title'] . '</h4></div></br><div>' . $item['regulation_content'] . '</div><div>' . $subRegulationString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                    
+                        $Data[] = $regulationCss . $regulationHtml;       
+                }
+
+                if (!empty($item['list_id'])) {
+                    $subListList = [];
+                    if (!empty($item['sub_list_model']))  {
+                        foreach ($item['sub_list_model'] as $subList) {
+                            $subListList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subList['sub_list_no'] . '</div><div>' . $subList['sub_list_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subListString = implode('', $subListList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $listCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $listHtml = '<div id="' . $item['list_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['list_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['list_title'] . '</h4></div></br><div>' . $item['list_content'] . '</div><div>' . $subListString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $listCss . $listHtml;       
+                }
+                
+                if (!empty($item['part_id'])) {
+                    $subPartList = [];
+                    if (!empty($item['sub_part_model'])) {
+                        foreach ($item['sub_part_model'] as $subPartsOfPart) {
+                            $subPartList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subPartsOfPart['sub_part_no'] . '</div><div>' . $subPartsOfPart['sub_part_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subPartString = implode('', $subPartList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $partCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $partHtml = '<div id="' . $item['part_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['part_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['part_title'] . '</h4></div></br><div>' . $item['part_content'] . '</div><div>' . $subPartString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $partCss . $partHtml;       
+                }
+
+                if (!empty($item['appendices_id'])) {
+                    $subAppendiceList = [];
+                    if (!empty($item['sub_appendices_model'])) {
+                        foreach ($item['sub_appendices_model'] as $subAppendice) {
+                            $subAppendiceList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAppendice['sub_appendices_no'] . '</div><div>' . $subAppendice['sub_appendices_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subAppendiceString = implode('', $subAppendiceList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $appendicesCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $appendicesHtml = '<div id="' . $item['appendices_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['appendices_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['appendices_title'] . '</h4></div></br><div>' . $item['appendices_content'] . '</div><div>' . $subAppendiceString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $appendicesCss . $appendicesHtml;       
+                }
+
+                if (!empty($item['order_id'])) {
+                    $subOrderList = [];
+                    if (!empty($item['sub_order_model'])) {
+                        foreach ($item['sub_order_model'] as $subOrder) {
+                            $subOrderList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subOrder['sub_order_no'] . '</div><div>' . $subOrder['sub_order_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subOrderString = implode('', $subOrderList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $orderCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $orderHtml = '<div id="' . $item['order_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['order_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['order_title'] . '</h4></div></br><div>' . $item['order_content'] . '</div><div>' . $subOrderString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $orderCss . $orderHtml;       
+                }
+
+                if (!empty($item['annexure_id'])) {
+                    $subAnnexureList = [];
+                    if (!empty($item['sub_annexure_model'])) {
+                        foreach ($item['sub_annexure_model'] as $subAnnexure) {
+                            $subAnnexureList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subAnnexure['sub_annexure_no'] . '</div><div>' . $subAnnexure['sub_annexure_content'] . '</div></div>';
+                        }
+                    }
+                    
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subAnnexureString = implode('', $subAnnexureList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $annexureCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $annexureHtml = '<div id="' . $item['annexure_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['annexure_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['annexure_title'] . '</h4></div></br><div>' . $item['annexure_content'] . '</div><div>' . $subAnnexureString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $annexureCss . $annexureHtml;    
+                }
+
+                if (!empty($item['stschedule_id'])) {
+                    $subStscheduleList = [];
+                    if (!empty($item['sub_stschedule_model'])) {
+                        foreach ($item['sub_stschedule_model'] as $subStschedule) {
+                            $subStscheduleList[] = '<div class="judgement-text" style="display:flex!important;align-items: baseline;"><div>' . $subStschedule['sub_stschedule_no'] . '</div><div>' . $subStschedule['sub_stschedule_content'] . '</div></div>';
+                        }
+                    }
+                  
+                    $footnoteList = [];
+                    if (!empty($item['footnote_model'])) {
+                        foreach ($item['footnote_model'] as $footnote) {
+                            $footnoteList[] = '<div>' . $footnote['footnote_content'] . '</div>';
+                        }
+                    }
+                
+                    $subStscheduleString = implode('', $subStscheduleList);
+                    $footnoteString = implode('', $footnoteList);
+                
+                    // Custom CSS to modify the line-height of <p> inside .judgement-text
+                    $stscheduleCss = '<style>.judgement-text p { line-height: 1.3 !important; margin-bottom: 0.3rem !important;  }</style>';
+                
+                    // Construct the HTML content including the custom CSS
+                    $stscheduleHtml = '<div id="' . $item['stschedule_id'] . '"><div style="display:flex!important;align-items: baseline;"><h4 class="font-weight-bold">' . $item['stschedule_no'] . '</h4><h4 class="font-weight-bold  pl-2">' . $item['stschedule_title'] . '</h4></div></br><div>' . $item['stschedule_content'] . '</div><div>' . $subStscheduleString . '</div><hr style="width:10%!important;margin: 10px auto !important;">' . $footnoteString . '</div>';
+                
+                    // Append the custom CSS and generated section HTML to $Data array
+                    $Data[] = $stscheduleCss . $stscheduleHtml;      
+                }
+                  
+            }
+            $sectionString = implode('', $Data);
+            $mainFirstList[] = '<h2 id="ch-'.$firstSubtypeArray['main_order_id'].'" style="text-align:center!important;" ><strong>' . $firstSubtypeArray['main_order_title'] . '</strong></h2>'. $sectionString;
+                     
+        }
+
+
+        $mainFirstListContent = $mainFirstList[0];
+            // dd($mainFirstListContent);
+            //     die();
+        //    dd($firstItem);
+        //    die();
+    
+        return response()->json([
+            'status' => 200,
+            'data' => [
+                'actId' => $act->act_id,
+                'actNo' => $act->act_no ?? '',
+                'actName' => $act->act_title ?? '',
+                'enactmentDate' => $act->enactment_date ?? '',
+                'enforcementDate' => $act->enforcement_date ?? '',
+                'Ministry' => $act->ministry ?? '',
+                'Preamble' => $act->act_description ?? '',
+                'actDescription' => '<div id="actHead"><h1 id=""><strong>' . ($act->act_title ?? '') . '</strong> </h1><div><strong>' . ($act->act_no ?? '') . '</strong></div><div><strong>' . ($act->act_date ?? '') . '</strong></div></div>' . implode('', $MainList) . '',
+                'mainFirstChapterContent' => $mainFirstListContent,
+                'sideBarList' => $sideBarList,
+            ]
+        ]);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'status' => 400,
@@ -3287,8 +5054,7 @@ class MainActController extends Controller
             }
 
 
-            // dd($combinedItems);
-            // die();
+           
 
             $type = MainType::all();
             $act = Act::findOrFail($id);

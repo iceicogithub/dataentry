@@ -1,4 +1,6 @@
 @extends('admin.layout.main')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet" />
+
 @section('content')
     <div class="breadcrumbs">
         <div class="col-sm-4">
@@ -72,6 +74,21 @@
                                         placeholder="Enter legislation Title" required>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class=" form-control-label">Select<span class="text-danger">*</span></label>
+                                    <div class="checkbox-list">
+                                        @foreach ($actSummary as $item)
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="act_summary_id[]" value="{{ $item->id }}">
+                                                {{ $item->title }}
+                                            </label>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <button type="submit" class="btn  btn-success">Save</button>
@@ -86,18 +103,27 @@
 @endsection
 @section('script')
 <script src="https://cdn.ckeditor.com/4.16.2/full-all/ckeditor.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // for category type
-            $(document).on('change', '.category', function() {
-                if ($(this).val() === '2') {
-                    $('.state').show();
-                } else {
-                    $('.state').hide();
-                }
-            });
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var jq = $.noConflict();
+    jq(document).ready(function() {
 
+        jq('.select').select2({
+            placeholder: 'Select States',
+            allowClear: true, // option to clear selected items
+            width: '100%' // adjust the width as needed
         });
-    </script>
+
+
+        jq(document).on('change', '.category', function() {
+            if (jq(this).val() === '2') {
+                jq('.state').show();
+            } else {
+                jq('.state').hide();
+            }
+        });
+
+    });
+</script>
 @endsection

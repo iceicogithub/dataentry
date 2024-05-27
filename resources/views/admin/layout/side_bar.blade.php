@@ -19,7 +19,7 @@
                     <a href="{{route('category')}}"> <i class="menu-icon fa fa-dashboard"></i>Category</a>
                 </li>
                 <li>
-                    <a href="{{route('act')}}"> <i class="menu-icon fa fa-dashboard"></i>Acts</a>
+                    <a href="{{route('act')}}"> <i class="menu-icon fa fa-dashboard"></i>Legislation</a>
                 </li>
                 {{-- <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"

@@ -112,7 +112,7 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="{{ Route('act') }}"><button class="btn btn-success">Back</button></a>
+                        <a href="{{ route('act', ['page' => $currentPage]) }}"><button class="btn btn-success">Back</button></a>
                     </ol>
                 </div>
             </div>

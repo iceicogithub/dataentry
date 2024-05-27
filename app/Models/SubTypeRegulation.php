@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubTypeRegulation extends Model
 {
-    use HasFactory;
+    protected $primaryKey = 'regulation_subtypes_id';
+    protected $table = 'regulationsubtypes';
+    protected $fillable = ['type'];
 }

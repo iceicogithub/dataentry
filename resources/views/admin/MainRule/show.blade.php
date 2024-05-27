@@ -130,21 +130,21 @@
             @endif
 
             <div class="card p-5">
-                <form id="form" action="/update_main_act/{{ $newRule->new_rule_id }}" method="post"
+                <form id="form" action="/update_new_rule/{{ $newRule->new_rule_id }}" method="post"
                     enctype="multipart/form-data" class="form form-horizontal">
                     @csrf
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group form-default">
                                 <label class="float-label">Rule<span class="text-danger">*</span></label>
-                                <input type="text" name="act_title" value="{{ $newRule->new_rule_title }}"
+                                <input type="text" name="new_rule_title" value="{{ $newRule->new_rule_title }}"
                                     class="form-control mb-3" placeholder="Enter Act Title">
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group form-default">
                                 <label class="float-label">Rule NO.<span class="text-danger">*</span></label>
-                                <textarea name="act_no" class="form-control mb-3" placeholder="Enter Act No" id="act_no" cols="30"
+                                <textarea name="new_rule_no" class="form-control mb-3" placeholder="Enter Act No" id="act_no" cols="30"
                                     rows="3">{{ $newRule->new_rule_no }}</textarea>
                             </div>
                         </div>
@@ -165,47 +165,38 @@
                         <div class="col-md-12">
                             <div class="form-group form-default">
                                 <label class="float-label">Rule Date<span class="text-danger">*</span></label>
-                                <input type="text" name="act_date" value="{{ $newRule->new_rule_date }}"
+                                <input type="text" name="new_rule_date" value="{{ $newRule->new_rule_date }}"
                                     class="form-control mb-3" placeholder="Enter Act Date">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group form-default">
-                                <label class="float-label">Ministry<span class="text-danger">*</span></label>
-                                <input type="text" name="ministry" value="{{ $newRule->ministry }}"
-                                    class="form-control mb-3" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group form-default">
                                 <label class="float-label"> PREAMBLE <span class="text-danger">*</span></label>
 
-                                <textarea name="act_description" class="form-control mb-3" placeholder="Enter Act Description" id="act_description"
+                                <textarea name="new_rule_description" class="form-control mb-3" placeholder="Enter Act Description" id="act_description"
                                     cols="30" rows="3">{{ $newRule->new_rule_description }}</textarea>
                             </div>
                         </div>
-                        @if ($new_rule_footnote_description)
-                            @foreach ($new_rule_footnote_description as $key => $new_rule_footnote_description)
+                        @if ($newRule->new_rule_footnote_description)
                                 <div class="form-group form-default fa fa-arrow-circle-o-right p-0 col-md-12">
                                     <label class="float-label">
                                         Footnote
                                         <span class="pl-2">
                                             <button type="button" class="btn btn-sm social facebook p-0 add-footnote">
-                                                <i class="fa fa-plus"></i>
+                                                <i class="fa fa-minus"></i>
                                             </button>
                                         </span>
                                     </label>
                                     <div class="show-footnote" style="">
                                         <div class="footnote-entry">
-                                            <textarea type="text" name="act_footnote_description[]" id="ck[{{ $key }}]"
+                                            <textarea type="text" name="new_rule_footnote_description" id="ck"
                                                 class="form-control ckeditor-replace footnote" placeholder="Enter Footnote Description">
-                                                {{ $new_rule_footnote_description }}</textarea>
+                                                {{$newRule->new_rule_footnote_description }}</textarea>
                                         </div>
 
                                     </div>
                                 </div>
-                            @endforeach
-                        @endIf
+                        @else
 
                         <div class="footnote-addition-container float-right col-md-12 ">
 
@@ -224,6 +215,7 @@
                             </div>
 
                         </div>
+                        @endif
 
                         <div class="col-md-12 text-right mt-2">
                             <div class="form-group">
@@ -332,7 +324,8 @@
         CKEDITOR.replace('act_no');
         CKEDITOR.replace('act_description');
         CKEDITOR.replace('act_footnote');
-
+        CKEDITOR.replace('ck');
+       
 
         $(document).on('click', '.add-footnote', function() {
             var icon = $(this).find('i');
@@ -359,7 +352,7 @@
                                         </span>
                                         </label>
                                         <div class="show-footnote" style="display: none">
-                                            <textarea type="text" name="act_footnote_description[]" class="form-control ckeditor-replace footnote"></textarea>
+                                            <textarea type="text" name="new_rule_footnote_description" class="form-control ckeditor-replace footnote"></textarea>
                                         </div>
                                    
                                        

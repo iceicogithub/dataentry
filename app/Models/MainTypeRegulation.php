@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MainTypeRegulation extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'regulation_maintype_id';
+    protected $table = 'regulationmaintypes';
+    protected $fillable = ['type'];
 }

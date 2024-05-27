@@ -16,6 +16,10 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\stscheduleController;
 use App\Http\Controllers\MainRuleController;
 use App\Http\Controllers\MainRegulationController;
+use App\Http\Controllers\MainSchemeGuidelinesController;
+use App\Http\Controllers\ActAmendmentController;
+use App\Http\Controllers\MainOrderController;
+use App\Http\Controllers\ManualsController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -201,6 +205,7 @@ Route::get('/edit-rule-sub/{id}',[MainRuleController::class,'edit']);
 Route::get('/new_rule/{id}',[MainRuleController::class,'add_new_rule'])->name('new_rule');
 Route::post('/store_new_rule',[MainRuleController::class,'store_new_rule'])->name('store_new_rule');
 Route::get('/edit_new_rule/{id}',[MainRuleController::class,'edit_new_rule'])->name('edit_new_rule');
+Route::post('/update_new_rule/{id}',[MainRuleController::class,'update_new_rule'])->name('update_new_rule');
 Route::get('/add_below_new_rule_maintype/{newRuleId}/{id}',[MainRuleController::class,'add_below_new_rule_maintype'])->name('add_below_new_rule_maintype');
 Route::post('/store_rule_maintype',[MainRuleController::class,'store_rule_maintype'])->name('store_rule_maintype');
 Route::get('/delete_rule_maintype/{id}',[MainRuleController::class,'delete_rule_maintype'])->name('delete_rule_maintype');
@@ -212,7 +217,94 @@ Route::get('/delete_rulestbl/{id}',[MainRuleController::class,'delete_rulestbl']
 Route::get('/add_below_new_ruletbl/{ruleMainId}/{id}',[MainRuleController::class,'add_below_new_ruletbl'])->name('add_below_new_ruletbl');
 Route::post('/add_new_ruletbl',[MainRuleController::class,'add_new_ruletbl'])->name('add_new_ruletbl');
 Route::get('/delete_new_rule/{id}',[MainRuleController::class,'delete_new_rule'])->name('delete_new_rule');
+Route::get('/delete_rule_footnote/{id}',[MainRuleController::class,'delete_rule_footnote'])->name('delete_rule_footnote');
+Route::get('/view_new_rule/{id}',[MainRuleController::class,'view_new_rule'])->name('view_new_rule');
+Route::get('/export_rule_pdf/{id}',[MainRuleController::class,'export_rule_pdf'])->name('export_rule_pdf');
 
 
 //Regulation
 Route::get('/get_regulation/{id}',[MainRegulationController::class,'index'])->name('get_regulation');
+Route::get('/new_regulation/{id}',[MainRegulationController::class,'add_new_regulation'])->name('new_regulation');
+Route::post('/store_new_regulation',[MainRegulationController::class,'store_new_regulation'])->name('store_new_regulation');
+Route::get('/edit_new_regulation/{id}',[MainRegulationController::class,'edit_new_regulation'])->name('edit_new_regulation');
+Route::post('/update_new_regulation/{id}',[MainRegulationController::class,'update_new_regulation'])->name('update_new_regulation');
+Route::get('/add_regulation/{id}',[MainRegulationController::class,'create']);
+Route::post('/store_regulation/{id}',[MainRegulationController::class,'store']);
+Route::get('/add_below_new_regulation_maintype/{newRgltnId}/{id}',[MainRegulationController::class,'add_below_new_regulation_maintype'])->name('add_below_new_regulation_maintype');
+Route::post('/store_regulation_maintype',[MainRegulationController::class,'store_regulation_maintype'])->name('store_regulation_maintype');
+Route::get('/delete_regulation_maintype/{id}',[MainRegulationController::class,'delete_regulation_maintype'])->name('delete_regulation_maintype');
+Route::get('/edit_regulationTable/{id}',[MainRegulationController::class,'edit_regulationTable'])->name('edit_regulationTable');
+Route::post('/update_main_regulation/{id}',[MainRegulationController::class,'update_main_regulation'])->name('update_main_regulation');
+Route::get('/view_regulation_sub/{id}',[MainRegulationController::class,'view_regulation_sub'])->name('view_regulation_sub');
+Route::get('/delete_regulation_sub/{id}',[MainRegulationController::class,'delete_regulation_sub'])->name('delete_regulation_sub');
+Route::get('/delete_regulationstbl/{id}',[MainRegulationController::class,'delete_regulationstbl'])->name('delete_regulationstbl');
+Route::get('/add_below_new_rgtlntbl/{rgltntbl}/{id}',[MainRegulationController::class,'add_below_new_rgtlntbl'])->name('add_below_new_rgtlntbl');
+Route::post('/add_new_regulationtbl',[MainRegulationController::class,'add_new_regulationtbl'])->name('add_new_regulationtbl');
+Route::get('/delete_new_regulation/{id}',[MainRegulationController::class,'delete_new_regulation'])->name('delete_new_regulation');
+Route::get('/delete_regulation_footnote/{id}',[MainRegulationController::class,'delete_regulation_footnote'])->name('delete_regulation_footnote');
+Route::get('/view_new_regulation/{id}',[MainRegulationController::class,'view_new_regulation'])->name('view_new_regulation');
+Route::get('/export_regulation_pdf/{id}',[MainRegulationController::class,'export_regulation_pdf'])->name('export_regulation_pdf');
+
+
+Route::get('/get_amendment_act/{id}',[ActAmendmentController::class, 'index'])->name('get_amendment_act');
+Route::get('/new_act_amendment/{id}',[ActAmendmentController::class, 'create'])->name('new_act_amendment');
+Route::post('/store_act_amendment',[ActAmendmentController::class, 'store'])->name('store_act_amendment');
+Route::post('/update_act_amendment/{id}',[ActAmendmentController::class, 'update'])->name('update_act_amendment');
+Route::get('/view_act_amendment/{id}',[ActAmendmentController::class, 'show'])->name('show_act_amendment');
+Route::get('/delete_act_amendment/{id}',[ActAmendmentController::class, 'destroy'])->name('delete_act_amendment');
+
+
+Route::get('/get_schemes_guidelines/{id}',[MainSchemeGuidelinesController::class,'index'])->name('get_schemes_guidelines');
+Route::get('/new_scheme_guidelines/{id}',[MainSchemeGuidelinesController::class,'new_scheme_guidelines'])->name('new_scheme_guidelines');
+Route::post('/store_new_scheme_guidelines',[MainSchemeGuidelinesController::class,'store_new_scheme_guidelines'])->name('store_new_scheme_guidelines');
+Route::get('/edit_new_scheme_guidelines/{id}',[MainSchemeGuidelinesController::class,'edit_new_scheme_guidelines'])->name('edit_new_scheme_guidelines');
+Route::post('/update_new_scheme_guidelines/{id}',[MainSchemeGuidelinesController::class,'update_new_scheme_guidelines'])->name('update_new_scheme_guidelines');
+Route::get('/add_scheme_guidelines/{id}',[MainSchemeGuidelinesController::class,'create'])->name('add_scheme_guidelines');
+Route::post('/store_scheme_guidelines/{id}',[MainSchemeGuidelinesController::class,'store'])->name('store_scheme_guidelines');
+Route::get('/add_below_new_scheme_guidelines_maintype/{newschmid}/{id}',[MainSchemeGuidelinesController::class,'add_below_new_scheme_guidelines_maintype'])->name('add_below_new_scheme_guidelines_maintype');
+Route::post('/store_scheme_guidelines_maintype',[MainSchemeGuidelinesController::class,'store_scheme_guidelines_maintype'])->name('store_scheme_guidelines_maintype');
+Route::get('/delete_scheme_guidelines_maintype/{id}',[MainSchemeGuidelinesController::class,'delete_scheme_guidelines_maintype'])->name('delete_scheme_guidelines_maintype');
+Route::get('/edit_schemeGuidelinesTable/{id}',[MainSchemeGuidelinesController::class,'edit_schemeGuidelinesTable'])->name('edit_schemeGuidelinesTable');
+Route::post('/update_main_scheme_guidelines/{id}',[MainSchemeGuidelinesController::class,'update_main_scheme_guidelines'])->name('update_main_scheme_guidelines');
+Route::get('/view_scheme_guidelines_sub/{id}',[MainSchemeGuidelinesController::class,'view_scheme_guidelines_sub'])->name('view_scheme_guidelines_sub');
+Route::get('/delete_scheme_guidelines_sub/{id}',[MainSchemeGuidelinesController::class,'delete_scheme_guidelines_sub'])->name('delete_scheme_guidelines_sub');
+Route::get('/delete_schemeGuidelinestbl/{id}',[MainSchemeGuidelinesController::class,'delete_schemeGuidelinestbl'])->name('delete_schemeGuidelinestbl');
+Route::get('/add_below_new_schemeGuidelinestbl/{schId}/{id}',[MainSchemeGuidelinesController::class,'add_below_new_schemeGuidelinestbl'])->name('add_below_new_schemeGuidelinestbl');
+Route::post('/add_new_schemeGuidelinestbl',[MainSchemeGuidelinesController::class,'add_new_schemeGuidelinestbl'])->name('add_new_schemeGuidelinestbl');
+Route::get('/delete_scheme_guidelines_footnote/{id}',[MainSchemeGuidelinesController::class,'delete_scheme_guidelines_footnote'])->name('delete_scheme_guidelines_footnote');
+Route::get('/delete_new_scheme_guidelines/{id}',[MainSchemeGuidelinesController::class,'delete_new_scheme_guidelines'])->name('delete_new_scheme_guidelines');
+Route::get('/view_new_scheme_guidelines/{id}',[MainSchemeGuidelinesController::class,'view_new_scheme_guidelines'])->name('view_new_scheme_guidelines');
+Route::get('/export_scheme_guidelines_pdf/{id}',[MainSchemeGuidelinesController::class,'export_scheme_guidelines_pdf'])->name('export_scheme_guidelines_pdf');
+
+
+Route::get('/get_manuals/{id}',[ManualsController::class, 'index'])->name('get_manuals');
+Route::get('/new_manuals/{id}',[ManualsController::class, 'create'])->name('new_manuals');
+Route::post('/store_manuals',[ManualsController::class, 'store'])->name('store_manuals');
+Route::post('/update_manuals_pdf/{id}',[ManualsController::class, 'update'])->name('update_manuals_pdf');
+Route::get('/view_manuals/{id}',[ManualsController::class, 'show'])->name('view_manuals');
+Route::get('/edit_manuals/{id}',[ManualsController::class, 'edit'])->name('edit_manuals');
+Route::post('/update_manuals/{id}',[ManualsController::class, 'update_manuals'])->name('update_manuals');
+
+Route::get('/get_orders/{id}',[MainOrderController::class,'index'])->name('get_orders');
+Route::get('/new_order/{id}',[MainOrderController::class,'new_order'])->name('new_order');
+Route::post('/store_new_order',[MainOrderController::class,'store_new_order'])->name('store_new_order');
+Route::get('/edit_new_order/{id}',[MainOrderController::class,'edit_new_order'])->name('edit_new_order');
+Route::post('/update_new_order/{id}',[MainOrderController::class,'update_new_order'])->name('update_new_order');
+Route::get('/add_order/{id}',[MainOrderController::class,'create'])->name('add_order');
+Route::post('/store_order/{id}',[MainOrderController::class,'store'])->name('store_order');
+Route::get('/add_below_new_order_maintype/{orderId}/{id}',[MainOrderController::class,'add_below_new_order_maintype'])->name('add_below_new_order_maintype');
+Route::post('/store_order_maintype',[MainOrderController::class,'store_order_maintype'])->name('store_order_maintype');
+Route::get('/delete_order_maintype/{id}',[MainOrderController::class,'delete_order_maintype'])->name('delete_order_maintype');
+Route::get('/edit_orderTable/{id}',[MainOrderController::class,'edit_orderTable'])->name('edit_orderTable');
+Route::post('/update_main_order/{id}',[MainOrderController::class,'update_main_order'])->name('update_main_order');
+Route::get('/view_order_sub/{id}',[MainOrderController::class,'view_order_sub'])->name('view_order_sub');
+Route::get('/delete_order_sub/{id}',[MainOrderController::class,'delete_order_sub'])->name('delete_order_sub');
+Route::get('/delete_orderstbl/{id}',[MainOrderController::class,'delete_orderstbl'])->name('delete_orderstbl');
+Route::get('/add_below_new_ordertbl/{odrMId}/{id}',[MainOrderController::class,'add_below_new_ordertbl'])->name('add_below_new_ordertbl');
+Route::post('/add_new_ordertbl',[MainOrderController::class,'add_new_ordertbl'])->name('add_new_ordertbl');
+Route::get('/delete_new_order/{id}',[MainOrderController::class,'delete_new_order'])->name('delete_new_order');
+Route::get('/delete_order_footnote/{id}',[MainOrderController::class,'delete_order_footnote'])->name('delete_order_footnote');
+Route::get('/view_new_order/{id}',[MainOrderController::class,'view_new_order'])->name('view_new_order');
+Route::get('/export_order_pdf/{id}',[MainOrderController::class,'export_order_pdf'])->name('export_order_pdf');
+
+
