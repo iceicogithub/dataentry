@@ -197,9 +197,11 @@ class RegulationApiController extends Controller
                 }
                 
             }
-
-           
-            $mainFirstListContent = $firstChapter[0];
+                $mainFirstListContent = '';
+            if($firstChapter){
+                $mainFirstListContent = $firstChapter[0];
+            }
+            
           
     
             return response()->json([
@@ -231,6 +233,33 @@ class RegulationApiController extends Controller
                 'data' => null
             ], 500);
         }
+    }
+
+    public function pdf($id){
+        try{
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $dompdf = new Dompdf($options);
+
+        $combinedItems = NewRegulation::where('new_regulation_id', $id)
+        ->with([
+            'regulationMain' => function ($query) {
+                $query->with(['regulationtbl' => function ($query) {
+                    $query->orderBy('regulations_rank');
+                }])->orderBy('regulation_main_rank'); // Sort ruleMain by rule_main_rank
+            },
+            'regulationMain.regulationtbl.regulationSub', 'regulationMain.regulationtbl.regulationFootnoteModel', 'regulationMain.regulationtbl.regulationSub.regulationSubFootnoteModel'
+        ])
+        ->get();
+        $pdf = FacadePdf::loadView('admin.MainRegulation.pdf', [
+            'combinedItems' => $combinedItems,
+        ]);
+
+        return $pdf->download("{$combinedItems[0]->new_regulation_title}.pdf");
+    } catch (ModelNotFoundException $e) {
+        return redirect()->route('act');
+    }
+
     }
 
     /**

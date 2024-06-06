@@ -103,7 +103,7 @@
                     <ol class="breadcrumb text-right">
                         <a href="/add_regulation/{{ $newRegulation->new_regulation_id }}" class="mr-2"><button class="btn btn-success">Add
                                 Index</button></a>
-                        <a href="/get_regulation/{{ $newRegulation->act_id }}"><button class="btn btn-danger">Back</button></a>
+                        <a href="/get_regulation/{{ $newRegulation->act_id }}?page={{ $currentPage }}"><button class="btn btn-danger">Back</button></a>
                     </ol>
 
                 </div>

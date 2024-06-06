@@ -9,7 +9,11 @@ class NewRegulation extends Model
 {
     protected $primaryKey = 'new_regulation_id';
     protected $table = 'new_regulation';
-    protected $fillable = ['act_id','category_id', 'state_id', 'new_regulation_title', 'new_regulation_content','ministry','new_regulation_no','new_regulation_date','enactment_date','enforcement_date','new_regulation_description','new_regulation_footnote_title','new_regulation_footnote_description','new_regulation_summary'];
+    protected $fillable = ['act_id','category_id', 'state_id', 'new_regulation_title', 'new_regulation_content','ministry','new_regulation_no','new_regulation_date','enactment_date','enforcement_date','new_regulation_description','new_regulation_footnote_title','new_regulation_footnote_description','act_summary_id'];
+
+    public function actSummary(){
+        return $this->belongsTo(ActSummary::class, 'act_summary_id','id');
+    }
 
 
     public function regulationMain()

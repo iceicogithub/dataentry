@@ -238,6 +238,32 @@ class SchemeGuidelineApiController extends Controller
         }
     }
 
+    public function pdf($id){
+        try{
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $dompdf = new Dompdf($options);
+
+        $combinedItems = NewSchemeGuidelines::where('new_scheme_guidelines_id', $id)
+        ->with([
+            'schemeGuidelinesMain' => function ($query) {
+                $query->with(['schemeGuidelinestbl' => function ($query) {
+                    $query->orderBy('scheme_guidelines_rank');
+                }])->orderBy('scheme_guidelines_main_rank'); // Sort ruleMain by rule_main_rank
+            },
+            'schemeGuidelinesMain.schemeGuidelinestbl.schemeGuidelinesSub', 'schemeGuidelinesMain.schemeGuidelinestbl.schemeGuidelinesFootnoteModel', 'schemeGuidelinesMain.schemeGuidelinestbl.schemeGuidelinesSub.schemeGuidelinesSubFootnoteModel'
+        ])
+        ->get();
+        $pdf = FacadePdf::loadView('admin.SchemeGuidelines.pdf', [
+            'combinedItems' => $combinedItems,
+        ]);
+
+        return $pdf->download("{$combinedItems[0]->new_scheme_guidelines_title}.pdf");
+    } catch (ModelNotFoundException $e) {
+        return redirect()->route('act');
+    }
+
+    }
     /**
      * Store a newly created resource in storage.
      */

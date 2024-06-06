@@ -26,29 +26,26 @@ class MainRegulationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($id)
+    public function index(Request $request, $id)
     {
         $act_id = $id;
         $act = Act::where('act_id', $act_id)->first();
-       $new_regulation = NewRegulation::where('act_id', $act_id)->get();
-      
-       $perPage = request()->get('perPage') ?: 10;
-        $page = request()->get('page') ?: 1;
-        $slicedItems = array_slice($new_regulation->toArray(), ($page - 1) * $perPage, $perPage);
-
-        $paginatedCollection = new LengthAwarePaginator(
-            $slicedItems,
-            count($new_regulation),
-            $perPage,
-            $page
-        );
-
-        $paginatedCollection->appends(['perPage' => $perPage]);
-
-        $paginatedCollection->withPath(request()->url());
-        return view('admin.MainRegulation.index', compact('act','act_id','paginatedCollection'));
- 
+        $currentPage = $request->query('page', 1); 
+        $perPage = $request->query('perPage', 10); // Default to 10 if not set
+        $search = $request->query('search', ''); // Get the search query
+    
+        $query = NewRegulation::where('act_id', $act_id);
+    
+        // Apply search filter if search term is present
+        if (!empty($search)) {
+            $query->where('new_regulation_title', 'like', '%' . $search . '%');
+        }
+    
+        $new_regulation = $query->orderBy('new_regulation_id', 'desc')->paginate($perPage);
+    
+        return view('admin.MainRegulation.index', compact('act', 'act_id', 'new_regulation', 'currentPage', 'perPage', 'search'));
     }
+    
 
     public function add_new_regulation($id){
         $category = Category::all();
@@ -71,8 +68,9 @@ class MainRegulationController extends Controller
         }
     }
 
-    public function edit_new_regulation($id){
+    public function edit_new_regulation(Request $request,$id){
         $new_regulation_id = $id;
+        $currentPage = $request->query('page', 1); 
         $newRegulation = NewRegulation::where('new_regulation_id', $new_regulation_id)->with('act')->first();
         $mainsequence = RegulationMain::where('new_regulation_id', $id)
         ->with('mainTypeRegulation') 
@@ -102,7 +100,7 @@ class MainRegulationController extends Controller
         $paginatedCollection->withPath(request()->url());
             
         
-        return view('admin.MainRegulation.show', compact('newRegulation','paginatedCollection'));     
+        return view('admin.MainRegulation.show', compact('newRegulation','paginatedCollection','currentPage'));     
    
     }
 

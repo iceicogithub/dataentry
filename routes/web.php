@@ -20,6 +20,12 @@ use App\Http\Controllers\MainSchemeGuidelinesController;
 use App\Http\Controllers\ActAmendmentController;
 use App\Http\Controllers\MainOrderController;
 use App\Http\Controllers\ManualsController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\CircularController;
+use App\Http\Controllers\PolicyController;
+use App\Http\Controllers\FormController;
+use App\Http\Controllers\ReleaseController;
+use App\Http\Controllers\MainOrdinanceController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -82,6 +88,9 @@ Route::get('/add_below_new_maintype/{act_id}/{main_id}/{id}', [ActController::cl
 Route::post('/add_new_main_type/{id}', [ActController::class, 'store_new_main_type'])->name('store_new_main_type');
 Route::get('/edit_legislation_name/{id}', [ActController::class, 'edit_legislation_name'])->name('edit_legislation_name');
 Route::post('/update_legislation/{id}', [ActController::class, 'update_legislation'])->name('update_legislation');
+Route::get('/get_other_main_acts/{id}', [ActController::class, 'get_other_main_acts'])->name('get_other_main_acts');
+Route::post('/create_others_main_act', [ActController::class, 'create_others_main_act'])->name('create_others_main_act');
+Route::post('/update_others_main_act/{id}', [ActController::class, 'update_others_main_act'])->name('update_others_main_act');
 
 
 // section 
@@ -306,5 +315,83 @@ Route::get('/delete_new_order/{id}',[MainOrderController::class,'delete_new_orde
 Route::get('/delete_order_footnote/{id}',[MainOrderController::class,'delete_order_footnote'])->name('delete_order_footnote');
 Route::get('/view_new_order/{id}',[MainOrderController::class,'view_new_order'])->name('view_new_order');
 Route::get('/export_order_pdf/{id}',[MainOrderController::class,'export_order_pdf'])->name('export_order_pdf');
+
+
+Route::get('/get_notification/{id}',[NotificationController::class, 'index'])->name('get_notification');
+Route::get('/new_notifications/{id}',[NotificationController::class, 'create'])->name('new_notifications');
+Route::post('/store_notifications',[NotificationController::class, 'store'])->name('store_notifications');
+Route::get('/edit_notifications/{id}',[NotificationController::class, 'edit'])->name('edit_notifications');
+Route::post('/update_notifications/{id}',[NotificationController::class, 'update_notifications'])->name('update_notifications');
+Route::get('/view_notifications/{id}',[NotificationController::class, 'show'])->name('view_notifications');
+Route::post('/update_notifications_pdf/{id}',[NotificationController::class, 'update'])->name('update_notifications_pdf');
+Route::get('/delete_notifications/{id}',[NotificationController::class, 'destroy'])->name('delete_notifications');
+
+Route::get('/get_circulars/{id}',[CircularController::class, 'index'])->name('get_circulars');
+Route::get('/new_circulars/{id}',[CircularController::class, 'create'])->name('new_circulars');
+Route::post('/store_circulars',[CircularController::class, 'store'])->name('store_circulars');
+Route::post('/update_circulars_pdf/{id}',[CircularController::class, 'update'])->name('update_circulars_pdf');
+Route::get('/edit_circulars/{id}',[CircularController::class, 'edit'])->name('edit_circulars');
+Route::post('/update_circulars/{id}',[CircularController::class, 'update_circulars'])->name('update_circulars');
+Route::get('/view_circulars/{id}',[CircularController::class, 'show'])->name('view_circulars');
+Route::get('/delete_circulars/{id}',[CircularController::class, 'destroy'])->name('delete_circulars');
+
+
+Route::get('/get_policy/{id}',[PolicyController::class, 'index'])->name('get_policy');
+Route::get('/new_policy/{id}',[PolicyController::class, 'create'])->name('new_policy');
+Route::post('/store_policy',[PolicyController::class, 'store'])->name('store_policy');
+Route::post('/update_policy_pdf/{id}',[PolicyController::class, 'update'])->name('update_policy_pdf');
+Route::get('/edit_policy/{id}',[PolicyController::class, 'edit'])->name('edit_policy');
+Route::post('/update_policy/{id}',[PolicyController::class, 'update_policy'])->name('update_policy');
+Route::get('/view_policy/{id}',[PolicyController::class, 'show'])->name('view_policy');
+Route::get('/delete_policy/{id}',[PolicyController::class, 'destroy'])->name('delete_policy');
+
+
+Route::get('/get_forms/{id}',[FormController::class, 'index'])->name('get_forms');
+Route::get('/new_forms/{id}',[FormController::class, 'create'])->name('new_forms');
+Route::post('/store_form',[FormController::class, 'store'])->name('store_form');
+Route::post('/update_form_pdf/{id}',[FormController::class, 'update'])->name('update_form_pdf');
+Route::get('/edit_form/{id}',[FormController::class, 'edit'])->name('edit_form');
+Route::post('/update_form/{id}',[FormController::class, 'update_form'])->name('update_form');
+Route::get('/view_form/{id}',[FormController::class, 'show'])->name('view_form');
+Route::get('/delete_form/{id}',[FormController::class, 'destroy'])->name('delete_form');
+
+Route::get('/get_release/{id}',[ReleaseController::class, 'index'])->name('get_release');
+Route::get('/new_release/{id}',[ReleaseController::class, 'create'])->name('new_release');
+Route::post('/store_release',[ReleaseController::class, 'store'])->name('store_release');
+Route::post('/update_release_pdf/{id}',[ReleaseController::class, 'update'])->name('update_release_pdf');
+Route::get('/edit_release/{id}',[ReleaseController::class, 'edit'])->name('edit_release');
+Route::post('/update_release/{id}',[ReleaseController::class, 'update_release'])->name('update_release');
+Route::get('/view_release/{id}',[ReleaseController::class, 'show'])->name('view_release');
+Route::get('/delete_release/{id}',[ReleaseController::class, 'destroy'])->name('delete_release');
+
+
+Route::get('/get_ordinance/{id}',[MainOrdinanceController::class, 'index'])->name('get_ordinance');
+Route::get('/new_ordiance/{id}',[MainOrdinanceController::class, 'new_ordiance'])->name('new_ordiance');
+Route::post('/store_new_ordinance',[MainOrdinanceController::class, 'store_new_ordinance'])->name('store_new_ordinance');
+Route::get('/edit_new_ordinance/{id}',[MainOrdinanceController::class, 'edit_new_ordinance'])->name('edit_new_ordinance');
+Route::post('/update_new_ordinance/{id}',[MainOrdinanceController::class, 'update_new_ordinance'])->name('update_new_ordinance');
+Route::get('/add_ordinance/{id}',[MainOrdinanceController::class, 'create'])->name('add_ordinance');
+Route::post('/store_ordinance/{id}',[MainOrdinanceController::class, 'store'])->name('store_ordinance');
+Route::get('/add_below_new_ordinance_maintype/{newOrId}/{id}',[MainOrdinanceController::class, 'add_below_new_ordinance_maintype'])->name('add_below_new_ordinance_maintype');
+Route::post('/store_ordinance_maintype',[MainOrdinanceController::class, 'store_ordinance_maintype'])->name('store_ordinance_maintype');
+Route::get('/delete_ordinance_maintype/{id}',[MainOrdinanceController::class, 'delete_ordinance_maintype'])->name('delete_ordinance_maintype');
+Route::get('/edit_ordinanceTable/{id}',[MainOrdinanceController::class, 'edit_ordinanceTable'])->name('edit_ordinanceTable');
+Route::post('/update_main_ordinance/{id}',[MainOrdinanceController::class, 'update_main_ordinance'])->name('update_main_ordinance');
+Route::get('/view_ordinance_sub/{id}',[MainOrdinanceController::class, 'view_ordinance_sub'])->name('view_ordinance_sub');
+Route::get('/delete_ordinance_sub/{id}',[MainOrdinanceController::class, 'delete_ordinance_sub'])->name('delete_ordinance_sub');
+Route::get('/delete_ordinancestbl/{id}',[MainOrdinanceController::class, 'delete_ordinancestbl'])->name('delete_ordinancestbl');
+Route::get('/add_below_new_ordinancetbl/{ordmId}/{id}',[MainOrdinanceController::class, 'add_below_new_ordinancetbl'])->name('add_below_new_ordinancetbl');
+Route::post('/add_new_ordinancetbl',[MainOrdinanceController::class, 'add_new_ordinancetbl'])->name('add_new_ordinancetbl');
+Route::get('/delete_new_ordinance/{id}',[MainOrdinanceController::class, 'delete_new_ordinance'])->name('delete_new_ordinance');
+Route::get('/delete_ordinance_footnote/{id}',[MainOrdinanceController::class, 'delete_ordinance_footnote'])->name('delete_ordinance_footnote');
+Route::get('/view_new_ordinance/{id}',[MainOrdinanceController::class, 'view_new_ordinance'])->name('view_new_ordinance');
+Route::get('/export_ordinance_pdf/{id}',[MainOrdinanceController::class, 'export_ordinance_pdf'])->name('export_ordinance_pdf');
+
+
+
+
+
+
+
 
 

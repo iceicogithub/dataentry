@@ -24,6 +24,7 @@ use App\Models\Part;
 use App\Models\SubPart;
 use App\Models\Appendix;
 use App\Models\MainOrder;
+use App\Models\ActSummary;
 use App\Models\SubAppendix;
 use App\Models\Orders;
 use App\Models\SubOrders;
@@ -32,6 +33,17 @@ use App\Models\SubAnnexure;
 use App\Models\Stschedule;
 use App\Models\SubStschedule;
 use App\Models\MainTable;
+use App\Models\NewRule;
+use App\Models\NewRegulation;
+use App\Models\NewSchemeGuidelines;
+use App\Models\NewOrder;
+use App\Models\Manual;
+use App\Models\Notification;
+use App\Models\Circular;
+use App\Models\Policy;
+use App\Models\Form;
+use App\Models\Release;
+use App\Models\NewOrdinance;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Barryvdh\DomPDF\PDF;
 use Dompdf\Dompdf;
@@ -46,21 +58,147 @@ class MainActController extends Controller
     public function show()
     {
         try {
-            $act = Act::all();
+
+            // $act = ActSummary::with('act','NewRule')->get();
+            $acts = Act::where('act_summary_id', 1)->with('actSummary')->get();
+            $rules = NewRule::where('act_summary_id', 5)->with('actSummary')->get();
+            $regulations = NewRegulation::where('act_summary_id', 6)->with('actSummary')->get();
+            $schemes = NewSchemeGuidelines::where('act_summary_id', 8)->with('actSummary')->get();
+            $orders = NewOrder::where('act_summary_id', 7)->with('actSummary')->get();
+            $manuals = Manual::where('act_summary_id', 11)->with('actSummary')->get();
+            $notifications = Notification::where('act_summary_id', 10)->with('actSummary')->get();
+            $circulars = Circular::where('act_summary_id', 12)->with('actSummary')->get();
+            $policys = Policy::where('act_summary_id', 13)->with('actSummary')->get();
+            $forms = Form::where('act_summary_id', 14)->with('actSummary')->get();
+            $releases = Release::where('act_summary_id', 15)->with('actSummary')->get();
+            $ordinances = NewOrdinance::where('act_summary_id', 16)->with('actSummary')->get();
+          
+            $actsData = $acts->map(function($act) {
+                return [
+                    'id' => $act->act_id,
+                    'title' => $act->act_title,
+                    'type_id' => $act->actSummary->id ?? null,
+                    'type' => $act->actSummary->title ?? null,
+                ];
+            })->toArray();
+    
+            // Format rules data
+            $rulesData = $rules->map(function($rule) {
+                return [
+                    'id' => $rule->new_rule_id,
+                    'title' => $rule->new_rule_title,
+                    'type_id' => $rule->actSummary->id ?? null,
+                    'type' => $rule->actSummary->title ?? null,
+                ];
+            })->toArray();
+    
+            $regulationsData = $regulations->map(function($regulation) {
+                return [
+                    'id' => $regulation->new_regulation_id,
+                    'title' => $regulation->new_regulation_title,
+                    'type_id' => $regulation->actSummary->id ?? null,
+                    'type' => $regulation->actSummary->title ?? null,
+                ];
+            })->toArray();
+
+            $schemesData = $schemes->map(function($scheme) {
+                return [
+                    'id' => $scheme->new_scheme_guidelines_id ,
+                    'title' => $scheme->new_scheme_guidelines_title,
+                    'type_id' => $scheme->actSummary->id ?? null,
+                    'type' => $scheme->actSummary->title ?? null,
+                ];
+            })->toArray();
+
+            $ordersData = $orders->map(function($order) {
+                return [
+                    'id' => $order->new_order_id ,
+                    'title' => $order->new_order_title,
+                    'type_id' => $order->actSummary->id ?? null,
+                    'type' => $order->actSummary->title ?? null,
+                ];
+            })->toArray();
+
+            $manualsData = $manuals->map(function($manual) {
+                return [
+                    'id' => $manual->manuals_id ,
+                    'title' => $manual->manuals_title,
+                    'type_id' => $manual->actSummary->id ?? null,
+                    'type' => $manual->actSummary->title ?? null,
+                ];
+            })->toArray();
+
+            $notificationsData = $notifications->map(function($notification) {
+                return [
+                    'id' => $notification->notifications_id ,
+                    'title' => $notification->notifications_title,
+                    'type_id' => $notification->actSummary->id ?? null,
+                    'type' => $notification->actSummary->title ?? null,
+                ];
+            })->toArray();
+
+            $circularsData = $circulars->map(function($circular) {
+                return [
+                    'id' => $circular->circulars_id ,
+                    'title' => $circular->circulars_title,
+                    'type_id' => $circular->actSummary->id ?? null,
+                    'type' => $circular->actSummary->title ?? null,
+                ];
+            })->toArray();
+
+            $policysData = $policys->map(function($policy) {
+                return [
+                    'id' => $policy->policy_id ,
+                    'title' => $policy->policy_title,
+                    'type_id' => $policy->actSummary->id ?? null,
+                    'type' => $policy->actSummary->title ?? null,
+                ];
+            })->toArray();
+
+            $formsData = $forms->map(function($form) {
+                return [
+                    'id' => $form->forms_id ,
+                    'title' => $form->forms_title,
+                    'type_id' => $form->actSummary->id ?? null,
+                    'type' => $form->actSummary->title ?? null,
+                ];
+            })->toArray();
+
+            $releasesData = $releases->map(function($release) {
+                return [
+                    'id' => $release->release_id ,
+                    'title' => $release->release_title,
+                    'type_id' => $release->actSummary->id ?? null,
+                    'type' => $release->actSummary->title ?? null,
+                ];
+            })->toArray();
+
+            $ordinancesData = $ordinances->map(function($ordinance) {
+                return [
+                    'id' => $ordinance->new_ordinance_id,
+                    'title' => $ordinance->new_ordinance_title,
+                    'type_id' => $ordinance->actSummary->id ?? null,
+                    'type' => $ordinance->actSummary->title ?? null,
+                ];
+            })->toArray();
+
+            $allData = array_merge($actsData, $rulesData, $regulationsData,$schemesData,$ordersData,$manualsData,$notificationsData,$circularsData,$policysData,$formsData,$releasesData,$ordinancesData);
+
+    
             return response()->json([
                 'status' => 200,
-                'data' =>   [
-                    'act' => $act,
-                ]
+                'data' => $allData
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 400,
-                'message' => 'Resource not found.' . $e->getMessage(),
+                'message' => 'Resource not found. ' . $e->getMessage(),
                 'data' => null
             ]);
         }
     }
+
+    
 
     public function index(Request $request, $id)
     {
@@ -5085,6 +5223,21 @@ class MainActController extends Controller
     }
 
 
+    public function types(){
+       try{
+            $types = ActSummary::select('id', 'title')->get();
+            return response()->json([
+                'status' => 200,
+                'data' => $types
+            ]);
+       } catch (\Exception $e) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Resource not found. ' . $e->getMessage(),
+                'data' => null
+            ]);
+       }
+    }
     /**
      * Store a newly created resource in storage.
      */

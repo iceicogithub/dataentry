@@ -22,28 +22,14 @@ use Dompdf\Options;
 
 class MainOrderController extends Controller
 {
-    public function index($id)
+    public function index(Request $request,$id)
     {
         $act_id = $id;
         $act = Act::where('act_id', $act_id)->first();
-        $new_order = NewOrder::where('act_id', $act_id)->get();
-       
+        $new_order = NewOrder::where('act_id', $act_id)->orderBy('new_order_id', 'desc')->paginate(10);
+        $currentPage = $request->query('page', 1);
       
-        $perPage = request()->get('perPage') ?: 10;
-        $page = request()->get('page') ?: 1;
-        $slicedItems = array_slice($new_order->toArray(), ($page - 1) * $perPage, $perPage);
-
-        $paginatedCollection = new LengthAwarePaginator(
-            $slicedItems,
-            count($new_order),
-            $perPage,
-            $page
-        );
-
-        $paginatedCollection->appends(['perPage' => $perPage]);
-
-        $paginatedCollection->withPath(request()->url());
-        return view('admin.MainOrder.index', compact('act','act_id','paginatedCollection'));
+        return view('admin.MainOrder.index', compact('act','act_id','new_order','currentPage'));
  
     }
 

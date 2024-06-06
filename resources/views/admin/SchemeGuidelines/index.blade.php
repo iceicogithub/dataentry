@@ -47,27 +47,55 @@
                             </thead>
                             <tbody>
                                 @php $a=1; @endphp
-                                @foreach ($paginatedCollection as $item)
+                                @foreach ($new_scheme_guidelines as $item)
                                     <tr>
                                         <td scope="row">@php echo $a++; @endphp</td>
                                         <td class="text-capitalize">{{ $item['new_scheme_guidelines_title'] }}</td>
                                         <td class="text-capitalize">{{ $item['updated_at'] }}</td>
                                         <td class="text-capitalize d-flex">
-                                            <a href="/edit_new_scheme_guidelines/{{$item['new_scheme_guidelines_id']}}" title="Edit" class="px-1"><i
+                                            <a href="/edit_new_scheme_guidelines/{{$item['new_scheme_guidelines_id']}}?page={{ $currentPage }}" title="Edit" class="px-1"><i
                                                     class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
-                                            <a href="/view_new_scheme_guidelines/{{$item['new_scheme_guidelines_id']}}?page={{ $paginatedCollection->currentPage() }}" title="View" class="px-1"><i
+                                            <a href="/view_new_scheme_guidelines/{{$item['new_scheme_guidelines_id']}}?page={{ $currentPage }}" title="View" class="px-1"><i
                                                     class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
-                                            <a href="/delete_new_scheme_guidelines/{{$item['new_scheme_guidelines_id']}}?page={{ $paginatedCollection->currentPage() }}" onclick="return confirm('Are you sure ?')" title="Delete" class="px-1"><i
+                                            <a href="/delete_new_scheme_guidelines/{{$item['new_scheme_guidelines_id']}}?page={{ $currentPage }}" onclick="return confirm('Are you sure ?')" title="Delete" class="px-1"><i
                                                     class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $paginatedCollection->links() }}
+                        {{ $new_scheme_guidelines->appends(['page' => $currentPage])->links() }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+@section('script')
+<script>
+    $(document).ready(function() {
+        var table = $('#myTable').DataTable({
+            "paging": false, // Disable DataTables paging, use Laravel pagination instead
+            "searching": true,
+            "ordering": true,
+            "info": false,
+        });
+    
+        // Function to update the links with the current page number
+        function updateLinks() {
+            var currentPage = {{ $currentPage }}; // Use current page from server-side
+            $('.edit-link, .view-link, .delete-link, .edit-legislation-link').each(function() {
+                var url = new URL($(this).attr('href'), window.location.origin);
+                url.searchParams.set('page', currentPage);
+                $(this).attr('href', url.toString());
+            });
+        }
+    
+        // Update links initially
+        updateLinks();
+    });
+
+   
+    </script>
+@endsection
+

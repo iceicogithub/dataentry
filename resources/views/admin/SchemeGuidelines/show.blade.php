@@ -103,7 +103,7 @@
                     <ol class="breadcrumb text-right">
                         <a href="/add_scheme_guidelines/{{ $newSchemeGuidelines->new_scheme_guidelines_id }}" class="mr-2"><button class="btn btn-success">Add
                                 Index</button></a>
-                        <a href="/get_schemes_guidelines/{{ $newSchemeGuidelines->act_id }}"><button class="btn btn-danger">Back</button></a>
+                        <a href="/get_schemes_guidelines/{{ $newSchemeGuidelines->act_id }}?page={{ $currentPage }}"><button class="btn btn-danger">Back</button></a>
                     </ol>
 
                 </div>

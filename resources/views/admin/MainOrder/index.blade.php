@@ -36,19 +36,7 @@
                         <strong class="card-title">Order Table</strong>
                     </div>
                     <div class="card-body">
-                        <div class="pagination-links">
-                            <form action="{{ request()->url() }}" method="GET" class="form-inline">
-                                <label for="perPage">Show:</label>
-                                <select name="perPage" id="perPage" class="form-control mx-2" onchange="this.form.submit()">
-                                    <option value="10" {{ request()->get('perPage') == 10 ? 'selected' : '' }}>10</option>
-                                    <option value="25" {{ request()->get('perPage') == 25 ? 'selected' : '' }}>25</option>
-                                    <option value="50" {{ request()->get('perPage') == 50 ? 'selected' : '' }}>50</option>
-                                    <option value="100" {{ request()->get('perPage') == 100 ? 'selected' : '' }}>100</option>
-                                </select>
-                                <span>entries</span>
-                            </form>
-                        </div>
-                        <table class="table table-bordered text-center" id="">
+                        <table class="table table-bordered text-center" id="myTable">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="col">Sr .No</th>
@@ -59,17 +47,17 @@
                             </thead>
                             <tbody>
                                 @php $a=1; @endphp
-                                @foreach ($paginatedCollection as $item)
+                                @foreach ($new_order as $item)
                                     <tr>
                                         <td scope="row">@php echo $a++; @endphp</td>
                                         <td class="text-capitalize">{{ $item['new_order_title'] }}</td>
                                         <td class="text-capitalize">{{ $item['updated_at'] }}</td>
                                         <td class="text-capitalize d-flex">
-                                            <a href="/edit_new_order/{{$item['new_order_id']}}" title="Edit" class="px-1"><i
+                                            <a href="/edit_new_order/{{$item['new_order_id']}}?page={{ $currentPage }}" title="Edit" class="px-1"><i
                                                     class="bg-secondary btn-sm fa fa-edit p-1 text-white"></i></a>
-                                                    <a href="/view_new_order/{{$item['new_order_id']}}?page={{ $paginatedCollection->currentPage() }}" title="View" class="px-1"><i
+                                                    <a href="/view_new_order/{{$item['new_order_id']}}?page={{ $currentPage }}" title="View" class="px-1"><i
                                                         class="bg-primary btn-sm fa fa-eye p-1 text-white"></i></a>
-                                            <a href="/delete_new_order/{{$item['new_order_id']}}?page={{ $paginatedCollection->currentPage() }}" onclick="return confirm('Are you sure ?')" title="Delete" class="px-1"><i
+                                            <a href="/delete_new_order/{{$item['new_order_id']}}?page={{ $currentPage }}" onclick="return confirm('Are you sure ?')" title="Delete" class="px-1"><i
                                                     class="bg-danger btn-sm fa fa-trash p-1 text-white"></i></a>
                                         </td>
                                     </tr>
@@ -77,13 +65,37 @@
                             </tbody>
                            
                         </table>
-                         {{ $paginatedCollection->links() }}
+                         {{ $new_order->appends(['page' => $currentPage])->links() }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
+@section('script')
 <script>
+    $(document).ready(function() {
+        var table = $('#myTable').DataTable({
+            "paging": false, // Disable DataTables paging, use Laravel pagination instead
+            "searching": true,
+            "ordering": true,
+            "info": false,
+        });
+    
+        // Function to update the links with the current page number
+        function updateLinks() {
+            var currentPage = {{ $currentPage }}; // Use current page from server-side
+            $('.edit-link, .view-link, .delete-link, .edit-legislation-link').each(function() {
+                var url = new URL($(this).attr('href'), window.location.origin);
+                url.searchParams.set('page', currentPage);
+                $(this).attr('href', url.toString());
+            });
+        }
+    
+        // Update links initially
+        updateLinks();
+    });
+
    
-</script>
+    </script>
+@endsection

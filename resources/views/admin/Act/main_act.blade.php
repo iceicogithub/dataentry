@@ -12,8 +12,8 @@
             <div class="page-header float-right">
                 <div class="page-title">
                     <ol class="breadcrumb text-right">
-                        <a href="{{ Route('act') }}"><button class="btn btn-success"> Back</button></a>
-                    </ol>
+                        <a href="{{ Route('act',['page' => $currentPage]) }}"><button class="btn btn-success"> Back</button></a>
+                     </ol>
                 </div>
             </div>
         </div>
@@ -60,7 +60,12 @@
                                                         8 => "/get_schemes_guidelines/{$act_id}",
                                                         9 => "/get_other_main_acts/{$act_id}",
                                                         10 => "/get_notification/{$act_id}",
-                                                        11 => "/get_manuals/{$act_id}"
+                                                        11 => "/get_manuals/{$act_id}",
+                                                        12 => "/get_circulars/{$act_id}",
+                                                        13 => "/get_policy/{$act_id}",
+                                                        14 => "/get_forms/{$act_id}",
+                                                        15 => "/get_release/{$act_id}",
+                                                        16=> "/get_ordinance/{$act_id}",
                                                     ];
                                                 @endphp
                             

@@ -40,6 +40,7 @@ use App\Models\SubRules;
 use App\Models\SubStschedule;
 use App\Models\SubType;
 use App\Models\ActSummaryRelation;
+use App\Models\OtherMainAct;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
@@ -52,11 +53,27 @@ class ActController extends Controller
 
     public function index(Request $request)
     {
-        $currentPage = $request->query('page', 1);   
-        $acts = Act::with('CategoryModel')->orderBy('act_id', 'desc')->get();
-            
-        return view('admin.act.index', compact('acts','currentPage'));
+        $currentPage = $request->query('page', 1);
+        $perPage = $request->query('perPage', 10); // Default to 10 if not set
+        $search = $request->query('search', ''); // Get the search query
+    
+        $query = Act::with('CategoryModel');
+    
+        // Apply search filter if search term is present
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('legislation_name', 'like', '%' . $search . '%')
+                    ->orWhereHas('CategoryModel', function ($q) use ($search) {
+                        $q->where('category', 'like', '%' . $search . '%');
+                    });
+            });
+        }
+    
+        $acts = $query->orderBy('act_id', 'desc')->paginate($perPage);
+    
+        return view('admin.act.index', compact('acts', 'currentPage', 'perPage', 'search'));
     }
+    
 
     public function get_act_section(Request $request, $id)
     {
@@ -2334,10 +2351,14 @@ class ActController extends Controller
     public function store_new_act(Request $request)
     {
         try {
+
+            $contains_id_1 = in_array(1, $request->act_summary_id);
+    
             $act = new Act();
             $act->category_id = $request->category_id;
             $act->state_id = $request->state_id ?? null;
             $act->legislation_name = $request->legislation_name;
+            $act->act_summary_id = $contains_id_1 ? 1 : null;
             $act->save();
 
             foreach ($request->act_summary_id as $act_summary_id) {
@@ -2361,12 +2382,10 @@ class ActController extends Controller
         $act_id = $id;
         $mainact = ActSummary::all();
         $act = Act::find($act_id);
+        $currentPage = $request->query('page', 1); 
         $relatedActSummaries = ActSummaryRelation::where('act_id', $act_id)->with('actSummary')->get();
-        // dd($relatedActSummaries);
-        // die();
-      
-
-        return view('admin.act.main_act', compact('act_id', 'mainact', 'act','relatedActSummaries'));
+     
+        return view('admin.act.main_act', compact('act_id', 'mainact', 'act','relatedActSummaries','currentPage'));
     }
 
 
@@ -4293,13 +4312,14 @@ class ActController extends Controller
           return view('admin.act.add_new_maintype', compact('data','category', 'status', 'states', 'mtype', 'parts', 'stype', 'act', 'showFormTitle'));
     }
 
-    public function edit_legislation_name($id){
+    public function edit_legislation_name(Request $request,$id){
        $legislation = Act::find($id);
        $category = Category::all();
        $states = State::all();
        $actSummary = ActSummary::all();
        $actSummaryRltn = ActSummaryRelation::where('act_id',$id)->get();
-       return view('admin.act.edit_legislation',compact('legislation','category','states','actSummary','actSummaryRltn'));
+       $currentPage = $request->query('page', 1); 
+       return view('admin.act.edit_legislation',compact('legislation','category','states','actSummary','actSummaryRltn','currentPage'));
     }
 
     public function update_legislation(Request $request, $id){
@@ -4329,4 +4349,55 @@ class ActController extends Controller
         }
     }
 
+
+    public function get_other_main_acts($id){
+        $act = Act::findOrFail($id);
+        $otherMainAct = OtherMainAct::where('act_id',$id)->with('acts')->first();
+
+       return view('admin.act.other_main_acts',compact('act','otherMainAct'));
+    }
+
+    public function create_others_main_act(Request $request){
+
+        try {
+            // dd($request);
+            // die();
+            $otherAct = OtherMainAct::create([ 
+               'act_id' => $request->act_id,
+               'introduction' => $request->introduction,
+               'effective_date' => $request->effective_date,
+               'object_reasons' => $request->object_reasons,
+               'legislative_history' => $request->legislative_history,
+               'financial_implication' => $request->financial_implication,
+            ]);
+            
+            
+            return redirect()->back()->with('success', 'created successfully');
+        } catch (\Exception $e) {
+            // Redirect to the same route if an exception occurs
+            return redirect()->back()->with('error', 'Failed to update: ' . $e->getMessage());
+        }
+    }
+
+
+    public function update_others_main_act(Request $request, $id){
+        try {
+            // dd($request);
+            // die();
+            $otherAct = OtherMainAct::findOrFail($id);
+            $otherAct->act_id =  $request->act_id;
+            $otherAct->introduction =  $request->introduction;
+            $otherAct->effective_date = $request->effective_date;
+            $otherAct->object_reasons = $request->object_reasons;
+            $otherAct->legislative_history = $request->legislative_history;
+            $otherAct->financial_implication = $request->financial_implication;
+            $otherAct->update();
+            
+            
+            return redirect()->back()->with('success', 'updated successfully');
+        } catch (\Exception $e) {
+            // Redirect to the same route if an exception occurs
+            return redirect()->back()->with('error', 'Failed to update: ' . $e->getMessage());
+        }
+    }
 }

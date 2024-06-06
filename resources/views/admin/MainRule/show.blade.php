@@ -103,8 +103,10 @@
                     <ol class="breadcrumb text-right">
                         <a href="/add-rule/{{ $newRule->new_rule_id }}" class="mr-2"><button class="btn btn-success">Add
                                 Index</button></a>
-                        <a href="/get_rule/{{ $newRule->act_id }}"><button class="btn btn-danger">Back</button></a>
-                    </ol>
+                                <a href="/get_rule/{{ $newRule->act_id }}?page={{ $currentPage }}">
+                                    <button class="btn btn-danger">Back</button>
+                                </a>
+                            </ol>
 
                 </div>
             </div>

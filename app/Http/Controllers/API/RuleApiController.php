@@ -227,6 +227,35 @@ class RuleApiController extends Controller
 
     }
 
+    public function pdf($id){
+        try{
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $dompdf = new Dompdf($options);
+
+        $combinedItems = NewRule::where('new_rule_id', $id)
+        ->with([
+            'ruleMain' => function ($query) {
+                $query->with(['ruletbl' => function ($query) {
+                    $query->orderBy('rules_rank');
+                }])->orderBy('rule_main_rank'); // Sort ruleMain by rule_main_rank
+            },
+            'ruleMain.ruletbl.ruleSub',
+            'ruleMain.ruletbl.ruleFootnoteModel',
+            'ruleMain.ruletbl.ruleSub.ruleSubFootnoteModel'
+        ])
+        ->get();
+        $pdf = FacadePdf::loadView('admin.MainRule.pdf', [
+            'combinedItems' => $combinedItems,
+        ]);
+
+        return $pdf->download("{$combinedItems[0]->new_rule_title}.pdf");
+    } catch (ModelNotFoundException $e) {
+        return redirect()->route('act');
+    }
+
+    }
+
     /**
      * Store a newly created resource in storage.
      */

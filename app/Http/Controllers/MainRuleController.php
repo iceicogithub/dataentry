@@ -26,28 +26,26 @@ class MainRuleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($id)
+    public function index(Request $request, $id)
     {
         $act_id = $id;
         $act = Act::where('act_id', $act_id)->first();
-       $new_rule = NewRule::where('act_id', $act_id)->get();
-      
-        $perPage = request()->get('perPage') ?: 10;
-        $page = request()->get('page') ?: 1;
-        $slicedItems = array_slice($new_rule->toArray(), ($page - 1) * $perPage, $perPage);
-
-        $paginatedCollection = new LengthAwarePaginator(
-            $slicedItems,
-            count($new_rule),
-            $perPage,
-            $page
-        );
-
-        $paginatedCollection->appends(['perPage' => $perPage]);
-
-        $paginatedCollection->withPath(request()->url());
-        return view('admin.MainRule.index', compact('act','act_id','new_rule','paginatedCollection'));
+        $currentPage = $request->query('page', 1); 
+        $perPage = $request->query('perPage', 10); // Default to 10 if not set
+        $search = $request->query('search', ''); // Get the search query
+    
+        $query = NewRule::where('act_id', $act_id);
+    
+        // Apply search filter if search term is present
+        if (!empty($search)) {
+            $query->where('new_rule_title', 'like', '%' . $search . '%');
+        }
+    
+        $new_rule = $query->orderBy('new_rule_id', 'desc')->paginate($perPage);
+    
+        return view('admin.MainRule.index', compact('act', 'act_id', 'new_rule', 'currentPage', 'perPage', 'search'));
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -76,11 +74,11 @@ class MainRuleController extends Controller
         }
     }
 
-    public function edit_new_rule(string $id)
+    public function edit_new_rule(Request $request,string $id)
     {
         $new_rule_id = $id;
         $newRule = NewRule::where('new_rule_id', $new_rule_id)->first();
-       
+        $currentPage = $request->query('page', 1); 
         $mainsequence = RuleMain::where('new_rule_id', $id)
         ->with('mainTypeRule') 
         ->get()
@@ -109,7 +107,7 @@ class MainRuleController extends Controller
         $paginatedCollection->withPath(request()->url());
             
         
-        return view('admin.MainRule.show', compact('newRule','paginatedCollection'));     
+        return view('admin.MainRule.show', compact('newRule','paginatedCollection','currentPage'));     
     }
 
     public function update_new_rule(Request $request, $id){

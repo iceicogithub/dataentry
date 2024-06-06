@@ -23,28 +23,14 @@ use Dompdf\Options;
 
 class MainSchemeGuidelinesController extends Controller
 {
-    public function index($id)
+    public function index(Request $request,$id)
     {
         $act_id = $id;
         $act = Act::where('act_id', $act_id)->first();
-        $new_scheme_guidelines = NewSchemeGuidelines::where('act_id', $act_id)->get();
+        $currentPage = $request->query('page', 1); 
+        $new_scheme_guidelines = NewSchemeGuidelines::where('act_id', $act_id)->orderBy('new_scheme_guidelines_id', 'desc')->paginate(10);
        
-      
-       $perPage = request()->get('perPage') ?: 10;
-        $page = request()->get('page') ?: 1;
-        $slicedItems = array_slice($new_scheme_guidelines->toArray(), ($page - 1) * $perPage, $perPage);
-
-        $paginatedCollection = new LengthAwarePaginator(
-            $slicedItems,
-            count($new_scheme_guidelines),
-            $perPage,
-            $page
-        );
-
-        $paginatedCollection->appends(['perPage' => $perPage]);
-
-        $paginatedCollection->withPath(request()->url());
-        return view('admin.SchemeGuidelines.index', compact('act','act_id','paginatedCollection'));
+        return view('admin.SchemeGuidelines.index', compact('act','act_id','new_scheme_guidelines','currentPage'));
  
     }
 
@@ -69,8 +55,9 @@ class MainSchemeGuidelinesController extends Controller
         }
     }
 
-    public function edit_new_scheme_guidelines($id){
+    public function edit_new_scheme_guidelines(Request $request,$id){
         $new_scheme_guidelines_id = $id;
+        $currentPage = $request->query('page', 1); 
         $newSchemeGuidelines = NewSchemeGuidelines::where('new_scheme_guidelines_id', $new_scheme_guidelines_id)->with('act')->first();
        
         $mainsequence = SchemeGuidelinesMain::where('new_scheme_guidelines_id', $id)
@@ -103,7 +90,7 @@ class MainSchemeGuidelinesController extends Controller
         // dd($paginatedCollection);
         // die();
         
-        return view('admin.SchemeGuidelines.show', compact('newSchemeGuidelines','paginatedCollection'));     
+        return view('admin.SchemeGuidelines.show', compact('newSchemeGuidelines','paginatedCollection','currentPage'));     
    
     }
 
